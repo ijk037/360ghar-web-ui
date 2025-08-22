@@ -3,7 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import { usePropertyStore } from '../../store';
 
 const PropertyFilter = ({ onFilter }) => {
-  const { setFilters, getAllProperties } = usePropertyStore();
+  const { setFilters, fetchProperties } = usePropertyStore();
 
   const propertyTypes = [
     { value: '', label: 'Any Type' },
@@ -55,9 +55,9 @@ const PropertyFilter = ({ onFilter }) => {
     
     // Update store filters
     setFilters(filters);
-    
+
     // Fetch properties with new filters
-    await getAllProperties(filters);
+    await fetchProperties(filters);
     
     // Call onFilter callback if provided
     if (onFilter) {
