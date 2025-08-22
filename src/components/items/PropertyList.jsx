@@ -3,18 +3,18 @@ import { Link } from 'react-router-dom';
 import { usePropertyStore } from '../../store';
 
 const PropertyList = ({ limit, filters = {} }) => {
-  const { properties, isLoading, error, fetchProperties } = usePropertyStore();
+  const { properties, isLoading, error, getAllProperties } = usePropertyStore();
 
   useEffect(() => {
-    const loadProperties = async () => {
-      await fetchProperties({
+    const fetchProperties = async () => {
+      await getAllProperties({
         limit: limit || 12,
         ...filters
       });
     };
 
-    loadProperties();
-  }, [fetchProperties, limit, filters]);
+    fetchProperties();
+  }, [getAllProperties, limit, filters]);
   
   if (isLoading) {
     return <div className="text-center py-5">Loading properties...</div>;

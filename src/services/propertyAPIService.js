@@ -1,12 +1,45 @@
 import axios from 'axios';
 
+// Ensure the API URL always uses HTTPS in production
+const getApiBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_BASE_URL;
+
+  // If environment variable is set, use it and ensure HTTPS
+  if (envUrl) {
+    // Always force HTTPS in production or if the current page is HTTPS
+    if (typeof window !== 'undefined' && window.location.protocol === 'https:') {
+      return envUrl.startsWith('https://') ? envUrl : envUrl.replace('http://', 'https://');
+    }
+    // For development or non-HTTPS environments, use as-is
+    return envUrl;
+  }
+
+  // Fallback URL with HTTPS
+  return 'https://360ghar.up.railway.app/api/v1';
+};
+
 // Create a separate axios instance for public property endpoints (no auth required)
 const publicApi = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: getApiBaseUrl(),
   headers: {
     'Content-Type': 'application/json',
   },
 });
+
+// Add HTTPS enforcement interceptor
+publicApi.interceptors.request.use(
+  (config) => {
+    // Ensure HTTPS for all requests
+    if (config.baseURL && config.baseURL.startsWith('http://')) {
+      config.baseURL = config.baseURL.replace('http://', 'https://');
+    }
+    if (config.url && config.url.startsWith('http://')) {
+      config.url = config.url.replace('http://', 'https://');
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 // Simple error handling for public endpoints - no auth redirects
 publicApi.interceptors.response.use(
@@ -17,7 +50,7 @@ publicApi.interceptors.response.use(
   }
 );
 
-// Map frontend filters to backend query params for GET /properties
+// Map frontend filters to backend query params for GET /properties/
 function buildSearchParams(filters = {}, page = 1, limit = 12) {
   const params = new URLSearchParams();
   params.set('page', String(page));
@@ -97,12 +130,12 @@ function buildSearchParams(filters = {}, page = 1, limit = 12) {
 
 /**
  * Searches for properties based on filters, location, and pagination.
- * Corresponds to: GET /properties
+ * Corresponds to: GET /properties/
  * NO AUTHENTICATION REQUIRED
  */
 const searchProperties = (filters = {}, page = 1, limit = 12) => {
   const params = buildSearchParams(filters, page, limit);
-  return publicApi.get(`/properties?${params.toString()}`);
+  return publicApi.get(`/properties/?${params.toString()}`);
 };
 
 /**

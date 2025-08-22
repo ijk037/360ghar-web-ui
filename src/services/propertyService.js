@@ -18,7 +18,7 @@ export const propertyService = {
     const response = await api.get('/properties/me/', { params });
     return response.data;
   },
-  
+
   // Get property by ID
   getPropertyById: async (id) => {
     const response = await api.get(`/properties/${id}/`);
