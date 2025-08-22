@@ -1,36 +1,103 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import ListGridButtons from '../common/ListGridButtons';
-import { PropertyFilterContext } from '../contextApi/PropertyFilterContext';
+import usePropertyStore from '../store/propertyStore';
 
-const PropertyFilterBottom = () => {
+const PropertyFilterBottom = ({ total = 0, currentPage = 1 }) => {
+    const { filters, updateFilter, applyFilters } = usePropertyStore();
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     
-    const { selectedSort, handleSortChange } = useContext(PropertyFilterContext); 
+    const selectedSort = filters.sort_by || 'newest';
+
+    const handleSortChangeEnhanced = async (newSortValue) => {
+        // Update sort in store
+        updateFilter('sort_by', newSortValue);
+        updateFilter('page', 1); // Reset to first page when sorting changes
+        
+        // Apply filters immediately for sorting
+        await applyFilters();
+        
+        // Update URL
+        const params = new URLSearchParams(searchParams);
+        params.set('sort_by', newSortValue);
+        params.set('page', '1');
+        navigate(`?${params.toString()}`, { replace: true });
+    };
+
+    const showingStart = total > 0 ? ((currentPage - 1) * 12) + 1 : 0;
+    const showingEnd = Math.min(currentPage * 12, total);
 
     return (
         <>
          <div className="property-filter__bottom flx-between gap-2">
-            <span className="property-filter__text font-18 text-gray-800">Showing 1-10 of 23</span>
-            <div className="d-flex align-items-center gap-2">
-                
+            <div className="property-results-info">
+                <span className="property-filter__text font-16 text-gray-800">
+                    {total > 0 ?
+                        `Showing ${showingStart}-${showingEnd} of ${total.toLocaleString()} properties` :
+                        'No properties found'
+                    }
+                </span>
+                {total > 0 && (
+                    <div className="sort-options mt-2">
+                        <small className="text-muted me-2">Quick sort:</small>
+                        <div className="btn-group btn-group-sm" role="group">
+                            <button
+                                type="button"
+                                className={`btn btn-outline-secondary ${selectedSort === 'newest' ? 'active' : ''}`}
+                                onClick={() => handleSortChangeEnhanced('newest')}
+                            >
+                                Newest
+                            </button>
+                            <button
+                                type="button"
+                                className={`btn btn-outline-secondary ${selectedSort === 'distance' ? 'active' : ''}`}
+                                onClick={() => handleSortChangeEnhanced('distance')}
+                            >
+                                Distance
+                            </button>
+                            <button
+                                type="button"
+                                className={`btn btn-outline-secondary ${selectedSort === 'price_low' ? 'active' : ''}`}
+                                onClick={() => handleSortChangeEnhanced('price_low')}
+                            >
+                                Price: Low
+                            </button>
+                            <button
+                                type="button"
+                                className={`btn btn-outline-secondary ${selectedSort === 'price_high' ? 'active' : ''}`}
+                                onClick={() => handleSortChangeEnhanced('price_high')}
+                            >
+                                Price: High
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </div>
+            <div className="d-flex align-items-center gap-3">
+
                 {/* List Grid Layout buttons */}
                 <ListGridButtons/>
-                
+
                 <div className="d-flex align-items-center gap-2">
-                    <span className="property-filter__text font-18 text-gray-800"> Sort by: </span>
+                    <span className="property-filter__text font-16 text-gray-800"> Sort by: </span>
                     <div className="select-has-icon data-sort">
-                        <select className="form-select common-input pill text-gray-800 px-3 py-2"  onChange={handleSortChange} value={selectedSort}>
-                            <option value="All">All</option>
-                            <option value="Newest">Newest</option>
-                            <option value="Best Seller">Best Seller</option>
-                            <option value="Best Match">Best Match</option>
-                            <option value="High Price">High Price</option>
-                            <option value="Medium Price">Medium Price</option>
-                            <option value="Low Price">Low Price</option>
+                        <select
+                            className="form-select common-input pill text-gray-800 px-3 py-2"
+                            onChange={(e) => handleSortChangeEnhanced(e.target.value)}
+                            value={selectedSort}
+                        >
+                            <option value="newest">Newest First</option>
+                            <option value="distance">Distance</option>
+                            <option value="price_low">Price: Low to High</option>
+                            <option value="price_high">Price: High to Low</option>
+                            <option value="popular">Most Popular</option>
+                            <option value="relevance">Relevance</option>
                         </select>
                     </div>
                 </div>
             </div>
-        </div>   
+        </div>
         </>
     );
 };

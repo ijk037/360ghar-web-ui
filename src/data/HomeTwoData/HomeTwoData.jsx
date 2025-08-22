@@ -1,7 +1,7 @@
 import React from 'react'; 
 
 // Banner Two
-import BannerPhoneIcon from '../../../public/assets/images/icons/phone.svg'
+import BannerPhoneIcon from '/assets/images/icons/phone.svg'
 export const bannerTwoContent = {
     title: 'Experience homes in ',
     boldTitle: '360° Virtual Reality',
@@ -14,9 +14,9 @@ export const bannerTwoContent = {
 
 
 // Service Section Data 
-import ServiceIcon1 from '../../../public/assets/images/icons/service1.svg'
-import ServiceIcon2 from '../../../public/assets/images/icons/service2.svg'
-import ServiceIcon3 from '../../../public/assets/images/icons/service3.svg'
+import ServiceIcon1 from '/assets/images/icons/service1.svg'
+import ServiceIcon2 from '/assets/images/icons/service2.svg'
+import ServiceIcon3 from '/assets/images/icons/service3.svg'
 export const services = [
     {
         icon: ServiceIcon1,
@@ -50,15 +50,15 @@ export const checkLists = [
     },
     {
         icon: <i className="fas fa-check"></i>,
-        text: 'Real Estate is a vast industry that deals with the buying, selling'
+        text: 'Comprehensive property search with advanced filters and real-time updates'
     },
     {
         icon: <i className="fas fa-check"></i>,
-        text: 'Egestas nulla quis venenatis cras sed eu massa eu faucibus'
+        text: 'Verified property listings with authentic photos and complete documentation'
     },
 ]
 
-import AboutTwoImg from '../../../public/assets/images/thumbs/about-two-img.png'
+import AboutTwoImg from '/assets/images/thumbs/about-two-img.png'
 export const aboutTwoRight = {
     thumb: AboutTwoImg,
     title: 'Property Management',
@@ -244,10 +244,10 @@ export const floorTabPanels= [
 
 
 // Gallery Data
-import galleryImage1 from '../../../public/assets/images/thumbs/gallery-img1.png'
-import galleryImage2 from '../../../public/assets/images/thumbs/gallery-img2.png'
-import galleryImage3 from '../../../public/assets/images/thumbs/gallery-img3.png'
-import galleryImage4 from '../../../public/assets/images/thumbs/gallery-img4.png'
+import galleryImage1 from '/assets/images/thumbs/gallery-img1.png'
+import galleryImage2 from '/assets/images/thumbs/gallery-img2.png'
+import galleryImage3 from '/assets/images/thumbs/gallery-img3.png'
+import galleryImage4 from '/assets/images/thumbs/gallery-img4.png'
 export const galleries= [
     {
         image: galleryImage1,
@@ -273,22 +273,22 @@ export const galleries= [
 
 
 // Counter Two Data
-export const counters= [ 
+export const counters= [
     {
-        number: '200+',
-        text: 'Team member'
+        number: '5000+',
+        text: 'Active Listings'
     },
     {
-        number: '20+',
-        text: 'Winning award'
+        number: '25+',
+        text: 'Years Experience'
     },
     {
-        number: '10k+',
-        text: 'Complete project'
+        number: '1000+',
+        text: 'Properties Sold'
     },
     {
-        number: '900+',
-        text: 'Client review'
+        number: '3000+',
+        text: 'Happy Customers'
     },
 ]
 
@@ -320,36 +320,36 @@ export const apartmentTds= [
         bathroom: '02',
         rooms: '04',
         area: '2000',
-        pricing: '$1200',
+        pricing: '₹45,000',
         action: 'More About',
-        actionLink: '/property',
+        actionLink: '/properties',
     },
     {
         no: '3rd',
         bathroom: '04',
         rooms: '05',
         area: '1200',
-        pricing: '$3600',
+        pricing: '₹85,000',
         action: 'More About',
-        actionLink: '/property',
+        actionLink: '/properties',
     },
     {
         no: '5th',
         bathroom: '02',
         rooms: '06',
         area: '1464',
-        pricing: '$5200',
+        pricing: '₹1,20,000',
         action: 'More About',
-        actionLink: '/property',
+        actionLink: '/properties',
     },
     {
         no: '7th',
         bathroom: '06',
         rooms: '08',
         area: '2000',
-        pricing: '$8200',
+        pricing: '₹2,50,000',
         action: 'More About',
-        actionLink: '/property',
+        actionLink: '/properties',
     },
 ]
 

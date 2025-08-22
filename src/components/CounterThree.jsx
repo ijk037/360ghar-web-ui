@@ -2,7 +2,7 @@ import React from 'react';
 import { counterThreeContents } from '../data/HomeThreeData/HomeThreeData';
 import CounterThreeItem from './items/CounterThreeItem';
 
-import CounterBg from '../../public/assets/images/thumbs/counter-bg.png';
+import CounterBg from '/assets/images/thumbs/counter-bg.png';
 
 const CounterThree = () => {
     return (

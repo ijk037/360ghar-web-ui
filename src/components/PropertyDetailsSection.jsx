@@ -1,139 +1,131 @@
 import React from 'react';
-import { addressContents, featureLists, propertyDetailsAmenities } from '../data/OthersPageData/OthersPageData';
-import { Link, useLocation } from 'react-router-dom';
-
-import houseThumb from '../../public/assets/images/thumbs/house.png';
 import CommonSidebar from '../common/CommonSidebar';
 
-const PropertyDetailsSection = () => {
+function formatCurrency(value) {
+  if (value === null || value === undefined) return 'Price on request';
+  try {
+    return `₹${Number(value).toLocaleString('en-IN')}`;
+  } catch {
+    return `₹${value}`;
+  }
+}
 
-    const location = useLocation(); 
-    
-    return (
-        <>
-        {/* ============================ Property Details Section Start =============== */}
-        <section className="property-details padding-y-120">
-            <div className="container container-two">
-                <div className="row gy-4">
-                    <div className="col-lg-8">
+const PropertyDetailsSection = ({ property }) => {
+  if (!property) return null;
 
-                        <div className="property-details__thumb">
-                            <img src={location.state.thumb} alt="Image" className="cover-img"/>
-                        </div>
+  const images = Array.isArray(property.images) ? property.images : [];
+  const mainImage = property.main_image_url || images.find((i) => i.is_main_image)?.image_url || images[0]?.image_url;
+  const title = property.title || 'Property Details';
+  const description = property.description || '';
+  const purpose = property.purpose || property.price_type;
+  const priceValue = purpose === 'rent' ? (property.monthly_rent || property.daily_rate || property.base_price) : property.base_price;
+  const price = formatCurrency(priceValue);
+  const day = purpose === 'rent' ? (property.daily_rate ? '/per day' : '/per month') : '';
+  const address = property.full_address || [property.locality, property.city, property.state].filter(Boolean).join(', ');
 
-                        <h3 className="property-details__title mt-lg-5 mb-4">{location.state.title}</h3>
-                        <p className="property-details__desc mb-3">{location.state.desc.slice(0, 178)}</p>
-                        <p className="property-details__desc">{location.state.desc.slice(179, 400)}</p>
+  const previewStats = [
+    { icon: <i className="fas fa-bed"></i>, label: 'Bedrooms', value: property.bedrooms },
+    { icon: <i className="fas fa-bath"></i>, label: 'Bathrooms', value: property.bathrooms },
+    { icon: <i className="fas fa-ruler-combined"></i>, label: 'Area', value: property.area_sqft ? `${property.area_sqft} sqft` : null },
+    { icon: <i className="fas fa-building"></i>, label: 'Floor', value: property.floor_number },
+    { icon: <i className="fas fa-parking"></i>, label: 'Parking', value: property.parking_spaces },
+  ].filter((x) => x.value !== null && x.value !== undefined && x.value !== '');
 
-                        <div className="property-details-wrapper">
-                            <div className="property-details-item">
-                                <h6 className="property-details-item__title">Preview</h6>
-                                <div className="property-details-item__content">
-                                    <div className="row gy-4 gy-lg-5">
-                                        {
-                                            propertyDetailsAmenities.map((amenity, amenityIndex) => {
-                                                return (
-                                                    <div className="col-sm-4 col-6" key={amenityIndex}>
-                                                        <div className="amenities-content d-flex align-items-center">
-                                                            <span className="amenities-content__icon">
-                                                                <img src={amenity.icon} alt=""/>
-                                                            </span>
-                                                            <div className="amenities-content__inner">
-                                                                <span className="amenities-content__text">{amenity.text}</span>
-                                                                <h6 className="amenities-content__title mb-0 font-16">{amenity.title}</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                )
-                                            })
-                                        }
-                                    </div>
-                                </div>
-                            </div>
+  const features = Array.isArray(property.features) ? property.features : [];
 
-                            <div className="property-details-item">
-                                <h6 className="property-details-item__title">Features</h6>
-                                <div className="property-details-item__content">
-                                    <div className="row gy-2">
-                                        <div className="col-sm-6">
-                                            <ul className="check-list">
-                                                {
-                                                    featureLists.map((featureList, featureListIndex) => {
-                                                        if(featureListIndex % 2 == 0) {
-                                                            return (
-                                                                <li className="check-list__item d-flex align-items-center" key={featureListIndex}>
-                                                                    <span className="icon">{featureList.icon}</span>
-                                                                    <span className="text">{featureList.text}</span>
-                                                                </li>
-                                                            )
-                                                        }
-                                                    })
-                                                }
-                                            </ul>
-                                        </div>
-                                        <div className="col-sm-6">
-                                            <ul className="check-list">
-                                                {
-                                                    featureLists.map((featureList, featureListIndex) => {
-                                                        if(featureListIndex % 2 !== 0) {
-                                                            return (
-                                                                <li className="check-list__item d-flex align-items-center" key={featureListIndex}>
-                                                                    <span className="icon">{featureList.icon}</span>
-                                                                    <span className="text">{featureList.text}</span>
-                                                                </li>
-                                                            )
-                                                        }
-                                                    })
-                                                }
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="property-details-item">
-                                <h6 className="property-details-item__title">Address</h6>
-                                <div className="property-details-item__content">
-                                    <div className="row gy-4">
-                                        {
-                                            addressContents.map((addressContent, addressContentIndex) => {
-                                                return (
-                                                    <div className="col-6" key={addressContentIndex}>
-                                                        <div className="address-content d-flex gap-4 align-items-center">
-                                                            <span className="address-content__text font-18">{addressContent.text}</span>
-                                                            <h6 className="address-content__title font-15 mb-0">{addressContent.title}</h6>
-                                                        </div>
-                                                    </div>
-                                                )
-                                            })
-                                        }
-                                    </div>
-                                    <div className="address-map">
-                                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1150112.1628856962!2d44.64619029447154!3d23.086651461779507!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f43348a67e24b%3A0xff45e502e1ceb7e2!2sBurj%20Khalifa!5e0!3m2!1sen!2sbd!4v1707037970965!5m2!1sen!2sbd" allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
-                                    </div>
-                                </div>
-                            </div> 
-                            <div className="property-details-item">
-                                <h6 className="property-details-item__title">House</h6>
-                                <div className="property-details-item__content">
-                                    <div className="house-content position-relative">
-                                        <img src={houseThumb} alt="House Thumb"/>
-                                        <Link to="https://www.youtube.com/watch?v=pPl3ZZdTP3g" className="popup-video-link video-popup__button style-two">
-                                            <i className="fas fa-play text-gradient"></i>
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-lg-4">
-                        <CommonSidebar renderSearch={false} renderProperties={true} renderTags={false}/>
-                    </div>
+  return (
+    <>
+      <section className="property-details padding-y-120">
+        <div className="container container-two">
+          <div className="row gy-4">
+            <div className="col-lg-8">
+              {mainImage && (
+                <div className="property-details__thumb">
+                  <img src={mainImage} alt="Property" className="cover-img" />
                 </div>
+              )}
+
+              <h3 className="property-details__title mt-lg-5 mb-2">{title}</h3>
+              <h5 className="property-details__price mb-4">
+                {price} <span className="day">{day}</span>
+              </h5>
+              {description && <p className="property-details__desc mb-3">{description}</p>}
+
+              <div className="property-details-wrapper">
+                <div className="property-details-item">
+                  <h6 className="property-details-item__title">Overview</h6>
+                  <div className="property-details-item__content">
+                    <div className="row gy-4 gy-lg-5">
+                      {previewStats.map((stat, index) => (
+                        <div className="col-sm-4 col-6" key={index}>
+                          <div className="amenities-content d-flex align-items-center">
+                            <span className="amenities-content__icon">{stat.icon}</span>
+                            <div className="amenities-content__inner">
+                              <span className="amenities-content__text">{stat.label}</span>
+                              <h6 className="amenities-content__title mb-0 font-16">{stat.value}</h6>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {features.length > 0 && (
+                  <div className="property-details-item">
+                    <h6 className="property-details-item__title">Features</h6>
+                    <div className="property-details-item__content">
+                      <div className="row gy-2">
+                        <div className="col-12">
+                          <ul className="check-list two-column">
+                            {features.map((text, idx) => (
+                              <li className="check-list__item d-flex align-items-center" key={idx}>
+                                <span className="icon">
+                                  <i className="fas fa-check"></i>
+                                </span>
+                                <span className="text">{text}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div className="property-details-item">
+                  <h6 className="property-details-item__title">Address</h6>
+                  <div className="property-details-item__content">
+                    <div className="row gy-4">
+                      <div className="col-12">
+                        <div className="address-content d-flex gap-4 align-items-center">
+                          <span className="address-content__text font-18">Full Address</span>
+                          <h6 className="address-content__title font-15 mb-0">{address}</h6>
+                        </div>
+                      </div>
+                    </div>
+                    {property.latitude && property.longitude && (
+                      <div className="address-map mt-3">
+                        <iframe
+                          src={`https://www.google.com/maps?q=${property.latitude},${property.longitude}&z=15&output=embed`}
+                          allowFullScreen=""
+                          loading="lazy"
+                          referrerPolicy="no-referrer-when-downgrade"
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
-        </section>
-        {/* ============================ Property Details Section End =============== */}
-        </>
-    );
+            <div className="col-lg-4">
+              <CommonSidebar renderSearch={false} renderProperties={true} renderTags={false} />
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
 };
 
 export default PropertyDetailsSection;

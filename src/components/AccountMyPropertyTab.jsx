@@ -29,7 +29,7 @@ const AccountMyPropertyTab = () => {
                                                             <img src={propertyTable.thumb} alt=""/>
                                                         </div>
                                                         <div className="cart-item__content">
-                                                            <h6 className="cart-item__title fw-500 font-18"> <Link to="/property" className="link">3 Rooms Manhattan</Link></h6>
+                                                            <h6 className="cart-item__title fw-500 font-18"> <Link to="/properties" className="link">3 Rooms Manhattan</Link></h6>
                                                         <p className="property-item__location d-flex gap-2 font-14"> 
                                                             <span className="icon text-gradient"> {propertyTable.locationIcon}</span> 
                                                             {propertyTable.location}

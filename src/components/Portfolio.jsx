@@ -4,7 +4,7 @@ import Slider from "react-slick";
 import PortfolioItem from './items/PortfolioItem';
 import { portfolios } from '../data/HomeOneData/HomeOneData';
 
-  var settings = {
+  const settings = {
     slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: true,

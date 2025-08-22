@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import BreadcrumbImage from '../../public/assets/images/thumbs/breadcrumb-img.png';
+import BreadcrumbImage from '/assets/images/thumbs/breadcrumb-img.png';
 
 const Breadcrumb = (props) => {
     return (

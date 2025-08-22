@@ -3,10 +3,10 @@ import Slider from "react-slick";
 
 import { testimonials } from '../data/HomeOneData/HomeOneData';
 import TestimonialItem from './items/TestimonialItem';
-import TestimonialThumb from '../../public/assets/images/thumbs/testimonial-img.png';
+import TestimonialThumb from '/assets/images/thumbs/testimonial-img.png';
 import SectionHeading from '../common/SectionHeading';
 
-var settings = {
+const settings = {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,

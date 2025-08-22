@@ -1,7 +1,7 @@
 import React from 'react';
 
-import CommentThumb1 from '../../public/assets/images/thumbs/comment1.png';
-import CommentThumb2 from '../../public/assets/images/thumbs/comment2.png';
+import CommentThumb1 from '/assets/images/thumbs/comment1.png';
+import CommentThumb2 from '/assets/images/thumbs/comment2.png';
 import { Link } from 'react-router-dom';
 
 const Comment = () => {

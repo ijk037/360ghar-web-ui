@@ -1,53 +1,148 @@
 import { create } from 'zustand';
-import { propertyService } from '../services/propertyService';
-import { mediaService } from '../services/mediaService';
+import propertyService from '../services/propertyService';
+import { propertyAPIService } from '../services/propertyAPIService';
 
 const usePropertyStore = create((set, get) => ({
   // State
   properties: [],
+  recommendations: [],
   userProperties: [],
   currentProperty: null,
   propertyMedia: [],
+  pagination: { page: 1, totalPages: 1, total: 0, limit: 12 },
+  // Comprehensive filters matching API documentation
   filters: {
-    skip: 0,
+    // Text Search
+    q: '',
+    
+    // Property Filters
+    property_type: [],
+    purpose: '',
+    
+    // Price Filters
+    price_min: null,
+    price_max: null,
+    
+    // Room Filters
+    bedrooms_min: null,
+    bedrooms_max: null,
+    bathrooms_min: null,
+    bathrooms_max: null,
+    
+    // Area Filters
+    area_min: null,
+    area_max: null,
+    
+    // Location Filters
+    city: '',
+    locality: '',
+    pincode: '',
+    
+    // Location-based Search
+    lat: null,
+    lng: null,
+    radius: 20,
+    
+    // Additional Filters
+    amenities: [],
+    features: [],
+    parking_spaces_min: null,
+    floor_number_min: null,
+    floor_number_max: null,
+    age_max: null,
+    
+    // Short Stay Filters
+    check_in: '',
+    check_out: '',
+    guests: null,
+    
+    // Sorting & Pagination
+    sort_by: 'newest',
+    page: 1,
     limit: 12,
-    min_price: null,
-    max_price: null,
-    city: null,
-    status: null,
-    property_type: null,
-    bedrooms: null,
-    bathrooms: null,
-    min_area: null,
-    state: null,
-    zip_code: null,
   },
+  
+  // Track if filters have changed since last search
+  filtersChanged: false,
+  
   isLoading: false,
   error: null,
   
   // Actions
-  getAllProperties: async (additionalFilters = {}) => {
+  // Public search using propertyAPIService (no auth)
+  fetchProperties: async (overrideFilters = {}, page = null, limit = null) => {
     try {
       set({ isLoading: true, error: null });
-      const filters = { ...get().filters, ...additionalFilters };
-      // Remove null or undefined values
-      Object.keys(filters).forEach(key => {
-        if (filters[key] === null || filters[key] === undefined) {
-          delete filters[key];
+      const state = get();
+      
+      // Merge current filters with any overrides
+      const searchFilters = { ...state.filters, ...overrideFilters };
+      
+      // Use provided page/limit or defaults from filters
+      const searchPage = page || searchFilters.page || 1;
+      const searchLimit = limit || searchFilters.limit || 12;
+      
+      // Clean up null/undefined/empty values for API call
+      const cleanFilters = {};
+      Object.keys(searchFilters).forEach(key => {
+        const value = searchFilters[key];
+        if (value !== null && value !== undefined && value !== '') {
+          // Handle arrays - only include if they have items
+          if (Array.isArray(value)) {
+            if (value.length > 0) {
+              cleanFilters[key] = value;
+            }
+          } else {
+            cleanFilters[key] = value;
+          }
         }
       });
+
+      const response = await propertyAPIService.searchProperties(cleanFilters, searchPage, searchLimit);
+      const payload = response.data || {};
       
-      const data = await propertyService.getAllProperties(filters);
       set({
-        properties: data,
+        properties: payload.properties || payload.items || [],
+        pagination: {
+          page: payload.page || searchPage,
+          totalPages: payload.total_pages || payload.totalPages || 1,
+          total: payload.total || 0,
+          limit: payload.limit || searchLimit,
+        },
+        filters: {
+          ...state.filters,
+          page: payload.page || searchPage,
+        },
+        filtersChanged: false, // Mark as applied
         isLoading: false,
       });
-      return data;
+      
+      return payload;
     } catch (error) {
       set({
         isLoading: false,
         error: error.response?.data?.detail || 'Failed to fetch properties'
       });
+      return { items: [], properties: [] };
+    }
+  },
+  
+  // Apply current filters and fetch properties
+  applyFilters: async () => {
+    const state = get();
+    return await state.fetchProperties();
+  },
+
+  // Home recommendations
+  fetchRecommendations: async (limit = 6) => {
+    try {
+      set({ isLoading: true, error: null });
+      const response = await propertyAPIService.getRecommendations(limit);
+      const list = response.data || [];
+      set({ recommendations: Array.isArray(list) ? list : (list.items || []), isLoading: false });
+      return list;
+    } catch (error) {
+      set({ isLoading: false, error: error.response?.data?.detail || 'Failed to fetch recommendations' });
       return [];
     }
   },
@@ -70,13 +165,14 @@ const usePropertyStore = create((set, get) => ({
     }
   },
   
-  getPropertyById: async (id) => {
+  // Public property details (no auth required)
+  fetchPropertyById: async (id) => {
     try {
       set({ isLoading: true, error: null });
-      const property = await propertyService.getPropertyById(id);
-      
-      // Also fetch media for the property
-      const media = await mediaService.getPropertyMedia(id);
+      const response = await propertyAPIService.getPropertyById(id);
+      const property = response.data;
+      // Images are included in the property response; no additional media fetch required
+      const media = Array.isArray(property?.images) ? property.images : [];
       
       set({
         currentProperty: property,
@@ -164,7 +260,9 @@ const usePropertyStore = create((set, get) => ({
   uploadPropertyMedia: async (formData) => {
     try {
       set({ isLoading: true, error: null });
-      const newMedia = await mediaService.uploadMedia(formData);
+      // TODO: Import mediaService when available
+      const newMedia = null; // await mediaService.uploadMedia(formData);
+      throw new Error('Media service not available');
       
       // Add new media to propertyMedia array
       set(state => ({
@@ -185,7 +283,9 @@ const usePropertyStore = create((set, get) => ({
   deletePropertyMedia: async (mediaId) => {
     try {
       set({ isLoading: true, error: null });
-      await mediaService.deleteMedia(mediaId);
+      // TODO: Import mediaService when available
+      // await mediaService.deleteMedia(mediaId);
+      throw new Error('Media service not available');
       
       // Remove media from propertyMedia array
       set(state => ({
@@ -208,8 +308,97 @@ const usePropertyStore = create((set, get) => ({
       filters: {
         ...state.filters,
         ...newFilters
-      }
+      },
+      filtersChanged: true
     }));
+  },
+  
+  // Update individual filter
+  updateFilter: (key, value) => {
+    set(state => ({
+      filters: {
+        ...state.filters,
+        [key]: value
+      },
+      filtersChanged: true
+    }));
+  },
+  
+  // Clear all filters
+  clearFilters: () => {
+    set({
+      filters: {
+        q: '',
+        property_type: [],
+        purpose: '',
+        price_min: null,
+        price_max: null,
+        bedrooms_min: null,
+        bedrooms_max: null,
+        bathrooms_min: null,
+        bathrooms_max: null,
+        area_min: null,
+        area_max: null,
+        city: '',
+        locality: '',
+        pincode: '',
+        lat: null,
+        lng: null,
+        radius: 20,
+        amenities: [],
+        features: [],
+        parking_spaces_min: null,
+        floor_number_min: null,
+        floor_number_max: null,
+        age_max: null,
+        check_in: '',
+        check_out: '',
+        guests: null,
+        sort_by: 'newest',
+        page: 1,
+        limit: 12,
+      },
+      filtersChanged: true
+    });
+  },
+  
+  // Mark filters as applied (called after successful fetch)
+  markFiltersApplied: () => {
+    set({ filtersChanged: false });
+  },
+  
+  // Get active filters count for UI badge
+  getActiveFiltersCount: () => {
+    const state = get();
+    const filters = state.filters;
+    let count = 0;
+    
+    // Count non-empty filters
+    if (filters.q) count++;
+    if (filters.property_type?.length > 0) count++;
+    if (filters.purpose) count++;
+    if (filters.price_min !== null) count++;
+    if (filters.price_max !== null) count++;
+    if (filters.bedrooms_min !== null) count++;
+    if (filters.bedrooms_max !== null) count++;
+    if (filters.bathrooms_min !== null) count++;
+    if (filters.bathrooms_max !== null) count++;
+    if (filters.area_min !== null) count++;
+    if (filters.area_max !== null) count++;
+    if (filters.city) count++;
+    if (filters.locality) count++;
+    if (filters.pincode) count++;
+    if (filters.amenities?.length > 0) count++;
+    if (filters.features?.length > 0) count++;
+    if (filters.parking_spaces_min !== null) count++;
+    if (filters.floor_number_min !== null) count++;
+    if (filters.floor_number_max !== null) count++;
+    if (filters.age_max !== null) count++;
+    if (filters.check_in) count++;
+    if (filters.check_out) count++;
+    if (filters.guests !== null) count++;
+    
+    return count;
   },
   
   clearCurrentProperty: () => {

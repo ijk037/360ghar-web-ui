@@ -1,13 +1,31 @@
 import React from 'react';
-
-import Filter from '../common/Filter';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { filterTabs } from '../data/HomeOneData/HomeOneData';
+import SimplifiedFilter from './SimplifiedFilter';
+import usePropertyStore from '../store/propertyStore';
 
 const TabFilter = (props) => {
+    const { updateFilter } = usePropertyStore();
+
+    const handleTabSelect = (index) => {
+        const purposeMapping = {
+            0: 'rent',    // Rent
+            1: 'buy',     // Buy  
+            2: 'sell'     // Sell (though sell might not be used for property search)
+        };
+        
+        const purpose = purposeMapping[index];
+        if (purpose && purpose !== 'sell') { // Don't set purpose for sell tab
+            updateFilter('purpose', purpose);
+        } else if (purpose === 'sell') {
+            // Clear purpose for sell tab or set it to buy (since sell is more for listing)
+            updateFilter('purpose', '');
+        }
+    };
+
     return (
         <>
-             <Tabs>
+             <Tabs onSelect={handleTabSelect}>
                 <TabList className={'common-tab nav nav-pills'}>
                     {
                         filterTabs.map((filterTab, index) => (
@@ -18,7 +36,10 @@ const TabFilter = (props) => {
                 {
                     filterTabs.map((filterTab, index) => (
                         <TabPanel key={index}>
-                            <Filter colClass={props.colClass} buttonText={filterTab.text}/>
+                            <SimplifiedFilter 
+                                colClass={props.colClass} 
+                                buttonText={`Search ${filterTab.text === 'Rent' ? 'Rentals' : filterTab.text === 'Buy' ? 'Properties' : 'Properties'}`}
+                            />
                         </TabPanel>
                     ))
                 }

@@ -60,37 +60,37 @@ export default Gallery;
 //     const images = [
 //       {
 //         image: "01",
-//         bigImage: "../../public/assets/images/thumbs/gallery1.png",
+//         bigImage: "/assets/images/thumbs/gallery1.png",
 //         category: "Web Design",
 //         title: "Design is a creative part",
 //       },
 //       {
 //         image: "02",
-//         bigImage: "../../public/assets/images/thumbs/gallery2.png",
+//         bigImage: "/assets/images/thumbs/gallery2.png",
 //         category: "Mobile App",
 //         title: "The service provide for designer",
 //       },
 //       {
 //         image: "03",
-//         bigImage: "../../public/assets/images/thumbs/gallery3.png",
+//         bigImage: "/assets/images/thumbs/gallery3.png",
 //         category: "Web Design",
 //         title: "Mobile App landing Design",
 //       },
 //       {
 //         image: "04",
-//         bigImage: "../../public/assets/images/thumbs/gallery4.png",
+//         bigImage: "/assets/images/thumbs/gallery4.png",
 //         category: "Mobile App",
 //         title: "Logo Design creativity",
 //       },
 //       {
 //         image: "05",
-//         bigImage: "../../public/assets/images/thumbs/gallery5.png",
+//         bigImage: "/assets/images/thumbs/gallery5.png",
 //         category: "Web Design",
 //         title: "T-shirt design is the part of design",
 //       },
 //       {
 //         image: "06",
-//         bigImage: "../../public/assets/images/thumbs/gallery6.png",
+//         bigImage: "/assets/images/thumbs/gallery6.png",
 //         category: "Logo Design",
 //         title: "Getting tickets to the big show",
 //       },

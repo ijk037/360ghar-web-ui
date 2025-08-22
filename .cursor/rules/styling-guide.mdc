@@ -14,6 +14,8 @@ alwaysApply: true
   - `partials/` - Page-specific styles
     - `home/`, `home-two/`, etc. - Styles for different homepage variations
     - `othersPage/` - Styles for other pages
+- `src/styles/` - Phase-specific styling additions
+  - `phase1-additions.scss` - New styles for recent feature additions
 
 ## CSS Assets
 - `public/assets/css/` - Compiled CSS files

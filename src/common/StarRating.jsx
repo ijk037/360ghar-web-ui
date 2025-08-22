@@ -8,7 +8,7 @@ const StarRating = () => {
     useEffect(() => {
         const randomIndex = Math.floor(Math.random() * 5) + 1;
         setUnabledIndex(randomIndex);
-        // console.log(Math.random());
+
     }, []);
 
     return (

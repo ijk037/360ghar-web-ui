@@ -6,14 +6,17 @@ alwaysApply: true
 # Folder Structure Guide
 
 ## Source Code Organization
-- `src/common/` - Shared components like footers used across multiple pages
-- `src/components/` - Reusable UI components and items
-- `src/contextApi/` - State management using React Context API
+- `src/common/` - Shared components like footers, location inputs, and filters used across multiple pages
+- `src/components/` - Reusable UI components, advanced filters, and property management components
+- `src/contextApi/` - State management using React Context API for UI state
+- `src/store/` - Zustand stores for data state management (location, properties)
+- `src/services/` - API services and external service integrations
 - `src/data/` - JSON/JS data files organized by page type
   - `CommonData/` - Shared data used across multiple pages
   - `HomeOneData/`, `HomeTwoData/`, etc. - Data for specific homepage variations
   - `OthersPageData/` - Data for auxiliary pages
 - `src/pages/` - Page components for different routes
+- `src/styles/` - Additional SCSS files for phase-specific styling
 
 ## Public Assets
 - `public/assets/images/` - Image files organized by type

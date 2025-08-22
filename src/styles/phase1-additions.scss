@@ -1,0 +1,106 @@
+// Phase 1 Additions CSS
+// Loading placeholders and location search styles
+
+.loading-placeholder {
+  background: linear-gradient(90deg, #f0f0f0 25%, transparent 37%, #f0f0f0 63%);
+  background-size: 400% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: 8px;
+  height: 200px;
+  width: 100%;
+}
+
+.loading-placeholder-text {
+  background: linear-gradient(90deg, #f0f0f0 25%, transparent 37%, #f0f0f0 63%);
+  background-size: 400% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: 4px;
+  height: 20px;
+  width: 100%;
+  margin-bottom: 10px;
+  
+  &.short {
+    width: 60%;
+  }
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.property-item.loading {
+  .property-item__thumb {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 8px 8px 0 0;
+  }
+  
+  .property-item__content {
+    padding: 20px;
+    background: white;
+    border-radius: 0 0 8px 8px;
+  }
+}
+
+.location-search-input {
+  .form-label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+    font-size: 14px;
+  }
+  
+  .location-autocomplete {
+    .css-13cymwt-control {
+      border: 1px solid #e0e6ed !important;
+      border-radius: 8px !important;
+      min-height: 48px !important;
+      box-shadow: none !important;
+      
+      &:hover {
+        border-color: #487d3a !important;
+      }
+    }
+    
+    .css-hlgwow {
+      color: #6b7385;
+    }
+  }
+  
+  .current-location {
+    i {
+      color: #487d3a;
+      margin-right: 4px;
+    }
+  }
+}
+
+.location-status {
+  .text-success {
+    color: #28a745 !important;
+    
+    i {
+      margin-right: 6px;
+    }
+  }
+  
+  .text-warning {
+    color: #ffc107 !important;
+    
+    i {
+      margin-right: 6px;
+    }
+  }
+  
+  .text-muted {
+    i {
+      margin-right: 6px;
+    }
+  }
+}

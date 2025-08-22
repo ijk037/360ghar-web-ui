@@ -7,20 +7,20 @@ import MobileMenuProvider from './contextApi/MobileMenuContext.jsx'
 import OffCanvasProvider from './contextApi/OffCanvasContext.jsx'
 import ScrollHideProvider from './contextApi/ScrollHideContext.jsx'
 import BlogDataProvider from './contextApi/BlogDataContext.jsx'
-import PropertyFilterProvider from './contextApi/PropertyFilterContext.jsx'
+import { HelmetProvider } from 'react-helmet-async'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <PropertyFilterProvider>
-    <BlogDataProvider>
-        <ScrollHideProvider>
-          <OffCanvasProvider>
-            <MobileMenuProvider>
-              <React.StrictMode>
-                <App />
-              </React.StrictMode>
-            </MobileMenuProvider>
-          </OffCanvasProvider>
-        </ScrollHideProvider>
-    </BlogDataProvider>
-  </PropertyFilterProvider>
+  <BlogDataProvider>
+    <HelmetProvider>
+      <ScrollHideProvider>
+        <OffCanvasProvider>
+          <MobileMenuProvider>
+            <React.StrictMode>
+              <App />
+            </React.StrictMode>
+          </MobileMenuProvider>
+        </OffCanvasProvider>
+      </ScrollHideProvider>
+    </HelmetProvider>
+  </BlogDataProvider>
 )

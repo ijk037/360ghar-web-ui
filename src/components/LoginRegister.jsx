@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { ToastContainer, toast } from 'react-toastify';
 
-import LoginRegisterThumb from '../../public/assets/images/thumbs/login-img.avif';
+import LoginRegisterThumb from '/assets/images/thumbs/login-img.avif';
 
 const LoginRegister = ({titleText, firstNameCol, showFirstName, lastNameCol, showLastName, passwordCol, showConfirm, btnText, showForgotRemember, showTermCondition, haveAccountText, haveAccountLink, haveAccountLinkText}) => {
 
@@ -59,7 +59,7 @@ const LoginRegister = ({titleText, firstNameCol, showFirstName, lastNameCol, sho
           toast.success("Congratulations! You Have Submitted Successfully.", {
             theme: "colored",
           });
-          console.log('You Logged in SUccessfully');
+
         },
     });
 
@@ -102,7 +102,7 @@ const LoginRegister = ({titleText, firstNameCol, showFirstName, lastNameCol, sho
                                     <div className="loginRegister-content">
                                         <form onSubmit={formik.handleSubmit} method="POST">
                                             <h3 className="loginRegister__title text-poppins">{titleText} to 360Ghar</h3>
-                                            <p className="loginRegister__desc mb-4 font-18">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum, corrupti.</p>
+                                            <p className="loginRegister__desc mb-4 font-18">Join 360Ghar to discover your dream property and connect with trusted real estate professionals.</p>
 
                                             <div className="row gy-lg-4 gy-3">
                                                 {

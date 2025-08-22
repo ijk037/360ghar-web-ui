@@ -25,7 +25,7 @@ const HomeSix = () => {
                     headerMenusClass=""
                     btnClass="btn btn-outline-light d-lg-block d-none"
                     btnLink="/property-details"
-                    btnText="Sell Property"
+                    btnText="List Property"
                     spanClass="icon-right text-gradient" 
                     showHeaderBtn={true}
                     showOffCanvasBtn={true}

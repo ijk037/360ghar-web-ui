@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { userService } from '../services/userService';
-import { propertyService } from '../services/propertyService';
+// Placeholder: admin APIs not implemented yet
 
 const useAdminStore = create((set) => ({
   // State
@@ -11,57 +11,30 @@ const useAdminStore = create((set) => ({
   
   // Actions
   getAllUsers: async (params = {}) => {
-    try {
-      set({ isLoading: true, error: null });
-      const data = await userService.getAllUsers(params);
-      set({
-        users: data,
-        isLoading: false,
-      });
-      return data;
-    } catch (error) {
-      set({
-        isLoading: false,
-        error: error.response?.data?.detail || 'Failed to fetch users'
-      });
-      return [];
+    set({ isLoading: false, error: 'Admin user management is yet to be implemented' });
+    // Show notification
+    if (typeof window !== 'undefined' && window.alert) {
+      window.alert('Admin user management is yet to be implemented');
     }
+    return [];
   },
   
   getAllProperties: async (params = {}) => {
-    try {
-      set({ isLoading: true, error: null });
-      const data = await propertyService.getAllPropertiesAdmin(params);
-      set({
-        allProperties: data,
-        isLoading: false,
-      });
-      return data;
-    } catch (error) {
-      set({
-        isLoading: false,
-        error: error.response?.data?.detail || 'Failed to fetch all properties'
-      });
-      return [];
+    set({ isLoading: false, error: 'Admin property management is yet to be implemented' });
+    // Show notification
+    if (typeof window !== 'undefined' && window.alert) {
+      window.alert('Admin property management is yet to be implemented');
     }
+    return [];
   },
   
   createUser: async (userData) => {
-    try {
-      set({ isLoading: true, error: null });
-      const newUser = await userService.createUser(userData);
-      set(state => ({
-        users: [...state.users, newUser],
-        isLoading: false,
-      }));
-      return newUser;
-    } catch (error) {
-      set({
-        isLoading: false,
-        error: error.response?.data?.detail || 'Failed to create user'
-      });
-      return null;
+    set({ isLoading: false, error: 'Create user feature is yet to be implemented' });
+    // Show notification
+    if (typeof window !== 'undefined' && window.alert) {
+      window.alert('Create user feature is yet to be implemented');
     }
+    return null;
   },
   
   updateUser: async (id, userData) => {
@@ -85,26 +58,15 @@ const useAdminStore = create((set) => ({
   },
   
   verifyProperty: async (id) => {
-    try {
-      set({ isLoading: true, error: null });
-      const verifiedProperty = await propertyService.verifyProperty(id);
-      set(state => ({
-        allProperties: state.allProperties.map(prop => 
-          prop.id === id ? verifiedProperty : prop
-        ),
-        isLoading: false,
-      }));
-      return verifiedProperty;
-    } catch (error) {
-      set({
-        isLoading: false,
-        error: error.response?.data?.detail || 'Failed to verify property'
-      });
-      return null;
+    set({ isLoading: false, error: 'Property verification is yet to be implemented' });
+    // Show notification
+    if (typeof window !== 'undefined' && window.alert) {
+      window.alert('Property verification is yet to be implemented');
     }
+    return null;
   },
   
   clearError: () => set({ error: null }),
 }));
 
-export default useAdminStore; 
+export default useAdminStore;

@@ -123,7 +123,7 @@ export const navMenus = [
       submenus: [
         {
             text: "Property",
-            path: "/property",
+            path: "/properties",
         },
         {
             text: "Property Sidebar",
@@ -201,23 +201,23 @@ export const footerInfos = [
 export const footerServiceLinks = [ 
     {
         text: 'Reliable Rentals',
-        link: '/property'
+        link: '/properties'
     },
     {
         text: 'Golden Key Properties',
-        link: '/property'
+        link: '/properties'
     },
     {
         text: 'Swift Home Sales',
-        link: '/property'
+        link: '/properties'
     },
     {
         text: 'Elite Realty Services',
-        link: '/property'
+        link: '/properties'
     },
     {
         text: 'Dream Property Solutions',
-        link: '/property'
+        link: '/properties'
     },
 ]
 
@@ -232,7 +232,7 @@ export const footerUsefulLinks = [
     },
     {
         text: 'Property',
-        link: '/property'
+        link: '/properties'
     },
     {
         text: 'About Us',
@@ -244,12 +244,12 @@ export const footerUsefulLinks = [
     },
 ]
 
-import FooterGallery1 from '../../../public/assets/images/thumbs/gallery1.png'; 
-import FooterGallery2 from '../../../public/assets/images/thumbs/gallery2.png'; 
-import FooterGallery3 from '../../../public/assets/images/thumbs/gallery3.png'; 
-import FooterGallery4 from '../../../public/assets/images/thumbs/gallery4.png'; 
-import FooterGallery5 from '../../../public/assets/images/thumbs/gallery5.png'; 
-import FooterGallery6 from '../../../public/assets/images/thumbs/gallery6.png'; 
+import FooterGallery1 from '/assets/images/thumbs/gallery1.png';
+import FooterGallery2 from '/assets/images/thumbs/gallery2.png';
+import FooterGallery3 from '/assets/images/thumbs/gallery3.png';
+import FooterGallery4 from '/assets/images/thumbs/gallery4.png';
+import FooterGallery5 from '/assets/images/thumbs/gallery5.png';
+import FooterGallery6 from '/assets/images/thumbs/gallery6.png'; 
 export const footerGallery = [ 
     {
         img: FooterGallery1,

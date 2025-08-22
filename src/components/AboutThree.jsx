@@ -4,7 +4,7 @@ import Button from '../common/Button';
 import { aboutCheckLists } from '../data/HomeThreeData/HomeThreeData';
 import CountUp from 'react-countup';
 
-import AboutThreeThumb from '../../public/assets/images/thumbs/about-three-img.png';
+import AboutThreeThumb from '/assets/images/thumbs/about-three-img.png';
 
 const AboutThree = () => {
     return (

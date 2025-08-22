@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create axios instance with base URL
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api/v1',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -24,12 +24,20 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Handle 401 Unauthorized errors
+    // Handle 401 Unauthorized errors only for authenticated endpoints
     if (error.response && error.response.status === 401) {
-      // Clear local storage and redirect to login
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '/login';
+      // Check if this is a public endpoint (property viewing)
+      const publicEndpoints = ['/properties?', '/properties/', '/properties/recommendations'];
+      const isPublicEndpoint = publicEndpoints.some(endpoint => 
+        error.config?.url?.includes(endpoint)
+      );
+      
+      // Only redirect to login if it's not a public endpoint and user was actually logged in
+      if (!isPublicEndpoint && localStorage.getItem('token')) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }

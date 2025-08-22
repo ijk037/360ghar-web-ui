@@ -1,7 +1,7 @@
 import React from 'react'; 
 
 // Banner Three
-import BannerThreeThumb from '../../../public/assets/images/thumbs/banner-three.png'
+import BannerThreeThumb from '/assets/images/thumbs/banner-three.png'
 export const bannerThreeContent = {
     subtitle: '360 WALKTHROUGH',
     title: 'Your trusted real estate',
@@ -33,54 +33,54 @@ export const aboutCheckLists = [
 
 
 // Property Type Three
-import propertyThreeTypeIcon1 from '../../../public/assets/images/icons/ppty-type-icon1.svg'
-import propertyThreeTypeIcon2 from '../../../public/assets/images/icons/ppty-type-icon2.svg'
-import propertyThreeTypeIcon3 from '../../../public/assets/images/icons/ppty-type-icon3.svg'
-import propertyThreeTypeIcon4 from '../../../public/assets/images/icons/ppty-type-icon4.svg'
-import propertyThreeTypeIcon5 from '../../../public/assets/images/icons/ppty-type-icon5.svg'
-import propertyThreeTypeIcon6 from '../../../public/assets/images/icons/ppty-type-icon6.svg'
+import propertyThreeTypeIcon1 from '/assets/images/icons/ppty-type-icon1.svg'
+import propertyThreeTypeIcon2 from '/assets/images/icons/ppty-type-icon2.svg'
+import propertyThreeTypeIcon3 from '/assets/images/icons/ppty-type-icon3.svg'
+import propertyThreeTypeIcon4 from '/assets/images/icons/ppty-type-icon4.svg'
+import propertyThreeTypeIcon5 from '/assets/images/icons/ppty-type-icon5.svg'
+import propertyThreeTypeIcon6 from '/assets/images/icons/ppty-type-icon6.svg'
 export const propertyThreeTypes = [ 
     {
         icon: propertyThreeTypeIcon1,
         title: 'Prestige Management',
-        desc: 'Real estate is a lucrative ind involves the buying selling and reproperties. It encompa',
+        desc: 'Professional property management services ensuring maximum returns on your real estate investments with expert tenant screening and maintenance.',
         btnText: 'MORE ABOUT ',
-        btnLink: '/property'
+        btnLink: '/properties'
     },
     {
         icon: propertyThreeTypeIcon2,
         title: 'Prime Investments',
-        desc: 'Real estate is a lucrative ind involves the buying selling and reproperties. It encompa',
+        desc: 'Professional property management services ensuring maximum returns on your real estate investments with expert tenant screening and maintenance.',
         btnText: 'MORE ABOUT ',
-        btnLink: '/property'
+        btnLink: '/properties'
     },
     {
         icon: propertyThreeTypeIcon3,
         title: 'Smart House Agency',
-        desc: 'Real estate is a lucrative ind involves the buying selling and reproperties. It encompa',
+        desc: 'Professional property management services ensuring maximum returns on your real estate investments with expert tenant screening and maintenance.',
         btnText: 'MORE ABOUT ',
-        btnLink: '/property'
+        btnLink: '/properties'
     },
     {
         icon: propertyThreeTypeIcon4,
         title: 'Reliable Rentals',
-        desc: 'Real estate is a lucrative ind involves the buying selling and reproperties. It encompa',
+        desc: 'Professional property management services ensuring maximum returns on your real estate investments with expert tenant screening and maintenance.',
         btnText: 'MORE ABOUT ',
-        btnLink: '/property'
+        btnLink: '/properties'
     },
     {
         icon: propertyThreeTypeIcon5,
         title: 'Golden Key Properties',
-        desc: 'Real estate is a lucrative ind involves the buying selling and reproperties. It encompa',
+        desc: 'Professional property management services ensuring maximum returns on your real estate investments with expert tenant screening and maintenance.',
         btnText: 'MORE ABOUT ',
-        btnLink: '/property'
+        btnLink: '/properties'
     },
     {
         icon: propertyThreeTypeIcon6,
         title: 'Swift Home Sales',
-        desc: 'Real estate is a lucrative ind involves the buying selling and reproperties. It encompa',
+        desc: 'Professional property management services ensuring maximum returns on your real estate investments with expert tenant screening and maintenance.',
         btnText: 'MORE ABOUT ',
-        btnLink: '/property'
+        btnLink: '/properties'
     },
 ]
 
@@ -94,7 +94,7 @@ export const propertyTwoTabs = [
         text: 'Apartments'
     },
     {
-        text: 'Bed'
+        text: 'Bedrooms'
     },
     {
         text: 'Smart House'
@@ -106,59 +106,59 @@ export const propertyTwoTabs = [
 
 
 // Message Three Data
-import messageThreeIcon from '../../../public/assets/images/icons/customer-service.svg'; 
+import messageThreeIcon from '/assets/images/icons/customer-service.svg'; 
 export const messageThreeContents = {
     icon: messageThreeIcon,
     text: 'Need help?',
-    number: '(307) 555-0133',
-    desc: 'Real estate is a lucrative ind involves the selling and a reproperties. It encompasses residential'
+    number: '8178340031',
+    desc: 'Our expert real estate consultants are available 24/7 to assist you with property search, documentation, and all your real estate needs across Gurgaon.'
 }
 
 
 // Testimonial Three Data
-import userThumb1 from '../../../public/assets/images/thumbs/user-img1.png'; 
-import userThumb2 from '../../../public/assets/images/thumbs/user-img2.png'; 
+import userThumb1 from '/assets/images/thumbs/user-img1.png';
+import userThumb2 from '/assets/images/thumbs/user-img2.png'; 
 export const testimonialThreeContents = [
     {
         image: userThumb1,
         name: 'Robert Fox',
         designation: 'Prime Investments',
-        desc: 'Real estate is a lucrativ ind involves the buying selling and Real estate a is a lucrative indinvolves buyingrep pertiesen cos residentialreproperties. It encompasses residential Real estate a is a lucrative',
+        desc: '360Ghar transformed my property investment journey. The 360° virtual tours saved me countless hours and helped me make confident investment decisions in Gurgaon.',
     },
     {
         image: userThumb2,
-        name: 'John Doe',
-        designation: 'Money Investments',
-        desc: 'Real estate is a lucrativ ind involves the buying selling and Real estate a is a lucrative indinvolves buyingrep pertiesen cos residentialreproperties. It encompasses residential Real estate a is a lucrative',
+        name: 'Priya Sharma',
+        designation: 'Investment Consultant',
+        desc: 'Real estate is a lucrative industry that involves the buying, selling, and management of residential and commercial properties. It encompasses various sectors including residential, commercial, and investment properties.',
     },
 ]
 
 
 // Counter Three Data
-import counterThreeIcon1 from '../../../public/assets/images/icons/counter-icon1.svg'; 
-import counterThreeIcon2 from '../../../public/assets/images/icons/counter-icon2.svg'; 
-import counterThreeIcon3 from '../../../public/assets/images/icons/counter-icon3.svg'; 
-import counterThreeIcon4 from '../../../public/assets/images/icons/counter-icon4.svg'; 
-export const counterThreeContents = [ 
+import counterThreeIcon1 from '/assets/images/icons/counter-icon1.svg';
+import counterThreeIcon2 from '/assets/images/icons/counter-icon2.svg';
+import counterThreeIcon3 from '/assets/images/icons/counter-icon3.svg';
+import counterThreeIcon4 from '/assets/images/icons/counter-icon4.svg'; 
+export const counterThreeContents = [
     {
         icon: counterThreeIcon1,
-        number: '800+',
-        text: 'Happy Client'
+        number: '3000+',
+        text: 'Happy Customers'
     },
     {
         icon: counterThreeIcon2,
-        number: '440+',
-        text: 'Project done'
+        number: '5000+',
+        text: 'Properties Listed'
     },
     {
         icon: counterThreeIcon3,
-        number: '500k',
-        text: 'Employees'
+        number: '25+',
+        text: 'Years Experience'
     },
     {
         icon: counterThreeIcon4,
-        number: '80+',
-        text: 'Award winning'
+        number: '50+',
+        text: 'Expert Agents'
     }
 ]
 
@@ -168,27 +168,27 @@ export const faqs = [
     {
         id: 1,
         btnText: 'Your satisfaction is our top priority?',
-        bodyText: "Lorem Ipsum is simply dummy text the printing and typese Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+        bodyText: "At 360Ghar, customer satisfaction is our highest priority. We work closely with you to understand your requirements and provide personalized property solutions that match your lifestyle and budget."
     },
     {
         id: 2,
-        btnText: 'How do I know if my company?',
-        bodyText: "Lorem Ipsum is simply dummy text the printing and typese Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+        btnText: 'How do I schedule a 360° virtual tour?',
+        bodyText: "At 360Ghar, customer satisfaction is our highest priority. We work closely with you to understand your requirements and provide personalized property solutions that match your lifestyle and budget."
     },
     {
         id: 3,
-        btnText: 'What kind of services do Real estate?',
-        bodyText: "Lorem Ipsum is simply dummy text the printing and typese Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+        btnText: 'What services does 360Ghar offer?',
+        bodyText: "At 360Ghar, customer satisfaction is our highest priority. We work closely with you to understand your requirements and provide personalized property solutions that match your lifestyle and budget."
     },
     {
         id: 4,
-        btnText: 'How long does a typical Real estate?',
-        bodyText: "Lorem Ipsum is simply dummy text the printing and typese Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+        btnText: 'How long does property registration take?',
+        bodyText: "At 360Ghar, customer satisfaction is our highest priority. We work closely with you to understand your requirements and provide personalized property solutions that match your lifestyle and budget."
     },
     {
         id: 5,
-        btnText: 'How much does business Real estate?',
-        bodyText: "Lorem Ipsum is simply dummy text the printing and typese Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+        btnText: 'Are there any hidden charges in property transactions?',
+        bodyText: "At 360Ghar, customer satisfaction is our highest priority. We work closely with you to understand your requirements and provide personalized property solutions that match your lifestyle and budget."
     }
 ]
 

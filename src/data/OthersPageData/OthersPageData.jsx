@@ -79,19 +79,19 @@ export const priceRanges = [
 ]
 export const bedBaths = [
     {
-        text: 'Single'
+        text: '1 Bedroom'
     },
     {
-        text: 'Double'
+        text: '2 Bedrooms'
     },
     {
-        text: 'Up To 3'
+        text: '3 Bedrooms'
     },
     {
-        text: 'Up To 5'
+        text: '4 Bedrooms'
     },
     {
-        text: 'Supermarket'
+        text: '5+ Bedrooms'
     },
 ]
 
@@ -99,10 +99,10 @@ export const bedBaths = [
 
 
 // ============================== Property Details Page Data Start ==============================
-import propertyDetailsThumb1 from '../../../public/assets/images/thumbs/property-details-1.png';
-import propertyDetailsThumb2 from '../../../public/assets/images/thumbs/property-details-2.png';
-import propertyDetailsThumb3 from '../../../public/assets/images/thumbs/property-details-3.png';
-import propertyDetailsThumb4 from '../../../public/assets/images/thumbs/property-details-4.png';
+import propertyDetailsThumb1 from '/assets/images/thumbs/property-details-1.png';
+import propertyDetailsThumb2 from '/assets/images/thumbs/property-details-2.png';
+import propertyDetailsThumb3 from '/assets/images/thumbs/property-details-3.png';
+import propertyDetailsThumb4 from '/assets/images/thumbs/property-details-4.png';
 export const propertyDetailsThumbs = [
     {
         thumb: propertyDetailsThumb1
@@ -118,12 +118,12 @@ export const propertyDetailsThumbs = [
     },
 ]
 
-import amenitiesIcon1 from '../../../public/assets/images/icons/amenities1.svg';
-import amenitiesIcon2 from '../../../public/assets/images/icons/amenities2.svg';
-import amenitiesIcon3 from '../../../public/assets/images/icons/amenities3.svg';
-import amenitiesIcon4 from '../../../public/assets/images/icons/amenities4.svg';
-import amenitiesIcon5 from '../../../public/assets/images/icons/amenities5.svg';
-import amenitiesIcon6 from '../../../public/assets/images/icons/amenities6.svg';
+import amenitiesIcon1 from '/assets/images/icons/amenities1.svg';
+import amenitiesIcon2 from '/assets/images/icons/amenities2.svg';
+import amenitiesIcon3 from '/assets/images/icons/amenities3.svg';
+import amenitiesIcon4 from '/assets/images/icons/amenities4.svg';
+import amenitiesIcon5 from '/assets/images/icons/amenities5.svg';
+import amenitiesIcon6 from '/assets/images/icons/amenities6.svg';
 export const propertyDetailsAmenities = [ 
     {
         icon: amenitiesIcon1,
@@ -187,11 +187,11 @@ export const featureLists = [
 export const addressContents = [
     {
         text: 'Address',
-        title: 'Mirpur 1,Chineese'
+        title: 'Gurugram, Haryana, India'
     },
     {
-        text: 'Code',
-        title: '2365'
+        text: 'Pin Code',
+        title: '122001'
     }
 ]
 
@@ -219,41 +219,41 @@ export const categoryLists = [
     },
 ]
 
-import SidebarPropertyImg1 from '../../../public/assets/images/thumbs/properties-1.png';
-import SidebarPropertyImg2 from '../../../public/assets/images/thumbs/properties-2.png';
-import SidebarPropertyImg3 from '../../../public/assets/images/thumbs/properties-3.png';
-import SidebarPropertyImg4 from '../../../public/assets/images/thumbs/properties-4.png';
-import SidebarPropertyImg5 from '../../../public/assets/images/thumbs/properties-5.png';
-import SidebarPropertyImg6 from '../../../public/assets/images/thumbs/properties-6.png';
+import SidebarPropertyImg1 from '/assets/images/thumbs/properties-1.png';
+import SidebarPropertyImg2 from '/assets/images/thumbs/properties-2.png';
+import SidebarPropertyImg3 from '/assets/images/thumbs/properties-3.png';
+import SidebarPropertyImg4 from '/assets/images/thumbs/properties-4.png';
+import SidebarPropertyImg5 from '/assets/images/thumbs/properties-5.png';
+import SidebarPropertyImg6 from '/assets/images/thumbs/properties-6.png';
 
 export const sidebarProperties = [
     {
-        link: '/property',
+        link: '/properties',
         image: SidebarPropertyImg1,
         text: 'Relax House'
     },
     {
-        link: '/property',
+        link: '/properties',
         image: SidebarPropertyImg2,
         text: 'Hunting Adventure'
     },
     {
-        link: '/property',
+        link: '/properties',
         image: SidebarPropertyImg3,
-        text: 'Homeowner ship'
+        text: 'Homeownership'
     },
     {
-        link: '/property',
+        link: '/properties',
         image: SidebarPropertyImg4,
         text: 'Real Dreams'
     },
     {
-        link: '/property',
+        link: '/properties',
         image: SidebarPropertyImg5,
         text: 'New Doors'
     },
     {
-        link: '/property',
+        link: '/properties',
         image: SidebarPropertyImg6,
         text: 'The Heart'
     },
@@ -745,9 +745,9 @@ export const mapLocations = [
 
 
 // ============================== Team Section Data Start ==============================
-import teamImg1 from '../../../public/assets/images/thumbs/team1.png';
-import teamImg2 from '../../../public/assets/images/thumbs/team2.png';
-import teamImg3 from '../../../public/assets/images/thumbs/team3.png';
+import teamImg1 from '/assets/images/thumbs/team1.png';
+import teamImg2 from '/assets/images/thumbs/team2.png';
+import teamImg3 from '/assets/images/thumbs/team3.png';
 
 export const teams = [
     {
@@ -775,10 +775,10 @@ export const teams = [
 
 
 // ====================== Faq Page Counter Four Data Start ====================
-import counterFourIcon1 from '../../../public/assets/images/icons/counter-four1.svg';
-import counterFourIcon2 from '../../../public/assets/images/icons/counter-four2.svg';
-import counterFourIcon3 from '../../../public/assets/images/icons/counter-four3.svg';
-import counterFourIcon4 from '../../../public/assets/images/icons/counter-four4.svg';
+import counterFourIcon1 from '/assets/images/icons/counter-four1.svg';
+import counterFourIcon2 from '/assets/images/icons/counter-four2.svg';
+import counterFourIcon3 from '/assets/images/icons/counter-four3.svg';
+import counterFourIcon4 from '/assets/images/icons/counter-four4.svg';
 
 export const counterFourContents = [
     {
@@ -806,8 +806,8 @@ export const counterFourContents = [
 
 
 // ========================= Checkout Page Data Start =========================
-import paymentMethodImg1 from '../../../public/assets/images/thumbs/paypal.png';
-import paymentMethodImg2 from '../../../public/assets/images/thumbs/visa.png';
+import paymentMethodImg1 from '/assets/images/thumbs/paypal.png';
+import paymentMethodImg2 from '/assets/images/thumbs/visa.png';
 
 export const paymentMethods = [
     {
@@ -823,63 +823,63 @@ export const paymentMethods = [
 // Bill Lists
 export const billingLists = [
     {
-        text: '3 Rooms Manhattan × 2',
-        amount: '321.95'
+        text: '3BHK Luxury Apartment × 2',
+        amount: '₹85,000'
     },
     {
-        text: 'OE Replica Wheels × 2',
-        amount: ' $185.00 '
+        text: 'Property Documentation × 2',
+        amount: ' ₹2,500'
     },
     {
-        text: 'Wheel Bearing Retainer × 2',
-        amount: ' $130.00'
+        text: 'Legal Consultation × 2',
+        amount: ' ₹3,000'
     },
     {
-        text: 'Shipping and Handing',
-        amount: ' $15.00'
+        text: 'Registration Fees',
+        amount: ' ₹5,000'
     },
     {
-        text: 'Vat',
-        amount: ' $20.00'
+        text: 'GST (18%)',
+        amount: ' ₹15,300'
     }
 ]
 // ========================= Checkout Page Data End =========================
 
 
 // ========================= Cart Page Data Start =========================
-import cartThumb1 from '../../../public/assets/images/thumbs/property-1.png';
-import cartThumb2 from '../../../public/assets/images/thumbs/property-2.png';
-import cartThumb3 from '../../../public/assets/images/thumbs/property-3.png';
-import cartThumb4 from '../../../public/assets/images/thumbs/property-4.png';
+import cartThumb1 from '/assets/images/thumbs/property-1.png';
+import cartThumb2 from '/assets/images/thumbs/property-2.png';
+import cartThumb3 from '/assets/images/thumbs/property-3.png';
+import cartThumb4 from '/assets/images/thumbs/property-4.png';
 
 export const cartItems = [
     {       
         thumb: cartThumb1,
-        title: '3 Rooms Manhattan',
+        title: '3BHK Luxury Apartment',
         locationIcon: <i className="fas fa-map-marker-alt"></i>,
-        location: '66 Broklyant, New York America',
+        location: 'Sector 56, Gurgaon, Haryana',
         price: '85.10'
     },
-    {       
+    {
         thumb: cartThumb2,
-        title: 'Wheel Bearing Retainer',
+        title: '2BHK Modern Flat',
         locationIcon: <i className="fas fa-map-marker-alt"></i>,
-        location: '66 Broklyant, New York America',
-        price: '50.50'
+        location: 'Sector 56, Gurgaon, Haryana',
+        price: '45,000'
     },
-    {       
+    {
         thumb: cartThumb3,
-        title: 'Your journey home owner',
+        title: '4BHK Penthouse',
         locationIcon: <i className="fas fa-map-marker-alt"></i>,
-        location: '66 Broklyant, New York America',
-        price: '45.80'
+        location: 'Sector 56, Gurgaon, Haryana',
+        price: '1,20,000'
     },
     {       
         thumb: cartThumb4,
-        title: '3 Rooms Manhattan',
+        title: '3BHK Luxury Apartment',
         locationIcon: <i className="fas fa-map-marker-alt"></i>,
-        location: '66 Broklyant, New York America',
-        price: '90.20'
+        location: 'Sector 56, Gurgaon, Haryana',
+        price: '95,000'
     },
 ]
 // ========================= Cart Page Data End =========================
@@ -928,7 +928,7 @@ export const accountTabs = [
 export const accountProfileInfos = [ 
     {
         icon: <i className="fas fa-map-marker-alt"></i>,
-        text: '66 Broklyant, New York India'
+        text: 'Gurugram, Haryana, India'
     },
     {
         icon: <i className="fas fa-phone"></i>,
@@ -936,18 +936,18 @@ export const accountProfileInfos = [
     },
     {
         icon: <i className="fas fa-envelope"></i>,
-        text: 'example@gmail.com'
+        text: 'info@360ghar.com'
     }
 ]
 
 export const accountAddress = [ 
     {
-        title: 'Charging Address alter',
+        title: 'Billing Address',
         name: 'Rosalina D. William',
         accountAddressInfos: [
             {
                 title: 'location:',
-                text: '66 Broklyant, New York India'
+                text: 'Gurugram, Haryana, India'
             },
             {
                 title: 'Phone:',
@@ -955,17 +955,17 @@ export const accountAddress = [
             },
             {
                 title: 'Email:',
-                text: ' example@gmail.com'
+                text: ' info@360ghar.com'
             },
         ]
     },
     {
-        title: 'Transporting Address alter',
+        title: 'Shipping Address',
         name: 'Rosalina D. William',
         accountAddressInfos: [
             {
                 title: 'location:',
-                text: '66 Broklyant, New York India'
+                text: 'Gurugram, Haryana, India'
             },
             {
                 title: 'Phone:',
@@ -973,21 +973,21 @@ export const accountAddress = [
             },
             {
                 title: 'Email:',
-                text: ' example@gmail.com'
+                text: ' info@360ghar.com'
             },
         ]
     },
 ]
 
-import PropertyTableThumb1 from '../../../public/assets/images/thumbs/property-1.png';
-import PropertyTableThumb2 from '../../../public/assets/images/thumbs/property-2.png';
-import PropertyTableThumb3 from '../../../public/assets/images/thumbs/property-3.png';
-import PropertyTableThumb4 from '../../../public/assets/images/thumbs/property-4.png';
+import PropertyTableThumb1 from '/assets/images/thumbs/property-1.png';
+import PropertyTableThumb2 from '/assets/images/thumbs/property-2.png';
+import PropertyTableThumb3 from '/assets/images/thumbs/property-3.png';
+import PropertyTableThumb4 from '/assets/images/thumbs/property-4.png';
 
 export const propertyTables = [ 
     {
         thumb: PropertyTableThumb1,
-        title: '3 Rooms Manhattan',
+        title: '3BHK Luxury Apartment',
         location: ' 66 Broklyant, New York America ',
         locationIcon: <i className="fas fa-map-marker-alt"></i>,
         price: '$85.00',
@@ -1030,58 +1030,58 @@ export const propertyTables = [
 
 
 // ========================= Project Page Data End =========================
-import projectItemThumb1 from '../../../public/assets/images/thumbs/project-img1.png';
-import projectItemThumb2 from '../../../public/assets/images/thumbs/project-img2.png';
-import projectItemThumb3 from '../../../public/assets/images/thumbs/project-img3.png';
-import projectItemThumb4 from '../../../public/assets/images/thumbs/project-img4.png';
+import projectItemThumb1 from '/assets/images/thumbs/project-img1.png';
+import projectItemThumb2 from '/assets/images/thumbs/project-img2.png';
+import projectItemThumb3 from '/assets/images/thumbs/project-img3.png';
+import projectItemThumb4 from '/assets/images/thumbs/project-img4.png';
 export const projectItems = [
     {
         id: 1,
         thumb: projectItemThumb1,
         title: 'Turning Dreams into Addresses Home State',
-        desc: 'Aliquam eros justo, posuere loborti viverra laoreet matti ullamcorper posuere viverra .Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorper viverra laoreet Aliquam eros justo, posuere lobor mattis fmentum ullam. Aliquam eros justo, posuere loborti viverra laoreet matti ullamcorper posuere viverra .Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorr viverra laoreet Aliquam eros justo, posuere loborti viverra laoreet matti ullamcorper posuere viverra .Aliquam eros justo, posuebortis non, viverraAliquam eros justo, posuere loborti viverra laoreet matti ulamcorper posuere viverra .Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorpe',
+        desc: 'Explore premium residential and commercial properties in Gurgaon with our comprehensive real estate platform. From luxury apartments to office spaces, we provide detailed information and immersive 360° tours to help you make informed property decisions.',
     },
     {
         id: 2,
         thumb: projectItemThumb2,
         title: 'Your journey homeownership starts here too',
-        desc: 'Aliquam eros justo, posuere loborti viverra laoreet matti ullamcorper posuere viverra .Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorper viverra laoreet Aliquam eros justo, posuere lobor mattis fmentum ullam. Aliquam eros justo, posuere loborti viverra laoreet matti ullamcorper posuere viverra .Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorr viverra laoreet Aliquam eros justo, posuere loborti viverra laoreet matti ullamcorper posuere viverra .Aliquam eros justo, posuebortis non, viverraAliquam eros justo, posuere loborti viverra laoreet matti ulamcorper posuere viverra .Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorpe',
+        desc: 'Explore premium residential and commercial properties in Gurgaon with our comprehensive real estate platform. From luxury apartments to office spaces, we provide detailed information and immersive 360° tours to help you make informed property decisions.',
     },
     {
         id: 3,
         thumb: projectItemThumb3,
-        title: 'Opening Doors to Your Dreams For Living',
-        desc: 'Aliquam eros justo, posuere loborti viverra laoreet matti ullamcorper posuere viverra .Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorper viverra laoreet Aliquam eros justo, posuere lobor mattis fmentum ullam. Aliquam eros justo, posuere loborti viverra laoreet matti ullamcorper posuere viverra .Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorr viverra laoreet Aliquam eros justo, posuere loborti viverra laoreet matti ullamcorper posuere viverra .Aliquam eros justo, posuebortis non, viverraAliquam eros justo, posuere loborti viverra laoreet matti ulamcorper posuere viverra .Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorpe',
+        title: 'Luxury Apartments in Sector 62',
+        desc: 'Discover premium 2BHK and 3BHK apartments in Sector 62, Gurgaon with world-class amenities, 24/7 security, and proximity to major business hubs. Our 360° virtual tours let you explore every corner of these modern living spaces from the comfort of your home.',
     },
     {
         id: 4,
         thumb: projectItemThumb4,
-        title: 'Home is Where Your Story Begins',
-        desc: 'Aliquam eros justo, posuere loborti viverra laoreet matti ullamcorper posuere viverra .Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorper viverra laoreet Aliquam eros justo, posuere lobor mattis fmentum ullam. Aliquam eros justo, posuere loborti viverra laoreet matti ullamcorper posuere viverra .Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorr viverra laoreet Aliquam eros justo, posuere loborti viverra laoreet matti ullamcorper posuere viverra .Aliquam eros justo, posuebortis non, viverraAliquam eros justo, posuere loborti viverra laoreet matti ulamcorper posuere viverra .Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorpe',
+        title: 'Commercial Complex in Sector 18',
+        desc: 'Explore premium residential and commercial properties in Gurgaon with our comprehensive real estate platform. From luxury apartments to office spaces, we provide detailed information and immersive 360° tours to help you make informed property decisions.',
     },
     {
         id: 5,
         thumb: projectItemThumb1,
-        title: 'Building Trust, One Home at a Tim',
-        desc: 'Aliquam eros justo, posuere loborti viverra laoreet matti ullamcorper posuere viverra .Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorper viverra laoreet Aliquam eros justo, posuere lobor mattis fmentum ullam. Aliquam eros justo, posuere loborti viverra laoreet matti ullamcorper posuere viverra .Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorr viverra laoreet Aliquam eros justo, posuere loborti viverra laoreet matti ullamcorper posuere viverra .Aliquam eros justo, posuebortis non, viverraAliquam eros justo, posuere loborti viverra laoreet matti ulamcorper posuere viverra .Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorpe',
+        title: 'Building Trust, One Home at a Time',
+        desc: 'Explore premium residential and commercial properties in Gurgaon with our comprehensive real estate platform. From luxury apartments to office spaces, we provide detailed information and immersive 360° tours to help you make informed property decisions.',
     },
     {
         id: 6,
         thumb: projectItemThumb2,
-        title: 'Brick by Brick Your Dream Home Awaits',
-        desc: 'Aliquam eros justo, posuere loborti viverra laoreet matti ullamcorper posuere viverra .Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorper viverra laoreet Aliquam eros justo, posuere lobor mattis fmentum ullam. Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorr viverra laoreet Aliquam eros justo, posuere loborti viverra laoreet matti ullamcorper posuere viverra .Aliquam eros justo, posuebortis non, viverraAliquam eros justo, posuere loborti viverra laoreet matti ulamcorper posuere viverra .Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorpe',
+        title: 'Independent Houses in Sector 49',
+        desc: 'Explore premium residential and commercial properties in Gurgaon with our comprehensive real estate platform. From luxury apartments to office spaces, we provide detailed information and immersive 360° tours to help you make informed property decisions.',
     },
     {
         id: 7,
         thumb: projectItemThumb3,
-        title: 'Guiding You Home with Experienc',
-        desc: 'Aliquam eros justo, posuere loborti viverra laoreet matti ullamcorper posuere viverra .Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorper viverra laoreet Aliquam eros justo, posuere lobor mattis fmentum ullam. Aliquam eros justo, posuere loborti viverra laoreet matti ullamcorper posuere viverra .Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorr viverra laoreet Aliquam eros justo, posuere loborti viverra laoreet matti ullamcorper posuere viverra .Aliquam eros justo, posuebortis non, viverraAliquam eros justo, posuere loborti viverra laoreet matti ulamcorper posuere viverra .Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorpe',
+        title: 'Guiding You Home with Experience',
+        desc: 'Explore premium residential and commercial properties in Gurgaon with our comprehensive real estate platform. From luxury apartments to office spaces, we provide detailed information and immersive 360° tours to help you make informed property decisions.',
     },
     {
         id: 8,
         thumb: projectItemThumb4,
-        title: 'A Tradition of Trust in Real Estate',
-        desc: 'Aliquam eros justo, posuere loborti viverra laoreet matti ullamcorper posuere viverra .Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorper viverra laoreet Aliquam eros justo, posuere lobor mattis fmentum ullam. Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorr viverra laoreet Aliquam eros justo, posuere loborti viverra laoreet matti ullamcorper posuere viverra .Aliquam eros justo, posuebortis non, viverraAliquam eros justo, posuere loborti viverra laoreet matti ulamcorper posuere viverra .Aliquam eros justo, posuere lobortis viverra laoreet augue mattis fmentum ullamcorpe',
+        title: 'Villa Projects in DLF Phase 2',
+        desc: 'Explore premium residential and commercial properties in Gurgaon with our comprehensive real estate platform. From luxury apartments to office spaces, we provide detailed information and immersive 360° tours to help you make informed property decisions.',
     },
 ]
 
@@ -1090,34 +1090,34 @@ export const challengeLists = [
         text: 'Unleash the Potential of your Interiors'
     },
     {
-        text: 'Aliquam eros justo, pos uere loborre loborti'
+        text: 'Expert property valuation and market analysis'
     },
     {
-        text: 'Unleash the Potential of your Interiors'
+        text: 'Comprehensive legal documentation support'
     },
     {
-        text: 'MBA rotter of the litter university in united state'
+        text: 'Professional photography and 360° virtual tours'
     },
     {
-        text: 'BSC, Engineering of institute of trade and science'
+        text: 'End-to-end property transaction management'
     },
     {
-        text: 'MBA rotter of the litter university united state'
+        text: 'Dedicated customer support and after-sales service'
     },
 ]
 
 export const projectSidebarLists = [
     {
         text: 'Client',
-        title: 'Sandi leo rakiul'
+        title: 'Rajesh Properties Pvt Ltd'
     },
     {
-        text: '150000 USD',
-        title: 'consultation real estate'
+        text: '₹2,50,000',
+        title: 'Property Consultation'
     },
     {
         text: 'Category',
-        title: 'Planing, Real Estate'
+        title: 'Residential, Real Estate'
     }
 ]
 // ========================= Project Page Data End =========================

@@ -23,6 +23,10 @@ This is a React-based real estate website built with Vite.
 - Formik & Yup for form handling
 - EmailJS for contact forms
 - React Slick for carousels
+- Google Maps Places API for location services
+- Zustand for state management
+- Axios for API communication
+- Formspree for form submissions
 
 ## Main Entry Points
 - [index.html](mdc:index.html) - HTML entry point

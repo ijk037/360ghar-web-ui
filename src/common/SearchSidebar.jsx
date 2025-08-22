@@ -1,11 +1,27 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { bedBaths, priceRanges, propertyTypes, reasons, searchAmenities } from '../data/OthersPageData/OthersPageData';
 import CustomRangeSlider from './CustomRangeSlider';
-import { PropertyFilterContext } from '../contextApi/PropertyFilterContext';
+import usePropertyStore from '../store/propertyStore';
 
 const SearchSidebar = () => {
-
-    const{handleDataStatusChange, handleDataTypeChange, handleSortChange} = useContext(PropertyFilterContext); 
+    const { filters, updateFilter, applyFilters } = usePropertyStore();
+    
+    const handleFilterChange = async (key, value) => {
+        updateFilter(key, value);
+        // Auto-apply filters for sidebar (different UX from main filters)
+        await applyFilters();
+    };
+    
+    const handlePropertyTypeChange = (value, checked) => {
+        const currentTypes = [...(filters.property_type || [])];
+        if (checked) {
+            if (!currentTypes.includes(value)) {
+                handleFilterChange('property_type', [...currentTypes, value]);
+            }
+        } else {
+            handleFilterChange('property_type', currentTypes.filter(t => t !== value));
+        }
+    }; 
     
     return (
         <>
@@ -19,7 +35,14 @@ const SearchSidebar = () => {
                         propertyTypes.map((propertyType, propertyTypeIndex) => {
                             return (
                                 <div className="common-check" key={propertyTypeIndex}>
-                                    <input className="form-check-input" type="checkbox" id={propertyType.text} value={propertyType.value}  onChange={handleDataTypeChange}/>
+                                    <input 
+                                        className="form-check-input" 
+                                        type="checkbox" 
+                                        id={propertyType.text} 
+                                        value={propertyType.value}
+                                        checked={filters.property_type?.includes(propertyType.value) || false}
+                                        onChange={(e) => handlePropertyTypeChange(propertyType.value, e.target.checked)}
+                                    />
                                     <label className="form-check-label" htmlFor={propertyType.text}>
                                         {propertyType.text}
                                     </label>
@@ -35,7 +58,15 @@ const SearchSidebar = () => {
                         reasons.map((reason, reasonIndex) => {
                             return (
                                 <div className="common-radio" key={reasonIndex}>
-                                    <input className="form-check-input" type="radio" name="room" id={reason.text} value={reason.value} onChange={handleDataStatusChange}/>
+                                    <input 
+                                        className="form-check-input" 
+                                        type="radio" 
+                                        name="room" 
+                                        id={reason.text} 
+                                        value={reason.value}
+                                        checked={filters.purpose === reason.value}
+                                        onChange={(e) => handleFilterChange('purpose', e.target.value)}
+                                    />
                                     <label className="form-check-label" htmlFor={reason.text}>
                                         {reason.text}
                                     </label>
@@ -51,7 +82,23 @@ const SearchSidebar = () => {
                         priceRanges.map((priceRange, priceRangeIndex) => {
                             return (
                                 <div className="common-check" key={priceRangeIndex}>
-                                    <input className="form-check-input" type="checkbox" id={priceRange.text} value={priceRange.value} onChange={handleSortChange}/>
+                                    <input 
+                                        className="form-check-input" 
+                                        type="checkbox" 
+                                        id={priceRange.text} 
+                                        value={priceRange.value}
+                                        onChange={(e) => {
+                                            // Handle price range selection
+                                            if (e.target.checked) {
+                                                // Parse price range and set min/max
+                                                const range = priceRange.value.split('-');
+                                                if (range.length === 2) {
+                                                    handleFilterChange('price_min', parseInt(range[0]));
+                                                    handleFilterChange('price_max', parseInt(range[1]));
+                                                }
+                                            }
+                                        }}
+                                    />
                                     <label className="form-check-label" htmlFor={priceRange.text}>
                                         {priceRange.text}
                                     </label>
@@ -82,8 +129,12 @@ const SearchSidebar = () => {
 
                     <CustomRangeSlider
                         min={0}
-                        max={1000}
-                        onChange={({ min, max }) => {}}
+                        max={10000000}
+                        value={{ min: filters.price_min || 0, max: filters.price_max || 10000000 }}
+                        onChange={({ min, max }) => {
+                            handleFilterChange('price_min', min);
+                            handleFilterChange('price_max', max);
+                        }}
                     />
 
                 </div>

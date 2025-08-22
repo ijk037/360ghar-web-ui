@@ -1,8 +1,10 @@
-# React + Vite
+## Environment
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Create a `.env` file in the project root with:
 
-Currently, two official plugins are available:
+```env
+VITE_API_BASE_URL=http://localhost:8000/api/v1
+VITE_GOOGLE_PLACES_API_KEY=YOUR_GOOGLE_PLACES_API_KEY
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Ensure Google Places API is enabled in your Google Cloud project and the key has HTTP referrer restrictions for your dev domain (e.g., http://localhost:5173/*).

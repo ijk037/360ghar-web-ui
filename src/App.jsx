@@ -1,7 +1,8 @@
-import React from 'react'; 
+import React, { useEffect } from 'react'; 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
+import { useLocationStore } from './store/locationStore';
 
 import HomeOne from './pages/HomeOne';
 import HomeTwo from './pages/HomeTwo';
@@ -27,10 +28,17 @@ import ProjectDetails from './pages/ProjectDetails';
 import BlogClassic from './pages/BlogClassic';
 import BlogDetails from './pages/BlogDetails';
 import Contact from './pages/Contact';
+import PostProperty from './pages/PostProperty';
 import Register from './pages/Register';
 import NotFound from './pages/NotFound';
 
 function App() {
+  const fetchBrowserLocation = useLocationStore((state) => state.fetchBrowserLocation);
+
+  useEffect(() => {
+    fetchBrowserLocation();
+  }, [fetchBrowserLocation]);
+
   return (
     <>
       <BrowserRouter>
@@ -42,9 +50,9 @@ function App() {
           <Route path="/home-five" element={<HomeFive />} />
           <Route path="/home-six" element={<HomeSix />} />
           <Route path="/home-seven" element={<HomeSeven />} />
-          <Route path="/property" element={<Property />} />
+          <Route path="/properties" element={<Property />} />
           <Route path="/property-sidebar" element={<PropertySidebar />} />
-          <Route path="/property/:title" element={<PropertyDetails />} />
+          <Route path="/property/:id" element={<PropertyDetails />} />
           <Route path="/add-new-listing" element={<AddListing />} />
           <Route path="/map-location" element={<MapLocation />} />
           <Route path="/about-us" element={<AboutUs />} />
@@ -61,6 +69,7 @@ function App() {
           <Route path="/blog/:title" element={<BlogDetails />} />
 
           <Route path="/contact" element={<Contact />} />
+          <Route path="/post-property" element={<PostProperty />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

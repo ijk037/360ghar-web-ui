@@ -5,7 +5,7 @@ import SectionHeading from '../common/SectionHeading';
 import { testimonialThreeContents } from '../data/HomeThreeData/HomeThreeData';
 import TestimonialThreeItem from './items/TestimonialThreeItem';
 
-var settings = {
+const settings = {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,

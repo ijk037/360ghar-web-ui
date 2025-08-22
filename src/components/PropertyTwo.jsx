@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { propertyTwoTabs } from '../data/HomeThreeData/HomeThreeData';
 import SectionHeading from '../common/SectionHeading';
 import PropertyItem from './items/PropertyItem';
-import { properties } from '../data/HomeOneData/HomeOneData';
+import usePropertyStore from '../store/propertyStore';
 
 const PropertyTwo = () => {
+    const { 
+        recommendations, 
+        isLoading, 
+        error, 
+        fetchRecommendations 
+    } = usePropertyStore();
+
+    useEffect(() => {
+        fetchRecommendations(12); // Fetch more properties for tabs
+    }, [fetchRecommendations]);
+
+    const displayProperties = recommendations || [];
     return (
         <>
             <section className="property-two bg-gray-100 padding-t-60 padding-b-120">
@@ -37,120 +49,46 @@ const PropertyTwo = () => {
                         }
                     </TabList>
 
-                    <TabPanel>
-                        <div className="row gy-4 property-item-wrapper">
-                            {
-                                properties.slice(0, 6).map((property, index) => {
-                                    return (
+                    {propertyTwoTabs.map((tab, tabIndex) => (
+                        <TabPanel key={tabIndex}>
+                            <div className="row gy-4 property-item-wrapper">
+                                {isLoading ? (
+                                    Array.from({ length: 6 }).map((_, index) => (
                                         <div className="col-lg-4 col-sm-6" key={index}>
+                                            <div className="property-item loading">
+                                                <div className="property-item__thumb loading-placeholder"></div>
+                                                <div className="property-item__content">
+                                                    <div className="loading-placeholder-text"></div>
+                                                    <div className="loading-placeholder-text short"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : error ? (
+                                    <div className="col-12">
+                                        <div className="text-center py-4">
+                                            <p className="text-danger">Error loading properties: {error}</p>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    displayProperties.slice(0, 6).map((property, index) => (
+                                        <div className="col-lg-4 col-sm-6" key={property.id || index}>
                                             <PropertyItem 
                                                 itemClass="property-item style-two style-shaped"
                                                 btnClass="text-gradient fw-semibold"
                                                 property={property}
-                                                badgeText="Sales"
+                                                badgeText={property.status || "For Sale"}
                                                 badgeClass="property-item__badge"
                                                 iconsClass="text-gradient"
                                                 btnRenderBottom={true}
                                                 btnRenderRight={false}
                                             />
                                         </div> 
-                                    )
-                                })
-                            }
-                        </div>
-                    </TabPanel>
-
-                    <TabPanel>
-                        <div className="row gy-4 property-item-wrapper">
-                            {
-                                properties.slice(7, 13).map((property, index) => {
-                                    return (
-                                        <div className="col-lg-4 col-sm-6" key={index}>
-                                            <PropertyItem 
-                                                itemClass="property-item style-two style-shaped"
-                                                btnClass="text-gradient fw-semibold"
-                                                property={property}
-                                                badgeText="Sales"
-                                                badgeClass="property-item__badge"
-                                                iconsClass="text-gradient"
-                                                btnRenderBottom={true}
-                                                btnRenderRight={false}
-                                            />
-                                        </div> 
-                                    )
-                                })
-                            }
-                        </div>
-                    </TabPanel>
-                    
-                    <TabPanel>
-                        <div className="row gy-4 property-item-wrapper">
-                            {
-                                properties.slice(0, 6).map((property, index) => {
-                                    return (
-                                        <div className="col-lg-4 col-sm-6" key={index}>
-                                            <PropertyItem 
-                                                itemClass="property-item style-two style-shaped"
-                                                btnClass="text-gradient fw-semibold"
-                                                property={property}
-                                                badgeText="Sales"
-                                                badgeClass="property-item__badge"
-                                                iconsClass="text-gradient"
-                                                btnRenderBottom={true}
-                                                btnRenderRight={false}
-                                            />
-                                        </div> 
-                                    )
-                                })
-                            }
-                        </div>
-                    </TabPanel>
-
-                    <TabPanel>
-                        <div className="row gy-4 property-item-wrapper">
-                            {
-                                properties.slice(7, 13).map((property, index) => {
-                                    return (
-                                        <div className="col-lg-4 col-sm-6" key={index}>
-                                            <PropertyItem 
-                                                itemClass="property-item style-two style-shaped"
-                                                btnClass="text-gradient fw-semibold"
-                                                property={property}
-                                                badgeText="Sales"
-                                                badgeClass="property-item__badge"
-                                                iconsClass="text-gradient"
-                                                btnRenderBottom={true}
-                                                btnRenderRight={false}
-                                            />
-                                        </div> 
-                                    )
-                                })
-                            }
-                        </div>
-                    </TabPanel>
-
-                    <TabPanel>
-                        <div className="row gy-4 property-item-wrapper">
-                            {
-                                properties.slice(0, 6).map((property, index) => {
-                                    return (
-                                        <div className="col-lg-4 col-sm-6" key={index}>
-                                            <PropertyItem 
-                                                itemClass="property-item style-two style-shaped"
-                                                btnClass="text-gradient fw-semibold"
-                                                property={property}
-                                                badgeText="Sales"
-                                                badgeClass="property-item__badge"
-                                                iconsClass="text-gradient"
-                                                btnRenderBottom={true}
-                                                btnRenderRight={false}
-                                            />
-                                        </div> 
-                                    )
-                                })
-                            }
-                        </div>
-                    </TabPanel>
+                                    ))
+                                )}
+                            </div>
+                        </TabPanel>
+                    ))}
                 </Tabs>   
             </div>
         </section>

@@ -1,5 +1,5 @@
 import React from 'react';
-import BlogTestiThumb from '../../public/assets/images/thumbs/blog-testi.png';
+import BlogTestiThumb from '/assets/images/thumbs/blog-testi.png';
 
 const BlogTesti = () => {
     return (

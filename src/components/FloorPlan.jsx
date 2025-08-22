@@ -2,7 +2,7 @@ import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import SectionHeading from '../common/SectionHeading';
-import FloorImage from '../../public/assets/images/thumbs/floor-plan.png';
+import FloorImage from '/assets/images/thumbs/floor-plan.png';
 import { floorTabLists, floorTabPanels } from '../data/HomeTwoData/HomeTwoData';
 
 const FloorPlan = () => {
