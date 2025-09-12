@@ -6,6 +6,8 @@ import Cta from '../components/Cta';
 import PropertyDetailsSection from '../components/PropertyDetailsSection';
 import { useParams } from 'react-router-dom';
 import PageTitle from '../common/PageTitle';
+import SEO from '../common/SEO';
+import { siteMetadata, absoluteUrl } from '../seo/siteMetadata';
 import usePropertyStore from '../store/propertyStore';
 
 const PropertyDetails = () => {
@@ -31,6 +33,49 @@ const PropertyDetails = () => {
     
     return (
         <>
+        <SEO
+          title={currentProperty?.title ? `${currentProperty.title} | 360Ghar Property` : 'Property Details | 360Ghar'}
+          description={
+            currentProperty?.description ||
+            'View detailed property information, amenities, price, and immersive 360° visuals on 360Ghar.'
+          }
+          keywords="property details, real estate, Gurgaon, rent, buy, virtual tour"
+          canonical={currentProperty?.id ? `/property/${currentProperty.id}` : undefined}
+          image={
+            (Array.isArray(currentProperty?.images) && currentProperty.images[0]?.image_url) ||
+            siteMetadata.defaultOgImage
+          }
+          type="product"
+          structuredData={currentProperty ? {
+            '@type': 'RealEstateListing',
+            name: currentProperty.title,
+            description: currentProperty.description,
+            url: absoluteUrl(`/property/${currentProperty.id}`),
+            image: (Array.isArray(currentProperty.images) ? currentProperty.images.map((i) => i.image_url) : []).filter(Boolean),
+            address: {
+              '@type': 'PostalAddress',
+              streetAddress: currentProperty.full_address || undefined,
+              addressLocality: currentProperty.city || undefined,
+              addressRegion: currentProperty.state || undefined,
+              addressCountry: 'IN',
+            },
+            offers: {
+              '@type': 'Offer',
+              price: String(
+                currentProperty.purpose === 'rent'
+                  ? (currentProperty.monthly_rent || currentProperty.daily_rate || currentProperty.base_price || '')
+                  : (currentProperty.base_price || '')
+              ),
+              priceCurrency: 'INR',
+              availability: 'https://schema.org/InStock',
+            },
+            floorSize: currentProperty.area_sqft ? {
+              '@type': 'QuantitativeValue',
+              value: String(currentProperty.area_sqft),
+              unitText: 'SQFT',
+            } : undefined,
+          } : undefined}
+        />
         <PageTitle title="360Ghar - Property Details" />
 
             {/* Header */}

@@ -41,7 +41,7 @@ const PropertyDetailsSection = ({ property }) => {
             <div className="col-lg-8">
               {mainImage && (
                 <div className="property-details__thumb">
-                  <img src={mainImage} alt="Property" className="cover-img" />
+                  <img src={mainImage} alt="Property" className="cover-img" loading="lazy" decoding="async" />
                 </div>
               )}
 

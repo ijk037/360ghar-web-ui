@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Button from '../common/Button';
 import { useNavigate } from 'react-router-dom';
 import PageTitle from '../common/PageTitle';
+import SEO from '../common/SEO';
 
 const NotFound = () => {
 
@@ -16,6 +17,13 @@ const NotFound = () => {
     
     return (
         <>
+        <SEO
+          title="404 Not Found | 360Ghar"
+          description="The page you are looking for does not exist."
+          canonical={undefined}
+          noindex={true}
+          type="website"
+        />
         <PageTitle title="360Ghar - 404 Page Not Found" />
 
             <div className="not-found text-center">

@@ -7,11 +7,33 @@ import FaqTwo from '../components/FaqTwo';
 import FaqContactUs from '../components/FaqContactUs';
 import CounterFour from '../components/CounterFour';
 import PageTitle from '../common/PageTitle';
+import SEO from '../common/SEO';
+import { siteMetadata } from '../seo/siteMetadata';
+import { faqs } from '../data/HomeThreeData/HomeThreeData';
 
 const FaqPage = () => {
     return (
         <>
-        <PageTitle title="360Ghar - Frequently Ask Question" />
+            <SEO
+                title="360Ghar FAQ | Virtual Tours, Buying & Renting"
+                description="Answers to common questions about 360Ghar's 360° virtual tours, buying, selling, and renting properties across India."
+                keywords="360Ghar FAQ, virtual tours FAQ, property FAQ, Gurgaon"
+                canonical="/faq"
+                image={siteMetadata.defaultOgImage}
+                type="website"
+                structuredData={{
+                  '@type': 'FAQPage',
+                  mainEntity: faqs.map((f) => ({
+                    '@type': 'Question',
+                    name: f.btnText,
+                    acceptedAnswer: {
+                      '@type': 'Answer',
+                      text: f.bodyText,
+                    },
+                  })),
+                }}
+            />
+            <PageTitle title="360Ghar - Frequently Ask Question" />
 
             {/* Header */}
             <Header 

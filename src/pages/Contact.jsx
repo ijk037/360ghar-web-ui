@@ -6,10 +6,44 @@ import Cta from '../components/Cta';
 import ContactTop from '../components/ContactTop';
 import ContactUsSection from '../components/ContactUsSection';
 import PageTitle from '../common/PageTitle';
+import SEO from '../common/SEO';
+import { siteMetadata, absoluteUrl } from '../seo/siteMetadata';
 
 const Contact = () => {
     return (
         <>
+        <SEO
+          title="Contact 360Ghar | Real Estate Virtual Tours"
+          description="Get in touch with 360Ghar for property buying, selling, renting, and immersive 360° virtual tours. Based in Gurugram, Haryana."
+          keywords="contact 360Ghar, real estate contact, Gurgaon, Gurugram, virtual tours"
+          canonical="/contact"
+          image={siteMetadata.defaultOgImage}
+          type="website"
+          structuredData={{
+            '@type': 'RealEstateAgent',
+            name: siteMetadata.organization.name,
+            url: `${siteMetadata.siteUrl}/contact`,
+            logo: absoluteUrl(siteMetadata.defaultOgImage),
+            email: siteMetadata.organization.email,
+            telephone: siteMetadata.organization.telephone,
+            address: {
+              '@type': 'PostalAddress',
+              streetAddress: siteMetadata.organization.address.streetAddress,
+              addressLocality: siteMetadata.organization.address.addressLocality,
+              addressRegion: siteMetadata.organization.address.addressRegion,
+              postalCode: siteMetadata.organization.address.postalCode,
+              addressCountry: siteMetadata.organization.address.addressCountry,
+            },
+            contactPoint: {
+              '@type': 'ContactPoint',
+              contactType: 'customer service',
+              telephone: siteMetadata.organization.telephone,
+              email: siteMetadata.organization.email,
+              areaServed: 'IN',
+              availableLanguage: ['en', 'hi'],
+            },
+          }}
+        />
         <PageTitle title="360Ghar - Contact Us" />
 
         <main className="body-bg">
