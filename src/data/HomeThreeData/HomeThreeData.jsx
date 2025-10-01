@@ -6,7 +6,7 @@ export const bannerThreeContent = {
     subtitle: '360 WALKTHROUGH',
     title: 'Your trusted real estate',
     shapedTitle: 'partner',
-    desc: 'India\'s first 360° Home Walkthrough Platform making property viewing effortless and immersive for buyers and renters across Gurgaon.',
+    desc: 'Turn every Rent, PG, and Sale listing into a guided, studio‑quality 360° walkthrough. 360Ghar verifies photos, details, and exact location—no duplicates or misleading posts—so Gurugram buyers, tenants, and PG seekers shortlist confidently from home.',
     thumb: BannerThreeThumb
 }
 
@@ -15,19 +15,19 @@ export const bannerThreeContent = {
 export const aboutCheckLists = [
     {
         icon: <i className="fas fa-check"></i>,
-        text: 'Dream Property Solutions'
+        text: 'Verified photos, details & exact location'
     },
     {
         icon: <i className="fas fa-check"></i>,
-        text: ' Prestige Property Management'
+        text: 'Free professional photography & onboarding'
     },
     {
         icon: <i className="fas fa-check"></i>,
-        text: 'Secure Property Partners'
+        text: '360° guided walkthroughs for every listing'
     },
     {
         icon: <i className="fas fa-check"></i>,
-        text: 'Global Real Estate Investments'
+        text: 'No upfront listing fee for owners'
     },
 ]
 
@@ -42,43 +42,43 @@ import propertyThreeTypeIcon6 from '/assets/images/icons/ppty-type-icon6.svg'
 export const propertyThreeTypes = [ 
     {
         icon: propertyThreeTypeIcon1,
-        title: 'Prestige Management',
-        desc: 'Professional property management services ensuring maximum returns on your real estate investments with expert tenant screening and maintenance.',
+        title: 'Rentals & PG in Gurugram',
+        desc: 'Verified rooms, PGs, and apartments with studio‑quality 360° tours so you can shortlist from home with confidence.',
         btnText: 'MORE ABOUT ',
         btnLink: '/properties'
     },
     {
         icon: propertyThreeTypeIcon2,
-        title: 'Prime Investments',
-        desc: 'Professional property management services ensuring maximum returns on your real estate investments with expert tenant screening and maintenance.',
+        title: 'Buy Apartments & Homes',
+        desc: 'Explore verified properties across DLF, Golf Course Road, Sohna Road, and more—complete with immersive 360° walkthroughs.',
         btnText: 'MORE ABOUT ',
         btnLink: '/properties'
     },
     {
         icon: propertyThreeTypeIcon3,
-        title: 'Smart House Agency',
-        desc: 'Professional property management services ensuring maximum returns on your real estate investments with expert tenant screening and maintenance.',
+        title: 'Commercial Offices & Shops',
+        desc: 'Discover office spaces and retail units with accurate details and 360° tours to speed up decisions.',
         btnText: 'MORE ABOUT ',
         btnLink: '/properties'
     },
     {
         icon: propertyThreeTypeIcon4,
-        title: 'Reliable Rentals',
-        desc: 'Professional property management services ensuring maximum returns on your real estate investments with expert tenant screening and maintenance.',
+        title: 'Owner Onboarding',
+        desc: 'We come to your doorstep—free photography, verification, and listing setup. No upfront fee to publish.',
         btnText: 'MORE ABOUT ',
         btnLink: '/properties'
     },
     {
         icon: propertyThreeTypeIcon5,
-        title: 'Golden Key Properties',
-        desc: 'Professional property management services ensuring maximum returns on your real estate investments with expert tenant screening and maintenance.',
+        title: 'Verified Photos & Location',
+        desc: 'Every listing is verified by our team—authentic media, correct specs, and exact pin on the map.',
         btnText: 'MORE ABOUT ',
         btnLink: '/properties'
     },
     {
         icon: propertyThreeTypeIcon6,
-        title: 'Swift Home Sales',
-        desc: 'Professional property management services ensuring maximum returns on your real estate investments with expert tenant screening and maintenance.',
+        title: 'Schedule In‑App Visits',
+        desc: 'Use map view and in‑app visit scheduling to plan inspections that fit your calendar.',
         btnText: 'MORE ABOUT ',
         btnLink: '/properties'
     },
@@ -111,7 +111,7 @@ export const messageThreeContents = {
     icon: messageThreeIcon,
     text: 'Need help?',
     number: '8178340031',
-    desc: 'Our expert real estate consultants are available 24/7 to assist you with property search, documentation, and all your real estate needs across Gurgaon.'
+    desc: 'Our Gurugram team is available 7 days a week for property search, documentation, and visit scheduling—call us anytime.'
 }
 
 
@@ -121,15 +121,15 @@ import userThumb2 from '/assets/images/thumbs/user-img2.png';
 export const testimonialThreeContents = [
     {
         image: userThumb1,
-        name: 'Robert Fox',
-        designation: 'Prime Investments',
-        desc: '360Ghar transformed my property investment journey. The 360° virtual tours saved me countless hours and helped me make confident investment decisions in Gurgaon.',
+        name: 'Rohit Verma',
+        designation: 'Gurugram Resident',
+        desc: 'Booked a 2BHK in DLF Phase 3 after shortlisting via 360° tours—no wasted site visits and no fake photos. Scheduling the visit in‑app was super easy.',
     },
     {
         image: userThumb2,
-        name: 'Priya Sharma',
-        designation: 'Investment Consultant',
-        desc: 'Real estate is a lucrative industry that involves the buying, selling, and management of residential and commercial properties. It encompasses various sectors including residential, commercial, and investment properties.',
+        name: 'Neha Gupta',
+        designation: 'PG Seeker – Sector 48',
+        desc: 'Found a verified PG with accurate location and amenities. The 360° walkthrough gave me full clarity before I visited.',
     },
 ]
 
@@ -167,28 +167,28 @@ export const counterThreeContents = [
 export const faqs = [
     {
         id: 1,
-        btnText: 'Your satisfaction is our top priority?',
-        bodyText: "At 360Ghar, customer satisfaction is our highest priority. We work closely with you to understand your requirements and provide personalized property solutions that match your lifestyle and budget."
+        btnText: 'How do 360° walkthroughs work?',
+        bodyText: 'Open any listing to explore a guided, studio‑quality 360° tour on mobile or desktop—no app or VR headset required.'
     },
     {
         id: 2,
-        btnText: 'How do I schedule a 360° virtual tour?',
-        bodyText: "At 360Ghar, customer satisfaction is our highest priority. We work closely with you to understand your requirements and provide personalized property solutions that match your lifestyle and budget."
+        btnText: 'Are listings verified by 360Ghar?',
+        bodyText: 'Yes. Our team visits the property to capture photos, verify details, and confirm the exact location. We remove duplicates and misleading posts.'
     },
     {
         id: 3,
-        btnText: 'What services does 360Ghar offer?',
-        bodyText: "At 360Ghar, customer satisfaction is our highest priority. We work closely with you to understand your requirements and provide personalized property solutions that match your lifestyle and budget."
+        btnText: 'What does it cost owners to list?',
+        bodyText: 'There is no upfront fee to list. For a limited time, owners get free professional photography and end‑to‑end onboarding to publish standout listings.'
     },
     {
         id: 4,
-        btnText: 'How long does property registration take?',
-        bodyText: "At 360Ghar, customer satisfaction is our highest priority. We work closely with you to understand your requirements and provide personalized property solutions that match your lifestyle and budget."
+        btnText: 'Which areas in Gurugram do you cover?',
+        bodyText: 'DLF Phases 1–5, Golf Course Road/Extension, MG Road, Sohna Road, Udyog Vihar, Cyber City, Sushant Lok, South City, Palam Vihar, and Sectors 28/29/45/57/62/65/67/70–79, among others.'
     },
     {
         id: 5,
-        btnText: 'Are there any hidden charges in property transactions?',
-        bodyText: "At 360Ghar, customer satisfaction is our highest priority. We work closely with you to understand your requirements and provide personalized property solutions that match your lifestyle and budget."
+        btnText: 'Can I schedule an in‑person visit after shortlisting?',
+        bodyText: 'Yes. Use the in‑app visit scheduler from the listing page. Our team coordinates with the owner/agent and confirms your slot.'
     }
 ]
 

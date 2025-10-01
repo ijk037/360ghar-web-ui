@@ -46,10 +46,10 @@ const HomeOne = () => {
                         addressCountry: siteMetadata.organization.address.addressCountry,
                     },
                     sameAs: [
-                        'https://www.facebook.com',
-                        'https://www.twitter.com',
-                        'https://www.linkedin.com',
-                        'https://www.instagram.com',
+                        'https://www.facebook.com/people/360Ghar',
+                        'https://x.com/360Ghar',
+                        'https://in.linkedin.com/company/360ghar',
+                        'https://www.instagram.com/360ghar/',
                     ],
                     contactPoint: {
                         '@type': 'ContactPoint',

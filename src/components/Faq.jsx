@@ -14,9 +14,9 @@ const Faq = () => {
                                 headingClass="section-heading style-left"  
                                 subtitle="Ask question"
                                 subtitleClass="" 
-                                title="Let us find the perfect property for you" 
+                                title="Everything about our verified 360° listings" 
                                 renderDesc={false}
-                                desc="Real estate is a lucrative ind involves the buying selling and reproperties. It Real estate is a lucrative ind involves. Real estate is a lucrative"
+                                desc=""
                                 renderButton={false}
                                 renderBesideDesc={false}
                                 buttonClass="btn-main"

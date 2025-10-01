@@ -24,19 +24,19 @@ export const offCanvasInfos = [
 // Social List
 export const socialLists = [
     {
-        link: 'https://www.facebook.com',
+        link: 'https://www.facebook.com/people/360Ghar',
         icon: <i className="fab fa-facebook-f"></i>
     },
     {
-        link: 'https://www.twitter.com',
+        link: 'https://x.com/360Ghar',
         icon: <i className="fab fa-twitter"></i>
     },
     {
-        link: 'https://www.linkedin.com',
+        link: 'https://in.linkedin.com/company/360ghar',
         icon: <i className="fab fa-linkedin-in"></i>
     },
     {
-        link: 'https://www.pinterest.com',
+        link: 'https://www.instagram.com/360ghar/',
         icon: <i className="fab fa-instagram"></i>
     },
 ]
@@ -130,8 +130,8 @@ export const navMenus = [
             path: "/property-sidebar",
         },
         {
-            text: "Add New Listing",
-            path: "/add-new-listing",
+            text: "Post a Property",
+            path: "/post-property",
         },
         {
             text: "Map Location",
@@ -257,32 +257,32 @@ import FooterGallery6 from '/assets/images/thumbs/gallery6.png';
 export const footerGallery = [ 
     {
         img: FooterGallery1,
-        link: 'https://www.instagram.com',
+        link: 'https://www.instagram.com/360ghar/',
         icon: <i className="fab fa-instagram"></i>
     },
     {
         img: FooterGallery2,
-        link: 'https://www.instagram.com',
+        link: 'https://www.instagram.com/360ghar/',
         icon: <i className="fab fa-instagram"></i>
     },
     {
         img: FooterGallery3,
-        link: 'https://www.instagram.com',
+        link: 'https://www.instagram.com/360ghar/',
         icon: <i className="fab fa-instagram"></i>
     },
     {
         img: FooterGallery4,
-        link: 'https://www.instagram.com',
+        link: 'https://www.instagram.com/360ghar/',
         icon: <i className="fab fa-instagram"></i>
     },
     {
         img: FooterGallery5,
-        link: 'https://www.instagram.com',
+        link: 'https://www.instagram.com/360ghar/',
         icon: <i className="fab fa-instagram"></i>
     },
     {
         img: FooterGallery6,
-        link: 'https://www.instagram.com',
+        link: 'https://www.instagram.com/360ghar/',
         icon: <i className="fab fa-instagram"></i>
     },
 ]

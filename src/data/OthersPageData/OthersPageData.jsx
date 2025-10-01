@@ -732,7 +732,7 @@ export const mapLocations = [
                         icon: <i className="fas fa-paper-plane"></i>
                     },
                     {
-                        link: 'https://www.360ghar.com',
+                        link: 'https://360ghar.com',
                         text: 'Website',
                         icon: <i className="fas fa-paper-plane"></i>
                     },

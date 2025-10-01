@@ -16,19 +16,19 @@ const Comment = () => {
                         </div>
                         <div className="comment-list__content">
                             <div className="flx-align gap-2 gap-sm-4">
-                                <h6 className="comment-list__name font-16">Stanio lainto</h6>
+                                <h6 className="comment-list__name font-16">Amit Sharma</h6>
                                 <span className="comment-list__date">December 16, 2023</span>
                                 <ul className="social-list mt-0 p-0 border-0 gap-3">
                                     <li className="social-list__item">
-                                        <Link to="https://www.facebook.com" className="social-list__link text-gradient font-12 flx-center"><i className="fab fa-facebook-f"></i>
+                                        <Link to="https://www.facebook.com/people/360Ghar" className="social-list__link text-gradient font-12 flx-center"><i className="fab fa-facebook-f"></i>
                                         </Link>
                                     </li>
                                     <li className="social-list__item">
-                                        <Link to="https://www.twitter.com" className="social-list__link text-gradient font-12 flx-center"> <i className="fab fa-twitter"></i>
+                                        <Link to="https://x.com/360Ghar" className="social-list__link text-gradient font-12 flx-center"> <i className="fab fa-twitter"></i>
                                         </Link>
                                     </li>
                                     <li className="social-list__item">
-                                        <Link to="https://www.pinterest.com" className="social-list__link text-gradient font-12 flx-center"> <i className="fab fa-instagram"></i>
+                                        <Link to="https://www.instagram.com/360ghar/" className="social-list__link text-gradient font-12 flx-center"> <i className="fab fa-instagram"></i>
                                         </Link>
                                     </li>
                                 </ul>
@@ -43,19 +43,19 @@ const Comment = () => {
                         </div>
                         <div className="comment-list__content">
                             <div className="flx-align gap-2 gap-sm-4">
-                                <h6 className="comment-list__name font-16">Court Henry</h6>
+                                <h6 className="comment-list__name font-16">Neha Kapoor</h6>
                                 <span className="comment-list__date">December 16, 2023</span>
                                 <ul className="social-list mt-0 p-0 border-0 gap-3">
                                     <li className="social-list__item">
-                                        <Link to="https://www.facebook.com" className="social-list__link text-gradient font-12 flx-center"><i className="fab fa-facebook-f"></i>
+                                        <Link to="https://www.facebook.com/people/360Ghar" className="social-list__link text-gradient font-12 flx-center"><i className="fab fa-facebook-f"></i>
                                         </Link>
                                     </li>
                                     <li className="social-list__item">
-                                        <Link to="https://www.twitter.com" className="social-list__link text-gradient font-12 flx-center"> <i className="fab fa-twitter"></i>
+                                        <Link to="https://x.com/360Ghar" className="social-list__link text-gradient font-12 flx-center"> <i className="fab fa-twitter"></i>
                                         </Link>
                                     </li>
                                     <li className="social-list__item">
-                                        <Link to="https://www.pinterest.com" className="social-list__link text-gradient font-12 flx-center"> <i className="fab fa-instagram"></i>
+                                        <Link to="https://www.instagram.com/360ghar/" className="social-list__link text-gradient font-12 flx-center"> <i className="fab fa-instagram"></i>
                                         </Link>
                                     </li>
                                 </ul>

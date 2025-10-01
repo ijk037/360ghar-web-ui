@@ -16,8 +16,8 @@ const FaqPage = () => {
         <>
             <SEO
                 title="360Ghar FAQ | Virtual Tours, Buying & Renting"
-                description="Answers to common questions about 360Ghar's 360° virtual tours, buying, selling, and renting properties across India."
-                keywords="360Ghar FAQ, virtual tours FAQ, property FAQ, Gurgaon"
+                description="Answers to common questions about 360Ghar's verified 360° tours, owner onboarding (no upfront fee), and renting/buying in Gurugram."
+                keywords="360Ghar FAQ, virtual tours FAQ, property FAQ, Gurugram, Gurgaon"
                 canonical="/faq"
                 image={siteMetadata.defaultOgImage}
                 type="website"
@@ -42,8 +42,8 @@ const FaqPage = () => {
                 logoWhite={true}
                 headerMenusClass="mx-auto"
                 btnClass="btn btn-outline-main btn-outline-main-dark d-lg-block d-none"
-                btnLink="/add-new-listing"
-                btnText="Add Listing"
+                btnLink="/post-property"
+                btnText="Post Property"
                 spanClass="icon-right text-gradient" 
                 showHeaderBtn={true}
                 showOffCanvasBtn={false}

@@ -127,15 +127,15 @@ export const portfolios = [
 import quoteIcon from '/assets/images/icons/quote.svg';
 export const testimonials = [
     {
-        name: 'Sakib Fahad',
-        designation: 'Content Creator',
-        desc: '360Ghar completely transformed how I search for properties. The 360° virtual tours saved me countless visits and helped me make the perfect choice.',
+        name: 'Aman Sharma',
+        designation: 'Home Seeker – Gurugram',
+        desc: '360Ghar completely transformed how I search for properties. The verified 360° tours saved me countless visits and made shortlisting effortless.',
         quote: quoteIcon
     },
     {
         name: 'Rajesh Kumar',
         designation: 'Property Investor',
-        desc: '360Ghar helped me find the perfect investment property in Mumbai. The platform is user-friendly and their team provided excellent guidance throughout the process.',
+        desc: '360Ghar helped me find the perfect investment property in Gurugram. The team’s verification and guidance gave me full confidence.',
         quote: quoteIcon
     },
 ]

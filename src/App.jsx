@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import { useLocationStore } from './store/locationStore';
 
-import HomeOne from './pages/unused/HomeOne';
+import Home from './pages/Home';
 import HomeTwo from './pages/unused/HomeTwo';
 import HomeThree from './pages/unused/HomeThree';
 import ScrollToTop from './common/ScrollToTop';
@@ -41,13 +41,9 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<HomeOne />} />
+          <Route path="/" element={<Home />} />
           <Route path="/home-two" element={<HomeTwo />} />
           <Route path="/home-three" element={<HomeThree />} />
-          <Route path="/home-four" element={<HomeFour />} />
-          <Route path="/home-five" element={<HomeFive />} />
-          <Route path="/home-six" element={<HomeSix />} />
-          <Route path="/home-seven" element={<HomeSeven />} />
           <Route path="/properties" element={<Property />} />
           <Route path="/property-sidebar" element={<PropertySidebar />} />
           <Route path="/property/:id" element={<PropertyDetails />} />

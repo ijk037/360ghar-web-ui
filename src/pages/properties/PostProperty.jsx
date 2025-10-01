@@ -5,6 +5,7 @@ import Breadcrumb from '../../common/Breadcrumb';
 import Cta from '../../components/Cta';
 import PageTitle from '../../common/PageTitle';
 import { useForm, ValidationError } from '@formspree/react';
+import { Link } from 'react-router-dom';
 
 const PostPropertyForm = () => {
     const [state, handleSubmit] = useForm("mwpqglyb");
@@ -39,7 +40,7 @@ const PostPropertyForm = () => {
                         <p className="section-heading__desc">Fill out the form below with basic details about your property, and our expert team will reach out to guide you through the listing process and help you get the best exposure for your property.</p>
                     </div>
                     <div className="contact-form__form">
-                        <form onSubmit={handleSubmit} className="contact-form__form">
+                        <form onSubmit={handleSubmit} action="https://formspree.io/f/mwpqglyb" method="POST" className="contact-form__form">
                             <div className="row gy-4">
                                 <div className="col-sm-6 col-xs-6">
                                     <input
@@ -154,8 +155,8 @@ const PostPropertyForm = () => {
                                             required
                                         />
                                         <label className="form-check-label" htmlFor="terms_agreement">
-                                            I agree to the <a href="#" className="text-decoration-underline text-main">Terms of Service</a> and
-                                            <a href="#" className="text-decoration-underline text-main"> Privacy Policy</a>. I understand that 360Ghar team will contact me to discuss property listing details.
+                                            I agree to the <Link to="/policies/terms-of-service" className="text-decoration-underline text-main">Terms of Service</Link> and
+                                            <Link to="/policies/privacy-policy" className="text-decoration-underline text-main"> Privacy Policy</Link>. I understand that 360Ghar team will contact me to discuss property listing details.
                                         </label>
                                     </div>
                                 </div>
@@ -187,10 +188,10 @@ const PostProperty = () => {
                     logoWhite={true}
                     headerMenusClass="mx-auto"
                     btnClass="btn btn-outline-main btn-outline-main-dark d-lg-block d-none"
-                    btnLink="/add-new-listing"
-                    btnText="Add Listing"
+                    btnLink="/post-property"
+                    btnText="Post Property"
                     spanClass="icon-right text-gradient"
-                    showHeaderBtn={true}
+                    showHeaderBtn={false}
                     showOffCanvasBtn={false}
                     offCanvasBtnClass=""
                     showContactNumber={false}

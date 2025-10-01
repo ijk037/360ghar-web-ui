@@ -50,11 +50,11 @@ const TestimonialThree = () => {
 
                                 <SectionHeading
                                     headingClass="section-heading style-left mb-0"  
-                                    subtitle="clients testimonial"
+                                    subtitle="Client Testimonials"
                                     subtitleClass="" 
-                                    title="Your satisfaction is our top a the priority" 
+                                    title="Loved by home seekers in Gurugram" 
                                     renderDesc={false}
-                                    desc="Real estate is a lucrative ind involves the buying selling and reproperties. It Real estate is a lucrative ind involves. Real estate is a lucrative"
+                                    desc=""
                                     renderButton={false}
                                     renderBesideDesc={true}
                                     buttonClass="btn-main"

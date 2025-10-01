@@ -31,11 +31,11 @@ const AboutThree = () => {
 
                                 <SectionHeading
                                     headingClass="style-left"  
-                                    subtitle="About Us"
+                                    subtitle="About 360Ghar"
                                     subtitleClass="bg-gray-100" 
-                                    title="Unlocking the door to your a the new home" 
+                                    title="Verified 360° property discovery in Gurugram" 
                                     renderDesc={true}
-                                    desc="Real estate is a lucrative industry that involves the buying selling and renting of properties. It encompasses residential commercial and industrial properties Real estate agents play a crucial role in facilitating real estate"
+                                    desc="We turn every Rent, PG, and Sale listing into a guided, studio‑quality 360° walkthrough with verified media, details, and exact location. Owners list with no upfront fee and get free professional photography and onboarding for a limited time."
                                     renderButton={false}
                                     buttonClass="btn-main"
                                     buttonText="View More"
@@ -55,7 +55,7 @@ const AboutThree = () => {
                                 </ul>
                                 <div className="about-button">
                                     <Button
-                                        btnLink="/about" 
+                                        btnLink="/about-us" 
                                         btnClass="btn btn-outline-main bg-white" 
                                         btnText="Learn More" 
                                         spanClass="icon-right" 

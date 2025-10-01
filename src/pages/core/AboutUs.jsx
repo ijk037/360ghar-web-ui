@@ -5,6 +5,8 @@ import Breadcrumb from '../../common/Breadcrumb';
 import Cta from '../../components/Cta';
 import AboutThree from '../../components/AboutThree';
 import PropertyTypeThree from '../../components/PropertyTypeThree';
+import AreasWeCover from '../../components/AreasWeCover';
+import OwnerCta from '../../components/OwnerCta';
 import Team from '../../components/Team';
 import PageTitle from '../../common/PageTitle';
 import SEO from '../../common/SEO';
@@ -14,8 +16,8 @@ const AboutUs = () => {
     return (
         <>
             <SEO 
-                title="About 360Ghar | Virtual Real Estate Tours Across India"
-                description="Learn about 360Ghar, India's immersive real estate platform offering 360° virtual property tours, expert guidance, and seamless transactions. Based in Gurugram, Haryana."
+                title="About 360Ghar | Verified 360° Real Estate Tours in Gurugram"
+                description="Learn about 360Ghar—Gurugram’s immersive real estate platform offering verified 360° property tours, expert guidance, and seamless, no‑upfront‑fee owner onboarding. Based in Gurugram, Haryana."
                 keywords="about 360Ghar, real estate platform, virtual tours, Gurgaon, Gurugram"
                 canonical="/about-us"
                 image={siteMetadata.defaultOgImage}
@@ -36,8 +38,8 @@ const AboutUs = () => {
                 logoWhite={true}
                 headerMenusClass="mx-auto"
                 btnClass="btn btn-outline-main btn-outline-main-dark d-lg-block d-none"
-                btnLink="/add-new-listing"
-                btnText="Add Listing"
+                btnLink="/post-property"
+                btnText="Post Property"
                 spanClass="icon-right text-gradient" 
                 showHeaderBtn={true}
                 showOffCanvasBtn={false}
@@ -56,6 +58,10 @@ const AboutUs = () => {
             <Team/>
 
             <PropertyTypeThree/> 
+
+            <AreasWeCover/>
+
+            <OwnerCta className="padding-y-60"/>
 
             {/* Cta */}
             <Cta ctaClass=""/>
