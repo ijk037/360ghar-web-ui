@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import Header from '../common/Header';
-import Footer from '../common/Footer';
-import Breadcrumb from '../common/Breadcrumb';
-import PageTitle from '../common/PageTitle';
-import SEO from '../common/SEO';
-import { siteMetadata } from '../seo/siteMetadata';
-import { pageService } from '../services/pageService';
+import Header from '../../common/Header';
+import Footer from '../../common/Footer';
+import Breadcrumb from '../../common/Breadcrumb';
+import PageTitle from '../../common/PageTitle';
+import SEO from '../../common/SEO';
+import { siteMetadata } from '../../seo/siteMetadata';
+import { pageService } from '../../services/pageService';
 
 const POLICY_DEFINITIONS = [
   {

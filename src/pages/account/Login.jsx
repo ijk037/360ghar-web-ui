@@ -1,15 +1,15 @@
 import React from 'react';
-import Header from '../common/Header';
-import Footer from '../common/Footer';
-import Breadcrumb from '../common/Breadcrumb';
-import Cta from '../components/Cta';
-import LoginRegister from '../components/LoginRegister';
-import PageTitle from '../common/PageTitle';
+import Header from '../../common/Header';
+import Footer from '../../common/Footer';
+import Breadcrumb from '../../common/Breadcrumb';
+import Cta from '../../components/Cta';
+import LoginRegister from '../../components/LoginRegister';
+import PageTitle from '../../common/PageTitle';
 
-const Register = () => {
+const Login = () => {
     return (
         <>
-        <PageTitle title="360Ghar - Registration" />
+        <PageTitle title="360Ghar - Login" />
 
         <main className="body-bg">
             
@@ -31,27 +31,27 @@ const Register = () => {
 
             {/* BreadCrumb */}
             <Breadcrumb 
-                pageTitle="Register"
-                pageName="Register"
+                pageTitle="Login"
+                pageName="Login"
             />
 
-            {/* Register Section */}
+            {/* Login Section */}
             <LoginRegister
-                titleText="Sign up"
+                titleText="Sign in"
                 firstNameCol="col-sm-6 col-xs-6" 
-                showFirstName={true}
+                showFirstName={false}
                 lastNameCol="col-sm-6 col-xs-6" 
-                showLastName={true}
-                passwordCol="col-sm-6 col-xs-6" 
-                showConfirm={true}
-                btnText="Register"
-                showForgotRemember={false}
-                showTermCondition={true}
-                haveAccountText = "Already Have An Account? "
-                haveAccountLinkText = "Login"
-                haveAccountLink = "/login"
+                showLastName={false}
+                passwordCol="col-lg-12" 
+                showConfirm={false}
+                btnText="Login"
+                showForgotRemember={true}
+                showTermCondition={false}
+                haveAccountText = "Don't Have An Account? "
+                haveAccountLinkText = "Register"
+                haveAccountLink = "/register"
             />
-
+            
             {/* Cta */}
             <Cta ctaClass=""/>
 
@@ -63,4 +63,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default Login;

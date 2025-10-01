@@ -1,18 +1,16 @@
 import React from 'react';
-import Header from '../common/Header';
-import Footer from '../common/Footer';
-import Breadcrumb from '../common/Breadcrumb';
-import Cta from '../components/Cta';
-import ProjectSection from '../components/ProjectSection';
-import PageTitle from '../common/PageTitle';
+import Header from '../../common/Header';
+import Footer from '../../common/Footer';
+import Breadcrumb from '../../common/Breadcrumb';
+import Cta from '../../components/Cta';
+import CheckoutSection from '../../components/CheckoutSection';
+import PageTitle from '../../common/PageTitle';
 
-const Project = () => {
+const Checkout = () => {
     return (
         <>
-        <PageTitle title="360Ghar - Project" />
+        <PageTitle title="360Ghar - Checkout" />
 
-        <main className="body-bg">
-            
             {/* Header */}
             <Header 
                 headerClass="dark-header has-border" 
@@ -31,22 +29,20 @@ const Project = () => {
 
             {/* BreadCrumb */}
             <Breadcrumb 
-                pageTitle="Project"
-                pageName="Project"
+                pageTitle="Checkout"
+                pageName="Checkout"
             />
-
-            {/* Project Section */}
-            <ProjectSection/>     
+            
+            {/* Checkout Section */}
+            <CheckoutSection/>
 
             {/* Cta */}
             <Cta ctaClass=""/>
 
             {/* Footer */}
             <Footer/>
-
-        </main>   
         </>
     );
 };
 
-export default Project;
+export default Checkout;

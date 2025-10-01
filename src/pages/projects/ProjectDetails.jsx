@@ -1,15 +1,19 @@
 import React from 'react';
-import Header from '../common/Header';
-import Footer from '../common/Footer';
-import Breadcrumb from '../common/Breadcrumb';
-import Cta from '../components/Cta';
-import AddListingSection from '../components/AddListingSection';
-import PageTitle from '../common/PageTitle';
+import Header from '../../common/Header';
+import Footer from '../../common/Footer';
+import Breadcrumb from '../../common/Breadcrumb';
+import Cta from '../../components/Cta';
+import ProjectDetailsSection from '../../components/ProjectDetailsSection';
+import { useParams } from 'react-router-dom';
+import PageTitle from '../../common/PageTitle';
 
-const AddListing = () => {
+const ProjectDetails = () => {
+
+    const {title} = useParams(); 
+
     return (
         <>
-        <PageTitle title="360Ghar - Add Listing" />
+        <PageTitle title="360Ghar - Project Details" />
 
         <main className="body-bg">
             
@@ -31,12 +35,12 @@ const AddListing = () => {
 
             {/* BreadCrumb */}
             <Breadcrumb 
-                pageTitle="Add Listing"
-                pageName="Add Listing"
+                pageTitle="Property Details"
+                pageName={title}
             />
 
-            {/* Add Listing */}
-            <AddListingSection/>
+            {/* Project Details Section */}
+            <ProjectDetailsSection/>
 
             {/* Cta */}
             <Cta ctaClass=""/>
@@ -49,4 +53,4 @@ const AddListing = () => {
     );
 };
 
-export default AddListing;
+export default ProjectDetails;

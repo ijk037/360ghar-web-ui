@@ -1,15 +1,15 @@
 import React from 'react';
-import Header from '../common/Header';
-import Footer from '../common/Footer';
-import Breadcrumb from '../common/Breadcrumb';
-import Cta from '../components/Cta';
-import CartSection from '../components/CartSection';
-import PageTitle from '../common/PageTitle';
+import Header from '../../common/Header';
+import Footer from '../../common/Footer';
+import Breadcrumb from '../../common/Breadcrumb';
+import Cta from '../../components/Cta';
+import PropertySidebarSection from '../../components/PropertySidebarSection';
+import PageTitle from '../../common/PageTitle';
 
-const Cart = () => {
+const Property = () => {
     return (
         <>
-        <PageTitle title="360Ghar - Shopping Cart" />
+        <PageTitle title="360Ghar - Property With Sidebar" />
 
         <main className="body-bg">
             
@@ -31,12 +31,12 @@ const Cart = () => {
 
             {/* BreadCrumb */}
             <Breadcrumb 
-                pageTitle="Cart"
-                pageName="Cart"
+                pageTitle="Property Sidebar"
+                pageName="Property Sidebar"
             />
 
-            {/* Cart Section */}
-            <CartSection/>  
+            {/* Property Sidebar Section */}
+            <PropertySidebarSection/>
 
             {/* Cta */}
             <Cta ctaClass=""/>
@@ -49,4 +49,4 @@ const Cart = () => {
     );
 };
 
-export default Cart;
+export default Property;

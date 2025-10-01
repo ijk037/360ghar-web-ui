@@ -1,15 +1,15 @@
 import React from 'react';
-import Header from '../common/Header';
-import Footer from '../common/Footer';
-import Breadcrumb from '../common/Breadcrumb';
-import Cta from '../components/Cta';
-import PropertySidebarSection from '../components/PropertySidebarSection';
-import PageTitle from '../common/PageTitle';
+import Header from '../../common/Header';
+import Footer from '../../common/Footer';
+import Breadcrumb from '../../common/Breadcrumb';
+import Cta from '../../components/Cta';
+import AddListingSection from '../../components/AddListingSection';
+import PageTitle from '../../common/PageTitle';
 
-const Property = () => {
+const AddListing = () => {
     return (
         <>
-        <PageTitle title="360Ghar - Property With Sidebar" />
+        <PageTitle title="360Ghar - Add Listing" />
 
         <main className="body-bg">
             
@@ -31,12 +31,12 @@ const Property = () => {
 
             {/* BreadCrumb */}
             <Breadcrumb 
-                pageTitle="Property Sidebar"
-                pageName="Property Sidebar"
+                pageTitle="Add Listing"
+                pageName="Add Listing"
             />
 
-            {/* Property Sidebar Section */}
-            <PropertySidebarSection/>
+            {/* Add Listing */}
+            <AddListingSection/>
 
             {/* Cta */}
             <Cta ctaClass=""/>
@@ -49,4 +49,4 @@ const Property = () => {
     );
 };
 
-export default Property;
+export default AddListing;

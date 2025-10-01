@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import Button from '../common/Button';
+import Button from '../../common/Button';
 import { useNavigate } from 'react-router-dom';
-import PageTitle from '../common/PageTitle';
-import SEO from '../common/SEO';
+import PageTitle from '../../common/PageTitle';
+import SEO from '../../common/SEO';
 
 const NotFound = () => {
 

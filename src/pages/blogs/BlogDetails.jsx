@@ -1,15 +1,23 @@
-import React from 'react';
-import Header from '../common/Header';
-import Footer from '../common/Footer';
-import Breadcrumb from '../common/Breadcrumb';
-import Cta from '../components/Cta';
-import BlogClassicSection from '../components/BlogClassicSection';
-import PageTitle from '../common/PageTitle';
+import React, { useContext } from 'react';
+import Header from '../../common/Header';
+import Footer from '../../common/Footer';
+import Breadcrumb from '../../common/Breadcrumb';
+import Cta from '../../components/Cta';
+import { useParams } from 'react-router-dom';
+import BlogDetailsSection from '../../components/BlogDetailsSection';
+import { BlogDataContext } from '../../contextApi/BlogDataContext';
+import PageTitle from '../../common/PageTitle';
 
-const BlogClassic = () => {
+const BlogDetails = () => {
+
+    const { title } = useParams(); 
+
+    // Blog Data Context API
+    const { blogData } = useContext(BlogDataContext); 
+
     return (
         <>
-        <PageTitle title="360Ghar - Blog Classic" />
+            <PageTitle title="360Ghar - Blog Details" />
 
             {/* Header */}
             <Header 
@@ -29,11 +37,11 @@ const BlogClassic = () => {
 
             {/* BreadCrumb */}
             <Breadcrumb 
-                pageTitle="Blog Classic"
-                pageName="Blog Classic"
+                pageTitle="Blog Details"
+                pageName={blogData.title}
             />
 
-            <BlogClassicSection/> 
+            <BlogDetailsSection/>
 
             {/* Cta */}
             <Cta ctaClass=""/>
@@ -44,4 +52,5 @@ const BlogClassic = () => {
     );
 };
 
-export default BlogClassic;
+export default BlogDetails;
+

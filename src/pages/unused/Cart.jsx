@@ -1,16 +1,18 @@
 import React from 'react';
-import Header from '../common/Header';
-import Footer from '../common/Footer';
-import Breadcrumb from '../common/Breadcrumb';
-import Cta from '../components/Cta';
-import CheckoutSection from '../components/CheckoutSection';
-import PageTitle from '../common/PageTitle';
+import Header from '../../common/Header';
+import Footer from '../../common/Footer';
+import Breadcrumb from '../../common/Breadcrumb';
+import Cta from '../../components/Cta';
+import CartSection from '../../components/CartSection';
+import PageTitle from '../../common/PageTitle';
 
-const Checkout = () => {
+const Cart = () => {
     return (
         <>
-        <PageTitle title="360Ghar - Checkout" />
+        <PageTitle title="360Ghar - Shopping Cart" />
 
+        <main className="body-bg">
+            
             {/* Header */}
             <Header 
                 headerClass="dark-header has-border" 
@@ -29,20 +31,22 @@ const Checkout = () => {
 
             {/* BreadCrumb */}
             <Breadcrumb 
-                pageTitle="Checkout"
-                pageName="Checkout"
+                pageTitle="Cart"
+                pageName="Cart"
             />
-            
-            {/* Checkout Section */}
-            <CheckoutSection/>
+
+            {/* Cart Section */}
+            <CartSection/>  
 
             {/* Cta */}
             <Cta ctaClass=""/>
 
             {/* Footer */}
             <Footer/>
+
+        </main>   
         </>
     );
 };
 
-export default Checkout;
+export default Cart;

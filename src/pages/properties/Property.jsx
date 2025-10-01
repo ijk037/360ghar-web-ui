@@ -1,12 +1,12 @@
 import React from 'react';
-import Header from '../common/Header';
-import Footer from '../common/Footer';
-import Breadcrumb from '../common/Breadcrumb';
-import PropertyPageSection from '../components/PropertyPageSection';
-import Cta from '../components/Cta';
-import PageTitle from '../common/PageTitle';
-import SEO from '../common/SEO';
-import { siteMetadata } from '../seo/siteMetadata';
+import Header from '../../common/Header';
+import Footer from '../../common/Footer';
+import Breadcrumb from '../../common/Breadcrumb';
+import PropertyPageSection from '../../components/PropertyPageSection';
+import Cta from '../../components/Cta';
+import PageTitle from '../../common/PageTitle';
+import SEO from '../../common/SEO';
+import { siteMetadata } from '../../seo/siteMetadata';
 
 const Property = () => {
     return (

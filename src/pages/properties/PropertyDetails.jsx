@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
-import Header from '../common/Header';
-import Footer from '../common/Footer';
-import Breadcrumb from '../common/Breadcrumb';
-import Cta from '../components/Cta';
-import PropertyDetailsSection from '../components/PropertyDetailsSection';
+import Header from '../../common/Header';
+import Footer from '../../common/Footer';
+import Breadcrumb from '../../common/Breadcrumb';
+import Cta from '../../components/Cta';
+import PropertyDetailsSection from '../../components/PropertyDetailsSection';
 import { useParams } from 'react-router-dom';
-import PageTitle from '../common/PageTitle';
-import SEO from '../common/SEO';
-import { siteMetadata, absoluteUrl } from '../seo/siteMetadata';
-import usePropertyStore from '../store/propertyStore';
+import PageTitle from '../../common/PageTitle';
+import SEO from '../../common/SEO';
+import { siteMetadata, absoluteUrl } from '../../seo/siteMetadata';
+import usePropertyStore from '../../store/propertyStore';
 
 const PropertyDetails = () => {
     const { id } = useParams();

@@ -1,19 +1,19 @@
 import React from 'react';
 
-import Header from './../common/Header';
-import MobileMenu from '../common/MobileMenu';
-import OffCanvas from '../common/OffCanvas';
-import BannerTwo from '../components/BannerTwo';
-import Service from '../components/Service';
-import AboutTwo from '../components/AboutTwo';
-import FloorPlan from './../components/FloorPlan';
-import CounterTwo from '../components/CounterTwo';
-import Gallery from '../components/Gallery';
-import Apartment from './../components/Apartment';
-import MessageTwo from '../components/MessageTwo';
-import BlogTwo from './../components/BlogTwo';
-import Footer from '../common/Footer';
-import PageTitle from '../common/PageTitle';
+import Header from '../../common/Header';
+import MobileMenu from '../../common/MobileMenu';
+import OffCanvas from '../../common/OffCanvas';
+import BannerTwo from '../../components/BannerTwo';
+import Service from '../../components/Service';
+import AboutTwo from '../../components/AboutTwo';
+import FloorPlan from '../../components/FloorPlan';
+import CounterTwo from '../../components/CounterTwo';
+import Gallery from '../../components/Gallery';
+import Apartment from '../../components/Apartment';
+import MessageTwo from '../../components/MessageTwo';
+import BlogTwo from '../../components/BlogTwo';
+import Footer from '../../common/Footer';
+import PageTitle from '../../common/PageTitle';
 
 const HomeTwo = () => {
     return (

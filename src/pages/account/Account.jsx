@@ -1,10 +1,10 @@
 import React from 'react';
-import Header from '../common/Header';
-import Footer from '../common/Footer';
-import Breadcrumb from '../common/Breadcrumb';
-import Cta from '../components/Cta';
-import AccountSection from '../components/AccountSection';
-import PageTitle from '../common/PageTitle';
+import Header from '../../common/Header';
+import Footer from '../../common/Footer';
+import Breadcrumb from '../../common/Breadcrumb';
+import Cta from '../../components/Cta';
+import AccountSection from '../../components/AccountSection';
+import PageTitle from '../../common/PageTitle';
 
 const Account = () => {
     return (

@@ -1,19 +1,15 @@
 import React from 'react';
-import Header from '../common/Header';
-import Footer from '../common/Footer';
-import Breadcrumb from '../common/Breadcrumb';
-import Cta from '../components/Cta';
-import ProjectDetailsSection from '../components/ProjectDetailsSection';
-import { useParams } from 'react-router-dom';
-import PageTitle from '../common/PageTitle';
+import Header from '../../common/Header';
+import Footer from '../../common/Footer';
+import Breadcrumb from '../../common/Breadcrumb';
+import Cta from '../../components/Cta';
+import ProjectSection from '../../components/ProjectSection';
+import PageTitle from '../../common/PageTitle';
 
-const ProjectDetails = () => {
-
-    const {title} = useParams(); 
-
+const Project = () => {
     return (
         <>
-        <PageTitle title="360Ghar - Project Details" />
+        <PageTitle title="360Ghar - Project" />
 
         <main className="body-bg">
             
@@ -35,12 +31,12 @@ const ProjectDetails = () => {
 
             {/* BreadCrumb */}
             <Breadcrumb 
-                pageTitle="Property Details"
-                pageName={title}
+                pageTitle="Project"
+                pageName="Project"
             />
 
-            {/* Project Details Section */}
-            <ProjectDetailsSection/>
+            {/* Project Section */}
+            <ProjectSection/>     
 
             {/* Cta */}
             <Cta ctaClass=""/>
@@ -53,4 +49,4 @@ const ProjectDetails = () => {
     );
 };
 
-export default ProjectDetails;
+export default Project;
