@@ -829,10 +829,10 @@ export const accountTabs = [
         icon: <i className="fas fa-heart"></i>,
         text: ' Favorite Properties'
     },
-    {
-        icon: <i className="fas fa-map-marked-alt"></i>,
-        text: ' Add Property'
-    },
+    // {
+    //    icon: <i className="fas fa-map-marked-alt"></i>,
+    //    text: ' Add Property'
+    // },
     {
         icon: <i className="fas fa-lock"></i>,
         text: ' Change Password'

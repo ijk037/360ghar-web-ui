@@ -58,6 +58,10 @@
     color: hsl(var(--heading-color));
 }
 
+.header-right {
+    gap: 12px; // ensure consistent spacing between right-side items
+}
+
 .contact-number {
     padding-right: clampCal(12, 32);
     margin-right: clampCal(12, 32);
@@ -292,4 +296,30 @@
         &:hover { background-color: var(--gray-200); color: hsl(var(--heading-color)); }
         &:focus-visible { outline: 2px solid hsl(var(--main)); outline-offset: 2px; }
     }
+}
+
+/* Header CTA grouping and button refinements */
+.header-cta-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--gray-100);
+}
+
+.header-cta-group .auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.header-cta-group .btn.btn-sm {
+    padding: 10px 14px !important;
+    border-radius: 8px;
+}
+
+.header-cta-group .btn-outline-main {
+    color: hsl(var(--heading-color)) !important;
 }

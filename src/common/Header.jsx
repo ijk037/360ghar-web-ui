@@ -166,13 +166,26 @@ const Header = ({
                                     )}
                                 </div>
                             ) : (
-                                <div className="auth-buttons d-lg-flex align-items-center gap-2 d-none">
-                                    <Link to="/login" className="btn btn-outline-main btn-sm">
-                                        Login
-                                    </Link>
-                                    <Link to="/register" className="btn btn-main btn-sm">
-                                        Sign Up
-                                    </Link>
+                                <div className="header-cta-group d-lg-flex align-items-center d-none">
+                                    <div className="auth-buttons">
+                                        <Link to="/login" className="btn btn-outline-main btn-sm">
+                                            <i className="fas fa-sign-in-alt me-2"></i>
+                                            Login
+                                        </Link>
+                                        <Link to="/register" className="btn btn-main btn-sm">
+                                            <i className="fas fa-user-plus me-2"></i>
+                                            Sign Up
+                                        </Link>
+                                    </div>
+                                    {showHeaderBtn && (
+                                        <Button
+                                            btnLink={btnLink}
+                                            btnClass="btn-main btn-sm d-lg-block d-none"
+                                            btnText={btnText}
+                                            spanClass={spanClass}
+                                            iconClass="fas fa-arrow-right"
+                                        />
+                                    )}
                                 </div>
                             )}
 
@@ -190,15 +203,7 @@ const Header = ({
                                 )
                             }
 
-                            {showHeaderBtn && !isAuthenticated && (
-                                <Button
-                                    btnLink={btnLink}
-                                    btnClass={btnClass}
-                                    btnText={btnText}
-                                    spanClass={spanClass}
-                                    iconClass="fas fa-arrow-right"
-                                />
-                            )}
+                            {/* Post Property button is included above within header-cta-group for guests */}
 
                             <button type="button" className="toggle-mobileMenu d-lg-none ms-3"
                                 onClick={() => { handleMobileMenuClick(); handleScrollHide(); }}

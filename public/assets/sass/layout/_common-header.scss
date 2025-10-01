@@ -41,6 +41,15 @@
             color: hsl(var(--white));
         }
     }
+
+    // Header CTA group styling for dark header
+    .header-cta-group {
+        background-color: hsl(var(--white)/.06);
+        border-color: hsl(var(--white)/.12);
+    }
+    .header-cta-group .btn-outline-main {
+        color: hsl(var(--white)) !important;
+    }
 }
 
 .menu-right {
