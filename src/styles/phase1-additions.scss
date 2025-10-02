@@ -33,6 +33,81 @@
   }
 }
 
+/* Property Details: compact, responsive, spacious media */
+.property-details.compact {
+  /* tighten default section padding when used with padding-y-60 */
+  .property-details__title {
+    line-height: 1.25;
+  }
+  .property-details__desc {
+    margin-top: 4px;
+  }
+  .property-details-item {
+    padding: 12px 14px;
+    margin-bottom: 14px;
+    border-radius: 6px;
+  }
+  .property-details-item__title {
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+  }
+  .amenities-content__icon {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* Media area */
+.media-hero {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.virtual-tour-container {
+  width: 100%;
+  height: 60vh;
+  min-height: 360px;
+  max-height: 88vh;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #000;
+}
+
+@media (min-width: 992px) {
+  .virtual-tour-container {
+    height: 75vh;
+    min-height: 520px;
+  }
+}
+
+.media-switch .btn-group .btn {
+  padding: 4px 10px;
+}
+
+/* Summary card: compact spacing */
+.compact-card {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+}
+.compact-card .card-body {
+  padding: 14px;
+}
+
+/* Ensure sticky summary card doesn't overlay UI */
+@media (min-width: 992px) {
+  .summary-card.position-sticky {
+    position: sticky;
+    z-index: 2; /* below header/offcanvas; above background */
+  }
+}
+
+@media (max-width: 991.98px) {
+  .summary-card.position-sticky {
+    position: static !important;
+    top: auto !important;
+  }
+}
+
 .property-item.loading {
   .property-item__thumb {
     position: relative;

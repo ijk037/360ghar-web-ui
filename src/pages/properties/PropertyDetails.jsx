@@ -97,7 +97,7 @@ const PropertyDetails = () => {
             
             {/* Loading, Error, or Property Details Section */}
             {isLoading ? (
-                <section className="property-details padding-y-120">
+                <section className="property-details compact padding-y-60">
                     <div className="container container-two">
                         <div className="text-center py-5">
                             <i className="fas fa-spinner fa-spin fa-2x text-primary"></i>
@@ -106,7 +106,7 @@ const PropertyDetails = () => {
                     </div>
                 </section>
             ) : error ? (
-                <section className="property-details padding-y-120">
+                <section className="property-details compact padding-y-60">
                     <div className="container container-two">
                         <div className="text-center py-5">
                             <i className="fas fa-exclamation-triangle fa-2x text-danger"></i>
@@ -116,7 +116,7 @@ const PropertyDetails = () => {
                     </div>
                 </section>
             ) : !currentProperty ? (
-                <section className="property-details padding-y-120">
+                <section className="property-details compact padding-y-60">
                     <div className="container container-two">
                         <div className="text-center py-5">
                             <i className="fas fa-home fa-2x text-muted"></i>

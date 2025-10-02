@@ -95,15 +95,9 @@
 }
 
 /* Fix: prevent any full-card overlay on property cards */
-.property-item__thumb .link {
-    position: relative;
-    z-index: 0;
-}
-.property-item__content {
-    position: relative;
-    z-index: 1;
-}
-/* Ensure decorative bottom bar doesn't block interactions */
-.property-item::before {
-    pointer-events: none;
-}
+.map-location .property-item { position: relative; }
+.map-location .property-item__thumb { position: relative; z-index: 1; }
+.map-location .property-item__thumb .link { position: relative; z-index: 1; display: block; }
+.map-location .property-item__content { position: relative; z-index: 2; }
+/* Ensure decorative bottom bar doesn't block interactions and stays under content */
+.map-location .property-item::before { pointer-events: none; z-index: 0; }
