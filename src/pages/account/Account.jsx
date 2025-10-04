@@ -1,8 +1,8 @@
 import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
-import Cta from '../../components/Cta';
-import AccountSection from '../../components/AccountSection';
+import Cta from '../../components/ui/Cta';
+import AccountSection from '../../components/account/AccountSection';
 import PageTitle from '../../common/PageTitle';
 import { Navigate } from 'react-router-dom';
 import { useAuthStore } from '../../store';

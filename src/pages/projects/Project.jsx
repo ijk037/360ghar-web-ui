@@ -1,8 +1,8 @@
 import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
-import Cta from '../../components/Cta';
-import ProjectSection from '../../components/ProjectSection';
+import Cta from '../../components/ui/Cta';
+import ProjectSection from '../../components/project/ProjectSection';
 import PageTitle from '../../common/PageTitle';
 
 const Project = () => {

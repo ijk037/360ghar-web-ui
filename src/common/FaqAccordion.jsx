@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import FaqItem from '../components/items/FaqItem';
+import FaqItem from '../components/ui/FaqItem';
 import { faqs } from '../data/HomeThreeData/HomeThreeData';
 
 const FaqAccordion = (props) => {

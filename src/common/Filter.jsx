@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import PropertyFilters from '../components/PropertyFilters';
-import AdvancedPropertyFilter from '../components/AdvancedPropertyFilter';
+import PropertyFilters from '../components/property-filters/PropertyFilters';
+import AdvancedPropertyFilter from '../components/property-filters/AdvancedPropertyFilter';
 
 const Filter = (props) => {
     const [useAdvancedFilter, setUseAdvancedFilter] = useState(false);

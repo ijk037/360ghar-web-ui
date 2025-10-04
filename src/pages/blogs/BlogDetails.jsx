@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
-import Cta from '../../components/Cta';
+import Cta from '../../components/ui/Cta';
 import { useParams } from 'react-router-dom';
-import BlogDetailsSection from '../../components/BlogDetailsSection';
+import BlogDetailsSection from '../../components/blog/BlogDetailsSection';
 import { BlogDataContext } from '../../contextApi/BlogDataContext';
 import PageTitle from '../../common/PageTitle';
 

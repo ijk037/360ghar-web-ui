@@ -4,16 +4,16 @@ import Header from '../../common/Header';
 import Footer from '../../common/Footer';
 import MobileMenu from '../../common/MobileMenu';
 import OffCanvas from '../../common/OffCanvas';
-import BannerThree from '../../components/BannerThree';
-import AboutThree from '../../components/AboutThree';
-import PropertyTypeThree from '../../components/PropertyTypeThree';
-import PropertyTwo from '../../components/PropertyTwo';
-import MessageThree from '../../components/MessageThree';
-import Newsletter from '../../components/Newsletter';
-import TestimonialThree from '../../components/TestimonialThree';
-import CounterThree from '../../components/CounterThree';
-import Faq from '../../components/Faq';
-import BlogThree from '../../components/BlogThree';
+import BannerThree from '../../components/ui/BannerThree';
+import AboutThree from '../../components/layout/AboutThree';
+import PropertyTypeThree from '../../components/ui/PropertyTypeThree';
+import PropertyTwo from '../../components/property/PropertyTwo';
+import MessageThree from '../../components/layout/MessageThree';
+import Newsletter from '../../components/ui/Newsletter';
+import TestimonialThree from '../../components/ui/TestimonialThree';
+import CounterThree from '../../components/ui/CounterThree';
+import Faq from '../../components/layout/Faq';
+import BlogThree from '../../components/blog/BlogThree';
 import PageTitle from '../../common/PageTitle';
 
 const HomeThree = () => {

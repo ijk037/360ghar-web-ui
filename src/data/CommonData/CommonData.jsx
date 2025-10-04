@@ -124,6 +124,10 @@ export const navMenus = [
             path: "/faq",
         },
         {
+            text: "EMI Calculator",
+            path: "/emi-calculator",
+        },
+        {
             text: "Policies",
             path: "/policies",
         },
@@ -186,6 +190,10 @@ export const footerUsefulLinks = [
     {
         text: 'Blog & Insights',
         link: '/blog'
+    },
+    {
+        text: 'EMI Calculator',
+        link: '/emi-calculator'
     },
     {
         text: 'Success Stories',

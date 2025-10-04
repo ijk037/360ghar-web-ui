@@ -1,10 +1,10 @@
 import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
-import Cta from '../../components/Cta';
-import FaqTwo from '../../components/FaqTwo';
-import FaqContactUs from '../../components/FaqContactUs';
-import CounterFour from '../../components/CounterFour';
+import Cta from '../../components/ui/Cta';
+import FaqTwo from '../../components/layout/FaqTwo';
+import FaqContactUs from '../../components/layout/FaqContactUs';
+import CounterFour from '../../components/ui/CounterFour';
 import PageTitle from '../../common/PageTitle';
 import SEO from '../../common/SEO';
 import { siteMetadata } from '../../seo/siteMetadata';

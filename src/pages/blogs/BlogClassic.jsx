@@ -1,8 +1,8 @@
 import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
-import Cta from '../../components/Cta';
-import BlogClassicSection from '../../components/BlogClassicSection';
+import Cta from '../../components/ui/Cta';
+import BlogClassicSection from '../../components/blog/BlogClassicSection';
 import PageTitle from '../../common/PageTitle';
 
 const BlogClassic = () => {

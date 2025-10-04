@@ -1,22 +1,33 @@
 import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
-import PropertyPageSection from '../../components/PropertyPageSection';
-import Cta from '../../components/Cta';
+import PropertyPageSection from '../../components/property/PropertyPageSection';
+import Cta from '../../components/ui/Cta';
 import PageTitle from '../../common/PageTitle';
 import SEO from '../../common/SEO';
 import { siteMetadata } from '../../seo/siteMetadata';
+import { realEstateStructuredData, generateBreadcrumbStructuredData } from '../../seo/structuredData';
 
 const Property = () => {
+    // Enhanced structured data for property listings
+    const propertyStructuredData = [
+        realEstateStructuredData.realEstateListing,
+        generateBreadcrumbStructuredData([
+            { name: 'Home', url: 'https://360ghar.com/' },
+            { name: 'Properties', url: 'https://360ghar.com/properties' }
+        ])
+    ];
+
     return (
         <>
         <SEO
-          title="Properties | 360Ghar — Browse Real Estate Listings"
-          description="Explore curated properties with immersive 360° virtual tours. Filter by price, type, bedrooms, and more across Gurugram and beyond."
-          keywords="property listings, real estate, virtual tours, Gurgaon, apartments for sale, rent"
+          title="Properties in Gurugram | Buy, Sell, Rent Real Estate | 360Ghar"
+          description="Browse verified properties in Gurugram with 360° virtual tours. Find apartments, flats, builder floors, independent houses, and PGs in prime locations like DLF Phase, Golf Course Road, Sohna Road, Cyber City."
+          keywords="Gurugram properties, Gurgaon real estate, buy property Gurugram, sell property Gurgaon, rent apartments Gurugram, PG in Gurgaon, DLF Phase properties, Golf Course Road real estate, Sohna Road apartments, Cyber City flats, verified listings, 360 virtual tours"
           canonical="/properties"
           image={siteMetadata.defaultOgImage}
           type="website"
+          structuredData={propertyStructuredData}
         />
         <PageTitle title="360Ghar - Property" />
 

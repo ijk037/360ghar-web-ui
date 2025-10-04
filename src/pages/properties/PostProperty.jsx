@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
-import Cta from '../../components/Cta';
+import Cta from '../../components/ui/Cta';
 import PageTitle from '../../common/PageTitle';
 import { useForm, ValidationError } from '@formspree/react';
 import { Link } from 'react-router-dom';

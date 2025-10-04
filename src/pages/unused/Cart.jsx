@@ -1,8 +1,8 @@
 import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
-import Cta from '../../components/Cta';
-import CartSection from '../../components/CartSection';
+import Cta from '../../components/ui/Cta';
+import CartSection from '../../components/forms/CartSection';
 import PageTitle from '../../common/PageTitle';
 
 const Cart = () => {

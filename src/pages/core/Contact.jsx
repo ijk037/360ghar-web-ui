@@ -1,9 +1,9 @@
 import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
-import Cta from '../../components/Cta';
-import ContactTop from '../../components/ContactTop';
-import ContactUsSection from '../../components/ContactUsSection';
+import Cta from '../../components/ui/Cta';
+import ContactTop from '../../components/contact/ContactTop';
+import ContactUsSection from '../../components/contact/ContactUsSection';
 import PageTitle from '../../common/PageTitle';
 import SEO from '../../common/SEO';
 import { siteMetadata, absoluteUrl } from '../../seo/siteMetadata';

@@ -1,8 +1,8 @@
 import React from 'react';
 import Header from '../common/Header';
 import Footer from '../common/Footer';
-import Cta from '../components/Cta';
-import MapLocationSection from '../components/MapLocationSection';
+import Cta from '../components/ui/Cta';
+import MapLocationSection from '../components/layout/MapLocationSection';
 import PageTitle from '../common/PageTitle';
 
 const MapLocation = () => {

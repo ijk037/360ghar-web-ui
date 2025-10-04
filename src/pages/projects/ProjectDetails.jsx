@@ -1,8 +1,8 @@
 import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
-import Cta from '../../components/Cta';
-import ProjectDetailsSection from '../../components/ProjectDetailsSection';
+import Cta from '../../components/ui/Cta';
+import ProjectDetailsSection from '../../components/project/ProjectDetailsSection';
 import { useParams } from 'react-router-dom';
 import PageTitle from '../../common/PageTitle';
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
-import Cta from '../../components/Cta';
-import AddListingSection from '../../components/AddListingSection';
+import Cta from '../../components/ui/Cta';
+import AddListingSection from '../../components/forms/AddListingSection';
 import PageTitle from '../../common/PageTitle';
 
 const AddListing = () => {

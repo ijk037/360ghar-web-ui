@@ -4,24 +4,42 @@ import Header from '../common/Header';
 import Footer from '../common/Footer';
 import MobileMenu from '../common/MobileMenu';
 import OffCanvas from '../common/OffCanvas';
-import BannerThree from '../components/BannerThree';
-import AboutThree from '../components/AboutThree';
-import PropertyType from '../components/PropertyType';
-import PropertyTwo from '../components/PropertyTwo';
-import MessageThree from '../components/MessageThree';
-import AreasWeCover from '../components/AreasWeCover';
-import Newsletter from '../components/Newsletter';
-import TestimonialThree from '../components/TestimonialThree';
-import CounterThree from '../components/CounterThree';
-import Faq from '../components/Faq';
-import BlogThree from '../components/BlogThree';
+import BannerThree from '../components/ui/BannerThree';
+import AboutThree from '../components/layout/AboutThree';
+import PropertyType from '../components/ui/PropertyType';
+import PropertyTwo from '../components/property/PropertyTwo';
+import MessageThree from '../components/layout/MessageThree';
+import Newsletter from '../components/ui/Newsletter';
+import TestimonialThree from '../components/ui/TestimonialThree';
+import CounterThree from '../components/ui/CounterThree';
+import Faq from '../components/layout/Faq';
+import BlogThree from '../components/blog/BlogThree';
 import PageTitle from '../common/PageTitle';
+import SEO from '../common/SEO';
+import { realEstateStructuredData } from '../seo/structuredData';
+import { siteMetadata } from '../seo/siteMetadata';
 
 const Home = () => {
+    // Combine structured data for the homepage
+    const homeStructuredData = [
+        realEstateStructuredData.organization,
+        realEstateStructuredData.website,
+        realEstateStructuredData.localBusiness,
+        realEstateStructuredData.faq
+    ];
+
     return (
         <>
-        
-        <PageTitle title="360Ghar - Home Three" />
+        <SEO
+          title={siteMetadata.defaultTitle}
+          description={siteMetadata.defaultDescription}
+          keywords={siteMetadata.defaultKeywords}
+          canonical="/"
+          image={siteMetadata.defaultOgImage}
+          type="website"
+          structuredData={homeStructuredData}
+        />
+        <PageTitle title="360Ghar - Best Real Estate Platform in Gurugram" />
             <OffCanvas/>
             <MobileMenu/>
             

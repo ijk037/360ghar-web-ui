@@ -1,8 +1,8 @@
 import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
-import Cta from '../../components/Cta';
-import PropertySidebarSection from '../../components/PropertySidebarSection';
+import Cta from '../../components/ui/Cta';
+import PropertySidebarSection from '../../components/property/PropertySidebarSection';
 import PageTitle from '../../common/PageTitle';
 
 const Property = () => {

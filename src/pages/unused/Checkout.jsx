@@ -1,8 +1,8 @@
 import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
-import Cta from '../../components/Cta';
-import CheckoutSection from '../../components/CheckoutSection';
+import Cta from '../../components/ui/Cta';
+import CheckoutSection from '../../components/forms/CheckoutSection';
 import PageTitle from '../../common/PageTitle';
 
 const Checkout = () => {

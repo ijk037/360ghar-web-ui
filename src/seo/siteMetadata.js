@@ -2,11 +2,11 @@ export const siteMetadata = {
   siteUrl: 'https://360ghar.com',
   siteName: '360Ghar',
   defaultTitle:
-    '360Ghar - Premier Real Estate Virtual Tours | Find Your Dream Home',
+    '360Ghar - Best Real Estate Platform in Gurugram | Buy, Sell, Rent Properties & PGs',
   defaultDescription:
-    "Explore verified properties in Gurugram with studio‑quality 360° walkthroughs. Buy, rent, PG, or sell with authentic photos, accurate details, exact location, and in‑app visit scheduling. No upfront listing fee for owners.",
+    "360Ghar is Gurugram's premier real estate platform offering verified properties with 360° virtual tours. Buy, sell, rent apartments, flats, houses, and find PGs in prime locations like DLF Phase, Golf Course Road, Sohna Road, Cyber City. Schedule visits instantly. No listing fees for owners.",
   defaultKeywords:
-    'Gurgaon real estate, Gurugram properties, 360° walkthroughs, verified listings, PG in Gurgaon, flats for rent Gurgaon, apartments for sale Gurugram, DLF Phase, Golf Course Road, Sohna Road, Cyber City, map view, visit scheduling',
+    'Gurugram real estate, Gurgaon properties, buy property Gurugram, sell property Gurgaon, rent apartments Gurugram, PG in Gurgaon, flats for rent Gurgaon, apartments for sale Gurugram, DLF Phase properties, Golf Course Road real estate, Sohna Road apartments, Cyber City flats, Sector 29, MG Road, 360 virtual tours, verified listings, no broker properties, direct owner listings, real estate Gurugram, property dealers Gurgaon, housing society flats, builder floors, independent houses, commercial property Gurugram, office space Gurgaon',
   defaultOgImage: '/assets/images/logo/logo.png',
   twitterCard: 'summary_large_image',
   organization: {

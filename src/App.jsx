@@ -26,9 +26,11 @@ import BlogDetails from './pages/blogs/BlogDetails';
 import Contact from './pages/core/Contact';
 import PostProperty from './pages/properties/PostProperty';
 import Register from './pages/account/Register';
+import AccountDeletionRequest from './pages/account/AccountDeletionRequest';
 import NotFound from './pages/core/NotFound';
 import Policies from './pages/core/Policies';
 import PolicyDetails from './pages/core/PolicyDetails';
+import EmiCalculator from './pages/tools/EmiCalculator';
 
 function App() {
   const initializeLocation = useLocationStore((state) => state.initializeLocation);
@@ -64,8 +66,10 @@ function App() {
 
           <Route path="/contact" element={<Contact />} />
           <Route path="/post-property" element={<PostProperty />} />
+          <Route path="/delete-account" element={<AccountDeletionRequest />} />
           <Route path="/policies" element={<Policies />} />
           <Route path="/policies/:slug" element={<PolicyDetails />} />
+          <Route path="/emi-calculator" element={<EmiCalculator />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
