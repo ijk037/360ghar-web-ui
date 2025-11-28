@@ -670,19 +670,19 @@ import teamImg3 from '/assets/images/thumbs/team3.png';
 export const teams = [
     {
         thumb: teamImg1,
-        name: 'Annette Black',
+        name: 'Arjun Mehta',
         designation: ' President of Sales ',
         shareIcon: <i className="fas fa-share-alt"></i>
     },  
     {
         thumb: teamImg2,
-        name: 'Savannah Nguyen',
+        name: 'Priya Singh',
         designation: 'Manager of Sales',
         shareIcon: <i className="fas fa-share-alt"></i>
     },  
     {
         thumb: teamImg3,
-        name: 'Bessie Cooper',
+        name: 'Vikram Malhotra',
         designation: 'Director of Sales',
         shareIcon: <i className="fas fa-share-alt"></i>
     },  
