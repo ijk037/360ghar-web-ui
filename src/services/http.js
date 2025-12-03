@@ -35,29 +35,10 @@ export const enforceHttpsExceptLocal = (absoluteUrl) => {
   }
 };
 
-// Get API base URL with HTTPS enforced except on localhost
+// Get API base URL - use /api to leverage Vite/Netlify proxy (no CORS, no preflight)
 export const getApiBaseUrl = () => {
-  // Use direct access so Vite inlines correctly at build time
-  const envUrl = import.meta.env.VITE_API_BASE_URL;
-
-  // Prefer environment variable when available
-  if (envUrl) {
-    try {
-      const parsed = new URL(envUrl);
-      if (isLocalhost(parsed.hostname)) return envUrl;
-      if (parsed.protocol === 'http:') {
-        parsed.protocol = 'https:';
-        return parsed.toString();
-      }
-      return envUrl;
-    } catch {
-      // Non-absolute or invalid URL; return as-is
-      return envUrl;
-    }
-  }
-
-  // Fallback to hosted API with HTTPS
-  return 'https://api.360ghar.com/api/v1';
+  // Always use /api for proxy - Vite in dev, Netlify in prod
+  return '/api';
 };
 
 // Retry helper function
