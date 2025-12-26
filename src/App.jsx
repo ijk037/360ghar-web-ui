@@ -31,6 +31,11 @@ import NotFound from './pages/core/NotFound';
 import Policies from './pages/core/Policies';
 import PolicyDetails from './pages/core/PolicyDetails';
 import EmiCalculator from './pages/tools/EmiCalculator';
+import AreaConverter from './pages/tools/AreaConverter';
+import LoanEligibilityCalculator from './pages/tools/LoanEligibilityCalculator';
+import AreaCalculator from './pages/tools/AreaCalculator';
+import PropertyChecklist from './pages/tools/PropertyChecklist';
+import CapitalGainsCalculator from './pages/tools/CapitalGainsCalculator';
 import Landing from './pages/landing/Landing';
 import GurugramGuide from './pages/core/GurugramGuide';
 import PropertyInvestment from './pages/core/PropertyInvestment';
@@ -77,6 +82,11 @@ function App() {
           <Route path="/policies" element={<Policies />} />
           <Route path="/policies/:slug" element={<PolicyDetails />} />
           <Route path="/emi-calculator" element={<EmiCalculator />} />
+          <Route path="/area-converter" element={<AreaConverter />} />
+          <Route path="/loan-eligibility-calculator" element={<LoanEligibilityCalculator />} />
+          <Route path="/area-calculator" element={<AreaCalculator />} />
+          <Route path="/property-document-checklist" element={<PropertyChecklist />} />
+          <Route path="/capital-gains-tax-calculator" element={<CapitalGainsCalculator />} />
           <Route path="/gurugram-real-estate-guide" element={<GurugramGuide />} />
           <Route path="/property-investment-gurugram" element={<PropertyInvestment />} />
           <Route path="/for-ai" element={<ForAI />} />

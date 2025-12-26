@@ -39,7 +39,7 @@ const EmiCalculator = () => {
         return new Intl.NumberFormat('en-IN', {
             style: 'currency',
             currency: 'INR',
-            maximumFractionDigits: 0,
+            maximumFractionDigits: 0
         }).format(amount);
     };
 
@@ -57,8 +57,8 @@ const EmiCalculator = () => {
         <>
         <SEO
           title="EMI Calculator - Calculate Home Loan EMI for Gurugram Properties | 360Ghar"
-          description="Free online EMI calculator for home loans in Gurugram. Calculate monthly installments, total interest, and payment schedule. Plan your property purchase with accurate EMI calculations."
-          keywords="EMI calculator Gurugram, home loan EMI calculator, property loan calculator, mortgage EMI, housing loan EMI, loan interest calculator, EMI calculation, 360Ghar EMI calculator, real estate financing"
+          description="Free online home loan EMI calculator. Calculate monthly installments, total interest, and payment schedule instantly."
+          keywords="EMI calculator, home loan EMI calculator, property loan calculator, mortgage EMI, housing loan EMI"
           canonical="/emi-calculator"
           image={siteMetadata.defaultOgImage}
           type="website"

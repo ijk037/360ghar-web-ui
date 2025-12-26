@@ -128,6 +128,26 @@ export const navMenus = [
             path: "/emi-calculator",
         },
         {
+            text: "Loan Eligibility",
+            path: "/loan-eligibility-calculator",
+        },
+        {
+            text: "Area Converter",
+            path: "/area-converter",
+        },
+        {
+            text: "Carpet Area Calc",
+            path: "/area-calculator",
+        },
+        {
+            text: "Property Checklist",
+            path: "/property-document-checklist",
+        },
+        {
+            text: "Capital Gains Tax",
+            path: "/capital-gains-tax-calculator",
+        },
+        {
             text: "Policies",
             path: "/policies",
         },
@@ -194,6 +214,18 @@ export const footerUsefulLinks = [
     {
         text: 'EMI Calculator',
         link: '/emi-calculator'
+    },
+    {
+        text: 'Loan Eligibility',
+        link: '/loan-eligibility-calculator'
+    },
+    {
+        text: 'Area Converter',
+        link: '/area-converter'
+    },
+    {
+        text: 'Property Checklist',
+        link: '/property-document-checklist'
     },
     {
         text: 'Success Stories',
