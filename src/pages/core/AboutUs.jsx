@@ -1,6 +1,8 @@
 import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
+import MobileMenu from '../../common/MobileMenu';
+import OffCanvas from '../../common/OffCanvas';
 import Cta from '../../components/ui/Cta';
 import AboutThree from '../../components/layout/AboutThree';
 import PropertyTypeThree from '../../components/ui/PropertyTypeThree';
@@ -42,33 +44,38 @@ const AboutUs = () => {
                 structuredData={aboutStructuredData}
             />
             <PageTitle title="360Ghar - About Us" />
-            {/* Header */}
-            <Header
-                headerClass="dark-header has-border"
-                logoBlack={false}
-                logoWhite={true}
-                headerMenusClass="mx-auto"
-                btnClass="btn btn-outline-main btn-outline-main-dark d-lg-block d-none"
-                spanClass="icon-right text-gradient"
-                showContactNumber={false}
-            />
 
+            <OffCanvas />
+            <MobileMenu />
+
+            <main className="body-bg">
+                {/* Header */}
+                <Header
+                    headerClass="dark-header has-border"
+                    headerMenusClass="mx-auto"
+                    btnClass="btn btn-outline-main btn-outline-main-dark d-lg-block d-none"
+                    btnLink="/post-property"
+                    btnText="Post Property"
+                    spanClass="icon-right text-gradient"
+                    showContactNumber={false}
+                />
       
-            <AboutThree/>    
+                <AboutThree/>    
 
-            <Team/>
+                <Team/>
 
-            <PropertyTypeThree/> 
+                <PropertyTypeThree/> 
 
-            <AreasWeCover/>
+                <AreasWeCover/>
 
-            <OwnerCta className="padding-y-60"/>
+                <OwnerCta className="padding-y-60"/>
 
-            {/* Cta */}
-            <Cta ctaClass=""/>
+                {/* Cta */}
+                <Cta ctaClass=""/>
 
-            {/* Footer */}
-            <Footer/>
+                {/* Footer */}
+                <Footer/>
+            </main>
         </>
     );
 };

@@ -1,264 +1,13 @@
 import React, { useState } from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
+import MobileMenu from '../../common/MobileMenu';
+import OffCanvas from '../../common/OffCanvas';
 import Cta from '../../components/ui/Cta';
 import PageTitle from '../../common/PageTitle';
 import SEO from '../../common/SEO';
 import { useForm, ValidationError } from '@formspree/react';
-
-/* Custom CSS for Account Deletion Page */
-const customStyles = `
-/* Ensure header visibility */
-.header {
-    position: relative !important;
-    z-index: 1000 !important;
-}
-
-/* Success screen styles */
-.success-check {
-    font-size: 4rem;
-    color: #28a745;
-    margin-bottom: 1rem;
-    animation: checkmark 0.6s ease-in-out;
-}
-
-@keyframes checkmark {
-    0% {
-        transform: scale(0);
-        opacity: 0;
-    }
-    50% {
-        transform: scale(1.2);
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-/* Deletion form specific styles */
-.deletion-form-group {
-    margin-bottom: 2rem;
-}
-
-.deletion-form-group .form-label {
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 0.75rem;
-    display: flex;
-    align-items: center;
-}
-
-.deletion-form-group .common-input,
-.deletion-form-group .common-select,
-.deletion-form-group .common-textarea {
-    width: 100%;
-    padding: 12px 16px;
-    border: 2px solid #e5e5e5;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    background: #fff;
-}
-
-.deletion-form-group .common-input:focus,
-.deletion-form-group .common-select:focus,
-.deletion-form-group .common-textarea:focus {
-    outline: none;
-    border-color: #ff6b35;
-    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
-}
-
-.deletion-form-group .common-textarea {
-    resize: vertical;
-    min-height: 120px;
-}
-
-.deletion-options {
-    display: grid;
-    gap: 1rem;
-}
-
-.deletion-option {
-    position: relative;
-    padding: 1.5rem;
-    border: 2px solid #e5e5e5;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: #fff;
-    user-select: none;
-}
-
-.deletion-option:hover {
-    border-color: #ff6b35;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-}
-
-.deletion-option.active {
-    border-color: #ff6b35 !important;
-    background: linear-gradient(135deg, rgba(255, 107, 53, 0.05), rgba(255, 107, 53, 0.02)) !important;
-    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.15) !important;
-}
-
-.deletion-option.active .option-icon {
-    background: linear-gradient(135deg, #ff6b35, #ff8f65) !important;
-    color: white !important;
-    transform: scale(1.1);
-    transition: all 0.3s ease;
-}
-
-.deletion-option:not(.active) .option-icon {
-    background: #f8f9fa;
-    color: #6c757d;
-    transition: all 0.3s ease;
-}
-
-.deletion-option input[type="radio"] {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.deletion-option:focus {
-    outline: 2px solid #ff6b35;
-    outline-offset: 2px;
-}
-
-.option-content {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.option-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    flex-shrink: 0;
-    transition: all 0.3s ease;
-}
-
-.option-details h5 {
-    margin: 0 0 0.5rem 0;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #333;
-}
-
-.option-details p {
-    margin: 0;
-    color: #666;
-    font-size: 0.9rem;
-    line-height: 1.4;
-}
-
-.deletion-notice {
-    background: linear-gradient(135deg, #fff3cd, #fff8e1);
-    border: 2px solid #ffc107;
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin: 2rem 0;
-}
-
-.notice-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.notice-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #ffc107;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-}
-
-.notice-title {
-    margin: 0;
-    color: #856404;
-    font-size: 1.2rem;
-    font-weight: 600;
-}
-
-.notice-content ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.notice-content li {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    padding: 0.5rem 0;
-    color: #856404;
-    line-height: 1.5;
-}
-
-.notice-content li i {
-    color: #ffc107;
-    margin-top: 2px;
-    flex-shrink: 0;
-}
-
-.btn-deletion {
-    background: linear-gradient(135deg, #ff6b35, #ff8f65);
-    border: none;
-    padding: 14px 32px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    border-radius: 50px;
-    color: white;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
-}
-
-.btn-deletion:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
-    background: linear-gradient(135deg, #ff5722, #ff6b35);
-    color: white;
-}
-
-.btn-deletion:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-}
-
-@media (max-width: 768px) {
-    .option-content {
-        flex-direction: column;
-        text-align: center;
-        gap: 1rem;
-    }
-
-    .option-icon {
-        margin: 0 auto;
-    }
-
-    .notice-header {
-        flex-direction: column;
-        text-align: center;
-        gap: 0.5rem;
-    }
-
-    .btn-deletion {
-        width: 100%;
-    }
-}
-`;
+import '../../styles/account-deletion.scss';
 
 const AccountDeletionRequest = () => {
     const [state, handleSubmit] = useForm("mwpqglyb");
@@ -301,14 +50,17 @@ const AccountDeletionRequest = () => {
             <>
             <SEO title="Account Deletion Request | 360Ghar" description="Request deletion of your account or data." canonical="/delete-account" noindex />
             <PageTitle title="360Ghar - Account Deletion Request" />
-            <style>{customStyles}</style>
+
+            <OffCanvas />
+            <MobileMenu />
+
             <main className="body-bg">
                 <Header
                     headerClass="dark-header has-border"
                     headerMenusClass="mx-auto"
                     btnClass="btn btn-outline-main btn-outline-main-dark d-lg-block d-none"
-                    btnLink="/add-new-listing"
-                    btnText="Add Listing"
+                    btnLink="/post-property"
+                    btnText="Post Property"
                     spanClass="icon-right text-gradient"
                     showContactNumber={false}
                 />
@@ -353,16 +105,17 @@ const AccountDeletionRequest = () => {
     return (
         <>
         <PageTitle title="360Ghar - Account Deletion Request" />
-        <style>{customStyles}</style>
+
+        <OffCanvas />
+        <MobileMenu />
 
         <main className="body-bg">
-
             <Header
                 headerClass="dark-header has-border"
                 headerMenusClass="mx-auto"
                 btnClass="btn btn-outline-main btn-outline-main-dark d-lg-block d-none"
-                btnLink="/add-new-listing"
-                btnText="Add Listing"
+                btnLink="/post-property"
+                btnText="Post Property"
                 spanClass="icon-right text-gradient"
                 showContactNumber={false}
             />

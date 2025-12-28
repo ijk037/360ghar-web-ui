@@ -261,7 +261,7 @@ const EmiCalculator = () => {
                                                                 className="principal-bar"
                                                                 style={{
                                                                     width: `${(loanAmount / totalPayment) * 100}%`,
-                                                                    backgroundColor: '#28a745'
+                                                                backgroundColor: 'var(--success-color)'
                                                                 }}
                                                                 title={`Principal: ${formatCurrency(loanAmount)}`}
                                                             ></div>
@@ -269,14 +269,14 @@ const EmiCalculator = () => {
                                                                 className="interest-bar"
                                                                 style={{
                                                                     width: `${(totalInterest / totalPayment) * 100}%`,
-                                                                    backgroundColor: '#ffc107'
+                                                                backgroundColor: 'var(--warning-color)'
                                                                 }}
                                                                 title={`Interest: ${formatCurrency(totalInterest)}`}
                                                             ></div>
                                                         </div>
                                                         <div className="breakdown-legend d-flex justify-content-between mt-2">
                                                             <span className="legend-item">
-                                                                <span className="legend-color" style={{ backgroundColor: '#28a745' }}></span>
+                                                            <span className="legend-color" style={{ backgroundColor: 'var(--success-color)' }}></span>
                                                                 Principal ({formatNumber(Math.round((loanAmount / totalPayment) * 100))}%)
                                                             </span>
                                                             <span className="legend-item">

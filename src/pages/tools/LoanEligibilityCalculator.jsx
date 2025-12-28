@@ -5,6 +5,7 @@
  import OffCanvas from '../../common/OffCanvas';
  import PageTitle from '../../common/PageTitle';
  import SEO from '../../common/SEO';
+ import Cta from '../../components/ui/Cta';
  import { siteMetadata } from '../../seo/siteMetadata';
  
  const LoanEligibilityCalculator = () => {
@@ -175,6 +176,8 @@
                      </div>
                  </section>
  
+                 <Cta ctaClass="" />
+
                  <Footer />
              </main>
          </>

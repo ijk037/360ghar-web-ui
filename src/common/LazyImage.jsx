@@ -1,9 +1,36 @@
-import React, { forwardRef } from 'react';
+import { forwardRef, useEffect, useMemo, useState } from 'react';
 
 /**
  * Centralized <img> wrapper that defaults to native lazy loading while
  * letting critical assets opt into eager loading via the `priority` flag.
  */
+const LOCAL_HOSTNAMES = new Set(['localhost', '127.0.0.1', '::1']);
+
+const normalizeSrc = (raw) => {
+  if (!raw || typeof raw !== 'string') return '';
+  const src = raw.trim();
+  if (!src) return '';
+
+  const lowered = src.toLowerCase();
+  if (lowered === 'null' || lowered === 'undefined' || lowered === 'none') return '';
+
+  if (src.startsWith('//')) return `https:${src}`;
+
+  if (src.startsWith('http://')) {
+    try {
+      const parsed = new URL(src);
+      if (!LOCAL_HOSTNAMES.has(parsed.hostname)) {
+        parsed.protocol = 'https:';
+        return parsed.toString();
+      }
+    } catch {
+      // ignore URL parsing issues
+    }
+  }
+
+  return src;
+};
+
 const LazyImage = forwardRef(
   (
     {
@@ -11,6 +38,9 @@ const LazyImage = forwardRef(
       loading,
       decoding = 'async',
       fetchPriority,
+      fallbackSrc,
+      referrerPolicy,
+      onError,
       ...rest
     },
     ref
@@ -19,13 +49,43 @@ const LazyImage = forwardRef(
     const resolvedDecoding = priority ? 'auto' : decoding;
     const resolvedFetchPriority = priority ? 'high' : fetchPriority;
 
+    const normalizedSrc = useMemo(() => normalizeSrc(rest.src), [rest.src]);
+    const normalizedFallbackSrc = useMemo(() => normalizeSrc(fallbackSrc), [fallbackSrc]);
+
+    const [currentSrc, setCurrentSrc] = useState(
+      normalizedSrc || normalizedFallbackSrc || ''
+    );
+    const [didFallback, setDidFallback] = useState(false);
+
+    useEffect(() => {
+      setCurrentSrc(normalizedSrc || normalizedFallbackSrc || '');
+      setDidFallback(false);
+    }, [normalizedSrc, normalizedFallbackSrc]);
+
+    const resolvedReferrerPolicy = useMemo(() => {
+      if (referrerPolicy) return referrerPolicy;
+      // Many third-party image CDNs break/deny hotlinking when a Referer is present.
+      return currentSrc.startsWith('http') ? 'no-referrer' : undefined;
+    }, [referrerPolicy, currentSrc]);
+
+    const handleError = (event) => {
+      if (!didFallback && normalizedFallbackSrc && currentSrc !== normalizedFallbackSrc) {
+        setDidFallback(true);
+        setCurrentSrc(normalizedFallbackSrc);
+      }
+      if (typeof onError === 'function') onError(event);
+    };
+
     return (
       <img
         ref={ref}
         loading={resolvedLoading}
         decoding={resolvedDecoding}
         fetchPriority={resolvedFetchPriority}
+        referrerPolicy={resolvedReferrerPolicy}
+        onError={handleError}
         {...rest}
+        src={currentSrc}
       />
     );
   }

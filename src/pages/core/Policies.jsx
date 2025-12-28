@@ -2,6 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
+import MobileMenu from '../../common/MobileMenu';
+import OffCanvas from '../../common/OffCanvas';
+import Cta from '../../components/ui/Cta';
 import PageTitle from '../../common/PageTitle';
 import SEO from '../../common/SEO';
 import { siteMetadata } from '../../seo/siteMetadata';
@@ -142,18 +145,21 @@ const Policies = () => {
       />
       <PageTitle title="360Ghar - Policies" />
 
-      <Header
-        headerClass="dark-header has-border"
-        headerMenusClass="mx-auto"
-        btnClass="btn btn-outline-main btn-outline-main-dark d-lg-block d-none"
-        btnLink="/add-new-listing"
-        btnText="Add Listing"
-        spanClass="icon-right text-gradient"
-        showContactNumber={false}
-      />
+      <OffCanvas />
+      <MobileMenu />
 
+      <main className="body-bg">
+        <Header
+          headerClass="dark-header has-border"
+          headerMenusClass="mx-auto"
+          btnClass="btn btn-outline-main btn-outline-main-dark d-lg-block d-none"
+          btnLink="/post-property"
+          btnText="Post Property"
+          spanClass="icon-right text-gradient"
+          showContactNumber={false}
+        />
       
-      <section className="policy-wrapper pt-100 pb-120">
+        <section className="policy-wrapper padding-y-120">
         <div className="container px-lg-5">
           <div className="row justify-content-center mb-40">
             <div className="col-lg-8 text-center">
@@ -222,7 +228,10 @@ const Policies = () => {
         </div>
       </section>
 
-      <Footer />
+        <Cta ctaClass="" />
+
+        <Footer />
+      </main>
     </>
   );
 };

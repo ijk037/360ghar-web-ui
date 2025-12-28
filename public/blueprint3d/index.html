@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Create and visualize floor plans in 2D and 3D with 360Ghar Blueprint Studio.">
+  <title>360Ghar - Design Blueprint Studio</title>
+
+  <link href="css/bootstrap.css" rel="stylesheet">
+  <link href="css/example.css" rel="stylesheet">
+
+  <script src="js/three.min.js"></script>
+  <script src="js/blueprint3d.js"></script>
+
+  <script src="js/jquery.js"></script>
+  <script src="js/bootstrap.js"></script>
+
+  <script src="js/items.js"></script>
+  <script src="js/example.js"></script>
+</head>
+
+<body>
+
+  <div class="container-fluid">
+    <div class="row main-row">
+      <!-- Left Column - Sidebar -->
+      <div class="col-xs-3 sidebar">
+        <!-- Logo/Brand -->
+        <div style="margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border);">
+          <h1 style="font-size: 20px; font-weight: 700; margin: 0; color: var(--primary);">
+            <a href="/" target="_top" rel="noreferrer" style="color: inherit; text-decoration: none;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                style="vertical-align: middle; margin-right: 8px;">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+              Blueprint Studio
+            </a>
+          </h1>
+          <p style="font-size: 12px; color: var(--text-muted); margin: 4px 0 0 32px;">Plan in 2D, explore in 3D • 360Ghar</p>
+        </div>
+
+        <!-- Main Navigation -->
+        <ul class="nav nav-sidebar">
+          <li id="floorplan_tab"><a href="#">
+              <span style="display: flex; align-items: center; gap: 10px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                Edit Floorplan
+              </span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </a></li>
+          <li id="design_tab"><a href="#">
+              <span style="display: flex; align-items: center; gap: 10px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path
+                    d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                  </path>
+                </svg>
+                3D View
+              </span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </a></li>
+          <li id="items_tab"><a href="#">
+              <span style="display: flex; align-items: center; gap: 10px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="14" width="7" height="7"></rect>
+                  <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+                Add Furniture
+              </span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </a></li>
+        </ul>
+        <hr />
+
+        <!-- Context Menu -->
+        <div id="context-menu">
+          <div style="margin: 0">
+            <span id="context-menu-name" class="lead"></span>
+            <br /><br />
+            <button class="btn btn-block btn-danger" id="context-menu-delete">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                style="vertical-align: middle; margin-right: 4px;">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+              Delete Item
+            </button>
+            <br />
+            <div class="panel panel-default">
+              <div class="panel-heading">Adjust Size</div>
+              <div class="panel-body" style="color: #333333">
+
+                <div class="form form-horizontal" class="lead">
+                  <div class="form-group">
+                    <label class="col-sm-5 control-label">
+                      Width
+                    </label>
+                    <div class="col-sm-6">
+                      <input type="number" class="form-control" id="item-width">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-5 control-label">
+                      Depth
+                    </label>
+                    <div class="col-sm-6">
+                      <input type="number" class="form-control" id="item-depth">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-5 control-label">
+                      Height
+                    </label>
+                    <div class="col-sm-6">
+                      <input type="number" class="form-control" id="item-height">
+                    </div>
+                  </div>
+                </div>
+                <small><span class="text-muted">Measurements in inches.</span></small>
+              </div>
+            </div>
+
+            <label><input type="checkbox" id="fixed" /> Lock in place</label>
+            <br /><br />
+          </div>
+        </div>
+
+        <!-- Floor textures -->
+        <div id="floorTexturesDiv" style="display:none; padding: 0">
+          <div class="panel panel-default">
+            <div class="panel-heading">Floor Texture</div>
+            <div class="panel-body" style="color: #333333">
+
+              <div class="col-sm-6" style="padding: 3px">
+                <a href="#" class="thumbnail texture-select-thumbnail" texture-url="rooms/textures/light_fine_wood.jpg"
+                  texture-stretch="false" texture-scale="300">
+                  <img alt="Light Fine Wood" src="rooms/thumbnails/thumbnail_light_fine_wood.jpg" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wall Textures -->
+        <div id="wallTextures" style="display:none; padding: 0">
+          <div class="panel panel-default">
+            <div class="panel-heading">Wall Texture</div>
+            <div class="panel-body" style="color: #333333">
+              <div class="col-sm-6" style="padding: 3px">
+                <a href="#" class="thumbnail texture-select-thumbnail" texture-url="rooms/textures/marbletiles.jpg"
+                  texture-stretch="false" texture-scale="300">
+                  <img alt="Marble Tiles" src="rooms/thumbnails/thumbnail_marbletiles.jpg" />
+                </a>
+              </div>
+              <div class="col-sm-6" style="padding: 3px">
+                <a href="#" class="thumbnail texture-select-thumbnail" texture-url="rooms/textures/wallmap_yellow.png"
+                  texture-stretch="true" texture-scale="">
+                  <img alt="Yellow Wall" src="rooms/thumbnails/thumbnail_wallmap_yellow.png" />
+                </a>
+              </div>
+              <div class="col-sm-6" style="padding: 3px">
+                <a href="#" class="thumbnail texture-select-thumbnail" texture-url="rooms/textures/light_brick.jpg"
+                  texture-stretch="false" texture-scale="100">
+                  <img alt="Light Brick" src="rooms/thumbnails/thumbnail_light_brick.jpg" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column - Main Content -->
+      <div class="col-xs-9 main">
+
+        <!-- 3D Viewer -->
+        <div id="viewer">
+
+          <!-- Main Controls (Top Left) -->
+          <div id="main-controls">
+            <a href="#" class="btn btn-default btn-sm" id="new" data-tooltip="New Plan">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="12" y1="18" x2="12" y2="12"></line>
+                <line x1="9" y1="15" x2="15" y2="15"></line>
+              </svg>
+              <span class="btn-text">New</span>
+            </a>
+            <a href="#" class="btn btn-default btn-sm" id="saveFile" data-tooltip="Save Plan">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                <polyline points="7 3 7 8 15 8"></polyline>
+              </svg>
+              <span class="btn-text">Save</span>
+            </a>
+            <a class="btn btn-sm btn-default btn-file" data-tooltip="Load Plan">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              <input type="file" class="hidden-input" id="loadFile">
+              <span class="btn-text">Load</span>
+            </a>
+          </div>
+
+          <!-- Extra Controls (Top Right) - Download -->
+          <div id="extra-controls">
+            <a href="#" class="btn btn-default btn-sm" id="downloadImage" data-tooltip="Download as Image">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              Download
+            </a>
+          </div>
+
+          <!-- Camera Controls (Bottom Right) -->
+          <div id="camera-controls">
+            <a href="#" class="btn btn-default" id="zoom-out" data-tooltip="Zoom Out">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                <line x1="8" y1="11" x2="14" y2="11"></line>
+              </svg>
+            </a>
+            <a href="#" class="btn btn-default" id="reset-view" data-tooltip="Reset View">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+            </a>
+            <a href="#" class="btn btn-default" id="zoom-in" data-tooltip="Zoom In">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                <line x1="11" y1="8" x2="11" y2="14"></line>
+                <line x1="8" y1="11" x2="14" y2="11"></line>
+              </svg>
+            </a>
+
+            <span></span>
+
+            <a class="btn btn-default" href="#" id="move-left" data-tooltip="Pan Left">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </a>
+            <span class="btn-group-vertical">
+              <a class="btn btn-default" href="#" id="move-up" data-tooltip="Pan Up">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="18 15 12 9 6 15"></polyline>
+                </svg>
+              </a>
+              <a class="btn btn-default" href="#" id="move-down" data-tooltip="Pan Down">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </a>
+            </span>
+            <a class="btn btn-default" href="#" id="move-right" data-tooltip="Pan Right">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </a>
+          </div>
+
+          <div id="loading-modal">
+            <h1>Loading...</h1>
+          </div>
+        </div>
+
+        <!-- 2D Floorplanner -->
+        <div id="floorplanner">
+          <canvas id="floorplanner-canvas"></canvas>
+          <div id="floorplanner-controls">
+
+            <button id="move" class="btn btn-sm btn-default" data-tooltip="Move & Edit Walls">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="5 9 2 12 5 15"></polyline>
+                <polyline points="9 5 12 2 15 5"></polyline>
+                <polyline points="15 19 12 22 9 19"></polyline>
+                <polyline points="19 9 22 12 19 15"></polyline>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <line x1="12" y1="2" x2="12" y2="22"></line>
+              </svg>
+              Move
+            </button>
+            <button id="draw" class="btn btn-sm btn-default" data-tooltip="Draw New Walls">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+              </svg>
+              Draw
+            </button>
+            <button id="delete" class="btn btn-sm btn-default" data-tooltip="Delete Walls">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+              Delete
+            </button>
+            <span class="pull-right">
+              <button class="btn btn-primary btn-sm" id="update-floorplan">
+                View in 3D
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  style="margin-left: 4px;">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
+            </span>
+
+          </div>
+          <div id="draw-walls-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              style="vertical-align: middle; margin-right: 6px;">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            Press "Esc" to stop drawing walls
+          </div>
+        </div>
+
+        <!-- Add Items (Furniture Panel) -->
+        <div id="add-items">
+          <div class="row" id="items-wrapper">
+
+            <!-- Items added here by items.js -->
+          </div>
+        </div>
+
+      </div>
+      <!-- End Right Column -->
+    </div>
+  </div>
+
+</body>
+
+</html>

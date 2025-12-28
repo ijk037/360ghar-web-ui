@@ -1,14 +1,29 @@
 import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
+import MobileMenu from '../../common/MobileMenu';
+import OffCanvas from '../../common/OffCanvas';
 import Cta from '../../components/ui/Cta';
 import ProjectSection from '../../components/project/ProjectSection';
 import PageTitle from '../../common/PageTitle';
+import SEO from '../../common/SEO';
+import { siteMetadata } from '../../seo/siteMetadata';
 
 const Project = () => {
     return (
         <>
+        <SEO
+            title="Real Estate Projects in Gurugram | 360Ghar"
+            description="Explore new and upcoming real estate projects in Gurugram. Find residential and commercial developments with virtual tours."
+            keywords="real estate projects, new projects Gurugram, upcoming developments, residential projects, commercial projects"
+            canonical="/projects"
+            image={siteMetadata.defaultOgImage}
+            type="website"
+        />
         <PageTitle title="360Ghar - Project" />
+
+        <OffCanvas />
+        <MobileMenu />
 
         <main className="body-bg">
             
@@ -17,8 +32,8 @@ const Project = () => {
                 headerClass="dark-header has-border"
                 headerMenusClass="mx-auto"
                 btnClass="btn btn-outline-main btn-outline-main-dark d-lg-block d-none"
-                btnLink="/add-new-listing"
-                btnText="Add Listing"
+                btnLink="/post-property"
+                btnText="Post Property"
                 spanClass="icon-right text-gradient"
                 showContactNumber={false}
             />

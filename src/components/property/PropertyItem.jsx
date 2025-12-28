@@ -1,7 +1,11 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 
 import LazyImage from '../../common/LazyImage';
+const PROPERTY_IMAGE_FALLBACK = '/assets/images/thumbs/property-1.png';
+
+const isUsableImageUrl = (value) =>
+  typeof value === 'string' && value.trim() !== '' && !/kuula\.co/i.test(value);
+
 function formatCurrency(value) {
   if (value === null || value === undefined) return 'Price on request';
   try {
@@ -15,9 +19,12 @@ const PropertyItem = ({ property, itemClass, iconsClass, btnClass, badgeText, ba
   // Handle API-first data structure with fallbacks
   const id = property.id;
   const mainImageFromList = Array.isArray(property.images)
-    ? (property.images.find((img) => img.is_main_image)?.image_url || property.images[0]?.image_url)
+    ? (
+      property.images.find((img) => img.is_main_image && isUsableImageUrl(img.image_url))?.image_url ||
+      property.images.find((img) => isUsableImageUrl(img.image_url))?.image_url
+    )
     : undefined;
-  const thumb = property.main_image_url || mainImageFromList || property.image_url || property.thumb || '/assets/images/thumbs/property-1.png';
+  const thumb = mainImageFromList || property.main_image_url || property.image_url || property.thumb || PROPERTY_IMAGE_FALLBACK;
 
   const purpose = property.purpose || property.price_type;
   const priceValue = purpose === 'rent' ? (property.monthly_rent || property.daily_rate || property.base_price) : property.base_price;
@@ -84,7 +91,7 @@ const PropertyItem = ({ property, itemClass, iconsClass, btnClass, badgeText, ba
       >
         <div className="property-item__thumb">
           <Link to={propertyURL} className="link">
-            <LazyImage src={thumb} alt="" className="cover-img" />
+            <LazyImage src={thumb} fallbackSrc={PROPERTY_IMAGE_FALLBACK} alt="" className="cover-img" />
           </Link>
           {renderBadge && <span className={badgeClass}>{badgeText}</span>}
           {showDistance}
@@ -206,8 +213,6 @@ const PropertyItem = ({ property, itemClass, iconsClass, btnClass, badgeText, ba
 };
 
 export default PropertyItem;
-
-
 
 
 

@@ -1,6 +1,8 @@
 import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
+import MobileMenu from '../../common/MobileMenu';
+import OffCanvas from '../../common/OffCanvas';
 import Cta from '../../components/ui/Cta';
 import LoginRegister from '../../components/forms/LoginRegister';
 import PageTitle from '../../common/PageTitle';
@@ -12,6 +14,9 @@ const Register = () => {
         <SEO title="Register | 360Ghar" description="Create your 360Ghar account." canonical="/register" noindex />
         <PageTitle title="360Ghar - Registration" />
 
+        <OffCanvas />
+        <MobileMenu />
+
         <main className="body-bg">
             
             {/* Header */}
@@ -19,8 +24,8 @@ const Register = () => {
                 headerClass="dark-header has-border"
                 headerMenusClass="mx-auto"
                 btnClass="btn btn-outline-main btn-outline-main-dark d-lg-block d-none"
-                btnLink="/add-new-listing"
-                btnText="Add Listing"
+                btnLink="/post-property"
+                btnText="Post Property"
                 spanClass="icon-right text-gradient"
                 showContactNumber={false}
             />

@@ -1,6 +1,8 @@
 import React, { useContext, useMemo } from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
+import MobileMenu from '../../common/MobileMenu';
+import OffCanvas from '../../common/OffCanvas';
 import Cta from '../../components/ui/Cta';
 import { useParams } from 'react-router-dom';
 import BlogDetailsSection from '../../components/blog/BlogDetailsSection';
@@ -11,7 +13,6 @@ import { generateBlogStructuredData } from '../../seo/structuredData';
 import { siteMetadata } from '../../seo/siteMetadata';
 
 const BlogDetails = () => {
-
     const { title } = useParams(); 
 
     // Blog Data Context API
@@ -46,25 +47,29 @@ const BlogDetails = () => {
             />
             <PageTitle title={meta.titleText} />
 
-            {/* Header */}
-            <Header
-                headerClass="dark-header has-border"
-                headerMenusClass="mx-auto"
-                btnClass="btn btn-outline-main btn-outline-main-dark d-lg-block d-none"
-                btnLink="/add-new-listing"
-                btnText="Add Listing"
-                spanClass="icon-right text-gradient"
-                showContactNumber={false}
-            />
+            <OffCanvas />
+            <MobileMenu />
 
+            <main className="body-bg">
+                {/* Header */}
+                <Header
+                    headerClass="dark-header has-border"
+                    headerMenusClass="mx-auto"
+                    btnClass="btn btn-outline-main btn-outline-main-dark d-lg-block d-none"
+                    btnLink="/post-property"
+                    btnText="Post Property"
+                    spanClass="icon-right text-gradient"
+                    showContactNumber={false}
+                />
             
-            <BlogDetailsSection/>
+                <BlogDetailsSection/>
 
-            {/* Cta */}
-            <Cta ctaClass=""/>
+                {/* Cta */}
+                <Cta ctaClass=""/>
 
-            {/* Footer */}
-            <Footer/>
+                {/* Footer */}
+                <Footer/>
+            </main>
         </>
     );
 };

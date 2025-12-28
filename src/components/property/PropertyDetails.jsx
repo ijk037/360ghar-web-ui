@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { usePropertyStore, useAuthStore } from '../../store';
 
 import LazyImage from '../../common/LazyImage';
+const PROPERTY_IMAGE_FALLBACK = '/assets/images/thumbs/property-1.png';
+const isUsableImageUrl = (value) =>
+  typeof value === 'string' && value.trim() !== '' && !/kuula\.co/i.test(value);
 const PropertyDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -33,7 +36,8 @@ const PropertyDetails = () => {
   useEffect(() => {
     // Set first image as active when media loads
     if (propertyMedia && propertyMedia.length > 0) {
-      setActiveImage(propertyMedia[0]);
+      const firstUsable = propertyMedia.find((m) => isUsableImageUrl(m?.image_url)) || propertyMedia[0];
+      setActiveImage(firstUsable);
     }
   }, [propertyMedia]);
 
@@ -85,8 +89,9 @@ const PropertyDetails = () => {
             <div className="property-main-image">
               {activeImage ? (
                 <LazyImage
-                  src={activeImage.url}
-                  alt={activeImage.title || currentProperty.title}
+                  src={activeImage.image_url}
+                  fallbackSrc={PROPERTY_IMAGE_FALLBACK}
+                  alt={activeImage.caption || currentProperty.title}
                   className="img-fluid rounded"
                   priority
                 />
@@ -106,8 +111,9 @@ const PropertyDetails = () => {
                     onClick={() => setActiveImage(media)}
                   >
                     <LazyImage
-                      src={media.url}
-                      alt={media.title || currentProperty.title}
+                      src={media.image_url}
+                      fallbackSrc={PROPERTY_IMAGE_FALLBACK}
+                      alt={media.caption || currentProperty.title}
                       className="img-fluid rounded"
                     />
                   </div>

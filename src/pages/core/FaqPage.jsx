@@ -1,6 +1,8 @@
 import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
+import MobileMenu from '../../common/MobileMenu';
+import OffCanvas from '../../common/OffCanvas';
 import Cta from '../../components/ui/Cta';
 import FaqTwo from '../../components/layout/FaqTwo';
 import FaqContactUs from '../../components/layout/FaqContactUs';
@@ -34,32 +36,36 @@ const FaqPage = () => {
             />
             <PageTitle title="360Ghar - Frequently Ask Question" />
 
-            {/* Header */}
-            <Header
-                headerClass="dark-header has-border"
-                headerMenusClass="mx-auto"
-                btnClass="btn btn-outline-main btn-outline-main-dark d-lg-block d-none"
-                btnLink="/post-property"
-                btnText="Post Property"
-                spanClass="icon-right text-gradient"
-                showContactNumber={false}
-            />
+            <OffCanvas />
+            <MobileMenu />
 
+            <main className="body-bg">
+                {/* Header */}
+                <Header
+                    headerClass="dark-header has-border"
+                    headerMenusClass="mx-auto"
+                    btnClass="btn btn-outline-main btn-outline-main-dark d-lg-block d-none"
+                    btnLink="/post-property"
+                    btnText="Post Property"
+                    spanClass="icon-right text-gradient"
+                    showContactNumber={false}
+                />
         
-            {/* Faq Two */}
-            <FaqTwo/>
+                {/* Faq Two */}
+                <FaqTwo/>
 
-            {/* Faq Contact Us */}
-            <FaqContactUs/>
+                {/* Faq Contact Us */}
+                <FaqContactUs/>
 
-            {/* Counter Four */}
-            <CounterFour/>
-            
-            {/* Cta */}
-            <Cta ctaClass=""/>
+                {/* Counter Four */}
+                <CounterFour/>
+                
+                {/* Cta */}
+                <Cta ctaClass=""/>
 
-            {/* Footer */}
-            <Footer/>
+                {/* Footer */}
+                <Footer/>
+            </main>
         </>
     );
 };

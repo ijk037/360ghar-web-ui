@@ -1,6 +1,9 @@
 import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
+import MobileMenu from '../../common/MobileMenu';
+import OffCanvas from '../../common/OffCanvas';
+import Cta from '../../components/ui/Cta';
 import SEO from '../../common/SEO';
 import { generateBreadcrumbStructuredData } from '../../seo/structuredData';
 
@@ -44,18 +47,22 @@ const GurugramGuide = () => {
         canonical="/gurugram-real-estate-guide"
         structuredData={structuredData}
       />
-      <Header
-        headerClass="dark-header has-border"
-        headerMenusClass="mx-auto"
-        btnClass="btn btn-outline-main btn-outline-main-dark d-lg-block d-none"
-        btnLink="/post-property"
-        btnText="Post Property"
-        spanClass="icon-right text-gradient"
-        showContactNumber={false}
-      />
+
+      <OffCanvas />
+      <MobileMenu />
 
       <main className="body-bg">
-        <section className="padding-y-60">
+        <Header
+          headerClass="dark-header has-border"
+          headerMenusClass="mx-auto"
+          btnClass="btn btn-outline-main btn-outline-main-dark d-lg-block d-none"
+          btnLink="/post-property"
+          btnText="Post Property"
+          spanClass="icon-right text-gradient"
+          showContactNumber={false}
+        />
+
+        <section className="padding-y-120">
           <div className="container container-two">
             <nav aria-label="breadcrumb" className="mb-4">
               <ol className="breadcrumb">
@@ -220,9 +227,11 @@ const GurugramGuide = () => {
             </div>
           </div>
         </section>
-      </main>
 
-      <Footer />
+        <Cta ctaClass="" />
+
+        <Footer />
+      </main>
     </>
   );
 };

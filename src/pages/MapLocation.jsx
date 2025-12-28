@@ -1,14 +1,29 @@
 import React from 'react';
 import Header from '../common/Header';
 import Footer from '../common/Footer';
+import MobileMenu from '../common/MobileMenu';
+import OffCanvas from '../common/OffCanvas';
 import Cta from '../components/ui/Cta';
 import MapLocationSection from '../components/layout/MapLocationSection';
 import PageTitle from '../common/PageTitle';
+import SEO from '../common/SEO';
+import { siteMetadata } from '../seo/siteMetadata';
 
 const MapLocation = () => {
     return (
         <>
+        <SEO
+            title="Properties on Map | Find Real Estate Near You | 360Ghar"
+            description="Explore properties on an interactive map. Find homes, apartments, and commercial spaces near you in Gurugram."
+            keywords="map search, properties near me, real estate map, Gurugram properties map"
+            canonical="/map-location"
+            image={siteMetadata.defaultOgImage}
+            type="website"
+        />
         <PageTitle title="360Ghar - Map Location" />
+
+        <OffCanvas />
+        <MobileMenu />
 
         <main className="body-bg">
             
@@ -17,8 +32,8 @@ const MapLocation = () => {
                 headerClass="dark-header has-border"
                 headerMenusClass="mx-auto"
                 btnClass="btn btn-outline-main btn-outline-main-dark d-lg-block d-none"
-                btnLink="/add-new-listing"
-                btnText="Add Listing"
+                btnLink="/post-property"
+                btnText="Post Property"
                 spanClass="icon-right text-gradient"
                 showContactNumber={false}
             />

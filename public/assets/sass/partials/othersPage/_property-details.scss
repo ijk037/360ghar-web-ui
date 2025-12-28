@@ -4,15 +4,20 @@
         border-radius: 5px;
         overflow: hidden;
     }
+    &.compact .property-details__thumb {
+        border-radius: 8px;
+    }
 }
 
 .property-details-item {
-    padding: clampCal(16, 30);
-    background-color: var(--gray-100);
+    padding: clampCal(20, 32);
+    background-color: hsl(var(--white));
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-color);
     border-radius: 5px;
     margin-bottom: clampCal(24, 40);
     &:first-child {
-        margin-top: clampCal(24, 40);
+        margin-top: 0;
     }
     &:last-child {
         margin-bottom: 0;
@@ -21,6 +26,9 @@
         padding-bottom: clampCal(16, 20);
         margin-bottom: clampCal(16, 30);
         border-bottom: 1px solid var(--border-color);
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: hsl(var(--heading-color));
     }
 }
 
@@ -30,13 +38,16 @@
         width: 60px;
         height: 60px;
         border-radius: 5px;
-        background-color: hsl(var(--white));
+        background-color: hsl(var(--section-bg));
+        color: hsl(var(--main-color));
         display: flex;
         justify-content: center;
         align-items: center;
+        font-size: 1.25rem;
         @include sm-screen {
             width: 40px;
             height: 40px;
+            font-size: 1rem;
         }
         img {
             max-width: 40px;
@@ -69,6 +80,134 @@
 .house-content {
     img {
         border-radius: 5px;
+    }
+}
+
+.property-details-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: clampCal(24, 32);
+}
+
+/* Summary Card Sidebar */
+.summary-card {
+    .card.compact-card {
+        border: none;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        border-radius: 12px;
+        overflow: hidden;
+        
+        .card-body {
+            padding: clampCal(20, 24);
+            
+            @include sm-screen {
+                padding: 16px;
+            }
+        }
+    }
+
+    .price-section {
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--border-color);
+        
+        .price-amount {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: hsl(var(--main-color));
+            line-height: 1.2;
+
+            @include sm-screen {
+                font-size: 1.5rem;
+            }
+        }
+        
+        .price-period {
+            font-size: 0.875rem;
+            color: hsl(var(--body-color));
+            font-weight: 400;
+        }
+    }
+
+    .owner-box {
+        background-color: hsl(var(--section-bg));
+        padding: 16px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border: 1px solid var(--border-color);
+
+        .owner-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: hsl(var(--body-color));
+            margin-bottom: 4px;
+        }
+
+        .owner-name {
+            font-weight: 600;
+            color: hsl(var(--heading-color));
+            margin-bottom: 12px;
+        }
+    }
+}
+
+/* Media Tabs Refinements */
+.media-tabs-container {
+    margin-bottom: 16px;
+}
+
+.media-tab-btn {
+    background-color: hsl(var(--white));
+    border: 1px solid var(--border-color);
+    color: hsl(var(--body-color));
+    font-weight: 500;
+    border-radius: 50px; /* Pill shape */
+    padding: 8px 20px;
+    transition: all 0.3s ease;
+    
+    i {
+        margin-right: 6px;
+    }
+
+    &:hover:not(:disabled) {
+        background-color: hsl(var(--section-bg));
+        color: hsl(var(--heading-color));
+        border-color: var(--border-color);
+    }
+
+    &.active {
+        background-color: hsl(var(--main-color));
+        color: hsl(var(--white));
+        border-color: hsl(var(--main-color));
+    }
+    
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        background-color: hsl(var(--gray-100));
+    }
+}
+
+/* Feature List Styling */
+.check-list {
+    &__item {
+        margin-bottom: 12px;
+        color: hsl(var(--heading-color));
+        font-weight: 500;
+        
+        .icon {
+            width: 20px;
+            height: 20px;
+            background-color: hsl(var(--main-color) / 0.1);
+            color: hsl(var(--main-color));
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 10px;
+        }
     }
 }
 

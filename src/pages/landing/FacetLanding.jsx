@@ -2,6 +2,9 @@ import React, { useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
+import MobileMenu from '../../common/MobileMenu';
+import OffCanvas from '../../common/OffCanvas';
+import Cta from '../../components/ui/Cta';
 import SEO from '../../common/SEO';
 import { generateBreadcrumbStructuredData } from '../../seo/structuredData';
 
@@ -134,8 +137,19 @@ const FacetLanding = () => {
         ]}
       />
 
+      <OffCanvas />
+      <MobileMenu />
+
       <main className="body-bg">
-        <Header headerClass="dark-header has-border" />
+        <Header
+          headerClass="dark-header has-border"
+          headerMenusClass="mx-auto"
+          btnClass="btn btn-outline-main btn-outline-main-dark d-lg-block d-none"
+          btnLink="/post-property"
+          btnText="Post Property"
+          spanClass="icon-right text-gradient"
+          showContactNumber={false}
+        />
 
         <section className="padding-y-60">
           <div className="container container-two">
@@ -160,6 +174,8 @@ const FacetLanding = () => {
             </div>
           </div>
         </section>
+
+        <Cta ctaClass="" />
 
         <Footer />
       </main>

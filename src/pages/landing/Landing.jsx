@@ -2,6 +2,9 @@ import React, { useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
+import MobileMenu from '../../common/MobileMenu';
+import OffCanvas from '../../common/OffCanvas';
+import Cta from '../../components/ui/Cta';
 import SEO from '../../common/SEO';
 import { generateBreadcrumbStructuredData } from '../../seo/structuredData';
 
@@ -95,6 +98,9 @@ const Landing = () => {
           },
         ]}
       />
+      <OffCanvas />
+      <MobileMenu />
+
       <main className="body-bg">
         <Header
           headerClass="dark-header has-border"
@@ -132,6 +138,8 @@ const Landing = () => {
             </div>
           </div>
         </section>
+
+        <Cta ctaClass="" />
 
         <Footer />
       </main>

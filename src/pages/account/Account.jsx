@@ -1,6 +1,8 @@
 import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
+import MobileMenu from '../../common/MobileMenu';
+import OffCanvas from '../../common/OffCanvas';
 import Cta from '../../components/ui/Cta';
 import AccountSection from '../../components/account/AccountSection';
 import PageTitle from '../../common/PageTitle';
@@ -20,6 +22,9 @@ const Account = () => {
         <SEO title="Account | 360Ghar" description="Manage your 360Ghar account." canonical="/account" noindex />
         <PageTitle title="360Ghar - Account Page" />
 
+        <OffCanvas />
+        <MobileMenu />
+
         <main className="body-bg">
             
             {/* Header */}
@@ -27,8 +32,8 @@ const Account = () => {
                 headerClass="dark-header has-border"
                 headerMenusClass="mx-auto"
                 btnClass="btn btn-outline-main btn-outline-main-dark d-lg-block d-none"
-                btnLink="/add-new-listing"
-                btnText="Add Listing"
+                btnLink="/post-property"
+                btnText="Post Property"
                 spanClass="icon-right text-gradient"
                 showContactNumber={false}
             />

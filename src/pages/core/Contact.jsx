@@ -1,6 +1,8 @@
 import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
+import MobileMenu from '../../common/MobileMenu';
+import OffCanvas from '../../common/OffCanvas';
 import Cta from '../../components/ui/Cta';
 import ContactTop from '../../components/contact/ContactTop';
 import ContactUsSection from '../../components/contact/ContactUsSection';
@@ -44,6 +46,9 @@ const Contact = () => {
           }}
         />
         <PageTitle title="360Ghar - Contact Us" />
+
+        <OffCanvas />
+        <MobileMenu />
 
         <main className="body-bg">
             

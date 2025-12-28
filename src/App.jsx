@@ -36,6 +36,7 @@ import LoanEligibilityCalculator from './pages/tools/LoanEligibilityCalculator';
 import AreaCalculator from './pages/tools/AreaCalculator';
 import PropertyChecklist from './pages/tools/PropertyChecklist';
 import CapitalGainsCalculator from './pages/tools/CapitalGainsCalculator';
+import DesignBlueprint from './pages/tools/DesignBlueprint';
 import Landing from './pages/landing/Landing';
 import GurugramGuide from './pages/core/GurugramGuide';
 import PropertyInvestment from './pages/core/PropertyInvestment';
@@ -87,6 +88,7 @@ function App() {
           <Route path="/area-calculator" element={<AreaCalculator />} />
           <Route path="/property-document-checklist" element={<PropertyChecklist />} />
           <Route path="/capital-gains-tax-calculator" element={<CapitalGainsCalculator />} />
+          <Route path="/design-blueprint" element={<DesignBlueprint />} />
           <Route path="/gurugram-real-estate-guide" element={<GurugramGuide />} />
           <Route path="/property-investment-gurugram" element={<PropertyInvestment />} />
           <Route path="/for-ai" element={<ForAI />} />

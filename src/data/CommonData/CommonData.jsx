@@ -105,6 +105,10 @@ export const navMenus = [
             text: "Map Search",
             path: "/map-location",
         },
+        {
+            text: "Design Blueprint",
+            path: "/design-blueprint",
+        },
       ],
     },
     {

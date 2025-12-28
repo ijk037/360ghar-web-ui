@@ -1,9 +1,24 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import Pagination from '../../common/Pagination';
 import { Link } from 'react-router-dom';
 import { usePropertyStore } from '../../store';
 
 import LazyImage from '../../common/LazyImage';
+const PROPERTY_IMAGE_FALLBACK = '/assets/images/thumbs/property-1.png';
+const isUsableImageUrl = (value) =>
+    typeof value === 'string' && value.trim() !== '' && !/kuula\.co/i.test(value);
+
+function formatCurrency(value) {
+    if (value === null || value === undefined) return '—';
+    try {
+        const num = Number(value);
+        if (!Number.isFinite(num)) return String(value);
+        return `₹${num.toLocaleString('en-IN')}`;
+    } catch {
+        return String(value);
+    }
+}
+
 const AccountMyPropertyTab = () => {
     const { userProperties, getUserProperties, isLoading, error } = usePropertyStore();
 
@@ -12,22 +27,26 @@ const AccountMyPropertyTab = () => {
     }, [getUserProperties]);
 
     const renderThumb = (property) => {
-        const fallback = '/assets/images/thumbs/property-1.png';
         if (Array.isArray(property?.images) && property.images.length > 0) {
-            const first = property.images[0];
-            return first.url || first.src || first;
+            const firstImage = property.images.find((img) => isUsableImageUrl(img?.image_url)) || property.images[0];
+            return firstImage?.image_url || firstImage?.url || firstImage?.src || firstImage;
         }
-        return property?.cover_image_url || property?.thumbnail || fallback;
+        return property?.main_image_url || property?.cover_image_url || property?.thumbnail || PROPERTY_IMAGE_FALLBACK;
     };
 
     const renderLocation = (property) => {
-        return property?.location || property?.address || property?.city || '—';
+        const parts = [property?.locality, property?.city, property?.state].filter(Boolean);
+        return property?.full_address || (parts.length ? parts.join(', ') : (property?.address || property?.city || '—'));
     };
 
     const renderPrice = (property) => {
         if (property?.price_formatted) return property.price_formatted;
         if (property?.price) return property.price;
-        return '—';
+        const purpose = property?.purpose || property?.price_type;
+        const priceValue = purpose === 'rent'
+            ? (property?.monthly_rent || property?.daily_rate || property?.base_price)
+            : (property?.base_price || property?.monthly_rent || property?.daily_rate);
+        return priceValue !== null && priceValue !== undefined ? formatCurrency(priceValue) : '—';
     };
 
     return (
@@ -65,7 +84,7 @@ const AccountMyPropertyTab = () => {
                                         <td>
                                             <div className="d-flex align-items-center gap-3">
                                                 <div className="cart-item__thumb">
-                                                    <LazyImage src={renderThumb(property)} alt=""/>
+                                                    <LazyImage src={renderThumb(property)} fallbackSrc={PROPERTY_IMAGE_FALLBACK} alt=""/>
                                                 </div>
                                                 <div className="cart-item__content">
                                                     <h6 className="cart-item__title fw-500 font-18">

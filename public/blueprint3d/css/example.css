@@ -1,0 +1,883 @@
+/*
+ * Blueprint3D Modern UI
+ * A clean, professional real-estate floor planner theme
+ */
+
+/* ============================================
+   CSS VARIABLES - Design Tokens
+   ============================================ */
+@import url("https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&family=Vidaloka&display=swap");
+
+:root {
+  /* Font Family (match 360Ghar site) */
+  --heading-font: "Vidaloka", serif;
+  --body-font: "Jost", sans-serif;
+  --poppins-font: "Poppins", sans-serif;
+
+  /* Primary Colors (match 360Ghar main) */
+  --primary: #f05a22;
+  --primary-hover: #f37221;
+  --primary-light: rgba(240, 90, 34, 0.12);
+  --main-gradient: linear-gradient(90deg, #F69220 0.04%, #F68E20 28.67%, #F48421 54.05%, #F37221 78.11%, #F05A22 100.04%);
+  --main-gradient-rev: linear-gradient(270deg, #F69220 0.04%, #F68E20 28.67%, #F48421 54.05%, #F37221 78.11%, #F05A22 100.04%);
+
+  /* Neutral Colors */
+  --surface: #ffffff;
+  --background: #f8f8f8;
+  --border: #e0e0e0;
+  --border-light: #f8f8f8;
+
+  /* Text Colors */
+  --text-primary: #181616;
+  --text-secondary: #777777;
+  --text-muted: rgba(119, 119, 119, 0.6);
+
+  /* Semantic Colors */
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+
+  /* WhatsApp Green */
+  --whatsapp: #25d366;
+  --whatsapp-hover: #128c7e;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition: 200ms ease;
+  --transition-slow: 300ms ease;
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  overflow: hidden;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+  font-family: var(--body-font), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background-color: var(--background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+div {
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================
+   LAYOUT - Main Grid
+   ============================================ */
+.container-fluid {
+  padding: 0 !important;
+}
+
+.main-row {
+  padding: 0;
+  display: flex;
+  height: 100vh;
+}
+
+/* ============================================
+   SIDEBAR
+   ============================================ */
+.sidebar {
+  width: 280px;
+  min-width: 280px;
+  padding: var(--space-5);
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  z-index: 10;
+}
+
+/* Custom Scrollbar */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--radius-full);
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ============================================
+   NAVIGATION TABS
+   ============================================ */
+.nav-sidebar {
+  margin: 0 0 var(--space-5) 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.nav-sidebar>li {
+  margin: 0;
+}
+
+.nav-sidebar>li>a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  border-radius: var(--radius);
+  transition: all var(--transition);
+  border: 1px solid transparent;
+}
+
+.nav-sidebar>li>a:hover {
+  background-color: var(--background);
+  color: var(--text-primary);
+}
+
+.nav-sidebar>.active>a,
+.nav-sidebar>.active>a:hover,
+.nav-sidebar>.active>a:focus {
+  background: var(--main-gradient);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: var(--shadow);
+}
+
+.nav-sidebar>li>a .glyphicon {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* ============================================
+   CONTEXT MENU (Item Controls)
+   ============================================ */
+#context-menu {
+  display: none;
+  padding: var(--space-4);
+  background: var(--background);
+  border-radius: var(--radius-lg);
+  margin-top: var(--space-4);
+}
+
+#context-menu-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+#context-menu-delete {
+  margin-top: var(--space-3);
+}
+
+/* Panel Styling */
+.panel {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: none;
+  margin-bottom: var(--space-4);
+  overflow: hidden;
+}
+
+.panel-default {
+  border-color: var(--border);
+}
+
+.panel-heading {
+  background: var(--background) !important;
+  border-bottom: 1px solid var(--border);
+  padding: var(--space-3) var(--space-4);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.panel-body {
+  padding: var(--space-4);
+  background: var(--surface);
+}
+
+/* Form Controls */
+.form-control {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  font-size: 14px;
+  transition: all var(--transition);
+  background: var(--surface);
+}
+
+.form-control:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+  outline: none;
+}
+
+.control-label {
+  font-weight: 500;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+/* Checkbox styling */
+#context-menu label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+#context-menu input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+}
+
+/* ============================================
+   TEXTURE PANELS
+   ============================================ */
+#floorTexturesDiv,
+#wallTextures {
+  padding: 0 !important;
+  margin-top: var(--space-4);
+}
+
+.texture-select-thumbnail {
+  display: block;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: all var(--transition);
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.texture-select-thumbnail:hover {
+  border-color: var(--primary);
+  transform: scale(1.02);
+}
+
+.texture-select-thumbnail img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ============================================
+   MAIN CONTENT AREA
+   ============================================ */
+.main {
+  flex: 1;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  background: var(--background);
+}
+
+/* ============================================
+   3D VIEWER
+   ============================================ */
+#viewer {
+  display: none;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 100%);
+}
+
+/* ============================================
+   MAIN CONTROLS (Top Left)
+   ============================================ */
+#main-controls {
+  position: absolute;
+  top: var(--space-5);
+  left: var(--space-5);
+  display: flex;
+  gap: var(--space-2);
+  background: var(--surface);
+  padding: var(--space-2);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
+}
+
+#main-controls .btn {
+  padding: var(--space-2) var(--space-4);
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-primary);
+  transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+#main-controls .btn:hover {
+  background: var(--background);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* ============================================
+   CAMERA CONTROLS (Bottom Right)
+   ============================================ */
+#camera-controls {
+  position: absolute;
+  bottom: var(--space-5);
+  right: var(--space-5);
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  background: var(--surface);
+  padding: var(--space-2);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
+}
+
+#camera-controls .btn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+  transition: all var(--transition);
+}
+
+#camera-controls .btn:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+#camera-controls .btn-group-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+#camera-controls .btn-group-vertical .btn {
+  border-radius: var(--radius-sm);
+}
+
+/* Separator in camera controls */
+#camera-controls>span:not(.btn-group-vertical) {
+  width: 1px;
+  height: 24px;
+  background: var(--border);
+  margin: 0 var(--space-2);
+}
+
+/* ============================================
+   LOADING MODAL
+   ============================================ */
+#loading-modal {
+  position: absolute;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(4px);
+}
+
+#loading-modal h1 {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+#loading-modal h1::before {
+  content: '';
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================
+   FLOORPLANNER (2D Editor)
+   ============================================ */
+#floorplanner {
+  display: none;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+}
+
+#floorplanner-canvas {
+  display: block;
+}
+
+/* ============================================
+   FLOORPLANNER CONTROLS
+   ============================================ */
+#floorplanner-controls {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 100%);
+  z-index: 100;
+}
+
+#floorplanner-controls .btn {
+  padding: var(--space-2) var(--space-4);
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+  transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  box-shadow: var(--shadow-sm);
+}
+
+#floorplanner-controls .btn:hover {
+  background: var(--background);
+  color: var(--text-primary);
+}
+
+#floorplanner-controls .btn.btn-primary,
+#floorplanner-controls .btn.btn-primary.disabled {
+  background: var(--main-gradient);
+  border-color: var(--primary);
+  color: #ffffff;
+  box-shadow: var(--shadow);
+}
+
+#floorplanner-controls .btn.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+
+#floorplanner-controls .pull-right {
+  margin-left: auto;
+}
+
+#update-floorplan {
+  padding: var(--space-2) var(--space-6) !important;
+  font-weight: 600 !important;
+}
+
+/* Draw Walls Hint */
+#draw-walls-hint {
+  position: absolute;
+  left: var(--space-5);
+  bottom: var(--space-5);
+  background: var(--text-primary);
+  color: #ffffff;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 500;
+  z-index: 100;
+  display: none;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ============================================
+   ADD ITEMS (Furniture Panel)
+   ============================================ */
+#add-items {
+  display: none;
+  padding: var(--space-5);
+  overflow-y: auto;
+  background: var(--background);
+}
+
+#add-items::-webkit-scrollbar {
+  width: 8px;
+}
+
+#add-items::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#add-items::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--radius-full);
+}
+
+#items-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--space-4);
+  margin: 0;
+}
+
+#items-wrapper>div {
+  width: auto !important;
+  padding: 0 !important;
+  float: none !important;
+}
+
+/* Furniture Item Card */
+.furniture-item-wrapper {
+  width: 100%;
+}
+
+.add-item {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none !important;
+  color: var(--text-primary) !important;
+  transition: all var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.add-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary);
+}
+
+.item-image-container {
+  width: 100%;
+  height: 120px;
+  overflow: hidden;
+  background: var(--background);
+}
+
+.item-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition);
+}
+
+.add-item:hover .item-image-container img {
+  transform: scale(1.05);
+}
+
+.item-name {
+  padding: var(--space-3);
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+  color: var(--text-primary);
+  border-top: 1px solid var(--border-light);
+}
+
+/* Legacy thumbnail styling (override Bootstrap) */
+.thumbnail {
+  margin: 0;
+  padding: 0;
+  border: none !important;
+  background: none !important;
+}
+
+/* ============================================
+   BUTTONS - Global Styles
+   ============================================ */
+.btn {
+  font-family: var(--body-font), sans-serif;
+  font-weight: 500;
+  border-radius: var(--radius);
+  transition: all var(--transition);
+  cursor: pointer;
+}
+
+.btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.btn-default {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+.btn-default:hover {
+  background: var(--background);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.btn-primary {
+  background: var(--main-gradient);
+  border-color: var(--primary);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background: var(--main-gradient-rev);
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
+  border-color: var(--danger);
+  color: #ffffff;
+}
+
+.btn-danger:hover {
+  background: linear-gradient(135deg, #dc2626 0%, var(--danger) 100%);
+}
+
+/* Success Button */
+.btn-success {
+  background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+  border-color: var(--success);
+  color: #ffffff;
+}
+
+/* WhatsApp Button */
+.btn-whatsapp {
+  background: linear-gradient(135deg, var(--whatsapp) 0%, var(--whatsapp-hover) 100%);
+  border-color: var(--whatsapp);
+  color: #ffffff;
+}
+
+.btn-whatsapp:hover {
+  background: linear-gradient(135deg, var(--whatsapp-hover) 0%, var(--whatsapp) 100%);
+  color: #ffffff;
+}
+
+/* ============================================
+   FILE INPUT BUTTON
+   ============================================ */
+.btn-file {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  opacity: 0;
+  cursor: inherit;
+}
+
+/* ============================================
+   HORIZONTAL RULE
+   ============================================ */
+hr {
+  border: none;
+  height: 1px;
+  background: var(--border);
+  margin: var(--space-4) 0;
+}
+
+/* ============================================
+   EXTRA CONTROLS (Download, Share)
+   ============================================ */
+#extra-controls {
+  position: absolute;
+  top: var(--space-5);
+  right: var(--space-5);
+  display: flex;
+  gap: var(--space-2);
+  z-index: 100;
+}
+
+#extra-controls .btn {
+  padding: var(--space-2) var(--space-4);
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  box-shadow: var(--shadow);
+}
+
+/* ============================================
+   VIEW MODE TOGGLE
+   ============================================ */
+#view-toggle {
+  position: absolute;
+  bottom: var(--space-5);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  background: var(--surface);
+  padding: var(--space-1);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
+}
+
+#view-toggle .btn {
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-full);
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+#view-toggle .btn.active {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+/* ============================================
+   TOOLTIPS
+   ============================================ */
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  padding: var(--space-2) var(--space-3);
+  background: var(--text-primary);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--transition);
+  pointer-events: none;
+  z-index: 1000;
+}
+
+[data-tooltip]:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 240px;
+    min-width: 240px;
+    padding: var(--space-4);
+  }
+
+  #items-wrapper {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+
+  #main-controls,
+  #camera-controls,
+  #extra-controls {
+    padding: var(--space-1);
+  }
+
+  #main-controls .btn,
+  #camera-controls .btn,
+  #extra-controls .btn {
+    padding: var(--space-2);
+  }
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.hidden {
+  display: none !important;
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+  font-size: 12px;
+}
+
+.lead {
+  font-size: 16px;
+  font-weight: 600;
+}

@@ -1,8 +1,12 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { usePropertyStore } from '../../store';
 
 import LazyImage from '../../common/LazyImage';
+const PROPERTY_IMAGE_FALLBACK = '/assets/images/thumbs/property-1.png';
+
+const isUsableImageUrl = (value) =>
+  typeof value === 'string' && value.trim() !== '' && !/kuula\.co/i.test(value);
 const PropertyList = ({ limit, filters = {} }) => {
   const { properties, isLoading, error, getAllProperties } = usePropertyStore();
 
@@ -35,9 +39,13 @@ const PropertyList = ({ limit, filters = {} }) => {
         <div key={property.id} className="col-md-6 col-lg-4">
           <div className="property-item">
             <div className="property-img">
-              {property.media && property.media.length > 0 ? (
+              {property.images && property.images.length > 0 ? (
                 <LazyImage 
-                  src={property.media[0].url} 
+                  src={
+                    property.images.find((img) => isUsableImageUrl(img?.image_url))?.image_url ||
+                    property.main_image_url
+                  }
+                  fallbackSrc={PROPERTY_IMAGE_FALLBACK}
                   alt={property.title} 
                   className="img-fluid"
                 />

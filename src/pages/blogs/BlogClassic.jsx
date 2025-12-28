@@ -1,6 +1,8 @@
 import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
+import MobileMenu from '../../common/MobileMenu';
+import OffCanvas from '../../common/OffCanvas';
 import Cta from '../../components/ui/Cta';
 import BlogClassicSection from '../../components/blog/BlogClassicSection';
 import PageTitle from '../../common/PageTitle';
@@ -20,17 +22,20 @@ const BlogClassic = () => {
         />
         <PageTitle title="Real Estate Blog | 360Ghar" />
 
+        <OffCanvas />
+        <MobileMenu />
+
+        <main className="body-bg">
             {/* Header */}
             <Header
                 headerClass="dark-header has-border"
                 headerMenusClass="mx-auto"
                 btnClass="btn btn-outline-main btn-outline-main-dark d-lg-block d-none"
-                btnLink="/add-new-listing"
-                btnText="Add Listing"
+                btnLink="/post-property"
+                btnText="Post Property"
                 spanClass="icon-right text-gradient"
                 showContactNumber={false}
             />
-
             
             <BlogClassicSection/> 
 
@@ -39,6 +44,7 @@ const BlogClassic = () => {
 
             {/* Footer */}
             <Footer/>
+        </main>
         </>
     );
 };
