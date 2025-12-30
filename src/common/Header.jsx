@@ -23,7 +23,6 @@ const Header = ({
     showHeaderBtn = true,
     showOffCanvasBtn = false,
     offCanvasBtnClass = "",
-    showContactNumber = true,
     ...otherProps
 }) => {
     const navigate = useNavigate();
@@ -95,15 +94,6 @@ const Header = ({
 
                         {/* Header Right start */}
                         <div className="header-right flx-align">
-                            {
-                                showContactNumber && (
-                                    <Link to={`mailto:info@360ghar.com`} className="contact-number text-poppins text-gray-800 fw-500 d-flex align-items-center gap-2">
-                                        <span className="icon text-gradient font-20"><i className="fas fa-envelope"></i></span>
-                                        <span className="text">info@360ghar.com</span>
-                                    </Link>
-                                )
-                            }
-
                             {/* User Authentication Section */}
                             {isAuthenticated ? (
                                 <div className="user-dropdown position-relative d-lg-block d-none">

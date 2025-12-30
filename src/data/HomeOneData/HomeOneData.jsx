@@ -142,3 +142,22 @@ export const testimonials = [
 
 
 // Blog data removed. Use blogService to fetch posts dynamically.
+
+
+// Tool Features Data
+export const toolFeatures = [
+    {
+        icon: "/assets/images/icons/service1.svg",
+        title: "3D Floor Plan Builder",
+        desc: "Design your dream home with our interactive 3D floor plan tool. Create, customize, and visualize room layouts.",
+        btnText: "Try Now",
+        btnLink: "/design-blueprint"
+    },
+    {
+        icon: "/assets/images/icons/service2.svg",
+        title: "AI Vastu Checker",
+        desc: "Get AI-powered Vastu compliance analysis for your floor plan. Upload your design and receive instant insights.",
+        btnText: "Try Now",
+        btnLink: "/vastu-checker"
+    }
+];

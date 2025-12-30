@@ -58,8 +58,14 @@
     color: hsl(var(--heading-color));
 }
 
+// Prevent header from wrapping to multiple rows
+.header-inner {
+    flex-wrap: nowrap;
+}
+
 .header-right {
     gap: 12px; // ensure consistent spacing between right-side items
+    flex-wrap: nowrap; // Keep all items on one line
 }
 
 .contact-number {

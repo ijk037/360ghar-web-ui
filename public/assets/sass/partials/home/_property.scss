@@ -8,9 +8,9 @@
 
 /* List & Grid button */
 .list-grid {
-  display: none !important; 
-  @media (min-width: 360px) { 
-    display: flex !important; 
+  display: none !important;
+  @media (min-width: 360px) {
+    display: flex !important;
     &__button {
       width: 40px;
       height: 40px;
@@ -287,12 +287,52 @@
       border-radius: 5px 0 0 5px !important;
       display: flex !important;
       max-height: unset !important;
-      max-width: 374px !important; 
+      max-width: 374px !important;
       @include msm-screen {
-        max-width: 160px !important;  
+        max-width: 160px !important;
       }
       @include xsm-screen {
-        max-width: 120px !important;  
+        max-width: 120px !important;
+      }
+    }
+
+    /* List view in property page - 1 per row */
+    .property-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
+      .property-grid__item {
+        width: 100%;
+      }
+
+      .property-item {
+        display: flex;
+        flex-direction: row;
+
+        .property-item__thumb {
+          flex: 0 0 300px;
+          max-width: 300px;
+          max-height: unset;
+          border-radius: 5px 0 0 5px;
+
+          @include md-screen {
+            flex: 0 0 200px;
+            max-width: 200px;
+          }
+
+          @include msm-screen {
+            flex: 0 0 140px;
+            max-width: 140px;
+          }
+        }
+
+        .property-item__content {
+          margin-top: 0;
+          margin-left: 0;
+          border-radius: 0 5px 5px 0;
+          flex: 1;
+        }
       }
     }
   }
@@ -332,3 +372,595 @@
   }
 }
 /* ============================ Latest property Css End ==================== */
+
+/* ============================ Property Page Layout Start ==================== */
+.property-page {
+  padding: 24px 0 60px;
+
+  &__top-bar {
+    margin-bottom: 16px;
+  }
+
+  &__results-bar {
+    margin-bottom: 20px;
+  }
+
+  &__content {
+    display: flex;
+    gap: 24px;
+
+    @media (max-width: 991px) {
+      flex-direction: column;
+    }
+  }
+
+  &__sidebar {
+    flex: 0 0 280px;
+    width: 280px;
+    min-width: 280px;
+
+    @media (max-width: 991px) {
+      flex: 1;
+      width: 100%;
+      min-width: unset;
+    }
+  }
+
+  &__main {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+/* Property Grid - 2 per row */
+.property-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  &__item {
+    width: 100%;
+  }
+
+  &__empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    background: hsl(var(--white));
+    border-radius: 8px;
+
+    i {
+      font-size: 48px;
+      color: var(--gray-400);
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    p {
+      color: var(--gray-600);
+      margin: 0;
+    }
+  }
+}
+/* ============================ Property Page Layout End ==================== */
+
+/* ============================ Property Top Bar Start ==================== */
+.property-top-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  background: hsl(var(--white));
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.06);
+
+  @media (max-width: 991px) {
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 575px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  &__search {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    flex: 1;
+
+    @media (max-width: 575px) {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+
+  &__field {
+    flex: 1;
+    min-width: 0;
+
+    &--location {
+      flex: 0 0 240px;
+      min-width: 200px;
+
+      @media (max-width: 991px) {
+        flex: 1;
+      }
+    }
+
+    &--sort {
+      flex: 0 0 160px;
+      min-width: 140px;
+
+      @media (max-width: 575px) {
+        flex: 1;
+      }
+    }
+  }
+
+  &__label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--gray-600);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    i {
+      font-size: 11px;
+      color: hsl(var(--main));
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+
+    @media (max-width: 575px) {
+      width: 100%;
+    }
+  }
+
+  &__btn {
+    height: 42px;
+    width: 42px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    flex-shrink: 0;
+
+    i {
+      font-size: 14px;
+    }
+  }
+}
+
+/* Compact input variant */
+.common-input--compact {
+  padding: 10px 14px;
+  font-size: 14px;
+  height: 42px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: hsl(var(--white));
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:focus {
+    border-color: hsl(var(--main));
+    box-shadow: 0 0 0 3px hsl(var(--main) / 0.1);
+    outline: none;
+  }
+
+  &::placeholder {
+    color: var(--gray-500);
+  }
+}
+
+/* Google Places Input styling */
+.property-top-bar__field--location {
+  gmp-place-autocomplete,
+  .pac-container {
+    width: 100% !important;
+  }
+
+  input {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 14px;
+    height: 42px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background: hsl(var(--white));
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:focus {
+      border-color: hsl(var(--main));
+      box-shadow: 0 0 0 3px hsl(var(--main) / 0.1);
+      outline: none;
+    }
+  }
+}
+/* ============================ Property Top Bar End ==================== */
+
+/* ============================ Property Filter Sidebar Start ==================== */
+.property-sidebar-wrapper {
+  position: sticky;
+  top: 90px;
+  max-height: calc(100vh - 110px);
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* Custom scrollbar */
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--gray-300);
+    border-radius: 4px;
+
+    &:hover {
+      background: var(--gray-400);
+    }
+  }
+
+  @media (max-width: 991px) {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+.property-filter-sidebar {
+  background: hsl(var(--white));
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 20px;
+}
+
+.filter-group {
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
+
+  &:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  &__title {
+    font-size: 13px;
+    font-weight: 600;
+    color: hsl(var(--heading-color));
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  &__subtitle {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--gray-700);
+    margin-bottom: 8px;
+  }
+
+  &__content {
+    .common-radio,
+    .common-check {
+      margin-bottom: 8px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .form-check-label {
+        font-size: 13px;
+        color: var(--gray-700);
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    input {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+
+  &__separator {
+    color: var(--gray-500);
+    font-size: 12px;
+  }
+
+  &__toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: transparent;
+    border: none;
+    padding: 8px 0;
+    color: hsl(var(--main));
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.2s;
+
+    &:hover {
+      color: hsl(var(--main-dark, var(--main)));
+    }
+
+    i {
+      font-size: 11px;
+    }
+  }
+
+  &__section {
+    margin-bottom: 16px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4px;
+
+    .common-check {
+      margin-bottom: 0;
+
+      .form-check-label {
+        font-size: 12px;
+      }
+    }
+  }
+
+  &--advanced {
+    background: var(--gray-50, #f9fafb);
+    margin: 0 -20px;
+    padding: 16px 20px;
+    border-bottom: none;
+  }
+
+  &--actions {
+    border-bottom: none;
+    padding-top: 8px;
+  }
+}
+
+/* Bedroom buttons */
+.bedroom-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.bedroom-btn {
+  padding: 6px 10px;
+  font-size: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: hsl(var(--white));
+  color: var(--gray-700);
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: hsl(var(--main));
+    color: hsl(var(--main));
+  }
+
+  &.active {
+    background: hsl(var(--main));
+    border-color: hsl(var(--main));
+    color: hsl(var(--white));
+  }
+}
+
+/* Small input variant */
+.common-input--sm {
+  padding: 8px 10px;
+  font-size: 13px;
+  height: 36px;
+  border-radius: 4px;
+}
+/* ============================ Property Filter Sidebar End ==================== */
+
+/* ============================ Property Filter Bottom Bar Start ==================== */
+.property-filter__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: hsl(var(--white));
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.06);
+
+  .property-filter__text {
+    font-size: 14px;
+    color: var(--gray-700);
+  }
+
+  .sort-options {
+    .btn-group {
+      .btn {
+        font-size: 12px;
+        padding: 6px 12px;
+
+        &.active {
+          background: hsl(var(--main));
+          border-color: hsl(var(--main));
+          color: hsl(var(--white));
+        }
+      }
+    }
+  }
+}
+/* ============================ Property Filter Bottom Bar End ==================== */
+
+/* Loading states */
+.property-item.loading {
+  background: hsl(var(--white));
+  border-radius: 8px;
+  overflow: hidden;
+
+  .loading-placeholder {
+    background: linear-gradient(90deg, var(--gray-200) 25%, var(--gray-100) 50%, var(--gray-200) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    min-height: 200px;
+  }
+
+  .loading-placeholder-text {
+    height: 16px;
+    background: linear-gradient(90deg, var(--gray-200) 25%, var(--gray-100) 50%, var(--gray-200) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+    margin-bottom: 8px;
+
+    &.short {
+      width: 60%;
+    }
+  }
+
+  .property-item__content {
+    padding: 16px;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ============================ Property Card Refinements Start ==================== */
+.property-grid .property-item {
+  /* Ensure cards have consistent height and layout */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &.style-two {
+    .property-item__thumb {
+      flex-shrink: 0;
+    }
+
+    .property-item__content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .property-item__bottom {
+      margin-top: auto;
+    }
+  }
+}
+
+/* Price per sqft styling */
+.property-item__price-per-sqft {
+  display: block;
+  font-size: 12px;
+  color: var(--gray-600);
+  margin-top: 2px;
+}
+
+/* Tags styling */
+.property-item__tags {
+  .badge {
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 4px 8px;
+  }
+}
+
+/* Amenities and features preview */
+.property-item__amenities-features {
+  padding-top: 10px;
+  border-top: 1px solid var(--border-color);
+
+  .amenities-preview,
+  .features-preview {
+    small {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge {
+      font-size: 10px;
+      padding: 3px 6px;
+    }
+  }
+}
+
+/* Distance badge */
+.property-item__distance {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  font-size: 11px;
+  z-index: 1;
+}
+/* ============================ Property Card Refinements End ==================== */
+
+/* ============================ Mobile Optimizations Start ==================== */
+@media (max-width: 575px) {
+  .property-page {
+    padding: 16px 0 40px;
+  }
+
+  .property-top-bar {
+    padding: 12px;
+  }
+
+  .property-filter__bottom {
+    padding: 10px 12px;
+
+    .sort-options .btn-group .btn {
+      font-size: 11px;
+      padding: 5px 8px;
+    }
+  }
+
+  .property-filter-sidebar {
+    padding: 16px;
+  }
+
+  .filter-group__title {
+    font-size: 12px;
+  }
+}
+/* ============================ Mobile Optimizations End ==================== */

@@ -7,18 +7,14 @@ const PropertyFilterBottom = ({ total = 0, currentPage = 1 }) => {
     const { filters, updateFilter, applyFilters } = usePropertyStore();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    
+
     const selectedSort = filters.sort_by || 'newest';
 
     const handleSortChangeEnhanced = async (newSortValue) => {
-        // Update sort in store
         updateFilter('sort_by', newSortValue);
-        updateFilter('page', 1); // Reset to first page when sorting changes
-        
-        // Apply filters immediately for sorting
+        updateFilter('page', 1);
         await applyFilters();
-        
-        // Update URL
+
         const params = new URLSearchParams(searchParams);
         params.set('sort_by', newSortValue);
         params.set('page', '1');
@@ -29,9 +25,8 @@ const PropertyFilterBottom = ({ total = 0, currentPage = 1 }) => {
     const showingEnd = Math.min(currentPage * 12, total);
 
     return (
-        <>
-         <div className="property-filter__bottom flx-between gap-2">
-            <div className="property-results-info">
+        <div className="property-filter__bottom flx-between gap-2">
+            <div className="property-results-info d-flex align-items-center gap-3 flex-wrap">
                 <span className="property-filter__text font-16 text-gray-800">
                     {total > 0 ?
                         `Showing ${showingStart}-${showingEnd} of ${total.toLocaleString()} properties` :
@@ -39,8 +34,7 @@ const PropertyFilterBottom = ({ total = 0, currentPage = 1 }) => {
                     }
                 </span>
                 {total > 0 && (
-                    <div className="sort-options mt-2">
-                        <small className="text-muted me-2">Quick sort:</small>
+                    <div className="sort-options">
                         <div className="btn-group btn-group-sm" role="group">
                             <button
                                 type="button"
@@ -75,30 +69,9 @@ const PropertyFilterBottom = ({ total = 0, currentPage = 1 }) => {
                 )}
             </div>
             <div className="d-flex align-items-center gap-3">
-
-                {/* List Grid Layout buttons */}
                 <ListGridButtons/>
-
-                <div className="d-flex align-items-center gap-2">
-                    <span className="property-filter__text font-16 text-gray-800"> Sort by: </span>
-                    <div className="select-has-icon data-sort">
-                        <select
-                            className="form-select common-input pill text-gray-800 px-3 py-2"
-                            onChange={(e) => handleSortChangeEnhanced(e.target.value)}
-                            value={selectedSort}
-                        >
-                            <option value="newest">Newest First</option>
-                            <option value="distance">Distance</option>
-                            <option value="price_low">Price: Low to High</option>
-                            <option value="price_high">Price: High to Low</option>
-                            <option value="popular">Most Popular</option>
-                            <option value="relevance">Relevance</option>
-                        </select>
-                    </div>
-                </div>
             </div>
         </div>
-        </>
     );
 };
 

@@ -82,8 +82,12 @@ export const navMenus = [
       path: "/properties",
     },
     {
-      text: "Projects",
-      path: "/project",
+      text: "Vastu Checker",
+      path: "/vastu-checker",
+    },
+    {
+      text: "Design Blueprint",
+      path: "/design-blueprint",
     },
     {
       text: "Services",
@@ -104,10 +108,6 @@ export const navMenus = [
         {
             text: "Map Search",
             path: "/map-location",
-        },
-        {
-            text: "Design Blueprint",
-            path: "/design-blueprint",
         },
       ],
     },
@@ -214,6 +214,10 @@ export const footerUsefulLinks = [
     {
         text: 'Blog & Insights',
         link: '/blog'
+    },
+    {
+        text: 'Vastu Checker',
+        link: '/vastu-checker'
     },
     {
         text: 'EMI Calculator',

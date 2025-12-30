@@ -8,22 +8,32 @@ import OffCanvasProvider from './contextApi/OffCanvasContext.jsx'
 import ScrollHideProvider from './contextApi/ScrollHideContext.jsx'
 import BlogDataProvider from './contextApi/BlogDataContext.jsx'
 import { HelmetProvider } from 'react-helmet-async'
+import { PostHogProvider } from 'posthog-js/react'
 import { reportWebVitals } from './seo/reportWebVitals'
 
+const posthogOptions = {
+  api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <BlogDataProvider>
-    <HelmetProvider>
-      <ScrollHideProvider>
-        <OffCanvasProvider>
-          <MobileMenuProvider>
-            <React.StrictMode>
-              <App />
-            </React.StrictMode>
-          </MobileMenuProvider>
-        </OffCanvasProvider>
-      </ScrollHideProvider>
-    </HelmetProvider>
-  </BlogDataProvider>
+  <PostHogProvider
+    apiKey={import.meta.env.VITE_PUBLIC_POSTHOG_KEY}
+    options={posthogOptions}
+  >
+    <BlogDataProvider>
+      <HelmetProvider>
+        <ScrollHideProvider>
+          <OffCanvasProvider>
+            <MobileMenuProvider>
+              <React.StrictMode>
+                <App />
+              </React.StrictMode>
+            </MobileMenuProvider>
+          </OffCanvasProvider>
+        </ScrollHideProvider>
+      </HelmetProvider>
+    </BlogDataProvider>
+  </PostHogProvider>
 )
 
 // Start measuring Core Web Vitals

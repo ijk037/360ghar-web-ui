@@ -7,8 +7,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        // target: 'http://localhost:8000',
-        target: 'https://api.360ghar.com',
+        target: 'http://localhost:8000',
+        // target: 'https://api.360ghar.com',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '/api/v1'),
       },

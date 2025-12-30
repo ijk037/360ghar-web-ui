@@ -15,6 +15,7 @@ import TestimonialThree from '../components/ui/TestimonialThree';
 import CounterThree from '../components/ui/CounterThree';
 import Faq from '../components/layout/Faq';
 import BlogThree from '../components/blog/BlogThree';
+import ToolShowcase from '../components/ui/ToolShowcase';
 import PageTitle from '../common/PageTitle';
 import SEO from '../common/SEO';
 import { realEstateStructuredData } from '../seo/structuredData';
@@ -79,6 +80,9 @@ const Home = () => {
 
                 {/* Counter Three */}
                 <CounterThree/>
+
+                {/* Tool Showcase */}
+                <ToolShowcase/>
 
                 {/* Faq */}
                 <Faq/>

@@ -1,9 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
 
+// Singleton loader for Google Maps - preloads on first import for faster autocomplete
 const loaderSingleton = (() => {
   let loader;
-  return () => {
+  let loadPromise = null;
+
+  const getLoader = () => {
     if (!loader) {
       const apiKey = import.meta.env.VITE_GOOGLE_PLACES_API_KEY;
 
@@ -21,6 +24,25 @@ const loaderSingleton = (() => {
     }
     return loader;
   };
+
+  // Preload the Google Maps library immediately
+  const preload = () => {
+    if (!loadPromise) {
+      const loader = getLoader();
+      if (loader) {
+        loadPromise = loader.load().catch(err => {
+          console.warn('Failed to preload Google Maps:', err);
+          loadPromise = null;
+        });
+      }
+    }
+    return loadPromise;
+  };
+
+  // Start preloading immediately when module loads
+  preload();
+
+  return { getLoader, preload };
 })();
 
 /**
@@ -46,7 +68,7 @@ const GooglePlacesInput = ({
 
     const init = async () => {
       try {
-        const loader = loaderSingleton();
+        const loader = loaderSingleton.getLoader();
 
         // Handle missing API key
         if (!loader) {
@@ -54,7 +76,8 @@ const GooglePlacesInput = ({
           return;
         }
 
-        await loader.load();
+        // Use preloaded promise for faster initialization
+        await loaderSingleton.preload();
 
         // Ensure Places library is loaded. New API exposes PlaceAutocompleteElement, older exposes Autocomplete
         const placesModule = await google.maps.importLibrary('places'); // eslint-disable-line no-undef
@@ -63,27 +86,25 @@ const GooglePlacesInput = ({
         const PlaceAutocompleteElement = placesModule?.PlaceAutocompleteElement || google.maps?.places?.PlaceAutocompleteElement;
 
         if (PlaceAutocompleteElement && hostRef.current) {
-                  // Map legacy types to new primary types (best-effort) - comprehensive for real estate
-        let includedPrimaryTypes = undefined;
+          // Map legacy types to new primary types - optimized for real estate search
+          let includedPrimaryTypes = undefined;
 
-        if (Array.isArray(types) && types.length > 0) {
-          // If specific types are provided, use them
-          if (types.includes('(cities)')) {
-            includedPrimaryTypes = ['locality', 'administrative_area_level_1', 'administrative_area_level_2'];
+          if (Array.isArray(types) && types.length > 0) {
+            // If specific types are provided, use them
+            if (types.includes('(cities)')) {
+              includedPrimaryTypes = ['locality', 'administrative_area_level_2'];
+            } else {
+              includedPrimaryTypes = types;
+            }
           } else {
-            includedPrimaryTypes = types;
+            // Optimized: Using only 3 essential types for faster search
+            // Fewer types = faster filtering by Google's API
+            includedPrimaryTypes = [
+              'locality',     // Cities - primary search target
+              'sublocality',  // Neighborhoods/Areas
+              'route'         // Streets for specific addresses
+            ];
           }
-        } else {
-          // Default to essential place types for real estate search (max 5 per Google API limit)
-          // Using only valid Google Places API primary types
-          includedPrimaryTypes = [
-            'locality',                    // Cities (most important for real estate)
-            'sublocality',                 // Neighborhoods/Sub-districts
-            'administrative_area_level_2', // Districts/Counties
-            'route',                      // Streets/Roads
-            'establishment'               // Buildings and establishments
-          ];
-        }
 
           const element = new PlaceAutocompleteElement();
           if (includedPrimaryTypes) element.includedPrimaryTypes = includedPrimaryTypes;

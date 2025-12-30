@@ -37,6 +37,7 @@ import AreaCalculator from './pages/tools/AreaCalculator';
 import PropertyChecklist from './pages/tools/PropertyChecklist';
 import CapitalGainsCalculator from './pages/tools/CapitalGainsCalculator';
 import DesignBlueprint from './pages/tools/DesignBlueprint';
+import VastuChecker from './pages/tools/VastuChecker';
 import Landing from './pages/landing/Landing';
 import GurugramGuide from './pages/core/GurugramGuide';
 import PropertyInvestment from './pages/core/PropertyInvestment';
@@ -89,6 +90,7 @@ function App() {
           <Route path="/property-document-checklist" element={<PropertyChecklist />} />
           <Route path="/capital-gains-tax-calculator" element={<CapitalGainsCalculator />} />
           <Route path="/design-blueprint" element={<DesignBlueprint />} />
+          <Route path="/vastu-checker" element={<VastuChecker />} />
           <Route path="/gurugram-real-estate-guide" element={<GurugramGuide />} />
           <Route path="/property-investment-gurugram" element={<PropertyInvestment />} />
           <Route path="/for-ai" element={<ForAI />} />
