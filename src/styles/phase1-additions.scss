@@ -25,6 +25,143 @@
   }
 }
 
+/* App Download Section */
+.app-download {
+  &__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #333;
+  }
+
+  &__desc {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.6;
+    max-width: 500px;
+  }
+
+  &__features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      font-size: 1rem;
+      color: #444;
+
+      i {
+        font-size: 18px;
+      }
+    }
+  }
+
+  &__badge {
+    display: inline-block;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    img {
+      height: 60px;
+      width: auto;
+    }
+  }
+
+  &__phone-mockup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 280px;
+    height: 500px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, var(--main-color) 0%, #ff6b6b 100%);
+    border-radius: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 25px;
+      background: #222;
+      border-radius: 15px;
+    }
+
+    i {
+      font-size: 80px;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 20px;
+    }
+
+    span {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+  }
+}
+
+@media (max-width: 991.98px) {
+  .app-download {
+    &__title {
+      font-size: 2rem;
+    }
+
+    &__phone-mockup {
+      width: 220px;
+      height: 400px;
+
+      i {
+        font-size: 60px;
+      }
+
+      span {
+        font-size: 22px;
+      }
+    }
+  }
+}
+
+@media (max-width: 575.98px) {
+  .app-download {
+    &__title {
+      font-size: 1.75rem;
+    }
+
+    &__phone-mockup {
+      width: 180px;
+      height: 320px;
+      border-radius: 30px;
+
+      &::before {
+        width: 60px;
+        height: 20px;
+      }
+
+      i {
+        font-size: 48px;
+      }
+
+      span {
+        font-size: 18px;
+      }
+    }
+  }
+}
+
 @keyframes skeleton-loading {
   0% {
     background-position: 200% 0;

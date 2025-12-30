@@ -10,6 +10,7 @@ import PropertyType from '../components/ui/PropertyType';
 import PropertyTwo from '../components/property/PropertyTwo';
 import MessageThree from '../components/layout/MessageThree';
 import Newsletter from '../components/ui/Newsletter';
+import AppDownload from '../components/ui/AppDownload';
 import TestimonialThree from '../components/ui/TestimonialThree';
 import CounterThree from '../components/ui/CounterThree';
 import Faq from '../components/layout/Faq';
@@ -70,6 +71,8 @@ const Home = () => {
 
                 {/* Newsletter */}
                 <Newsletter/>
+                {/* App Download */}
+                <AppDownload/>
 
                 {/* Testimonial Three */}
                 <TestimonialThree/>
