@@ -5,10 +5,18 @@
  * This is a public endpoint - no authentication required.
  */
 
-import { createAxiosInstance } from './http';
+import axios from 'axios';
 
-// Create axios instance without auth (public endpoint)
-const vastuApi = createAxiosInstance({ withAuth: false, enableRetry: false });
+// Use direct API URL in production to bypass Netlify's 26s proxy timeout
+// Vastu analysis requires up to 3 minutes for AI processing
+const API_BASE_URL = import.meta.env.PROD
+  ? 'https://api.360ghar.com/api/v1'
+  : '/api';
+
+const vastuApi = axios.create({
+  baseURL: API_BASE_URL,
+  timeout: 180000, // 3 minutes for AI processing
+});
 
 /**
  * Analyze a floor plan image for Vastu compliance
@@ -33,7 +41,6 @@ export const analyzeFloorPlan = async (
     headers: {
       'Content-Type': 'multipart/form-data',
     },
-    timeout: 180000, // 3 minute timeout for AI processing
   });
 
   return response.data;
