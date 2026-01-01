@@ -22,7 +22,7 @@ const OffCanvas = () => {
                 <div className="flx-between">
                     <LogoWhite/>
                     <button type="button" className="close-button d-flex position-relative top-0 end-0" onClick={()=> {handleOffCanvasClose(); handleScrollHideLgClose();}}> 
-                        <i className="las la-times"></i> 
+                        <i className="fas fa-times"></i> 
                     </button>
                 </div>
 

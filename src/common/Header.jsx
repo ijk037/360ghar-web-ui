@@ -199,7 +199,7 @@ const Header = ({
                             <button type="button" className="toggle-mobileMenu d-lg-none ms-3"
                                 onClick={() => { handleMobileMenuClick(); handleScrollHide(); }}
                             >
-                                <i className="las la-bars"></i>
+                                <i className="fas fa-bars"></i>
                             </button>
                         </div>
                         

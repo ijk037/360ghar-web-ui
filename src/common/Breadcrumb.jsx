@@ -16,7 +16,7 @@ const Breadcrumb = (props) => {
                                 <h2 className="breadcrumb__title"> {props.pageTitle}</h2>
                                 <ul className="breadcrumb__list">
                                     <li className="breadcrumb__item">
-                                        <Link to="/" className="breadcrumb__link"> <i className="las la-home"></i> Home</Link> 
+                                        <Link to="/" className="breadcrumb__link"> <i className="fas fa-home"></i> Home</Link> 
                                     </li>
                                     <li className="breadcrumb__item"><i className="fas fa-angle-right"></i></li>
                                     <li className="breadcrumb__item"> <span className="breadcrumb__item-text"> {props.pageName}  </span> </li>

@@ -1,49 +1,51 @@
-import React, { useEffect } from 'react'; 
+import React, { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
+import 'react-toastify/dist/ReactToastify.css';
 import { useLocationStore } from './store/locationStore';
-
-import Home from './pages/Home';
-import HomeTwo from './pages/unused/HomeTwo';
-import HomeThree from './pages/unused/HomeThree';
+import PageLoader from './common/PageLoader';
 import ScrollToTop from './common/ScrollToTop';
-import Property from './pages/properties/Property';
-import PropertySidebar from './pages/properties/PropertySidebar';
-import PropertyDetails from './pages/properties/PropertyDetails';
-import AddListing from './pages/properties/AddListing';
-import MapLocation from './pages/MapLocation';
-import AboutUs from './pages/core/AboutUs';
-import FaqPage from './pages/core/FaqPage';
-import Checkout from './pages/unused/Checkout';
-import Cart from './pages/unused/Cart';
-import Login from './pages/account/Login';
-import Account from './pages/account/Account';
-import Project from './pages/projects/Project';
-import ProjectDetails from './pages/projects/ProjectDetails';
-import BlogClassic from './pages/blogs/BlogClassic';
-import BlogDetails from './pages/blogs/BlogDetails';
-import Contact from './pages/core/Contact';
-import PostProperty from './pages/properties/PostProperty';
-import Register from './pages/account/Register';
-import AccountDeletionRequest from './pages/account/AccountDeletionRequest';
-import NotFound from './pages/core/NotFound';
-import Policies from './pages/core/Policies';
-import PolicyDetails from './pages/core/PolicyDetails';
-import EmiCalculator from './pages/tools/EmiCalculator';
-import AreaConverter from './pages/tools/AreaConverter';
-import LoanEligibilityCalculator from './pages/tools/LoanEligibilityCalculator';
-import AreaCalculator from './pages/tools/AreaCalculator';
-import PropertyChecklist from './pages/tools/PropertyChecklist';
-import CapitalGainsCalculator from './pages/tools/CapitalGainsCalculator';
-import DesignBlueprint from './pages/tools/DesignBlueprint';
-import VastuChecker from './pages/tools/VastuChecker';
-import Landing from './pages/landing/Landing';
-import GurugramGuide from './pages/core/GurugramGuide';
-import PropertyInvestment from './pages/core/PropertyInvestment';
-import ForAI from './pages/core/ForAI';
-import FacetLanding from './pages/landing/FacetLanding';
-import McpLogin from './pages/account/McpLogin';
+
+// Lazy load pages
+const Home = lazy(() => import('./pages/Home'));
+const HomeTwo = lazy(() => import('./pages/unused/HomeTwo'));
+const HomeThree = lazy(() => import('./pages/unused/HomeThree'));
+const PropertySidebar = lazy(() => import('./pages/properties/PropertySidebar'));
+const Property = lazy(() => import('./pages/properties/Property'));
+const PropertyDetails = lazy(() => import('./pages/properties/PropertyDetails'));
+const AddListing = lazy(() => import('./pages/properties/AddListing'));
+const MapLocation = lazy(() => import('./pages/MapLocation'));
+const AboutUs = lazy(() => import('./pages/core/AboutUs'));
+const FaqPage = lazy(() => import('./pages/core/FaqPage'));
+const Checkout = lazy(() => import('./pages/unused/Checkout'));
+const Cart = lazy(() => import('./pages/unused/Cart'));
+const Login = lazy(() => import('./pages/account/Login'));
+const Account = lazy(() => import('./pages/account/Account'));
+const Project = lazy(() => import('./pages/projects/Project'));
+const ProjectDetails = lazy(() => import('./pages/projects/ProjectDetails'));
+const BlogClassic = lazy(() => import('./pages/blogs/BlogClassic'));
+const BlogDetails = lazy(() => import('./pages/blogs/BlogDetails'));
+const Contact = lazy(() => import('./pages/core/Contact'));
+const PostProperty = lazy(() => import('./pages/properties/PostProperty'));
+const Register = lazy(() => import('./pages/account/Register'));
+const AccountDeletionRequest = lazy(() => import('./pages/account/AccountDeletionRequest'));
+const NotFound = lazy(() => import('./pages/core/NotFound'));
+const Policies = lazy(() => import('./pages/core/Policies'));
+const PolicyDetails = lazy(() => import('./pages/core/PolicyDetails'));
+const EmiCalculator = lazy(() => import('./pages/tools/EmiCalculator'));
+const AreaConverter = lazy(() => import('./pages/tools/AreaConverter'));
+const LoanEligibilityCalculator = lazy(() => import('./pages/tools/LoanEligibilityCalculator'));
+const AreaCalculator = lazy(() => import('./pages/tools/AreaCalculator'));
+const PropertyChecklist = lazy(() => import('./pages/tools/PropertyChecklist'));
+const CapitalGainsCalculator = lazy(() => import('./pages/tools/CapitalGainsCalculator'));
+const DesignBlueprint = lazy(() => import('./pages/tools/DesignBlueprint'));
+const VastuChecker = lazy(() => import('./pages/tools/VastuChecker'));
+const Landing = lazy(() => import('./pages/landing/Landing'));
+const GurugramGuide = lazy(() => import('./pages/core/GurugramGuide'));
+const PropertyInvestment = lazy(() => import('./pages/core/PropertyInvestment'));
+const ForAI = lazy(() => import('./pages/core/ForAI'));
+const FacetLanding = lazy(() => import('./pages/landing/FacetLanding'));
+const McpLogin = lazy(() => import('./pages/account/McpLogin'));
 
 function App() {
   const initializeLocation = useLocationStore((state) => state.initializeLocation);
@@ -55,53 +57,55 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/home-two" element={<HomeTwo />} />
-          <Route path="/home-three" element={<HomeThree />} />
-          <Route path="/properties" element={<Property />} />
-          <Route path="/property-sidebar" element={<PropertySidebar />} />
-          <Route path="/property/:id" element={<PropertyDetails />} />
-          <Route path="/add-new-listing" element={<AddListing />} />
-          <Route path="/map-location" element={<MapLocation />} />
-          <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/faq" element={<FaqPage />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/mcp/login" element={<McpLogin />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/account" element={<Account />} />
-          <Route path="/project" element={<Project />} />
-          <Route path="/project/:title" element={<ProjectDetails />} />
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/home-two" element={<HomeTwo />} />
+            <Route path="/home-three" element={<HomeThree />} />
+            <Route path="/properties" element={<Property />} />
+            <Route path="/property-sidebar" element={<PropertySidebar />} />
+            <Route path="/property/:id" element={<PropertyDetails />} />
+            <Route path="/add-new-listing" element={<AddListing />} />
+            <Route path="/map-location" element={<MapLocation />} />
+            <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/faq" element={<FaqPage />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/mcp/login" element={<McpLogin />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/account" element={<Account />} />
+            <Route path="/project" element={<Project />} />
+            <Route path="/project/:title" element={<ProjectDetails />} />
 
-          <Route path="/blog" element={<BlogClassic />} />
-          <Route path="/blog/:title" element={<BlogDetails />} />
+            <Route path="/blog" element={<BlogClassic />} />
+            <Route path="/blog/:title" element={<BlogDetails />} />
 
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/post-property" element={<PostProperty />} />
-          <Route path="/delete-account" element={<AccountDeletionRequest />} />
-          <Route path="/policies" element={<Policies />} />
-          <Route path="/policies/:slug" element={<PolicyDetails />} />
-          <Route path="/emi-calculator" element={<EmiCalculator />} />
-          <Route path="/area-converter" element={<AreaConverter />} />
-          <Route path="/loan-eligibility-calculator" element={<LoanEligibilityCalculator />} />
-          <Route path="/area-calculator" element={<AreaCalculator />} />
-          <Route path="/property-document-checklist" element={<PropertyChecklist />} />
-          <Route path="/capital-gains-tax-calculator" element={<CapitalGainsCalculator />} />
-          <Route path="/design-blueprint" element={<DesignBlueprint />} />
-          <Route path="/vastu-checker" element={<VastuChecker />} />
-          <Route path="/gurugram-real-estate-guide" element={<GurugramGuide />} />
-          <Route path="/property-investment-gurugram" element={<PropertyInvestment />} />
-          <Route path="/for-ai" element={<ForAI />} />
-          {/* Facet landings: BHK and Budget */}
-          <Route path="/:citySlug/:intent/:type/:bhk" element={<FacetLanding />} />
-          <Route path="/:citySlug/:intent/:type/budget/:budget" element={<FacetLanding />} />
-          <Route path="/:citySlug/:intent/:type/amenity/:amenity" element={<FacetLanding />} />
-          {/* Programmatic SEO landing pages: /city/intent/type */}
-          <Route path="/:citySlug/:intent/:type" element={<Landing />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/post-property" element={<PostProperty />} />
+            <Route path="/delete-account" element={<AccountDeletionRequest />} />
+            <Route path="/policies" element={<Policies />} />
+            <Route path="/policies/:slug" element={<PolicyDetails />} />
+            <Route path="/emi-calculator" element={<EmiCalculator />} />
+            <Route path="/area-converter" element={<AreaConverter />} />
+            <Route path="/loan-eligibility-calculator" element={<LoanEligibilityCalculator />} />
+            <Route path="/area-calculator" element={<AreaCalculator />} />
+            <Route path="/property-document-checklist" element={<PropertyChecklist />} />
+            <Route path="/capital-gains-tax-calculator" element={<CapitalGainsCalculator />} />
+            <Route path="/design-blueprint" element={<DesignBlueprint />} />
+            <Route path="/vastu-checker" element={<VastuChecker />} />
+            <Route path="/gurugram-real-estate-guide" element={<GurugramGuide />} />
+            <Route path="/property-investment-gurugram" element={<PropertyInvestment />} />
+            <Route path="/for-ai" element={<ForAI />} />
+            {/* Facet landings: BHK and Budget */}
+            <Route path="/:citySlug/:intent/:type/:bhk" element={<FacetLanding />} />
+            <Route path="/:citySlug/:intent/:type/budget/:budget" element={<FacetLanding />} />
+            <Route path="/:citySlug/:intent/:type/amenity/:amenity" element={<FacetLanding />} />
+            {/* Programmatic SEO landing pages: /city/intent/type */}
+            <Route path="/:citySlug/:intent/:type" element={<Landing />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </BrowserRouter>
 
       <ScrollToTop/>

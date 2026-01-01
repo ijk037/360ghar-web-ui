@@ -13,21 +13,21 @@ const AccountChangePasswordTab = () => {
                                 <label htmlFor="current-passwordd" className="form-label">Current Password</label>
                                 <div className="position-relative">
                                     <input type="password" className="common-input" placeholder="Password" id="current-passwordd"/>
-                                    <span className="password-show-hide fas fa-eye toggle-password la-eye-slash" id="#current-passwordd"></span>
+                                    <span className="password-show-hide fas fa-eye toggle-password fa-eye-slash" id="#current-passwordd"></span>
                                 </div>
                             </div>
                             <div className="col-12">
                                 <label htmlFor="new-passwordd" className="form-label">New Password</label>
                                 <div className="position-relative">
                                     <input type="password" className="common-input" placeholder="Password" id="new-passwordd"/>
-                                    <span className="password-show-hide fas fa-eye toggle-password la-eye-slash" id="#new-passwordd"></span>
+                                    <span className="password-show-hide fas fa-eye toggle-password fa-eye-slash" id="#new-passwordd"></span>
                                 </div>
                             </div>
                             <div className="col-12">
                                 <label htmlFor="confirm-passwordd" className="form-label">Confirm Password</label>
                                 <div className="position-relative">
                                     <input type="password" className="common-input" placeholder="Password" id="confirm-passwordd"/>
-                                    <span className="password-show-hide fas fa-eye toggle-password la-eye-slash" id="#confirm-passwordd"></span>
+                                    <span className="password-show-hide fas fa-eye toggle-password fa-eye-slash" id="#confirm-passwordd"></span>
                                 </div>
                             </div>
                             <div className="col-12">

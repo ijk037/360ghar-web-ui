@@ -15,13 +15,13 @@ const ListGridButtons = () => {
                 className={`list-grid__button grid-button text-body ${!listGrid ? 'active' : ''}`} 
                 onClick={handleListGrid}
             >
-                <i className="las la-border-all"></i>
+                <i className="fas fa-th-large"></i>
             </button>
             <button 
                 className={`list-grid__button list-button text-body ${listGrid ? 'active' : ''}`} 
                 onClick={handleListGrid}
             >
-                <i className="las la-list"></i>
+                <i className="fas fa-list"></i>
             </button>
         </div>   
     );

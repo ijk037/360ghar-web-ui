@@ -38,7 +38,7 @@ const MobileMenu = () => {
             
             <div className={`mobile-menu d-lg-none d-block ${toggleMobileMenu ? 'active' : "" }`}>
                 <button type="button" className="close-button" onClick={ ()=> {handleMobileMenuClose(); handleScrollHideClose(); }}>
-                    <i className="las la-times"></i> 
+                    <i className="fas fa-times"></i> 
                 </button>
                 <div className="mobile-menu__inner">
 

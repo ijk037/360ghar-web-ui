@@ -5,28 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>360Ghar | India's First AI-Enabled & Virtual Tour First Real Estate Platform | Verified Properties</title>
-    
+
     <link rel="shortcut icon" href="%BASE_URL%assets/images/logo/favicon.png">
 
-    <!-- Performance: preconnect for Google Fonts -->
+    <!-- Critical CSS inline for above-the-fold content -->
+    <style>
+      body { margin: 0; font-family: system-ui, -apple-system, sans-serif; }
+      #root { min-height: 100vh; }
+      /* Loading state styles */
+      .page-loader { display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+    </style>
+
+    <!-- Performance: preconnect for external resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://api.360ghar.com">
+    <link rel="dns-prefetch" href="https://api.360ghar.com">
 
+    <!-- Preload critical assets -->
+    <link rel="preload" href="%BASE_URL%assets/images/logo/logo.png" as="image" fetchpriority="high">
+    <link rel="preload" href="%BASE_URL%assets/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- Deferred CSS loading using media="print" pattern -->
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="%BASE_URL%assets/css/bootstrap.min.css">
-    <!-- Font awesome -->
-    <link rel="stylesheet" href="%BASE_URL%assets/css/fontawesome-all.min.css">
-    <!-- line awesome -->
-    <link rel="stylesheet" href="%BASE_URL%assets/css/line-awesome.min.css">
+    <link rel="stylesheet" href="%BASE_URL%assets/css/bootstrap.min.css" media="print" onload="this.media='all'">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="%BASE_URL%assets/css/fontawesome-all.min.css" media="print" onload="this.media='all'">
 
+    <!-- Fallback for no-JS browsers -->
+    <noscript>
+      <link rel="stylesheet" href="%BASE_URL%assets/css/bootstrap.min.css">
+      <link rel="stylesheet" href="%BASE_URL%assets/css/fontawesome-all.min.css">
+    </noscript>
   </head>
   <body>
 
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-    
+
     <!-- Bootstrap Bundle Js -->
-    <script src="%BASE_URL%assets/js/boostrap.bundle.min.js"></script>
+    <script src="%BASE_URL%assets/js/boostrap.bundle.min.js" defer></script>
 
   </body>
 </html>
