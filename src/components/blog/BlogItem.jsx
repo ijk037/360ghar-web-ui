@@ -8,7 +8,7 @@ const BlogItem = ({ blog }) => {
     // Blog Data Context API
     const { setBlogData, currentMonthName} = useContext(BlogDataContext); 
 
-    const { thumb, meta, title, admin, desc, linkText} = blog; 
+    const { thumb, meta, title, admin, desc, linkText, linkAriaLabel} = blog; 
     
     // Title Convert To Slug
     const convertToSlug = (text) => {
@@ -51,7 +51,7 @@ const BlogItem = ({ blog }) => {
                         <h6 className="blog-item__title">
                             <Link to={blogURL} onClick={()=>handleBlogClick() } className="blog-item__title-link border-effect"> {title}</Link>
                         </h6>
-                        <Link to={blogURL} onClick={()=>handleBlogClick() } className="simple-btn text-heading fw-semibold"> 
+                        <Link to={blogURL} onClick={()=>handleBlogClick()} aria-label={linkAriaLabel} className="simple-btn text-heading fw-semibold">
                             {linkText}
                             <span className="icon-right text-gradient"> <i className="fas fa-plus"></i> </span>
                         </Link>

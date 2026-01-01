@@ -9,6 +9,7 @@ import ScrollHideProvider from './contextApi/ScrollHideContext.jsx'
 import BlogDataProvider from './contextApi/BlogDataContext.jsx'
 import { HelmetProvider } from 'react-helmet-async'
 import { reportWebVitals } from './seo/reportWebVitals'
+import LazyToastProvider from './common/LazyToast.jsx'
 
 // Lazy load PostHog analytics after initial render
 const loadAnalytics = () => {
@@ -37,7 +38,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <ScrollHideProvider>
         <OffCanvasProvider>
           <MobileMenuProvider>
+            <LazyToastProvider>
               <App />
+            </LazyToastProvider>
           </MobileMenuProvider>
         </OffCanvasProvider>
       </ScrollHideProvider>

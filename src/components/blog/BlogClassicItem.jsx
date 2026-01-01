@@ -87,6 +87,7 @@ const BlogClassicItem = ({ post }) => {
                 <Link
                     to={blogURL}
                     onClick={handleBlogClick}
+                    aria-label={`Read more about: ${title}`}
                     className="btn btn-outline-main btn-outline-main-white"
                 >
                     Read More

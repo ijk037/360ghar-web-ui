@@ -5,10 +5,27 @@ import { visualizer } from 'rollup-plugin-visualizer'
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
 import { VitePWA } from 'vite-plugin-pwa'
 
+// Custom plugin to optimize modulepreload hints
+const optimizeModulepreload = () => ({
+  name: 'optimize-modulepreload',
+  transformIndexHtml(html) {
+    // Remove preload hints for heavy, rarely-used chunks to improve initial load
+    // IMPORTANT: Keep this list in sync with manualChunks configuration below
+    // These chunks are lazy-loaded only when needed (PDF export, markdown rendering, analytics)
+    return html
+      .replace(/<link rel="modulepreload"[^>]*vendor-pdf[^>]*>/g, '')
+      .replace(/<link rel="modulepreload"[^>]*vendor-markdown[^>]*>/g, '')
+      .replace(/<link rel="modulepreload"[^>]*vendor-analytics[^>]*>/g, '');
+  }
+});
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
+
+    // Optimize modulepreload hints (remove heavy rarely-used chunks)
+    optimizeModulepreload(),
 
     // Image optimization
     ViteImageOptimizer({

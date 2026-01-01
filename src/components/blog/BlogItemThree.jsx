@@ -9,7 +9,7 @@ const BlogItemThree = ({blogItem}) => {
     // Blog Data Context API
     const { setBlogData, currentMonthName} = useContext(BlogDataContext); 
 
-    const { thumb, meta, title, admin, desc, linkText} = blogItem; 
+    const { thumb, meta, title, admin, desc, linkText, linkAriaLabel} = blogItem; 
     
     // Title Convert To Slug
     const convertToSlug = (text) => {
@@ -51,10 +51,11 @@ const BlogItemThree = ({blogItem}) => {
                 <Button
                     btnLink={blogURL}
                     state={{ thumb, admin, meta, title, desc}}
-                    btnClass="btn btn-outline-light" 
-                    btnText={linkText} 
-                    spanClass="icon-right icon" 
-                    iconClass="fas fa-arrow-right" 
+                    btnClass="btn btn-outline-light"
+                    btnText={linkText}
+                    spanClass="icon-right icon"
+                    iconClass="fas fa-arrow-right"
+                    ariaLabel={linkAriaLabel}
                 />
                 
             </div>

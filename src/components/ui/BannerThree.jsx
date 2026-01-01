@@ -4,6 +4,13 @@ import { bannerThreeContent } from '../../data/HomeThreeData/HomeThreeData';
 import { Link } from 'react-router-dom';
 
 import LazyImage from '../../common/LazyImage';
+
+// Hero banner responsive srcset for LCP optimization
+const HERO_SRCSET = `/assets/images/thumbs/banner-three-320w.webp 320w,
+/assets/images/thumbs/banner-three-640w.webp 640w,
+/assets/images/thumbs/banner-three-768w.webp 768w,
+/assets/images/thumbs/banner-three-1024w.webp 1024w`;
+
 const BannerThree = () => {
     return (
         <>
@@ -21,8 +28,8 @@ const BannerThree = () => {
                                         <h1 className="banner-content__title">{bannerThreeContent.title}
                                             <span className="position-relative d-inline">
                                             {bannerThreeContent.shapedTitle}
-                                                <LazyImage src="assets/images/shapes/curve-shape.png" alt="" className="curve-shape"/> 
-                                            </span> 
+                                                <LazyImage src="assets/images/shapes/curve-shape.png" alt="" className="curve-shape"/>
+                                            </span>
                                         </h1>
                                         <p className="banner-content__desc font-18 mb-4 mb-lg-3">{bannerThreeContent.desc}</p>
                                         <div className="contact-info d-flex align-items-center gap-2 mb-4">
@@ -32,19 +39,32 @@ const BannerThree = () => {
                                                 <Link to={`mailto:info@360ghar.com`} className="contact-info__address text-gradient">info@360ghar.com</Link>
                                             </div>
                                         </div>
-                                    </div>            
+                                    </div>
                                 </div>
                             </div>
                             <div className="col-lg-6 order-lg-0 order-1">
                                 <div className="banner-thumb">
-                                    <LazyImage src={bannerThreeContent.thumb} alt="Hero banner" priority />
-                                </div>  
+                                    <picture>
+                                        <source
+                                            srcSet={HERO_SRCSET}
+                                            sizes="(max-width: 768px) 100vw, 50vw"
+                                            type="image/webp"
+                                        />
+                                        <LazyImage
+                                            src={bannerThreeContent.thumb}
+                                            alt="360Ghar - AI-Enabled Real Estate Platform"
+                                            width={629}
+                                            height={571}
+                                            priority
+                                        />
+                                    </picture>
+                                </div>
                             </div>
-                            
+
                             <div className="col-12">
                                 <TabFilter colClass="col-lg-3 col-sm-6 col-xs-6"/>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>

@@ -3,6 +3,7 @@ import { forwardRef, useEffect, useMemo, useState } from 'react';
 /**
  * Centralized <img> wrapper that defaults to native lazy loading while
  * letting critical assets opt into eager loading via the `priority` flag.
+ * Supports responsive images via srcSet and sizes props.
  */
 const LOCAL_HOSTNAMES = new Set(['localhost', '127.0.0.1', '::1']);
 
@@ -41,6 +42,13 @@ const LazyImage = forwardRef(
       fallbackSrc,
       referrerPolicy,
       onError,
+      // Responsive image props
+      srcSet,
+      sizes,
+      // CLS prevention props
+      width,
+      height,
+      style,
       ...rest
     },
     ref
@@ -68,6 +76,17 @@ const LazyImage = forwardRef(
       return currentSrc.startsWith('http') ? 'no-referrer' : undefined;
     }, [referrerPolicy, currentSrc]);
 
+    // Compute aspect ratio style for CLS prevention
+    const computedStyle = useMemo(() => {
+      if (width && height) {
+        return {
+          aspectRatio: `${width} / ${height}`,
+          ...style,
+        };
+      }
+      return style;
+    }, [width, height, style]);
+
     const handleError = (event) => {
       if (!didFallback && normalizedFallbackSrc && currentSrc !== normalizedFallbackSrc) {
         setDidFallback(true);
@@ -84,6 +103,11 @@ const LazyImage = forwardRef(
         fetchPriority={resolvedFetchPriority}
         referrerPolicy={resolvedReferrerPolicy}
         onError={handleError}
+        srcSet={srcSet}
+        sizes={sizes}
+        width={width}
+        height={height}
+        style={computedStyle}
         {...rest}
         src={currentSrc}
       />

@@ -37,6 +37,7 @@ const Blog = () => {
         admin: `By ${post.author_name || 'Admin'}`,
         desc: post.excerpt || post.summary || '',
         linkText: 'Read More',
+        linkAriaLabel: `Read more about: ${post.title || 'this article'}`,
     });
     return (
         <>

@@ -1,39 +1,31 @@
-import React from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const ScrollToTop = () => {
+    const [visible, setVisible] = useState(false);
+    const scrollTop = useRef(null);
 
-    // Scroll To Top 
-    const [position, setPosition] = React.useState({top: 0, left: 0})
+    useEffect(() => {
+        const handleScroll = () => {
+            setVisible(window.scrollY > 200);
+        };
 
-    React.useEffect(() => {
-        window.scroll({
-            top: position.top,
-            left: position.left,
-            behavior: 'smooth'
-        })
-    })
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
-    const [visibility, setVisibility] = React.useState(false)
-    
-    const scrollTop = React.useRef()
-    React.useEffect(() => {
-        window.addEventListener('scroll', (e) => {
-            window.scrollY > 200 
-            ? scrollTop.current.style.visibility = 'visible'
-            : scrollTop.current.style.visibility = 'hidden'
-        })
-    }) 
-    
+    const scrollToTop = () => {
+        window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+    };
+
     return (
-        <>
-            <div className="scrollToTop"  
-                onClick={() => setPosition({...position, position: {top: 0, left: 0}})}
-                ref={scrollTop} 
-            >
-                <i className="fas fa-chevron-up text-gradient"></i>
-            </div>
-            
-        </>
+        <div
+            className="scrollToTop"
+            style={{ visibility: visible ? 'visible' : 'hidden' }}
+            onClick={scrollToTop}
+            ref={scrollTop}
+        >
+            <i className="fas fa-chevron-up text-gradient"></i>
+        </div>
     );
 };
 

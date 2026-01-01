@@ -1,7 +1,7 @@
 import React, { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
-import 'react-toastify/dist/ReactToastify.css';
+// Toast CSS is now lazy-loaded via LazyToast.jsx
 import { useLocationStore } from './store/locationStore';
 import PageLoader from './common/PageLoader';
 import ScrollToTop from './common/ScrollToTop';

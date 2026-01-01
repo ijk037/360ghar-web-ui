@@ -8,7 +8,7 @@ import Button from './Button';
 import { Link, useNavigate } from 'react-router-dom';
 import LogoWhite from './LogoWhite';
 import { useAuthStore } from '../store';
-import { ToastContainer, toast } from 'react-toastify';
+import { useLazyToast } from './LazyToast';
 
 import LazyImage from './LazyImage';
 const Header = ({
@@ -32,6 +32,7 @@ const Header = ({
 
     // Authentication state
     const { user, isAuthenticated, logout } = useAuthStore();
+    const { success: toastSuccess } = useLazyToast();
 
     // Sticky header Code
     const [stickyHeader, setStickyHeader] = useState(false);
@@ -51,20 +52,21 @@ const Header = ({
 
     const handleLogout = () => {
         logout();
-        toast.success('Logged out successfully!');
+        toastSuccess('Logged out successfully!');
         navigate('/');
         setShowUserDropdown(false);
     };
     
     useEffect(() => {
-        window.addEventListener('scroll', function() {
-            window.scrollY > 100 ? setStickyHeader(true) : setStickyHeader(false)
-        });
+        const handleScroll = () => {
+            setStickyHeader(window.scrollY > 100);
+        };
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
     return (
         <>
-            <ToastContainer />
             {/* ==================== Header Start Here ==================== */}
             <header className={`header ${headerClass} ${stickyHeader ? 'fixed-header' : ''}`}>
                 <div className="container container-two">

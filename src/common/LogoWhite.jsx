@@ -1,16 +1,18 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-
-import LogoWhiteImage from '/assets/images/logo/logo.png';
-
 import LazyImage from './LazyImage';
+
 const LogoWhite = () => {
     return (
-        <>
-            <Link to="/" className="mobile-menu__logo">
-                <LazyImage src={LogoWhiteImage} alt="Logo" priority />
-            </Link>   
-        </>
+        <Link to="/" className="mobile-menu__logo">
+            <LazyImage
+                src="/assets/images/logo/logo.png"
+                alt="360Ghar Logo"
+                priority
+                width={150}
+                height={150}
+                style={{ height: 'auto', maxHeight: '50px', width: 'auto' }}
+            />
+        </Link>
     );
 };
 
