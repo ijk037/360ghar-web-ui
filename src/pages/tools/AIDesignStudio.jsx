@@ -1,0 +1,643 @@
+import React, { useState, useCallback, useEffect } from 'react';
+import Header from '../../common/Header';
+import Footer from '../../common/Footer';
+import MobileMenu from '../../common/MobileMenu';
+import OffCanvas from '../../common/OffCanvas';
+import PageTitle from '../../common/PageTitle';
+import SEO from '../../common/SEO';
+
+import {
+  PuterAuthPrompt,
+  DesignModeSelector,
+  RoomTypeSelector,
+  StylePresetSelector,
+  DesignGenerationMode,
+  DesignImageUpload,
+  DesignPromptInput,
+  DesignLoadingState,
+  DesignResult,
+  BeforeAfterCompare,
+  DesignGallery,
+  saveToGallery,
+  ROOM_TYPES,
+  STYLE_PRESETS,
+} from '../../components/design';
+
+import puterService from '../../services/puterService';
+import './AIDesignStudio.scss';
+
+/**
+ * Build the full prompt from user selections
+ */
+const buildPrompt = ({ designType, roomType, style, customPrompt }) => {
+  // Get room label
+  const roomTypes = ROOM_TYPES[designType] || ROOM_TYPES.interior;
+  const room = roomTypes.find((r) => r.id === roomType);
+  const roomLabel = room?.label || roomType;
+
+  // Get style description
+  const stylePreset = STYLE_PRESETS.find((s) => s.id === style);
+  const styleDesc = stylePreset?.promptText || style;
+
+  const base = designType === 'interior'
+    ? `Interior design of a ${roomLabel}`
+    : `Exterior design of a ${roomLabel}`;
+
+  const parts = [
+    base,
+    styleDesc,
+    customPrompt,
+    'Professional architectural visualization',
+    'high quality',
+    'photorealistic',
+    'well-lit',
+    'detailed textures',
+    '8K resolution',
+  ].filter(Boolean);
+
+  return parts.join(', ');
+};
+
+const NEGATIVE_PROMPT = 'blurry, distorted, low quality, cartoon, sketch, watermark, text, logo, unrealistic, deformed';
+
+const AIDesignStudio = () => {
+  // App state: auth, input, loading, result, error
+  const [appState, setAppState] = useState('auth');
+  const [isAuthLoading, setIsAuthLoading] = useState(false);
+
+  // Generation mode
+  const [generationMode, setGenerationMode] = useState('text-to-image');
+
+  // Form state
+  const [designType, setDesignType] = useState('interior');
+  const [roomType, setRoomType] = useState('living-room');
+  const [style, setStyle] = useState('modern');
+  const [customPrompt, setCustomPrompt] = useState('');
+
+  // Image upload state (for img2img)
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+
+  // Loading state
+  const [loadingStep, setLoadingStep] = useState('understanding');
+
+  // Result state
+  const [generatedImage, setGeneratedImage] = useState(null);
+  const [usedPrompt, setUsedPrompt] = useState('');
+  const [isSaved, setIsSaved] = useState(false);
+
+  // Error state
+  const [errorMessage, setErrorMessage] = useState('');
+  const [errorType, setErrorType] = useState('general');
+
+  // Check authentication on mount
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        await puterService.init();
+        if (puterService.isAuthenticated()) {
+          setAppState('input');
+        }
+      } catch (error) {
+        console.log('Puter SDK not yet loaded');
+      }
+    };
+    checkAuth();
+  }, []);
+
+  // Reset room type when design type changes
+  useEffect(() => {
+    const rooms = ROOM_TYPES[designType];
+    if (rooms && rooms.length > 0) {
+      setRoomType(rooms[0].id);
+    }
+  }, [designType]);
+
+  const handleSignIn = useCallback(async () => {
+    setIsAuthLoading(true);
+    try {
+      await puterService.signIn();
+      if (puterService.isAuthenticated()) {
+        setAppState('input');
+      }
+    } catch (error) {
+      console.error('Sign in failed:', error);
+      setErrorMessage('Failed to sign in with Puter. Please try again.');
+      setErrorType('validation');
+      setAppState('error');
+    } finally {
+      setIsAuthLoading(false);
+    }
+  }, []);
+
+  const handleImageSelect = useCallback((file, preview) => {
+    setSelectedFile(file);
+    setPreviewUrl(preview);
+  }, []);
+
+  const handleSubmit = useCallback(async (e) => {
+    e.preventDefault();
+
+    // Validation for img2img mode
+    if (generationMode === 'image-to-image' && !selectedFile) {
+      setErrorMessage('Please upload a photo to reimagine');
+      setErrorType('validation');
+      setAppState('error');
+      return;
+    }
+
+    let stepTimer1 = null;
+    let stepTimer2 = null;
+
+    try {
+      setAppState('loading');
+      setLoadingStep('understanding');
+      setErrorMessage('');
+      setIsSaved(false);
+
+      // Build prompt
+      const prompt = buildPrompt({
+        designType,
+        roomType,
+        style,
+        customPrompt,
+      });
+      setUsedPrompt(prompt);
+
+      // Simulate step transitions
+      stepTimer1 = setTimeout(() => setLoadingStep('generating'), 2000);
+      stepTimer2 = setTimeout(() => setLoadingStep('enhancing'), 15000);
+
+      let imageUrl;
+
+      if (generationMode === 'text-to-image') {
+        // Text-to-Image generation
+        imageUrl = await puterService.generateFromText(prompt, {
+          negativePrompt: NEGATIVE_PROMPT,
+          width: 1024,
+          height: 1024,
+        });
+      } else {
+        // Image-to-Image transformation
+        const { base64, mimeType } = await puterService.fileToBase64(selectedFile);
+        imageUrl = await puterService.reimagineImage(prompt, base64, mimeType);
+      }
+
+      clearTimeout(stepTimer1);
+      clearTimeout(stepTimer2);
+
+      setGeneratedImage(imageUrl);
+      setAppState('result');
+
+    } catch (error) {
+      console.error('Generation error:', error);
+      if (stepTimer1) clearTimeout(stepTimer1);
+      if (stepTimer2) clearTimeout(stepTimer2);
+
+      let message = 'Failed to generate design. Please try again.';
+      let type = 'general';
+
+      if (error.message?.includes('sign in') || error.message?.includes('authenticated')) {
+        type = 'validation';
+        message = 'Please sign in with Puter to generate images.';
+        setAppState('auth');
+        return;
+      } else if (error.message?.includes('quota') || error.message?.includes('limit')) {
+        type = 'quota';
+        message = 'You have reached your Puter usage limit. Please check your Puter account.';
+      } else if (error.message?.includes('timeout')) {
+        type = 'timeout';
+        message = 'The generation is taking too long. Please try again with a simpler prompt.';
+      } else if (!navigator.onLine) {
+        type = 'network';
+        message = 'No internet connection. Please check your network and try again.';
+      }
+
+      setErrorMessage(message);
+      setErrorType(type);
+      setAppState('error');
+    }
+  }, [generationMode, designType, roomType, style, customPrompt, selectedFile]);
+
+  const handleRegenerate = useCallback(() => {
+    handleSubmit({ preventDefault: () => {} });
+  }, [handleSubmit]);
+
+  const handleSaveToGallery = useCallback(() => {
+    const success = saveToGallery({
+      imageUrl: generatedImage,
+      originalUrl: previewUrl,
+      prompt: usedPrompt,
+      settings: {
+        designType,
+        roomType,
+        style,
+        generationMode,
+      },
+    });
+
+    if (success) {
+      setIsSaved(true);
+    }
+  }, [generatedImage, previewUrl, usedPrompt, designType, roomType, style, generationMode]);
+
+  const handleReset = useCallback(() => {
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
+    setGenerationMode('text-to-image');
+    setDesignType('interior');
+    setRoomType('living-room');
+    setStyle('modern');
+    setCustomPrompt('');
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    setGeneratedImage(null);
+    setUsedPrompt('');
+    setIsSaved(false);
+    setErrorMessage('');
+    setErrorType('general');
+    setAppState('input');
+  }, [previewUrl]);
+
+  const handleRetry = useCallback(() => {
+    setAppState('input');
+    setErrorMessage('');
+    setErrorType('general');
+  }, []);
+
+  const getSettings = useCallback(() => {
+    const rooms = ROOM_TYPES[designType] || [];
+    const room = rooms.find((r) => r.id === roomType);
+    const stylePreset = STYLE_PRESETS.find((s) => s.id === style);
+
+    return {
+      designType,
+      roomType: room?.label || roomType,
+      style: stylePreset?.label || style,
+    };
+  }, [designType, roomType, style]);
+
+  return (
+    <>
+      <SEO
+        title="AI Design Studio - Interior & Exterior Design Generator | 360Ghar"
+        description="Transform your space with AI-powered interior and exterior design generation. Create stunning room designs or reimagine your existing photos with our free AI design tool."
+        keywords="AI interior design, AI exterior design, room design generator, home design AI, interior decorator AI, 360ghar, free design tool"
+        canonical="/ai-design-studio"
+        type="website"
+      />
+      <PageTitle
+        title="AI Design Studio"
+        description="Create stunning interior and exterior designs with AI"
+      />
+
+      <OffCanvas />
+      <MobileMenu />
+
+      <main className="body-bg">
+        <Header />
+
+        {/* Main Design Studio Section */}
+        <section className="design-studio-section">
+          <div className="container">
+            {/* Auth State */}
+            {appState === 'auth' && (
+              <>
+                <div className="section-heading text-center mb-4">
+                  <h2 className="section-title">AI Design Studio</h2>
+                  <p className="section-desc">Generate stunning room designs with AI</p>
+                </div>
+                <PuterAuthPrompt
+                  onSignIn={handleSignIn}
+                  isLoading={isAuthLoading}
+                />
+              </>
+            )}
+
+            {/* Input State */}
+            {appState === 'input' && (
+              <>
+                <div className="section-heading text-center mb-4">
+                  <h2 className="section-title">AI Design Studio</h2>
+                  <p className="section-desc">Select your preferences and generate</p>
+                </div>
+
+                <div className="design-form-wrapper">
+                  <form onSubmit={handleSubmit} className="design-form">
+                    {/* Generation Mode Toggle */}
+                    <div className="form-section mb-4">
+                      <DesignGenerationMode
+                        value={generationMode}
+                        onChange={setGenerationMode}
+                      />
+                    </div>
+
+                    <div className="row g-4">
+                      <div className="col-lg-6">
+                        {/* Design Type */}
+                        <div className="form-section mb-4">
+                          <DesignModeSelector
+                            value={designType}
+                            onChange={setDesignType}
+                          />
+                        </div>
+
+                        {/* Room Type */}
+                        <div className="form-section mb-4">
+                          <RoomTypeSelector
+                            designMode={designType}
+                            value={roomType}
+                            onChange={setRoomType}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="col-lg-6">
+                        {/* Image Upload (for img2img) */}
+                        {generationMode === 'image-to-image' && (
+                          <div className="form-section mb-4">
+                            <DesignImageUpload
+                              onImageSelect={handleImageSelect}
+                              selectedFile={selectedFile}
+                              previewUrl={previewUrl}
+                            />
+                          </div>
+                        )}
+
+                        {/* Style Presets */}
+                        <div className="form-section mb-4">
+                          <StylePresetSelector
+                            value={style}
+                            onChange={setStyle}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Custom Prompt */}
+                    <div className="form-section mb-4">
+                      <DesignPromptInput
+                        value={customPrompt}
+                        onChange={setCustomPrompt}
+                      />
+                    </div>
+
+                    {/* Submit Button */}
+                    <div className="form-actions text-center">
+                      <button
+                        type="submit"
+                        className="btn btn-main btn-lg px-5"
+                        disabled={generationMode === 'image-to-image' && !selectedFile}
+                      >
+                        <i className="fas fa-magic me-2"></i>
+                        Generate Design
+                      </button>
+                    </div>
+                  </form>
+                </div>
+
+                {/* Design Gallery */}
+                <div className="mt-5">
+                  <DesignGallery />
+                </div>
+              </>
+            )}
+
+            {/* Loading State */}
+            {appState === 'loading' && (
+              <DesignLoadingState currentStep={loadingStep} />
+            )}
+
+            {/* Error State */}
+            {appState === 'error' && (
+              <div className="error-container text-center py-5">
+                <div className="error-icon mb-4">
+                  {errorType === 'network' ? (
+                    <i className="fas fa-wifi fa-4x text-danger"></i>
+                  ) : errorType === 'timeout' ? (
+                    <i className="fas fa-clock fa-4x text-warning"></i>
+                  ) : errorType === 'validation' ? (
+                    <i className="fas fa-exclamation-circle fa-4x text-info"></i>
+                  ) : errorType === 'quota' ? (
+                    <i className="fas fa-coins fa-4x text-warning"></i>
+                  ) : (
+                    <i className="fas fa-exclamation-triangle fa-4x text-warning"></i>
+                  )}
+                </div>
+                <h3 className="mb-3">
+                  {errorType === 'network' ? 'Connection Error' :
+                   errorType === 'timeout' ? 'Request Timeout' :
+                   errorType === 'validation' ? 'Invalid Input' :
+                   errorType === 'quota' ? 'Usage Limit Reached' :
+                   'Generation Failed'}
+                </h3>
+                <p className="text-muted mb-4">{errorMessage}</p>
+
+                <div className="error-suggestions bg-light p-3 rounded-3 mb-4 text-start mx-auto" style={{ maxWidth: '500px' }}>
+                  <h6 className="mb-2">
+                    <i className="fas fa-lightbulb text-warning me-2"></i>
+                    Suggestions
+                  </h6>
+                  <ul className="mb-0 small text-muted">
+                    {errorType === 'network' && (
+                      <>
+                        <li>Check your internet connection</li>
+                        <li>Try refreshing the page</li>
+                        <li>Disable any VPN or proxy</li>
+                      </>
+                    )}
+                    {errorType === 'timeout' && (
+                      <>
+                        <li>Try a simpler prompt</li>
+                        <li>Use a smaller image (for img2img)</li>
+                        <li>Try again in a few minutes</li>
+                      </>
+                    )}
+                    {errorType === 'validation' && (
+                      <>
+                        <li>Make sure all required fields are filled</li>
+                        <li>Upload a valid image (JPEG, PNG, WebP)</li>
+                        <li>Check that you are signed in</li>
+                      </>
+                    )}
+                    {errorType === 'quota' && (
+                      <>
+                        <li>Check your Puter account usage limits</li>
+                        <li>Try again later when quota resets</li>
+                        <li>Consider upgrading your Puter plan</li>
+                      </>
+                    )}
+                    {errorType === 'general' && (
+                      <>
+                        <li>Try a different style or room type</li>
+                        <li>Simplify your custom prompt</li>
+                        <li>Refresh the page and try again</li>
+                      </>
+                    )}
+                  </ul>
+                </div>
+
+                <div className="d-flex gap-3 justify-content-center flex-wrap">
+                  <button onClick={handleRetry} className="btn btn-main">
+                    <i className="fas fa-redo me-2"></i>
+                    Try Again
+                  </button>
+                  <button onClick={handleReset} className="btn btn-outline-main">
+                    <i className="fas fa-home me-2"></i>
+                    Start Over
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Result State */}
+            {appState === 'result' && generatedImage && (
+              <div className="result-wrapper">
+                <DesignResult
+                  imageUrl={generatedImage}
+                  prompt={usedPrompt}
+                  settings={getSettings()}
+                  onRegenerate={handleRegenerate}
+                  onSaveToGallery={handleSaveToGallery}
+                  onReset={handleReset}
+                  isSaved={isSaved}
+                />
+
+                {/* Before/After Compare (for img2img) */}
+                {generationMode === 'image-to-image' && previewUrl && (
+                  <div className="mt-5">
+                    <BeforeAfterCompare
+                      beforeImage={previewUrl}
+                      afterImage={generatedImage}
+                      beforeLabel="Original"
+                      afterLabel="AI Redesign"
+                    />
+                  </div>
+                )}
+
+                {/* Gallery */}
+                <div className="mt-5">
+                  <DesignGallery />
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Info Section - only show on input state */}
+        {appState === 'input' && (
+          <section className="design-info-section bg-light">
+            <div className="container">
+              <div className="row g-4">
+                <div className="col-md-4">
+                  <div className="info-card bg-white h-100 text-center">
+                    <i className="fas fa-paint-brush fa-3x text-main mb-3"></i>
+                    <h4>1. Choose Your Style</h4>
+                    <p className="text-muted mb-0">
+                      Select from 12+ design styles including Modern, Traditional Indian, Minimalist, and more
+                    </p>
+                  </div>
+                </div>
+                <div className="col-md-4">
+                  <div className="info-card bg-white h-100 text-center">
+                    <i className="fas fa-wand-magic-sparkles fa-3x text-main mb-3"></i>
+                    <h4>2. Generate with AI</h4>
+                    <p className="text-muted mb-0">
+                      Create from scratch or upload a photo to reimagine your existing space
+                    </p>
+                  </div>
+                </div>
+                <div className="col-md-4">
+                  <div className="info-card bg-white h-100 text-center">
+                    <i className="fas fa-download fa-3x text-main mb-3"></i>
+                    <h4>3. Save & Share</h4>
+                    <p className="text-muted mb-0">
+                      Download your designs, save to your gallery, or share with friends
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* About Section - only show on auth/input state */}
+        {(appState === 'auth' || appState === 'input') && (
+          <section className="design-about-section">
+            <div className="container">
+              <div className="row">
+                <div className="col-lg-8 mx-auto">
+                  <div className="about-content text-center">
+                    <h3 className="mb-4">Why Use AI Design Studio?</h3>
+                    <p className="mb-4">
+                      Our AI Design Studio uses cutting-edge image generation technology to help you
+                      visualize your dream space. Whether you&apos;re planning a renovation, seeking inspiration,
+                      or just curious about different design styles, our tool makes it easy to explore
+                      endless possibilities.
+                    </p>
+                    <div className="row g-4 mt-4">
+                      <div className="col-md-6">
+                        <div className="feature-item">
+                          <i className="fas fa-check-circle text-success me-2"></i>
+                          <span>Generate photorealistic room designs in seconds</span>
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="feature-item">
+                          <i className="fas fa-check-circle text-success me-2"></i>
+                          <span>Transform existing photos into new styles</span>
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="feature-item">
+                          <i className="fas fa-check-circle text-success me-2"></i>
+                          <span>12+ design styles from Modern to Traditional Indian</span>
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="feature-item">
+                          <i className="fas fa-check-circle text-success me-2"></i>
+                          <span>Save designs to your personal gallery</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* CTA Section */}
+        <section className="cta-section text-white">
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-lg-8 text-center">
+                <h2 className="cta-title mb-3">Looking for Your Dream Home?</h2>
+                <p className="cta-desc mb-4">
+                  Explore our curated collection of properties with 360° virtual tours.
+                  Find your perfect home and visualize it with our AI design tools.
+                </p>
+                <div className="cta-buttons d-flex justify-content-center gap-3 flex-wrap">
+                  <a href="/properties" className="btn btn-white btn-main">
+                    <i className="fas fa-home me-2"></i>
+                    Browse Properties
+                  </a>
+                  <a href="/contact" className="btn btn-outline-white">
+                    <i className="fas fa-phone me-2"></i>
+                    Contact Us
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <Footer />
+      </main>
+    </>
+  );
+};
+
+export default AIDesignStudio;

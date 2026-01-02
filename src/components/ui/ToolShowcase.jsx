@@ -67,7 +67,7 @@ const ToolShowcase = () => {
                                                     </linearGradient>
                                                 </defs>
                                             </svg>
-                                        ) : (
+                                        ) : index === 1 ? (
                                             // Vastu Compass Icon
                                             <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <circle cx="24" cy="24" r="20" stroke="url(#grad2)" strokeWidth="2"/>
@@ -80,6 +80,20 @@ const ToolShowcase = () => {
                                                 <circle cx="24" cy="24" r="3" fill="#1a1a2e"/>
                                                 <defs>
                                                     <linearGradient id="grad2" x1="4" y1="4" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+                                                        <stop stopColor="#F69220"/>
+                                                        <stop offset="1" stopColor="#F05A22"/>
+                                                    </linearGradient>
+                                                </defs>
+                                            </svg>
+                                        ) : (
+                                            // AI Design Wand Icon
+                                            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M28 4L30 10L36 8L32 14L38 16L32 18L36 24L30 22L28 28L26 22L20 24L24 18L18 16L24 14L20 8L26 10L28 4Z" fill="url(#grad3)"/>
+                                                <path d="M10 42L26 26" stroke="url(#grad3)" strokeWidth="3" strokeLinecap="round"/>
+                                                <path d="M6 46L14 38" stroke="url(#grad3)" strokeWidth="2" strokeLinecap="round"/>
+                                                <circle cx="28" cy="16" r="3" fill="#1a1a2e"/>
+                                                <defs>
+                                                    <linearGradient id="grad3" x1="6" y1="4" x2="44" y2="46" gradientUnits="userSpaceOnUse">
                                                         <stop stopColor="#F69220"/>
                                                         <stop offset="1" stopColor="#F05A22"/>
                                                     </linearGradient>

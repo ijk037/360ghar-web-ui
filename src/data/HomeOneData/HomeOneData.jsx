@@ -159,5 +159,12 @@ export const toolFeatures = [
         desc: "Get AI-powered Vastu compliance analysis for your floor plan. Upload your design and receive instant insights.",
         btnText: "Try Now",
         btnLink: "/vastu-checker"
+    },
+    {
+        icon: "/assets/images/icons/service3.svg",
+        title: "AI Design Studio",
+        desc: "Generate stunning interior and exterior designs with AI. Create from scratch or reimagine your photos.",
+        btnText: "Try Now",
+        btnLink: "/ai-design-studio"
     }
 ];

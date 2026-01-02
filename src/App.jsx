@@ -40,6 +40,7 @@ const PropertyChecklist = lazy(() => import('./pages/tools/PropertyChecklist'));
 const CapitalGainsCalculator = lazy(() => import('./pages/tools/CapitalGainsCalculator'));
 const DesignBlueprint = lazy(() => import('./pages/tools/DesignBlueprint'));
 const VastuChecker = lazy(() => import('./pages/tools/VastuChecker'));
+const AIDesignStudio = lazy(() => import('./pages/tools/AIDesignStudio'));
 const Landing = lazy(() => import('./pages/landing/Landing'));
 const GurugramGuide = lazy(() => import('./pages/core/GurugramGuide'));
 const PropertyInvestment = lazy(() => import('./pages/core/PropertyInvestment'));
@@ -94,6 +95,7 @@ function App() {
             <Route path="/capital-gains-tax-calculator" element={<CapitalGainsCalculator />} />
             <Route path="/design-blueprint" element={<DesignBlueprint />} />
             <Route path="/vastu-checker" element={<VastuChecker />} />
+            <Route path="/ai-design-studio" element={<AIDesignStudio />} />
             <Route path="/gurugram-real-estate-guide" element={<GurugramGuide />} />
             <Route path="/property-investment-gurugram" element={<PropertyInvestment />} />
             <Route path="/for-ai" element={<ForAI />} />
