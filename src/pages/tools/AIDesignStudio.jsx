@@ -60,6 +60,32 @@ const buildPrompt = ({ designType, roomType, style, customPrompt }) => {
 
 const NEGATIVE_PROMPT = 'blurry, distorted, low quality, cartoon, sketch, watermark, text, logo, unrealistic, deformed';
 
+/**
+ * Build prompt specifically for image-to-image (reimagine) mode
+ * Includes explicit instructions for Gemini to preserve the original structure
+ * Style is optional - if not provided, will just preserve and enhance
+ */
+const buildReimaginePrompt = ({ style, customPrompt }) => {
+  const stylePreset = STYLE_PRESETS.find((s) => s.id === style);
+  const styleDesc = stylePreset?.promptText || '';
+
+  const parts = [
+    // Critical: Tell Gemini to use the uploaded image as reference
+    'Using the uploaded image as the exact reference',
+    'Keep the identical room layout, architecture, walls, windows, doors, and furniture positions',
+    styleDesc ? `Redesign in ${styleDesc} style` : null,
+    'Only change: colors, materials, textures, decor items, and styling',
+    'Do NOT change: room shape, furniture arrangement, camera angle, or perspective',
+    'Maintain the exact same spatial composition as the original image',
+    customPrompt,
+    'Professional interior design visualization',
+    'photorealistic rendering',
+    'same lighting direction as original',
+  ].filter(Boolean);
+
+  return parts.join('. ');
+};
+
 const AIDesignStudio = () => {
   // App state: auth, input, loading, result, error
   const [appState, setAppState] = useState('auth');
@@ -155,15 +181,6 @@ const AIDesignStudio = () => {
       setErrorMessage('');
       setIsSaved(false);
 
-      // Build prompt
-      const prompt = buildPrompt({
-        designType,
-        roomType,
-        style,
-        customPrompt,
-      });
-      setUsedPrompt(prompt);
-
       // Simulate step transitions
       stepTimer1 = setTimeout(() => setLoadingStep('generating'), 2000);
       stepTimer2 = setTimeout(() => setLoadingStep('enhancing'), 15000);
@@ -171,16 +188,30 @@ const AIDesignStudio = () => {
       let imageUrl;
 
       if (generationMode === 'text-to-image') {
-        // Text-to-Image generation
+        // Text-to-Image generation - build standard prompt
+        const prompt = buildPrompt({
+          designType,
+          roomType,
+          style,
+          customPrompt,
+        });
+        setUsedPrompt(prompt);
+
         imageUrl = await puterService.generateFromText(prompt, {
           negativePrompt: NEGATIVE_PROMPT,
           width: 1024,
           height: 1024,
         });
       } else {
-        // Image-to-Image transformation
+        // Image-to-Image transformation - use specialized prompt with structure preservation
+        const reimaginePrompt = buildReimaginePrompt({
+          style,
+          customPrompt,
+        });
+        setUsedPrompt(reimaginePrompt);
+
         const { base64, mimeType } = await puterService.fileToBase64(selectedFile);
-        imageUrl = await puterService.reimagineImage(prompt, base64, mimeType);
+        imageUrl = await puterService.reimagineImage(reimaginePrompt, base64, mimeType);
       }
 
       clearTimeout(stepTimer1);
@@ -334,28 +365,31 @@ const AIDesignStudio = () => {
                     </div>
 
                     <div className="row g-4">
-                      <div className="col-lg-6">
-                        {/* Design Type */}
-                        <div className="form-section mb-4">
-                          <DesignModeSelector
-                            value={designType}
-                            onChange={setDesignType}
-                          />
-                        </div>
+                      {/* Left column - only show for text-to-image */}
+                      {generationMode === 'text-to-image' && (
+                        <div className="col-lg-6">
+                          {/* Design Type */}
+                          <div className="form-section mb-4">
+                            <DesignModeSelector
+                              value={designType}
+                              onChange={setDesignType}
+                            />
+                          </div>
 
-                        {/* Room Type */}
-                        <div className="form-section mb-4">
-                          <RoomTypeSelector
-                            designMode={designType}
-                            value={roomType}
-                            onChange={setRoomType}
-                          />
+                          {/* Room Type */}
+                          <div className="form-section mb-4">
+                            <RoomTypeSelector
+                              designMode={designType}
+                              value={roomType}
+                              onChange={setRoomType}
+                            />
+                          </div>
                         </div>
-                      </div>
+                      )}
 
-                      <div className="col-lg-6">
-                        {/* Image Upload (for img2img) */}
-                        {generationMode === 'image-to-image' && (
+                      {/* Image Upload - left column for img2img */}
+                      {generationMode === 'image-to-image' && (
+                        <div className="col-lg-6">
                           <div className="form-section mb-4">
                             <DesignImageUpload
                               onImageSelect={handleImageSelect}
@@ -363,9 +397,11 @@ const AIDesignStudio = () => {
                               previewUrl={previewUrl}
                             />
                           </div>
-                        )}
+                        </div>
+                      )}
 
-                        {/* Style Presets */}
+                      {/* Style Presets - right column for both modes */}
+                      <div className="col-lg-6">
                         <div className="form-section mb-4">
                           <StylePresetSelector
                             value={style}
