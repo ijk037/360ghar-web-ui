@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import NavMenu from './NavMenu';
 import Logo from './Logo';
 import { MobileMenuContext } from '../contextApi/MobileMenuContext';
@@ -50,8 +50,8 @@ const Header = ({
         return () => document.removeEventListener('click', handleClickOutside);
     }, []);
 
-    const handleLogout = () => {
-        logout();
+    const handleLogout = async () => {
+        await logout();
         toastSuccess('Logged out successfully!');
         navigate('/');
         setShowUserDropdown(false);
@@ -149,7 +149,7 @@ const Header = ({
                                                     type="button"
                                                     className="dropdown-link text-danger d-flex align-items-center gap-3 w-100 border-0 bg-transparent"
                                                     role="menuitem"
-                                                    onClick={handleLogout}
+                                                    onClick={() => void handleLogout()}
                                                 >
                                                     <i className="fas fa-sign-out-alt"></i>
                                                     <span>Logout</span>

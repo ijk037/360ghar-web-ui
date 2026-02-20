@@ -1,4 +1,3 @@
-import React from 'react';
 import { counterFourContents } from '../../data/OthersPageData/OthersPageData';
 import CounterFourItem from './CounterFourItem';
 

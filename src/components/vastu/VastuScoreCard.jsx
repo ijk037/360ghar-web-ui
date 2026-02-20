@@ -1,4 +1,3 @@
-import React from 'react';
 
 const VastuScoreCard = ({ score, summary, confidence, hasWarnings }) => {
     const getScoreColor = (score) => {

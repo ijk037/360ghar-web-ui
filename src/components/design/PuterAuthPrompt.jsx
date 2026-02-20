@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * PuterAuthPrompt - Explains Puter's user-pays model and provides sign-in

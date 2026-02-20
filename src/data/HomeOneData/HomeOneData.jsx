@@ -1,4 +1,3 @@
-import React from 'react'; 
 
 // Banner One
 import BannerImg from '/assets/images/thumbs/banner-img.png'; 

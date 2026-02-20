@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import SocialList from './SocialList';
 import FooterLogoDesc from './footer/FooterLogoDesc';

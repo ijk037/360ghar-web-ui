@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback }  from 'react';
 
 const STORAGE_KEY = 'designGallery';
 const MAX_DESIGNS = 20;
@@ -50,7 +50,7 @@ const DesignGallery = ({ onSelectDesign }) => {
   }, []);
 
   if (designs.length === 0) {
-    return null; // Don't show gallery if empty
+    return null; // Don\Don'tapos;t show gallery if empty
   }
 
   const visibleDesigns = isExpanded ? designs : designs.slice(0, 4);

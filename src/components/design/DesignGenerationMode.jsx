@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * DesignGenerationMode - Toggle between Text-to-Image and Image-to-Image modes

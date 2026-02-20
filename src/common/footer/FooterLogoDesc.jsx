@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import LogoWhite from '../LogoWhite';
 import { offCanvasInfos } from '../../data/CommonData/CommonData';
 import { Link } from 'react-router-dom';
@@ -20,9 +20,9 @@ const FooterLogoDesc = () => {
     return (
         <>
             <div className="footer-item__logo mb-3">
-                <LogoWhite/>
+                <LogoWhite />
             </div>
-            <p className="footer-item__desc">India's first 360° Home Walkthrough Platform to easily Rent, Buy, and Sell properties in Gurgaon</p>
+            <p className="footer-item__desc">India&apos;s first 360° Home Walkthrough Platform to easily Rent, Buy, and Sell properties in Gurugram</p>
 
             {/* Contact Info */}
             <div className="footer-contact-info mt-4">
@@ -31,11 +31,7 @@ const FooterLogoDesc = () => {
                         <span className="footer-contact-icon text-gradient">
                             {info.icon}
                         </span>
-                        {info.link === 'tel:' ? (
-                            <Link to={`${info.link}${info.text}`} className="footer-contact-text text-white text-decoration-none">
-                                {info.text}
-                            </Link>
-                        ) : info.link === 'mailto:' ? (
+                        {info.link === 'tel:' || info.link === 'mailto:' ? (
                             <Link to={`${info.link}${info.text}`} className="footer-contact-text text-white text-decoration-none">
                                 {info.text}
                             </Link>
@@ -47,7 +43,7 @@ const FooterLogoDesc = () => {
             </div>
 
             {/* Newsletter Subscription */}
-            <div className="footer-newsletter mt-4">
+            < div className="footer-newsletter mt-4" >
                 <h6 className="footer-item__title mb-3">Stay Updated</h6>
                 <form onSubmit={handleSubscribe} className="newsletter-form">
                     <div className="input-group">
@@ -73,7 +69,7 @@ const FooterLogoDesc = () => {
                         </div>
                     )}
                 </form>
-            </div>
+            </div >
         </>
     );
 };

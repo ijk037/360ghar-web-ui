@@ -1,4 +1,3 @@
-import React from 'react';
 
 import LazyImage from '../../common/LazyImage';
 const PropertyTypeItem = ({ propertyType }) => {

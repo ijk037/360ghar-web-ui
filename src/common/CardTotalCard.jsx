@@ -1,4 +1,3 @@
-import React from 'react';
 import { cartItems } from '../data/OthersPageData/OthersPageData';
 import { useNavigate } from 'react-router-dom';
 

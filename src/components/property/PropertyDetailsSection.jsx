@@ -70,12 +70,12 @@ const MediaTabButton = ({ active, disabled, onClick, icon, label, count }) => (
 );
 
 MediaTabButton.propTypes = {
-    active: PropTypes.bool,
-    disabled: PropTypes.bool,
-    onClick: PropTypes.func.isRequired,
-    icon: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-    count: PropTypes.number
+  active: PropTypes.bool,
+  disabled: PropTypes.bool,
+  onClick: PropTypes.func.isRequired,
+  icon: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  count: PropTypes.number
 };
 
 const PropertyDetailsSection = ({ property }) => {
@@ -98,13 +98,13 @@ const PropertyDetailsSection = ({ property }) => {
   const price = formatCurrency(priceValue);
   const day = purpose === 'rent' ? (property?.daily_rate ? '/per day' : '/per month') : '';
   const address = property?.full_address || [property?.locality, property?.city, property?.state].filter(Boolean).join(', ');
-  
+
   const virtualTourUrl = property?.virtual_tour_url;
   const videoUrl = property?.video_url;
   const parsedVideo = useMemo(() => parseVideoUrl(videoUrl), [videoUrl]);
   const hasPhotos = galleryImages.length > 0;
   const mediaDefault = getMediaTabDefault(virtualTourUrl, videoUrl, hasPhotos);
-  
+
   const [mediaTab, setMediaTab] = useState(mediaDefault);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
@@ -177,7 +177,7 @@ const PropertyDetailsSection = ({ property }) => {
   const [visitNotes, setVisitNotes] = useState('');
   const [likeLoading, setLikeLoading] = useState(false);
 
-  const lightboxSlides = useMemo(() => 
+  const lightboxSlides = useMemo(() =>
     galleryImages.map((img) => ({
       src: img.image_url,
       alt: img.caption || title,
@@ -223,7 +223,9 @@ const PropertyDetailsSection = ({ property }) => {
       else if (node.webkitRequestFullscreen) node.webkitRequestFullscreen();
       else if (node.mozRequestFullScreen) node.mozRequestFullScreen();
       else if (node.msRequestFullscreen) node.msRequestFullscreen();
-    } catch (_) {}
+    } catch (_) {
+      // Ignored
+    }
   };
 
   const openLightbox = (index = 0) => {
@@ -330,24 +332,24 @@ const PropertyDetailsSection = ({ property }) => {
                       <div className="row g-2">
                         {galleryImages.slice(0, 7).map((img, idx) => (
                           <div className="col-3 col-md-2" key={idx}>
-                            <div 
+                            <div
                               className="gallery-thumb-item cursor-pointer"
                               onClick={() => openLightbox(idx)}
                             >
-                              <LazyImage 
-                                src={img.image_url} 
-                                fallbackSrc={PROPERTY_IMAGE_FALLBACK} 
-                                alt={img.caption || `Image ${idx + 1}`} 
-                                className="img-fluid rounded" 
-                                loading="lazy" 
-                                decoding="async" 
+                              <LazyImage
+                                src={img.image_url}
+                                fallbackSrc={PROPERTY_IMAGE_FALLBACK}
+                                alt={img.caption || `Image ${idx + 1}`}
+                                className="img-fluid rounded"
+                                loading="lazy"
+                                decoding="async"
                               />
                             </div>
                           </div>
                         ))}
                         {galleryImages.length > 7 && (
                           <div className="col-3 col-md-2">
-                            <div 
+                            <div
                               className="gallery-thumb-item gallery-more cursor-pointer"
                               onClick={() => openLightbox(7)}
                             >
@@ -383,7 +385,7 @@ const PropertyDetailsSection = ({ property }) => {
 
               {/* Actions Bar */}
               <div className="property-actions-bar mt-3 mb-3">
-                <PropertyActions 
+                <PropertyActions
                   property={property}
                   onLikeToggle={toggleLike}
                   isLiked={property.liked}
@@ -555,12 +557,12 @@ const PropertyDetailsSection = ({ property }) => {
                 <div className="card compact-card">
                   <div className="card-body">
                     <div className="price-section d-flex align-items-start justify-content-between mb-0">
-                        <div>
-                            <div className="price-amount">
-                                {price}
-                                <span className="price-period">{day}</span>
-                            </div>
+                      <div>
+                        <div className="price-amount">
+                          {price}
+                          <span className="price-period">{day}</span>
                         </div>
+                      </div>
                       <button
                         type="button"
                         className={`btn btn-sm ${property.liked ? 'btn-danger' : 'btn-outline-secondary'}`}
@@ -653,7 +655,7 @@ const PropertyDetailsSection = ({ property }) => {
 };
 
 PropertyDetailsSection.propTypes = {
-    property: PropTypes.object
+  property: PropTypes.object
 };
 
 export default PropertyDetailsSection;

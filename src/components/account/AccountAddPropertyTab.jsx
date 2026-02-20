@@ -1,4 +1,3 @@
-import React from 'react';
 import AddListingForm from '../forms/AddListingForm';
 
 const AccountAddPropertyTab = () => {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect }  from 'react';
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { propertyTwoTabs } from '../../data/HomeThreeData/HomeThreeData';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { footerServiceLinks } from '../../data/CommonData/CommonData';
 import { Link } from 'react-router-dom';
 

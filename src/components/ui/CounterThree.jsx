@@ -1,4 +1,3 @@
-import React from 'react';
 import { counterThreeContents } from '../../data/HomeThreeData/HomeThreeData';
 import CounterThreeItem from './CounterThreeItem';
 

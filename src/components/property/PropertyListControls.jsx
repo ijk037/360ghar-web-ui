@@ -1,4 +1,3 @@
-import React from 'react';
 
 const PropertyListControls = ({
   viewMode = 'grid-2',

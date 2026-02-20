@@ -1,4 +1,3 @@
-import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { siteMetadata, absoluteUrl } from '../seo/siteMetadata';
 import { useLocation } from 'react-router-dom';
@@ -27,7 +26,6 @@ const SEO = ({
   const metaKeywords = keywords || siteMetadata.defaultKeywords;
   const ogImage = absoluteUrl(image || siteMetadata.defaultOgImage);
 
-  // Only include hreflang values that actually exist.
   // Default to en-in and x-default; callers can pass more.
   const alternates = hreflangs || [
     { hrefLang: 'en-in', href: canonicalUrl },
@@ -48,9 +46,23 @@ const SEO = ({
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta httpEquiv="Content-Language" content="en-IN" />
       <meta name="geo.region" content="IN-HR" />
-      <meta name="geo.placename" content="Gurugram" />
+      <meta name="geo.placename" content="Gurgaon, Haryana, India" />
       <meta name="geo.position" content="28.4595;77.0266" />
       <meta name="ICBM" content="28.4595, 77.0266" />
+      <meta name="language" content="English" />
+      <meta name="revisit-after" content="3 days" />
+      <meta name="rating" content="general" />
+      <meta name="target" content="all" />
+
+      {/* Dublin Core */}
+      <meta name="DC.title" content="360Ghar – Real Estate in Gurgaon" />
+      <meta name="DC.subject" content="Real Estate, Property for Sale, Property for Rent, Gurgaon, Gurugram, VR Property Tour, AI Real Estate" />
+      <meta name="DC.description" content="India's first AI and VR real estate platform. Verified properties in Gurgaon with 360° virtual tours." />
+      <meta name="DC.language" content="en-IN" />
+      <meta name="DC.coverage" content="Gurgaon, Haryana, India" />
+      <meta name="DC.publisher" content="360Ghar" />
+      <meta name="DC.rights" content="https://360ghar.com" />
+
       <meta name="author" content="360Ghar" />
       <meta name="publisher" content="360Ghar" />
       <meta
@@ -66,9 +78,14 @@ const SEO = ({
         content={noindex ? 'noindex,nofollow' : 'index, follow'}
       />
 
+      {/* Alternate languages */}
+      {alternates.map((alt) => (
+        <link key={alt.hrefLang} rel="alternate" hrefLang={alt.hrefLang} href={alt.href} />
+      ))}
+
       {/* Open Graph */}
       <meta property="og:title" content={metaTitle} />
-      {metaDesc && <meta property="og:description" content={metaDesc} />} 
+      {metaDesc && <meta property="og:description" content={metaDesc} />}
       <meta property="og:image" content={ogImage} />
       <meta property="og:url" content={computedUrl} />
       <meta property="og:type" content={type} />
@@ -77,13 +94,8 @@ const SEO = ({
       {/* Twitter */}
       <meta name="twitter:card" content={siteMetadata.twitterCard} />
       <meta name="twitter:title" content={metaTitle} />
-      {metaDesc && <meta name="twitter:description" content={metaDesc} />} 
+      {metaDesc && <meta name="twitter:description" content={metaDesc} />}
       <meta name="twitter:image" content={ogImage} />
-
-      {/* Alternate languages */}
-      {alternates.map((alt) => (
-        <link key={alt.hrefLang} rel="alternate" hrefLang={alt.hrefLang} href={alt.href} />
-      ))}
 
       {/* Structured Data */}
       {ldBlocks.map((ld, idx) => (

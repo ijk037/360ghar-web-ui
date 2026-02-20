@@ -1,4 +1,3 @@
-import React from 'react';
 
 import Header from '../common/Header';
 import Footer from '../common/Footer';
@@ -47,7 +46,7 @@ const Home = () => {
           type="website"
           structuredData={homeStructuredData}
         />
-        <PageTitle title="India's First AI-Enabled & Virtual Tour First Real Estate Platform | Verified Properties | 360Ghar" />
+        <PageTitle title="India\India'sapos;s First AI-Enabled & Virtual Tour First Real Estate Platform | Verified Properties | 360Ghar" />
             <OffCanvas/>
             <MobileMenu/>
             

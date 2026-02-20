@@ -1,4 +1,3 @@
-import React from 'react'; 
 
 // Banner Two
 import BannerPhoneIcon from '/assets/images/icons/phone.svg'

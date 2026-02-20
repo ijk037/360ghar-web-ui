@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getSupabaseAccessToken, refreshSupabaseSession } from './supabaseClient';
 
 const LOCAL_HOSTNAMES = ['localhost', '127.0.0.1', '::1'];
 
@@ -37,8 +38,8 @@ export const enforceHttpsExceptLocal = (absoluteUrl) => {
 
 // Get API base URL - use /api to leverage Vite/Netlify proxy (no CORS, no preflight)
 export const getApiBaseUrl = () => {
-  // Always use /api for proxy - Vite in dev, Netlify in prod
-  return '/api';
+  // Prefer explicit env var when configured, otherwise use /api proxy.
+  return import.meta.env.VITE_API_BASE_URL || '/api';
 };
 
 // Retry helper function
@@ -56,7 +57,7 @@ export const createAxiosInstance = ({ withAuth = false, enableRetry = true } = {
 
   // Request interceptor: enforce HTTPS (non-local) and attach auth when needed
   instance.interceptors.request.use(
-    (config) => {
+    async (config) => {
       if (config.baseURL && typeof config.baseURL === 'string') {
         config.baseURL = enforceHttpsExceptLocal(config.baseURL);
       }
@@ -65,7 +66,7 @@ export const createAxiosInstance = ({ withAuth = false, enableRetry = true } = {
       }
 
       if (withAuth) {
-        const token = localStorage.getItem('token');
+        const token = await getSupabaseAccessToken();
         if (token) {
           config.headers = config.headers || {};
           config.headers.Authorization = `Bearer ${token}`;
@@ -105,15 +106,24 @@ export const createAxiosInstance = ({ withAuth = false, enableRetry = true } = {
 
       // Handle 401 Unauthorized errors
       if (error.response && error.response.status === 401) {
+        if (withAuth && config && !config._authRetry) {
+          config._authRetry = true;
+          const refreshedSession = await refreshSupabaseSession();
+          if (refreshedSession?.access_token) {
+            config.headers = config.headers || {};
+            config.headers.Authorization = `Bearer ${refreshedSession.access_token}`;
+            return instance(config);
+          }
+        }
+
         // Check if this is a public endpoint (property viewing)
         const publicEndpoints = ['/properties/?', '/properties/', '/properties/recommendations/'];
         const isPublicEndpoint = publicEndpoints.some(endpoint =>
           error.config?.url?.includes(endpoint)
         );
 
-        // Only redirect to login if it's not a public endpoint and user was actually logged in
-        if (!isPublicEndpoint && localStorage.getItem('token')) {
-          localStorage.removeItem('token');
+        // Only redirect to login if it's not a public endpoint and an auth header was present
+        if (!isPublicEndpoint && error.config?.headers?.Authorization) {
           localStorage.removeItem('user');
           window.location.href = '/login';
         }

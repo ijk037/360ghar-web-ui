@@ -1,4 +1,3 @@
-import React from 'react';
 
 const DIRECTIONS = [
     { value: 'up', label: 'Top', icon: 'fa-arrow-up', description: 'North is at the top of the image' },
@@ -16,9 +15,7 @@ const DirectionSelector = ({ value, onChange }) => {
                 North Direction in Image
                 <span className="text-danger ms-1">*</span>
             </label>
-            <p className="text-muted small mb-3">
-                Indicate which side of your floor plan image points North
-            </p>
+            <p className="text-secondary small mb-4">Don&apos;t know the direction? Stand at the center of your house with a compass app.</p>
 
             <div className="direction-compass">
                 <div className="compass-center">
@@ -46,7 +43,7 @@ const DirectionSelector = ({ value, onChange }) => {
                     onClick={() => onChange('unknown')}
                 >
                     <i className="fas fa-question-circle me-2"></i>
-                    I'm not sure - Let AI detect
+                    I&apos;m not sure - Let AI detect
                 </button>
             </div>
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import usePropertyStore from '../../store/propertyStore';
 import { useLocationStore } from '../../store/locationStore';
 import GooglePlacesInput from '../../common/GooglePlacesInput';

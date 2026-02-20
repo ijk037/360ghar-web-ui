@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect }  from 'react';
 import Pagination from '../../common/Pagination';
 import PropertyFilterBottom from '../property-filters/PropertyFilterBottom';
 import PropertyItem from './PropertyItem';

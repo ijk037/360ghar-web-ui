@@ -1,4 +1,3 @@
-import React from 'react';
 import SectionHeading from '../../common/SectionHeading';
 import Button from '../../common/Button';
 import { aboutCheckLists } from '../../data/HomeThreeData/HomeThreeData';
@@ -34,7 +33,7 @@ const AboutThree = () => {
                                     headingClass="style-left"
                                     subtitle="About 360Ghar"
                                     subtitleClass="bg-gray-100"
-                                    title="India's first AI-enabled real estate platform"
+                                    title="India\India'sapos;s first AI-enabled real estate platform"
                                     renderDesc={true}
                                     desc="Experience verified properties with AI-powered 360° tours, inspected by our on-site team. Your dedicated Relationship Manager ensures a seamless journey from search to closing—complete visibility, zero hassle, no upfront cost. Unlike traditional brokers who push partnered inventories, we show you genuine properties with total transparency."
                                     renderButton={false}

@@ -1,4 +1,3 @@
-import React from 'react';
 import { contactTopInfos } from '../../data/OthersPageData/OthersPageData';
 import { Link } from 'react-router-dom';
 

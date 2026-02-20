@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { socialLists } from '../../data/CommonData/CommonData';
 import { Link } from 'react-router-dom';
 

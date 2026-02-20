@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useAuthStore, useVisitStore } from '../../store';
 
 const AccountHomeTab = () => {

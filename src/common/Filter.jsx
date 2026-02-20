@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState }  from 'react';
 import PropertyFilters from '../components/property-filters/PropertyFilters';
 import AdvancedPropertyFilter from '../components/property-filters/AdvancedPropertyFilter';
 

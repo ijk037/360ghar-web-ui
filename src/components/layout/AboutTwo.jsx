@@ -1,4 +1,3 @@
-import React from 'react';
 import SectionHeading from '../../common/SectionHeading';
 import { aboutTwoRight, checkLists } from '../../data/HomeTwoData/HomeTwoData';
 import Button from '../../common/Button';

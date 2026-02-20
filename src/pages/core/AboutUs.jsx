@@ -1,4 +1,3 @@
-import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
 import MobileMenu from '../../common/MobileMenu';
@@ -35,15 +34,15 @@ const AboutUs = () => {
     return (
         <>
             <SEO
-                title="About 360Ghar - India's First AI-Enabled & Virtual Tour First Real Estate Platform | Verified Properties"
-                description="Learn about 360Ghar, India's first AI-enabled and virtual tour first real estate platform. All properties verified by on-site team with dedicated Relationship Managers for end-to-end service. Pay same brokerage, get full visibility, convenience and transparency."
+                title="About 360Ghar - India\India'sapos;s First AI-Enabled & Virtual Tour First Real Estate Platform | Verified Properties"
+                description="Learn about 360Ghar, India\India'sapos;s first AI-enabled and virtual tour first real estate platform. All properties verified by on-site team with dedicated Relationship Managers for end-to-end service. Pay same brokerage, get full visibility, convenience and transparency."
                 keywords="about 360Ghar, India first AI enabled real estate platform, virtual tour first real estate, Gurugram real estate platform, property portal Gurgaon, virtual tours, on-site verified properties, relationship manager real estate, transparent brokerage, DLF Phase properties, Golf Course Road real estate, verified property listings"
                 canonical="/about-us"
                 image={siteMetadata.defaultOgImage}
                 type="website"
                 structuredData={aboutStructuredData}
             />
-            <PageTitle title="About 360Ghar - India's First AI-Enabled Real Estate Platform" />
+            <PageTitle title="About 360Ghar - India\India'sapos;s First AI-Enabled Real Estate Platform" />
 
             <OffCanvas />
             <MobileMenu />

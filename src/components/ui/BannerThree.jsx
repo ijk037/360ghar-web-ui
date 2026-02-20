@@ -1,4 +1,3 @@
-import React from 'react';
 import TabFilter from '../../common/TabFilter';
 import { bannerThreeContent } from '../../data/HomeThreeData/HomeThreeData';
 import { Link } from 'react-router-dom';

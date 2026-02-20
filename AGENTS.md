@@ -39,4 +39,4 @@
 
 - Do not commit real API keys or secrets; use `.env.local` for machine-specific values (e.g., `VITE_API_BASE_URL`, `VITE_GOOGLE_PLACES_API_KEY`).
 - When changing API usage, update `src/services/` and keep configuration in Vite env variables, not hard-coded URLs.
-
+- Auth/session handling must stay SDK-managed via Supabase client (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`); do not reintroduce backend `/api/v1/auth/*` login/register flows.

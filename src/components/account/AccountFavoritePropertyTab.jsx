@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import usePropertyStore from '../../store/propertyStore';
 import PropertyItem from '../property/PropertyItem';
 

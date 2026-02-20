@@ -8,9 +8,9 @@ const useAdminStore = create((set) => ({
   allProperties: [],
   isLoading: false,
   error: null,
-  
+
   // Actions
-  getAllUsers: async (params = {}) => {
+  getAllUsers: async () => {
     set({ isLoading: false, error: 'Admin user management is yet to be implemented' });
     // Show notification
     if (typeof window !== 'undefined' && window.alert) {
@@ -18,8 +18,8 @@ const useAdminStore = create((set) => ({
     }
     return [];
   },
-  
-  getAllProperties: async (params = {}) => {
+
+  getAllProperties: async () => {
     set({ isLoading: false, error: 'Admin property management is yet to be implemented' });
     // Show notification
     if (typeof window !== 'undefined' && window.alert) {
@@ -27,8 +27,8 @@ const useAdminStore = create((set) => ({
     }
     return [];
   },
-  
-  createUser: async (userData) => {
+
+  createUser: async () => {
     set({ isLoading: false, error: 'Create user feature is yet to be implemented' });
     // Show notification
     if (typeof window !== 'undefined' && window.alert) {
@@ -36,13 +36,13 @@ const useAdminStore = create((set) => ({
     }
     return null;
   },
-  
+
   updateUser: async (id, userData) => {
     try {
       set({ isLoading: true, error: null });
       const updatedUser = await userService.updateUser(id, userData);
       set(state => ({
-        users: state.users.map(user => 
+        users: state.users.map(user =>
           user.id === id ? updatedUser : user
         ),
         isLoading: false,
@@ -56,8 +56,8 @@ const useAdminStore = create((set) => ({
       return null;
     }
   },
-  
-  verifyProperty: async (id) => {
+
+  verifyProperty: async () => {
     set({ isLoading: false, error: 'Property verification is yet to be implemented' });
     // Show notification
     if (typeof window !== 'undefined' && window.alert) {
@@ -65,7 +65,7 @@ const useAdminStore = create((set) => ({
     }
     return null;
   },
-  
+
   clearError: () => set({ error: null }),
 }));
 

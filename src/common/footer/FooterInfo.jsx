@@ -1,4 +1,3 @@
-import React from 'react';
 import { footerInfos } from '../../data/CommonData/CommonData';
 
 const FooterInfo = () => {

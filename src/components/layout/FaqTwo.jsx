@@ -1,4 +1,3 @@
-import React from 'react';
 import FaqAccordion from '../../common/FaqAccordion';
 import FaqTwoThumb from '/assets/images/thumbs/faq-two-img.png';
 import SectionHeading from '../../common/SectionHeading';

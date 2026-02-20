@@ -1,4 +1,3 @@
-import React from 'react';
 import { paymentMethods } from '../data/OthersPageData/OthersPageData';
 
 import LazyImage from './LazyImage';

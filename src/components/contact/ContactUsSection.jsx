@@ -1,4 +1,3 @@
-import React from 'react';
 import { useForm, ValidationError } from '@formspree/react';
 
 const ContactUsSection = () => {
@@ -14,14 +13,14 @@ const ContactUsSection = () => {
                                 <span className="text-gradient fw-semibold">Contact us</span>
                             </span>
                             <h2 className="section-heading__title">Do you have any question?</h2>
-                            <p className="section-heading__desc">Thank you for your message! We have received your inquiry and will get back to you within 24 hours.</p>
+                            <p className="contact-item__desc">We&apos;re here! Head to our <a href="/FAQ" className="text-main text-decoration-underline">FAQ page</a> for answers to our most commonly asked questions.</p>
                         </div>
                     </div>
                 </div>
             </section>
         );
     }
-    
+
     return (
         <section className="contact-us-section padding-b-120">
             <div className="container container-two">
@@ -30,8 +29,7 @@ const ContactUsSection = () => {
                         <span className="section-heading__subtitle bg-gray-100">
                             <span className="text-gradient fw-semibold">Contact us</span>
                         </span>
-                        <h2 className="section-heading__title">Do you have any question?</h2>
-                        <p className="section-heading__desc">We're here to help you find your dream property in Gurgaon. Our expert team is ready to assist with property search, documentation, and all your real estate needs.</p>
+                        <p className="section-heading__desc">We&apos;re here to help you find your dream property in Gurgaon. Our expert team is ready to assist with property search, documentation, and all your real estate needs.</p>
                     </div>
                     <div className="contact-form__form">
                         <form onSubmit={handleSubmit} className="contact-form__form">
@@ -60,7 +58,7 @@ const ContactUsSection = () => {
                                         className="text-danger"
                                     />
                                 </div>
-                                
+
                                 <div className="col-sm-6 col-xs-6">
                                     <input
                                         id="user_subject"

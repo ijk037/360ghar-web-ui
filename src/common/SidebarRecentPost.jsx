@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BlogDataContext } from '../contextApi/BlogDataContext';
 import { blogService } from '../services/blogService';
@@ -28,6 +28,8 @@ const SidebarRecentPost = () => {
         return () => { mounted = false; };
     }, []);
 
+    const { setBlogData } = useContext(BlogDataContext);
+
     return (
         <>
             {loading && <div>Loading...</div>}
@@ -37,15 +39,14 @@ const SidebarRecentPost = () => {
                 const thumb = post.thumbnail_url || post.cover_image_url || '/assets/images/thumbs/blog1.png';
                 const slug = post.slug || encodeURIComponent(title.toLowerCase().replace(/\s+/g, '-'));
                 const blogURL = `/blog/${slug}`;
-                const { setBlogData } = useContext(BlogDataContext);
                 const handleBlogClick = () => {
                     setBlogData({ thumb, meta: [], title, admin: `By ${post.author_name || 'Admin'}`, desc: post.excerpt || '' });
                 };
                 return (
                     <div className="latest-blog" key={post.id || idx}>
                         <div className="latest-blog__thumb">
-                            <Link to={blogURL} onClick={handleBlogClick}> 
-                                <LazyImage src={thumb} className="cover-img" alt=""/>
+                            <Link to={blogURL} onClick={handleBlogClick}>
+                                <LazyImage src={thumb} className="cover-img" alt="" />
                             </Link>
                         </div>
                         <div className="latest-blog__content">

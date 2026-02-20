@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState }  from 'react';
 
 /**
  * Style presets with detailed descriptions for prompt engineering

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState }  from 'react';
 import FaqItem from '../components/ui/FaqItem';
 import { faqs } from '../data/HomeThreeData/HomeThreeData';
 

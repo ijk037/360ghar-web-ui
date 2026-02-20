@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 /**
  * Functional Pagination component
@@ -8,11 +8,6 @@ import React, { useMemo } from 'react';
  * @param {number} maxVisiblePages - Maximum visible page numbers (default: 5)
  */
 const Pagination = ({ currentPage = 1, totalPages = 1, onPageChange, maxVisiblePages = 5 }) => {
-    // Don't render if there's only one page or no pages
-    if (totalPages <= 1) {
-        return null;
-    }
-
     // Generate page numbers to display
     const pageNumbers = useMemo(() => {
         const pages = [];
@@ -66,6 +61,11 @@ const Pagination = ({ currentPage = 1, totalPages = 1, onPageChange, maxVisibleP
 
         return pages;
     }, [currentPage, totalPages, maxVisiblePages]);
+
+    // Don't render if there's only one page or no pages
+    if (totalPages <= 1) {
+        return null;
+    }
 
     const handlePageClick = (page) => {
         if (page !== currentPage && onPageChange) {

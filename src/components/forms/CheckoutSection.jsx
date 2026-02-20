@@ -1,4 +1,3 @@
-import React from 'react';
 import CheckoutSidebar from '../../common/CheckoutSidebar';
 import CheckoutForm from '../../common/CheckoutForm';
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import TopHeader from '../../common/TopHeader';
 import Header from '../../common/Header';
 import Banner from '../../components/ui/Banner';

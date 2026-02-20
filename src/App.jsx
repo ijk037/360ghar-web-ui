@@ -1,8 +1,9 @@
-import React, { useEffect, Suspense, lazy } from 'react';
+import { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 // Toast CSS is now lazy-loaded via LazyToast.jsx
 import { useLocationStore } from './store/locationStore';
+import { useAuthStore } from './store';
 import PageLoader from './common/PageLoader';
 import ScrollToTop from './common/ScrollToTop';
 
@@ -50,10 +51,12 @@ const McpLogin = lazy(() => import('./pages/account/McpLogin'));
 
 function App() {
   const initializeLocation = useLocationStore((state) => state.initializeLocation);
+  const initializeAuth = useAuthStore((state) => state.initializeAuth);
 
   useEffect(() => {
     initializeLocation();
-  }, [initializeLocation]);
+    initializeAuth();
+  }, [initializeLocation, initializeAuth]);
 
   return (
     <>

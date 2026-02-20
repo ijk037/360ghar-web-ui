@@ -1,4 +1,3 @@
-import React from 'react';
 import ListingSidebar from '../../common/ListingSidebar';
 import AddListingForm from './AddListingForm';
 

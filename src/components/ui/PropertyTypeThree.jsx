@@ -1,4 +1,3 @@
-import React from 'react';
 import SectionHeading from '../../common/SectionHeading';
 import { propertyThreeTypes } from '../../data/HomeThreeData/HomeThreeData';
 import PropertyTypeThreeItem from './PropertyTypeThreeItem';

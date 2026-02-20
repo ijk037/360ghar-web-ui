@@ -1,4 +1,3 @@
-import React from 'react';
 import SectionHeading from '../../common/SectionHeading';
 import { propertyTypes } from '../../data/HomeOneData/HomeOneData';
 import PropertyTypeItem from './PropertyTypeItem';

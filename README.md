@@ -57,8 +57,13 @@ The app will be available at `http://localhost:5173`
 Create a `.env` file in the project root:
 
 ```env
+VITE_API_BASE_URL=/api
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_publishable_key
 VITE_GOOGLE_PLACES_API_KEY=your_google_places_api_key
 ```
+
+Auth sessions are handled directly by Supabase SDK. The backend only verifies Supabase bearer tokens on protected business endpoints.
 
 **Google Places API Setup:**
 1. Enable Google Places API in your Google Cloud Console
@@ -154,8 +159,9 @@ The frontend integrates with the 360Ghar backend API:
 
 ### Authentication
 
-- JWT tokens stored in localStorage
-- Automatic token injection via Axios interceptors
+- Login/register/logout handled directly by Supabase Auth SDK
+- Access token is read from the active Supabase session and injected into backend requests
+- Backend `/api/v1/auth/*` session endpoints are removed and must not be used
 - 401 responses trigger logout and redirect
 
 ### Key Services

@@ -15,7 +15,7 @@ function formatCurrency(value) {
   }
 }
 
-const PropertyItem = ({ property, itemClass, iconsClass, btnClass, badgeText, badgeClass, btnRenderBottom, btnRenderRight}) => {
+const PropertyItem = ({ property, itemClass, iconsClass, btnClass, badgeText, badgeClass, btnRenderBottom, btnRenderRight }) => {
   // Handle API-first data structure with fallbacks
   const id = property.id;
   const mainImageFromList = Array.isArray(property.images)
@@ -130,9 +130,9 @@ const PropertyItem = ({ property, itemClass, iconsClass, btnClass, badgeText, ba
             {property.property_type && (
               <span className="badge bg-secondary">
                 {property.property_type === 'house' ? 'House' :
-                 property.property_type === 'apartment' ? 'Apartment' :
-                 property.property_type === 'builder_floor' ? 'Builder Floor' :
-                 property.property_type === 'room' ? 'Room' : property.property_type}
+                  property.property_type === 'apartment' ? 'Apartment' :
+                    property.property_type === 'builder_floor' ? 'Builder Floor' :
+                      property.property_type === 'room' ? 'Room' : property.property_type}
               </span>
             )}
           </div>

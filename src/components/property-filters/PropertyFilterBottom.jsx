@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import ListGridButtons from '../../common/ListGridButtons';
 import usePropertyStore from '../../store/propertyStore';

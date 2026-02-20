@@ -1,4 +1,3 @@
-import React from 'react';
 
 // ============================== Property Sidebar Page Data Start ==============================
 export const propertyTypes = [

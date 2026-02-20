@@ -1,4 +1,3 @@
-import React from 'react';
 import SectionHeading from '../../common/SectionHeading';
 import ValidationForm from '../forms/ValidationForm';
 

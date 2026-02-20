@@ -1,4 +1,3 @@
-import React from 'react';
 import { galleries } from '../../data/HomeTwoData/HomeTwoData';
 import { Link } from 'react-router-dom';
 import SectionHeading from '../../common/SectionHeading';

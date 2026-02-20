@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback }  from 'react';
 
 /**
  * DesignResult - Display generated image with actions

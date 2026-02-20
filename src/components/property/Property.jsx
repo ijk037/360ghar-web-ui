@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect }  from 'react';
 import SectionHeading from '../../common/SectionHeading';
 import PropertyItem from './PropertyItem';
 import Button from '../../common/Button';

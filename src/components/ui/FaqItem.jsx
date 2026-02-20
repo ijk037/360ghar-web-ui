@@ -1,4 +1,3 @@
-import React from 'react';
 
 const FaqItem = ({itemClass, faq, activeAccordion, handleAccordionClick }) => {
     const {btnText, bodyText} = faq; 

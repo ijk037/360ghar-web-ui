@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState }  from 'react';
 import { bedBaths, priceRanges, propertyTypes, reasons, searchAmenities } from '../data/OthersPageData/OthersPageData';
 import CustomRangeSlider from './CustomRangeSlider';
 import usePropertyStore from '../store/propertyStore';

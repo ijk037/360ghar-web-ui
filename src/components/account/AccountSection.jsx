@@ -1,6 +1,6 @@
-import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { accountTabs } from '../../data/OthersPageData/OthersPageData';
+import React, { useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import AccountHomeTab from './AccountHomeTab';
 import AccountProfileTab from './AccountProfileTab';
@@ -20,17 +20,17 @@ const AccountSection = () => {
     const { logout } = useAuthStore();
 
     const notify = () => toast.success("You have been logged out", {
-        theme: "colored", 
+        theme: "colored",
     })
 
-    const handleRedirectLogin = () => {
-        logout();
+    const handleRedirectLogin = async () => {
+        await logout();
         navigate('/login');
     }
-    
+
     // Control selected tab via URL param (?tab=...)
     const [selectedIndex, setSelectedIndex] = React.useState(0);
-    const tabKeys = [
+    const tabKeys = useMemo(() => [
         'home',
         'profile',
         'address',
@@ -39,7 +39,7 @@ const AccountSection = () => {
         'favorites',
         'add-property',
         'change-password',
-    ];
+    ], []);
 
     React.useEffect(() => {
         const raw = (searchParams.get('tab') || '').toLowerCase();
@@ -64,14 +64,14 @@ const AccountSection = () => {
         const key = aliasToKey[raw] || raw;
         const idx = tabKeys.indexOf(key);
         setSelectedIndex(idx >= 0 ? idx : 0);
-    }, [searchParams]);
+    }, [searchParams, tabKeys]);
 
     const handleSelect = (index) => {
         setSelectedIndex(index);
         const key = tabKeys[index] || 'home';
-        navigate(`?tab=${key}`, { replace: true });
+        navigate(`? tab = ${key} `, { replace: true });
     };
-    
+
     return (
         <>
             <ToastContainer />
@@ -92,8 +92,8 @@ const AccountSection = () => {
                                                 )
                                             })
                                         }
-                                        <button type='button' className="nav-link" onClick={()=>{notify(); handleRedirectLogin();}}> 
-                                            <span className="icon"> <i className="fas fa-sign-out-alt"></i></span>  
+                                        <button type='button' className="nav-link" onClick={() => { notify(); void handleRedirectLogin(); }}>
+                                            <span className="icon"> <i className="fas fa-sign-out-alt"></i></span>
                                             Logout
                                         </button>
                                     </TabList>
@@ -102,28 +102,28 @@ const AccountSection = () => {
 
                             <div className="col-xl-9 col-lg-8">
                                 <TabPanel>
-                                    <AccountHomeTab/>
+                                    <AccountHomeTab />
                                 </TabPanel>
                                 <TabPanel>
-                                    <AccountProfileTab/>
+                                    <AccountProfileTab />
                                 </TabPanel>
                                 <TabPanel>
-                                    <AccountAddressTab/>
+                                    <AccountAddressTab />
                                 </TabPanel>
                                 <TabPanel>
-                                    <AccountDetailsTab/>
+                                    <AccountDetailsTab />
                                 </TabPanel>
                                 <TabPanel>
-                                    <AccountMyPropertyTab/>
+                                    <AccountMyPropertyTab />
                                 </TabPanel>
                                 <TabPanel>
-                                    <AccountFavoritePropertyTab/>
+                                    <AccountFavoritePropertyTab />
                                 </TabPanel>
                                 <TabPanel>
-                                    <AccountAddPropertyTab/>
+                                    <AccountAddPropertyTab />
                                 </TabPanel>
                                 <TabPanel>
-                                    <AccountChangePasswordTab/>
+                                    <AccountChangePasswordTab />
                                 </TabPanel>
                             </div>
                         </div>

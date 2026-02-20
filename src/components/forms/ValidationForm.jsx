@@ -1,31 +1,30 @@
-import React from 'react';
-import { Formik, useFormik, Form, Field, ErrorMessage } from "formik";
+import { useFormik } from "formik";
 import * as yup from "yup";
 import { ToastContainer, toast } from 'react-toastify';
 
 const ValidationForm = (props) => {
-    
+
     const formik = useFormik({
         initialValues: {
-          name: "",
-          email: "",
-          address: "",
-          message: "",
+            name: "",
+            email: "",
+            address: "",
+            message: "",
         },
         // Validate by Yup
         validationSchema: yup.object({
             name: yup.string().min(3, "Too Short! Must be at least 3 characters long").required(),
             address: yup.string().min(3, "Too Short! Must be at least 3 characters long").required(),
             email: yup.string().email("Your Email is not valid! Provide valid email").required(),
-            message: yup .string().min(5, "Message must have minimum 5 characters"),
+            message: yup.string().min(5, "Message must have minimum 5 characters"),
         }),
-    
+
         onSubmit: (values, { resetForm }) => {
-          // alert(JSON.stringify(values, null, 2));
-          resetForm({ values: "" });
-          toast.success("Congratulations! You Have Submitted Successfully.", {
-            theme: "colored",
-          });
+            // alert(JSON.stringify(values, null, 2));
+            resetForm({ values: "" });
+            toast.success("Congratulations! You Have Submitted Successfully.", {
+                theme: "colored",
+            });
         },
     });
 
@@ -33,7 +32,7 @@ const ValidationForm = (props) => {
     const renderNameError = formik.touched.name && formik.errors.name && (
         <span className="text-danger">{formik.errors.name}</span>
     );
-    
+
     const renderEmailError = formik.touched.email && formik.errors.email && (
         <span className="text-danger">{formik.errors.email}</span>
     );
@@ -41,13 +40,13 @@ const ValidationForm = (props) => {
     const renderAddressError = formik.touched.address && formik.errors.address && (
         <span className="text-danger">{formik.errors.address}</span>
     );
-    
+
     const renderMessageError = formik.touched.message &&
         formik.errors.message && (
-        <span className="text-danger">{formik.errors.message}</span>
-    );
+            <span className="text-danger">{formik.errors.message}</span>
+        );
     // Render Errors Code End
-    
+
     return (
         <>
             <form action="#" onSubmit={formik.handleSubmit}>
@@ -59,24 +58,23 @@ const ValidationForm = (props) => {
                             )
                         }
                         <div className="position-relative">
-                            <input 
-                                type="text" 
+                            <input
+                                type="text"
                                 placeholder="Name"
                                 name='name'
                                 id='name'
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 value={formik.values.name}
-                                className={`${props.inputClass} ${
-                                    formik.touched.name && formik.errors.name ? "is-invalid" : ""
-                                }`}
+                                className={`${props.inputClass} ${formik.touched.name && formik.errors.name ? "is-invalid" : ""
+                                    }`}
                             />
                             <span className={`input-icon ${props.iconSpanClass}`}><i className="fas fa-user"></i></span>
                         </div>
                         {renderNameError}
                     </div>
 
-                    
+
 
                     <div className={props.colClass}>
                         {
@@ -85,17 +83,16 @@ const ValidationForm = (props) => {
                             )
                         }
                         <div className="position-relative">
-                            <input 
-                                type="email" 
+                            <input
+                                type="email"
                                 placeholder="Your Email"
                                 name='email'
                                 id='email'
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 value={formik.values.email}
-                                className={`${props.inputClass} ${
-                                    formik.touched.email && formik.errors.email ? "is-invalid" : ""
-                                }`}
+                                className={`${props.inputClass} ${formik.touched.email && formik.errors.email ? "is-invalid" : ""
+                                    }`}
                             />
                             <span className={`input-icon ${props.iconSpanClass}`}><i className="fas fa-paper-plane"></i></span>
                         </div>
@@ -109,17 +106,16 @@ const ValidationForm = (props) => {
                             )
                         }
                         <div className="position-relative">
-                            <input 
-                                type="text" 
+                            <input
+                                type="text"
                                 placeholder="Your Address"
                                 name='address'
                                 id='address'
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 value={formik.values.address}
-                                className={`${props.inputClass} ${
-                                    formik.touched.address && formik.errors.address ? "is-invalid" : ""
-                                }`}
+                                className={`${props.inputClass} ${formik.touched.address && formik.errors.address ? "is-invalid" : ""
+                                    }`}
                             />
                             <span className={`input-icon ${props.iconSpanClass}`}><i className="fas fa-map-marker-alt"></i></span>
                         </div>
@@ -133,16 +129,15 @@ const ValidationForm = (props) => {
                             )
                         }
                         <div className="position-relative">
-                            <textarea 
+                            <textarea
                                 placeholder="Write Message.."
                                 name='message'
                                 id='message'
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 value={formik.values.message}
-                                className={`${props.inputClass} ${
-                                    formik.touched.message && formik.errors.message ? "is-invalid" : ""
-                                }`}
+                                className={`${props.inputClass} ${formik.touched.message && formik.errors.message ? "is-invalid" : ""
+                                    }`}
                             >
                             </textarea>
                             <span className={`input-icon ${props.iconSpanClass}`}><i className="fas fa-envelope"></i></span>
@@ -154,7 +149,7 @@ const ValidationForm = (props) => {
                         <button type="submit" className="btn btn-main w-100"> Send Message </button>
                     </div>
                 </div>
-            </form>   
+            </form>
         </>
     );
 };

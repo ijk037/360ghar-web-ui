@@ -1,4 +1,3 @@
-import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { filterTabs } from '../data/HomeOneData/HomeOneData';
 import SimplifiedFilter from './SimplifiedFilter';
@@ -15,7 +14,7 @@ const TabFilter = (props) => {
         };
         
         const purpose = purposeMapping[index];
-        if (purpose && purpose !== 'sell') { // Don't set purpose for sell tab
+        if (purpose && purpose !== 'sell') { // Don\Don'tapos;t set purpose for sell tab
             updateFilter('purpose', purpose);
         } else if (purpose === 'sell') {
             // Clear purpose for sell tab or set it to buy (since sell is more for listing)

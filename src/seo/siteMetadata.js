@@ -68,7 +68,7 @@ export const absoluteUrl = (urlOrPath) => {
   if (!urlOrPath) return siteMetadata.siteUrl;
   try {
     // If already absolute
-    // eslint-disable-next-line no-new
+     
     new URL(urlOrPath);
     return urlOrPath;
   } catch (_) {

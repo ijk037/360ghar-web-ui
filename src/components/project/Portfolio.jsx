@@ -1,4 +1,3 @@
-import React from 'react';
 
 import Slider from "react-slick";
 import PortfolioItem from './PortfolioItem';
@@ -38,7 +37,7 @@ const Portfolio = () => {
             <section className="portfolio padding-t-120 padding-b-60 overflow-hidden">
                 <div className="section-heading">
                     <span className="section-heading__subtitle"> <span className="text-gradient fw-semibold">Latest Portfolio</span> </span>
-                    <h2 className="section-heading__title">Optimum Homes & Properties Realty Experts</h2>
+                    <h2 className="section-heading__title">Optimum Homes \Optimum Homes & Propertiesamp; Properties Realty Experts</h2>
                 </div>
                 <div className="portfolio-wrapper">
                     <Slider {...settings}>

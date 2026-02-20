@@ -1,5 +1,5 @@
 /* global google */
-import React, { useEffect, useState, useMemo, useRef, useCallback } from 'react';
+import { useEffect, useState, useMemo, useRef, useCallback } from 'react';
 import usePropertyStore from '../../store/propertyStore';
 import { useLocationStore } from '../../store/locationStore';
 import PropertyItem from '../property/PropertyItem';
@@ -26,7 +26,6 @@ const MapLocationSection = () => {
 
     const {
         location,
-        isLocating,
         error: locationError,
         initializeLocation,
         fetchBrowserLocation,
@@ -56,7 +55,7 @@ const MapLocationSection = () => {
         let loader;
         return () => {
             if (typeof window !== 'undefined' && window.google?.maps) {
-                return { load: async () => {} };
+                return { load: async () => { } };
             }
             if (!loader) {
                 const apiKey = import.meta.env.VITE_GOOGLE_PLACES_API_KEY || import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
@@ -73,7 +72,7 @@ const MapLocationSection = () => {
     // Initialize location on mount
     useEffect(() => {
         initializeLocation();
-    }, []);
+    }, [initializeLocation]);
 
     // Fetch properties when location or radius changes
     useEffect(() => {
@@ -87,7 +86,7 @@ const MapLocationSection = () => {
         } else {
             fetchProperties({ sort_by: sortBy });
         }
-    }, [location.lat, location.lng, radius, sortBy]);
+    }, [location.lat, location.lng, radius, sortBy, fetchProperties]);
 
     // Initialize map
     useEffect(() => {
@@ -100,11 +99,11 @@ const MapLocationSection = () => {
                 const { Map } = await google.maps.importLibrary('maps');
                 const { Marker } = await google.maps.importLibrary('marker');
                 const { LatLngBounds, Size } = await google.maps.importLibrary('core');
-                
+
                 if (!mounted || !mapContainerRef.current) return;
 
                 gmapsRef.current = { Map, Marker, Size, LatLngBounds, Circle: google.maps.Circle };
-                
+
                 const center = {
                     lat: location.lat || 28.4595,
                     lng: location.lng || 77.0266,
@@ -138,7 +137,7 @@ const MapLocationSection = () => {
         };
         init();
         return () => { mounted = false; };
-    }, []);
+    }, [getMapsLoader, location.lat, location.lng, mapType, mapZoom, radius]);
 
     // Update map type
     useEffect(() => {
@@ -219,7 +218,7 @@ const MapLocationSection = () => {
             marker.setIcon(id === selId ? highlightIcon : defaultIcon);
             marker.setZIndex(id === selId ? 1000 : undefined);
         }
-    }, [properties, selectedProperty, location.lat, location.lng]);
+    }, [properties, selectedProperty, location.lat, location.lng, mapZoom]);
 
     // Handlers
     const handleLocationSelect = ({ lat, lng, name }) => {
@@ -345,15 +344,15 @@ const MapLocationSection = () => {
                                             <p className="text-muted small mb-2">
                                                 <i className="fas fa-map-marker-alt me-1"></i>
                                                 {selectedProperty.full_address || selectedProperty.address ||
-                                                 [selectedProperty.locality, selectedProperty.city].filter(Boolean).join(', ')}
+                                                    [selectedProperty.locality, selectedProperty.city].filter(Boolean).join(', ')}
                                             </p>
                                             <div className="d-flex justify-content-between align-items-center">
                                                 <p className="mb-0 fw-bold text-primary">
                                                     {selectedProperty.purpose === 'rent' ?
                                                         `₹${selectedProperty.monthly_rent?.toLocaleString()}/month` :
                                                         selectedProperty.purpose === 'short_stay' ?
-                                                        `₹${selectedProperty.daily_rate?.toLocaleString()}/day` :
-                                                        `₹${selectedProperty.base_price?.toLocaleString()}`
+                                                            `₹${selectedProperty.daily_rate?.toLocaleString()}/day` :
+                                                            `₹${selectedProperty.base_price?.toLocaleString()}`
                                                     }
                                                 </p>
                                             </div>

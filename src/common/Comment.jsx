@@ -1,4 +1,3 @@
-import React from 'react';
 
 import CommentThumb1 from '/assets/images/thumbs/comment1.png';
 import CommentThumb2 from '/assets/images/thumbs/comment2.png';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { addAmenities } from '../../data/OthersPageData/OthersPageData';
 
 const ListingPropertyInformation = () => {

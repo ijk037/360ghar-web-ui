@@ -1,4 +1,3 @@
-import React from 'react';
 
 import Header from '../../common/Header';
 import MobileMenu from '../../common/MobileMenu';

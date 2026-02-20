@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
 import NavMenu from './NavMenu';
@@ -17,8 +17,8 @@ const MobileMenu = () => {
     // Authentication state
     const { user, isAuthenticated, logout } = useAuthStore();
 
-    const handleLogout = () => {
-        logout();
+    const handleLogout = async () => {
+        await logout();
         toast.success('Logged out successfully!');
         navigate('/');
         handleMobileMenuClose();
@@ -95,7 +95,7 @@ const MobileMenu = () => {
                                     </button>
                                     <button
                                         className="btn btn-danger btn-sm w-100 text-start"
-                                        onClick={handleLogout}
+                                        onClick={() => void handleLogout()}
                                     >
                                         <i className="fas fa-sign-out-alt me-2"></i>
                                         Logout

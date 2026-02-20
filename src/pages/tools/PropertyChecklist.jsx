@@ -65,7 +65,7 @@
              />
              <PageTitle
                  title="Property Document Checklist - Home Buying Guide India | 360Ghar"
-                 description="Don't miss a thing. Use our interactive checklist to ensure you have all essential legal and financial documents in place for your property purchase in India."
+                 description="Don\Don'tapos;t miss a thing. Use our interactive checklist to ensure you have all essential legal and financial documents in place for your property purchase in India."
              />
              
              <OffCanvas />

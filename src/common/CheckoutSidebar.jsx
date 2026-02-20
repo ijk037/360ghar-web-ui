@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState }  from 'react';
 import { cartItems } from '../data/OthersPageData/OthersPageData';
 import CardTotalCard from './CardTotalCard';
 import CheckoutPaymentCard from './CheckoutPaymentCard';

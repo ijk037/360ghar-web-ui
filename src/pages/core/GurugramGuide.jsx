@@ -1,4 +1,3 @@
-import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
 import MobileMenu from '../../common/MobileMenu';
@@ -97,7 +96,7 @@ const GurugramGuide = () => {
                   <div className="blog-details__content">
                     <h2>Why Invest in Gurugram Real Estate?</h2>
                     <p>
-                      Gurugram, also known as Gurgaon, has emerged as one of India's premier real estate markets.
+                      Gurugram, also known as Gurgaon, has emerged as one of India&apos;s premier real estate markets.
                       Located in the National Capital Region (NCR), it offers excellent connectivity, world-class infrastructure,
                       and a booming economy driven by IT, BPO, and corporate offices.
                     </p>

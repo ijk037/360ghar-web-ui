@@ -338,8 +338,13 @@ const usePropertyStore = create((set, get) => ({
     try {
       set({ isLoading: true, error: null });
       // TODO: Import mediaService when available
-      const newMedia = null; // await mediaService.uploadMedia(formData);
-      throw new Error('Media service not available');
+      
+      // Temporary mock implementation until mediaService is available
+      const newMedia = {
+        id: Math.random().toString(36).substring(7),
+        url: URL.createObjectURL(formData.get('file') || new Blob()),
+        created_at: new Date().toISOString()
+      };
       
       // Add new media to propertyMedia array
       set(state => ({
@@ -362,9 +367,8 @@ const usePropertyStore = create((set, get) => ({
       set({ isLoading: true, error: null });
       // TODO: Import mediaService when available
       // await mediaService.deleteMedia(mediaId);
-      throw new Error('Media service not available');
       
-      // Remove media from propertyMedia array
+      // Remove media from propertyMedia array locally
       set(state => ({
         propertyMedia: state.propertyMedia.filter(media => media.id !== mediaId),
         isLoading: false,

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';

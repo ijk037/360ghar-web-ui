@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import BlogItemTwo from './BlogItemTwo';
 import SectionHeading from '../../common/SectionHeading';
 import { blogService } from '../../services/blogService';

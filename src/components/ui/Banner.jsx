@@ -1,4 +1,3 @@
-import React from 'react';
 import { bannerContent } from '../../data/HomeOneData/HomeOneData';
 import { Link } from 'react-router-dom';
 

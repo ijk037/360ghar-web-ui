@@ -1,4 +1,3 @@
-import React from 'react';
 
 const SkeletonLoader = ({ type = 'property-card', count = 1 }) => {
   const renderPropertyCardSkeleton = () => (

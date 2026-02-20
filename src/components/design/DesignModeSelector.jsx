@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * DesignModeSelector - Toggle between Interior and Exterior design modes

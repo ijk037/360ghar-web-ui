@@ -1,4 +1,3 @@
-import React from 'react';
 import StarRating from '../../common/StarRating';
 
 import LazyImage from '../../common/LazyImage';

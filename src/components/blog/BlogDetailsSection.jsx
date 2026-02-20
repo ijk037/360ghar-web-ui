@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useMemo, useCallback } from 'react';
+import { useContext, useEffect, useState, useMemo, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import CommonSidebar from '../../common/CommonSidebar';

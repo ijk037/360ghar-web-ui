@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * DesignPromptInput - Custom prompt textarea with character limit

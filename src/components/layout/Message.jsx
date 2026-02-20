@@ -1,4 +1,3 @@
-import React from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 
 import messageThumb from '/assets/images/thumbs/message-img.png';

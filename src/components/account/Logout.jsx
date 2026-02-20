@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store';
 
@@ -7,8 +7,11 @@ const Logout = ({ redirectTo = '/login' }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    logout();
-    navigate(redirectTo);
+    const executeLogout = async () => {
+      await logout();
+      navigate(redirectTo);
+    };
+    void executeLogout();
   }, [logout, navigate, redirectTo]);
 
   return (

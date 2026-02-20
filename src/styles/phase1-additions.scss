@@ -520,3 +520,12 @@
     }
   }
 }
+
+/* 
+ * Vercel React Best Practices - Rendering Optimization
+ * Applies "content-visibility: auto" to skip off-screen layout & paint computations.
+ */
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 400px; /* Approximate height of property cards */
+}

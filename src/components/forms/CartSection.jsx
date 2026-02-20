@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import CardTotalCard from '../../common/CardTotalCard';
 import { cartItems } from '../../data/OthersPageData/OthersPageData';
 import { Link } from 'react-router-dom';

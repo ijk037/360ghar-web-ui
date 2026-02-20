@@ -127,7 +127,7 @@ export default defineConfig({
     }),
 
     // Bundle analyzer (only in analyze mode)
-    process.env.ANALYZE && visualizer({
+    (process.env.ANALYZE) && visualizer({ // eslint-disable-line no-undef
       open: true,
       filename: 'dist/stats.html',
       gzipSize: true,

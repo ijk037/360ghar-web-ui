@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+/* global google */
+import { useEffect, useRef } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
 
 // Singleton loader for Google Maps - preloads on first import for faster autocomplete
@@ -63,7 +64,7 @@ const GooglePlacesInput = ({
   const hostRef = useRef(null);
 
   useEffect(() => {
-    let cleanup = () => {};
+    let cleanup = () => { };
     let isMounted = true;
 
     const init = async () => {
@@ -80,9 +81,10 @@ const GooglePlacesInput = ({
         await loaderSingleton.preload();
 
         // Ensure Places library is loaded. New API exposes PlaceAutocompleteElement, older exposes Autocomplete
-        const placesModule = await google.maps.importLibrary('places'); // eslint-disable-line no-undef
+        const placesModule = await google.maps.importLibrary('places');  
 
         // Try new web component first
+         
         const PlaceAutocompleteElement = placesModule?.PlaceAutocompleteElement || google.maps?.places?.PlaceAutocompleteElement;
 
         if (PlaceAutocompleteElement && hostRef.current) {
@@ -138,7 +140,7 @@ const GooglePlacesInput = ({
                 onSelect({ lat: location.lat(), lng: location.lng(), name });
               }
             } catch (e) {
-              // eslint-disable-next-line no-console
+               
               console.error('Place selection error', e);
             }
           };
@@ -155,6 +157,7 @@ const GooglePlacesInput = ({
         }
 
         // Fallback to legacy Autocomplete widget
+         
         const AutocompleteCtor = placesModule?.Autocomplete || google.maps?.places?.Autocomplete;
         if (!AutocompleteCtor) {
           throw new Error('Google Places Autocomplete is unavailable. Ensure Places API is enabled for your key.');
@@ -195,7 +198,7 @@ const GooglePlacesInput = ({
           if (listener && typeof listener.remove === 'function') listener.remove();
         };
       } catch (err) {
-        // eslint-disable-next-line no-console
+         
         console.error('Google Maps init error', err);
 
         // Fallback to a regular input when Google Places fails
@@ -224,7 +227,7 @@ const GooglePlacesInput = ({
       isMounted = false;
       cleanup();
     };
-  }, [onSelect, restrictCountry, types]);
+  }, [onSelect, restrictCountry, types, placeholder, className]);
 
   return (
     <div ref={hostRef} />

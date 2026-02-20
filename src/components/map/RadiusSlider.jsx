@@ -1,4 +1,3 @@
-import React from 'react';
 
 const RadiusSlider = ({ radius = 20, onRadiusChange, min = 1, max = 50 }) => {
   const handleChange = (e) => {

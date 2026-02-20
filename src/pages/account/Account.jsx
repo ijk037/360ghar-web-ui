@@ -1,4 +1,3 @@
-import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
 import MobileMenu from '../../common/MobileMenu';
@@ -11,7 +10,11 @@ import { Navigate } from 'react-router-dom';
 import { useAuthStore } from '../../store';
 
 const Account = () => {
-    const { isAuthenticated } = useAuthStore();
+    const { isAuthenticated, isInitializing } = useAuthStore();
+
+    if (isInitializing) {
+        return null;
+    }
 
     if (!isAuthenticated) {
         return <Navigate to="/login" replace />;

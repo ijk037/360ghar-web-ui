@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext }  from 'react';
 import { Link } from 'react-router-dom';
 import LogoWhite from './LogoWhite';
 import { OffCanvasContext } from '../contextApi/OffCanvasContext';

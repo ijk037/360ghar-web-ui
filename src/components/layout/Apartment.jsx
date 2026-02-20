@@ -1,4 +1,3 @@
-import React from 'react';
 import SectionHeading from '../../common/SectionHeading';
 import { apartmentTds, apartmentThs } from '../../data/HomeTwoData/HomeTwoData';
 import { Link } from 'react-router-dom';

@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { counts } from '../../data/HomeOneData/HomeOneData';
 import CounterItem from './CounterItem';

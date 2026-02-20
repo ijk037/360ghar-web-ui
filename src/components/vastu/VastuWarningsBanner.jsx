@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const WARNING_CONFIG = {
     not_floor_plan: {

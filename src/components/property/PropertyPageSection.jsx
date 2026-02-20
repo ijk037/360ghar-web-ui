@@ -1,6 +1,6 @@
-
-import React, { useEffect } from 'react';
+import { useEffect, useMemo }  from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import useSWR from 'swr';
 import PropertyItem from './PropertyItem';
 import Pagination from '../../common/Pagination';
 import PropertyFilterBottom from '../property-filters/PropertyFilterBottom';
@@ -8,6 +8,7 @@ import PropertyFilters from '../property-filters/PropertyFilters';
 import PropertyTopBar from '../property-filters/PropertyTopBar';
 import usePropertyStore from '../../store/propertyStore';
 import { useLocationStore } from '../../store/locationStore';
+import { propertyAPIService } from '../../services/propertyAPIService';
 
 const PropertyPageSection = () => {
     const { setLocation } = useLocationStore();
@@ -16,10 +17,8 @@ const PropertyPageSection = () => {
     const {
         properties,
         pagination,
-        isLoading,
-        error,
         updateFilter,
-        fetchProperties
+        filters
     } = usePropertyStore();
 
     // Parse search parameters and apply them to filters on initial load
@@ -108,13 +107,50 @@ const PropertyPageSection = () => {
 
     }, [searchParams, setLocation, updateFilter]);
 
-    useEffect(() => {
-        fetchProperties();
-    }, []);
+    // Construct a safe cache key object containing only active filters
+    const activeFiltersParams = useMemo(() => {
+        const cleanFilters = {};
+        Object.keys(filters).forEach(key => {
+            const value = filters[key];
+            if (value !== null && value !== undefined && value !== '') {
+                if (Array.isArray(value)) {
+                    if (value.length > 0) cleanFilters[key] = value;
+                } else {
+                    cleanFilters[key] = value;
+                }
+            }
+        });
+        return cleanFilters;
+    }, [filters]);
+
+    // SWR fetcher
+    const fetcher = async ([url, params]) => {
+        const res = await propertyAPIService.searchProperties(params, params.page || 1, params.limit || 12);
+        return res.data || { properties: [], items: [], total: 0, totalPages: 1, limit: 12, page: 1 };
+    };
+
+    const { data: fetchPayload, error: fetchError, isLoading: swrLoading } = useSWR(
+        ['/properties/search', activeFiltersParams], 
+        fetcher, 
+        { 
+            revalidateOnFocus: false,
+            keepPreviousData: true 
+        }
+    );
+
+    // Determine derived states from SWR payload or Zustand fallback
+    const displayProperties = fetchPayload?.properties || fetchPayload?.items || properties || [];
+    const displayPagination = fetchPayload ? {
+        page: fetchPayload.page || 1,
+        totalPages: fetchPayload.total_pages || fetchPayload.totalPages || 1,
+        total: fetchPayload.total || 0,
+        limit: fetchPayload.limit || 12,
+    } : pagination;
+    const isFetching = swrLoading;
+    const currentError = fetchError ? fetchError.message || 'Error loading properties' : null;
 
     const handlePageChange = (newPage) => {
         updateFilter('page', newPage);
-        fetchProperties({}, newPage);
 
         const params = new URLSearchParams(searchParams);
         params.set('page', newPage.toString());
@@ -134,9 +170,9 @@ const PropertyPageSection = () => {
                     {/* Results Count and Quick Sort */}
                     <div className="property-page__results-bar">
                         <PropertyFilterBottom
-                            total={pagination.total}
-                            currentPage={pagination.page}
-                            totalPages={pagination.totalPages}
+                            total={displayPagination.total}
+                            currentPage={displayPagination.page}
+                            totalPages={displayPagination.totalPages}
                         />
                     </div>
 
@@ -152,7 +188,7 @@ const PropertyPageSection = () => {
                         {/* Right Content - Property Grid */}
                         <main className="property-page__main">
                             <div className="property-grid">
-                                {isLoading ? (
+                                {isFetching ? (
                                     Array.from({ length: 4 }).map((_, index) => (
                                         <div className="property-grid__item" key={index}>
                                             <div className="property-item loading">
@@ -164,17 +200,17 @@ const PropertyPageSection = () => {
                                             </div>
                                         </div>
                                     ))
-                                ) : error ? (
+                                ) : currentError ? (
                                     <div className="property-grid__empty">
-                                        <p className="text-danger">Error loading properties: {error}</p>
+                                        <p className="text-danger">Error loading properties: {currentError}</p>
                                     </div>
-                                ) : properties.length === 0 ? (
+                                ) : displayProperties.length === 0 ? (
                                     <div className="property-grid__empty">
                                         <i className="fas fa-home"></i>
                                         <p>No properties found. Try adjusting your filters or location.</p>
                                     </div>
                                 ) : (
-                                    properties.map((property, index) => (
+                                    displayProperties.map((property, index) => (
                                         <div className="property-grid__item" key={property.id || index}>
                                             <PropertyItem
                                                 itemClass="property-item style-two style-shaped"
@@ -192,10 +228,10 @@ const PropertyPageSection = () => {
                             </div>
 
                             {/* Pagination */}
-                            {properties.length > 0 && pagination.totalPages > 1 && (
+                            {displayProperties.length > 0 && displayPagination.totalPages > 1 && (
                                 <Pagination
-                                    currentPage={pagination.page}
-                                    totalPages={pagination.totalPages}
+                                    currentPage={displayPagination.page}
+                                    totalPages={displayPagination.totalPages}
                                     onPageChange={handlePageChange}
                                 />
                             )}

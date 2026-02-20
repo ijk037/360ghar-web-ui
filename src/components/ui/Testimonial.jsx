@@ -1,4 +1,3 @@
-import React from 'react';
 import Slider from "react-slick";
 
 import { testimonials } from '../../data/HomeOneData/HomeOneData';
@@ -8,7 +7,7 @@ import SectionHeading from '../../common/SectionHeading';
 
 import LazyImage from '../../common/LazyImage';
 // Custom arrows to avoid forwarding non-DOM props (currentSlide, slideCount)
-const PrevArrow = ({ currentSlide, slideCount, ...props }) => {
+const PrevArrow = ({ currentSlide: _currentSlide, slideCount: _slideCount, ...props }) => {
     const { className, style, onClick } = props;
     return (
         <button type="button" className={className || "slick-prev"} style={style} onClick={onClick}>
@@ -17,7 +16,7 @@ const PrevArrow = ({ currentSlide, slideCount, ...props }) => {
     );
 };
 
-const NextArrow = ({ currentSlide, slideCount, ...props }) => {
+const NextArrow = ({ currentSlide: _currentSlide, slideCount: _slideCount, ...props }) => {
     const { className, style, onClick } = props;
     return (
         <button type="button" className={className || "slick-next"} style={style} onClick={onClick}>
@@ -50,10 +49,10 @@ const Testimonial = () => {
                 <div className="container container-two">
 
                     <SectionHeading
-                        headingClass="section-heading style-left style-flex"  
+                        headingClass="section-heading style-left style-flex"
                         subtitle="Client Testimonial"
-                        subtitleClass="" 
-                        title="Optimum Homes & Properties property for you" 
+                        subtitleClass=""
+                        title="Optimum Homes \Optimum Homes & Propertiesamp; Properties property for you"
                         renderDesc={false}
                         desc="Use receiving accounts a number a currencies and get paid like a local Use receivin accounts a number paid the most beautiful think"
                         renderButton={false}
@@ -70,7 +69,7 @@ const Testimonial = () => {
                                         {
                                             testimonials.map((testimonial, index) => {
                                                 return (
-                                                    <TestimonialItem testimonial={testimonial} key={index}/>
+                                                    <TestimonialItem testimonial={testimonial} key={index} />
                                                 )
                                             })
                                         }
@@ -80,14 +79,14 @@ const Testimonial = () => {
 
                             <div className="col-lg-6">
                                 <div className="testimonial-thumb">
-                                    <LazyImage src={TestimonialThumb} alt="" className="cover-img"/>
+                                    <LazyImage src={TestimonialThumb} alt="" className="cover-img" />
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-            {/* ==================== Testimonials Section End ==================== */}   
+            {/* ==================== Testimonials Section End ==================== */}
         </>
     );
 };

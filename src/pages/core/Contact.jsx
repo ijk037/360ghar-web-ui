@@ -1,4 +1,3 @@
-import React from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
 import MobileMenu from '../../common/MobileMenu';
@@ -15,7 +14,7 @@ const Contact = () => {
         <>
         <SEO
           title="Contact 360Ghar | Dedicated Relationship Manager Support | AI Real Estate Platform"
-          description="Get in touch with 360Ghar, India's first AI-enabled real estate platform. Contact for dedicated Relationship Manager support, verified property listings, 360° virtual tours, and end-to-end property services in Gurugram and Delhi NCR."
+          description="Get in touch with 360Ghar, India\India'sapos;s first AI-enabled real estate platform. Contact for dedicated Relationship Manager support, verified property listings, 360° virtual tours, and end-to-end property services in Gurugram and Delhi NCR."
           keywords="contact 360Ghar, relationship manager, real estate contact, Gurgaon, Gurugram, virtual tours, verified properties, AI real estate platform"
           canonical="/contact"
           image={siteMetadata.defaultOgImage}

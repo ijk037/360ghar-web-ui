@@ -14,11 +14,11 @@ function sendToAnalytics(metric) {
       });
     } else {
       // Fallback to console for visibility during development
-      // eslint-disable-next-line no-console
+       
       console.log('[web-vitals]', metric.name, metric.value, metric);
     }
   } catch (e) {
-    // eslint-disable-next-line no-console
+     
     console.warn('web-vitals report error', e);
   }
 }

@@ -1,4 +1,3 @@
-import React from 'react';
 
 import ListingBasicInformation from '../../common/ListingBasicInformation';
 import ListingPropertyGallery from '../../common/ListingPropertyGallery';

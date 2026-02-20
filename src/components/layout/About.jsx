@@ -1,4 +1,3 @@
-import React from 'react';
 import { aboutContent, aboutStatistics } from '../../data/HomeOneData/HomeOneData';
 import Button from '../../common/Button';
 import SectionHeading from '../../common/SectionHeading';

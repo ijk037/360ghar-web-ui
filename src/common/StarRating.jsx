@@ -1,4 +1,3 @@
-import React from 'react';
 import { starRatings } from '../data/CommonData/CommonData';
 
 const StarRating = () => {

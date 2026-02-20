@@ -1,4 +1,3 @@
-import React from 'react';
 import { services } from '../../data/HomeTwoData/HomeTwoData';
 import { Link } from 'react-router-dom';
 

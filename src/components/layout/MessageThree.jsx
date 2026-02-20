@@ -1,4 +1,3 @@
-import React from 'react';
 import SectionHeading from '../../common/SectionHeading';
 import { messageThreeContents } from '../../data/HomeThreeData/HomeThreeData';
 import { Link } from 'react-router-dom';

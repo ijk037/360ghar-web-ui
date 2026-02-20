@@ -330,11 +330,11 @@ Central barrel export for all services
 
 #### `authService.js` - Authentication
 ```javascript
-login(phone, password)     // POST /auth/login/
-register(userData)         // POST /auth/register/
+login(phone, password)     // Supabase auth.signInWithPassword()
+register(userData)         // Supabase auth.signUp()
 getCurrentUser()           // GET /users/profile/
 updateCurrentUser(data)    // PUT /users/profile/
-logout()                   // Clear localStorage
+logout()                   // Supabase auth.signOut() + clear cached user state
 ```
 
 #### `userService.js` - User Management
@@ -479,7 +479,8 @@ checkHealth()                                        // GET /vastu/health
 #### `authStore.js` - Authentication
 **State:** `user`, `token`, `isAuthenticated`, `isLoading`, `error`
 **Actions:** `login()`, `register()`, `logout()`, `updateProfile()`, `clearError()`
-- Persists user/token to localStorage
+- Persists only cached user profile in localStorage
+- Reads access token from active Supabase session
 - Auto-extracts nested API error messages
 
 #### `propertyStore.js` - Property Management (Most Complex)
@@ -702,10 +703,11 @@ server: {
 ```
 
 ### Authentication Flow
-1. Login/Register → JWT tokens stored in localStorage
-2. Axios interceptors auto-inject `Authorization` header
-3. 401 responses trigger logout and redirect to `/login`
-4. Public endpoints (property search, blog) don't require auth
+1. Login/Register happens directly via Supabase Auth SDK
+2. Access token is read from Supabase session and injected in `Authorization` header
+3. Backend validates Supabase bearer token; no backend `/api/v1/auth/*` login/register endpoints
+4. 401 responses trigger logout and redirect to `/login`
+5. Public endpoints (property search, blog) don't require auth
 
 ### Error Handling Pattern
 All services use consistent error extraction:

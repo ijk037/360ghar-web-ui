@@ -1,4 +1,3 @@
-import React from 'react';
 import BlogTestiThumb from '/assets/images/thumbs/blog-testi.png';
 
 import LazyImage from './LazyImage';

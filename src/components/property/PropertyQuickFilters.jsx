@@ -1,4 +1,3 @@
-import React from 'react';
 import usePropertyStore from '../../store/propertyStore';
 
 const PropertyQuickFilters = ({ inline = false }) => {

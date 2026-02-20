@@ -1,4 +1,3 @@
-import React from 'react';
 import SectionHeading from '../../common/SectionHeading';
 import { teams } from '../../data/OthersPageData/OthersPageData';
 import TeamItem from './TeamItem';
