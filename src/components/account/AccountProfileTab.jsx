@@ -8,7 +8,6 @@ import LazyImage from '../../common/LazyImage';
 const AccountProfileTab = () => {
     const { profile, getProfile, updateProfile, isLoading, error, clearError } = useUserStore();
     const [isEditing, setIsEditing] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
 
     useEffect(() => {
         getProfile();
@@ -139,8 +138,9 @@ const AccountProfileTab = () => {
                     <form onSubmit={formik.handleSubmit}>
                         <div className="row gy-lg-4 gy-3">
                             <div className="col-sm-6 col-xs-6">
-                                <label htmlFor="full_name" className="form-label">Full Name</label>
+                                <label htmlFor="profile-full-name" className="form-label">Full Name</label>
                                 <input
+                                    id="profile-full-name"
                                     type="text"
                                     name="full_name"
                                     value={formik.values.full_name}
@@ -157,8 +157,9 @@ const AccountProfileTab = () => {
                             </div>
 
                             <div className="col-sm-6 col-xs-6">
-                                <label htmlFor="email" className="form-label">Email</label>
+                                <label htmlFor="profile-email" className="form-label">Email</label>
                                 <input
+                                    id="profile-email"
                                     type="email"
                                     name="email"
                                     value={formik.values.email}
@@ -175,8 +176,9 @@ const AccountProfileTab = () => {
                             </div>
 
                             <div className="col-sm-6 col-xs-6">
-                                <label htmlFor="phone" className="form-label">Phone</label>
+                                <label htmlFor="profile-phone" className="form-label">Phone</label>
                                 <input
+                                    id="profile-phone"
                                     type="tel"
                                     name="phone"
                                     value={formik.values.phone}
@@ -193,8 +195,9 @@ const AccountProfileTab = () => {
                             </div>
 
                             <div className="col-sm-6 col-xs-6">
-                                <label htmlFor="date_of_birth" className="form-label">Date of Birth</label>
+                                <label htmlFor="profile-dob" className="form-label">Date of Birth</label>
                                 <input
+                                    id="profile-dob"
                                     type="date"
                                     name="date_of_birth"
                                     value={formik.values.date_of_birth}
@@ -206,8 +209,9 @@ const AccountProfileTab = () => {
                             </div>
 
                             <div className="col-sm-12">
-                                <label htmlFor="profile_image_url" className="form-label">Profile Image URL</label>
+                                <label htmlFor="profile-image-url" className="form-label">Profile Image URL</label>
                                 <input
+                                    id="profile-image-url"
                                     type="url"
                                     name="profile_image_url"
                                     value={formik.values.profile_image_url}

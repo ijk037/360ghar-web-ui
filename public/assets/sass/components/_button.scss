@@ -17,26 +17,50 @@
     line-height: 1;
     text-transform: uppercase;
     padding: 22px 30px;
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
     @include md-screen {
         padding: 17px 20px; 
     }
     @include sm-screen {
         padding: 14px 20px; 
+        min-height: 48px;
     }
     &:hover, &:focus, &:focus-visible {
         box-shadow: none !important;
     }
+    &:active {
+        transform: scale(0.97);
+        transition: transform 0.1s ease;
+    }
+    @media (hover: none) {
+        &:hover {
+            transform: none;
+        }
+        &:active {
+            transform: scale(0.97);
+        }
+    }
     &-sm {
-        padding: 12px !important;
-        @include font-11; 
+        padding: 14px 16px !important;
+        min-height: 44px;
+        min-width: 44px;
+        @include font-12; 
         .icon-right {
             font-size: 12px !important;
             margin-left: 4px !important;
         }
+        @include sm-screen {
+            padding: 12px 14px !important;
+            min-height: 48px;
+        }
     }
     &-icon {
-        width: 44px;
-        height: 44px;
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        min-height: 48px;
         background-color: hsl(var(--white)) !important;
         padding: 0;
         border-radius: 50%;
@@ -45,9 +69,28 @@
         align-items: center;
         transition: .2s linear;
         border: 0;
+        touch-action: manipulation;
         @include font-20; 
         &:hover {
             transform: scale(1.04);
+        }
+        &:active {
+            transform: scale(0.92);
+            transition: transform 0.1s ease;
+        }
+        @media (hover: none) {
+            &:hover {
+                transform: none;
+            }
+            &:active {
+                transform: scale(0.92);
+            }
+        }
+        @include sm-screen {
+            width: 52px;
+            height: 52px;
+            min-width: 52px;
+            min-height: 52px;
         }
     }
     .icon-right {
@@ -57,9 +100,6 @@
     .icon-left {
         margin-right: 10px;
         @include font-16; 
-    }
-    &:active {
-        transform: scale(1.014);
     }
     // ============= Different Color Button Start ==================
     &-main {

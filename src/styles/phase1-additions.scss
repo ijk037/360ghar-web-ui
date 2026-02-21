@@ -203,18 +203,19 @@
 
 .virtual-tour-container {
   width: 100%;
-  height: 60vh;
+  height: min(75vh, 600px);
   min-height: 360px;
   max-height: 88vh;
+  aspect-ratio: 16 / 10;
   border-radius: 10px;
   overflow: hidden;
   background: #000;
 }
 
-@media (min-width: 992px) {
+@media (max-width: 991px) and (min-width: 768px) {
   .virtual-tour-container {
-    height: 75vh;
-    min-height: 520px;
+    height: 500px;
+    min-height: 500px;
   }
 }
 
@@ -421,6 +422,102 @@
   }
 }
 
+/* Image Counter */
+.image-counter {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  z-index: 10;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.9);
+  }
+}
+
+/* Swipe Feedback Animation */
+@keyframes swipeLeftFeedback {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-15px) scale(0.98); opacity: 0.8; }
+  100% { transform: translateX(0); }
+}
+
+@keyframes swipeRightFeedback {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(15px) scale(0.98); opacity: 0.8; }
+  100% { transform: translateX(0); }
+}
+
+.swipe-left-feedback {
+  animation: swipeLeftFeedback 0.3s ease-out;
+}
+
+.swipe-right-feedback {
+  animation: swipeRightFeedback 0.3s ease-out;
+}
+
+/* Zoom level indicator */
+.zoom-indicator {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  z-index: 100;
+}
+
+/* Loading spinner for images */
+.image-loading-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
+
+/* Lightbox Zoom Controls */
+.yarl__zoom_button {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  touch-action: manipulation;
+}
+
+/* Ensure zoom buttons are accessible on touch */
+@media (pointer: coarse) {
+  .yarl__zoom_button {
+    width: 48px !important;
+    height: 48px !important;
+  }
+}
+
+.property-trust-strip .badge {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.property-mobile-owner .owner-box {
+  margin-bottom: 0;
+}
+
+.visit-form .form-control {
+  min-height: 40px;
+}
+
 /* Video Container */
 .video-container {
   width: 100%;
@@ -494,6 +591,50 @@
   .media-tab-btn {
     padding: 6px 12px;
     font-size: 13px;
+    min-height: 44px;
+  }
+
+  .virtual-tour-container {
+    height: 280px;
+    min-height: 280px;
+  }
+
+  @media (orientation: landscape) {
+    .virtual-tour-container {
+      height: 350px;
+      min-height: 350px;
+    }
+  }
+
+  .gallery-thumbnails {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 4px;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .row {
+      --bs-gutter-x: 16px;
+      flex-wrap: nowrap;
+      margin: 0;
+      gap: 0;
+    }
+
+    .col-3, .col-md-2 {
+      flex: 0 0 auto;
+      width: 80px;
+      padding: 0;
+      margin-right: 16px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
   }
 }
 

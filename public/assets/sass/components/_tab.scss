@@ -97,6 +97,10 @@
         &:hover {
             @extend .text-gradient; 
         }
+        &:focus-visible {
+            outline: 2px solid hsl(var(--main));
+            outline-offset: 2px;
+        }
         &.active, &.react-tabs__tab--selected {
             background: var(--main-gradient);
             color: hsl(var(--white));

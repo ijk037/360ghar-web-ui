@@ -11,7 +11,7 @@
         top: 0;
         right: 0;
         width: 100%;
-        z-index: 9;
+        z-index: 120;
         backdrop-filter: blur(24px);
         animation: slideDown 0.35s ease-out;    
         background-color: hsl(var(--white)/.9) !important;
@@ -26,6 +26,10 @@
             height: 60px; // Adjust as needed, aiming for 1/3 to 1/2 of navbar height
             width: auto; 
         }
+    }
+
+    .container-two {
+        max-width: min(1460px, 96vw);
     }
 }
 @keyframes slideDown {
@@ -54,18 +58,43 @@
 
 .toggle-mobileMenu {
     line-height: 1;
-    font-size: 36px;
+    font-size: 30px;
     color: hsl(var(--heading-color));
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+
+    &:hover {
+        background-color: var(--gray-100);
+    }
 }
 
 // Prevent header from wrapping to multiple rows
 .header-inner {
     flex-wrap: nowrap;
+    gap: 18px;
+}
+
+.header-menu {
+    flex: 1 1 auto;
+    min-width: 0;
+
+    @media (max-width: 1399px) {
+        margin-left: 8px;
+    }
 }
 
 .header-right {
     gap: 12px; // ensure consistent spacing between right-side items
     flex-wrap: nowrap; // Keep all items on one line
+    flex-shrink: 0;
+
+    @media (max-width: 1199px) {
+        gap: 8px;
+    }
 }
 
 .contact-number {
@@ -94,10 +123,15 @@
 
 /* Header Menu and Submenu Css Start */
 .nav-menu {
-    gap: 24px;
+    gap: 18px;
+    justify-content: center;
+
+    @media (max-width: 1199px) {
+        gap: 12px;
+    }
     &__item {
         &.activePage {
-            > a {
+            > .nav-menu__link {
                 color: hsl(var(--main));
                 &::before {
                     color: hsl(var(--main));
@@ -105,7 +139,7 @@
             }
         }
         &:hover {
-            > a {
+            > .nav-menu__link {
                 color: hsl(var(--heading-color));
                 @media (min-width: 992px) {
                     color: hsl(var(--main));
@@ -118,9 +152,34 @@
         font-weight: 500;
         @include font-16; 
         width: 100%;
-        padding: 38px 0;
+        padding: 30px 0;
         width: 100%;
+        line-height: 1.2;
+
+        @media (max-width: 1199px) {
+            padding: 24px 0;
+            font-size: 14px;
+        }
     }   
+}
+
+.nav-menu-wrapper {
+    position: relative;
+}
+
+.nav-menu-container {
+    width: 100%;
+    overflow: hidden;
+}
+
+.nav-menu--measure {
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    white-space: nowrap;
+    top: 0;
+    left: 0;
 }
 
 .has-submenu {
@@ -132,10 +191,10 @@
     }
 
     &.active {
-        > a, > a::before{
+        > .nav-menu__link, > .nav-menu__link::before{
             color: hsl(var(--main));
         }
-        > a::before {
+        > .nav-menu__link::before {
             transform: translateY(-50%) rotate(180deg) !important; 
         }
         .nav-submenu {
@@ -148,7 +207,7 @@
             opacity: 1;
             margin-top: 0;
         }
-        > a {
+        > .nav-menu__link {
             &::before {
                 @media (min-width: 992px) {
                     color: hsl(var(--main));
@@ -157,7 +216,7 @@
             }
         }
     }
-    > a {
+    > .nav-menu__link {
         position: relative;
         &::before {
             position: absolute;
@@ -172,6 +231,11 @@
             transition: .2s linear;
         }
     }
+}
+
+.header .nav-menu__link.nav-menu__link {
+    border: 0;
+    background: transparent;
 }
 
 /* Submenu Start */
@@ -256,6 +320,34 @@
         }
     }
 }
+
+.nav-submenu--more {
+    min-width: 240px;
+}
+
+.nav-submenu__item--group {
+    padding: 6px 0;
+
+    &::before {
+        display: none;
+    }
+}
+
+.nav-submenu__heading {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: hsl(var(--heading-color));
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 6px 12px;
+}
+
+.nav-submenu__nested {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
 /* Submenu End */
 /* Header Menu and Submenu Css End */
 /* ================================= Header Css End =========================== */
@@ -308,17 +400,17 @@
 .header-cta-group {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 6px;
     padding: 6px;
     border: 1px solid var(--border-color);
-    border-radius: 12px;
+    border-radius: 14px;
     background: var(--gray-100);
 }
 
 .header-cta-group .auth-buttons {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 0;
 }
 
 .header-cta-group .btn.btn-sm {

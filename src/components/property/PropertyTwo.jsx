@@ -14,7 +14,7 @@ const PropertyTwo = ({
     showTabs = true,
     maxItems = 6,
     gridItemClass = 'col-lg-4 col-sm-6',
-    propertyItemClass = 'style-two style-shaped',
+    propertyItemClass = 'style-two style-shaped compact-card',
     showFeatureBadges = true
 }) => {
     const {
@@ -102,14 +102,14 @@ const PropertyTwo = ({
 
                             {propertyTwoTabs.map((_, tabIndex) => (
                                 <TabPanel key={tabIndex}>
-                                    <div className="row gy-4 property-item-wrapper">
+                                    <div className="row gy-3 property-item-wrapper">
                                         {renderPropertyGrid()}
                                     </div>
                                 </TabPanel>
                             ))}
                         </Tabs>
                     ) : (
-                        <div className="row gy-4 property-item-wrapper">
+                        <div className="row gy-3 property-item-wrapper">
                             {renderPropertyGrid()}
                         </div>
                     )}

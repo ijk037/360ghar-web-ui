@@ -91,6 +91,10 @@
 
 /* Summary Card Sidebar */
 .summary-card {
+    &.position-sticky {
+        top: 88px;
+    }
+
     .card.compact-card {
         border: none;
         box-shadow: 0 4px 24px rgba(0,0,0,0.08);
@@ -149,6 +153,92 @@
             color: hsl(var(--heading-color));
             margin-bottom: 12px;
         }
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+.visit-form.shake {
+    animation: shakeX 0.3s ease-in-out;
+}
+
+.btn-teal {
+    min-height: 48px;
+    background-color: hsl(var(--main-color));
+    border-color: hsl(var(--main-color));
+    color: hsl(var(--white));
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+        background-color: hsl(var(--main));
+        border-color: hsl(var(--main));
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px hsl(var(--main-color) / 0.3);
+    }
+}
+
+.property-details .form-control,
+.property-details .form-select {
+    min-height: 44px;
+
+    &:focus {
+        border-color: hsl(var(--main-color));
+        box-shadow: 0 0 0 0.25rem hsl(var(--main-color) / 0.15);
+    }
+}
+
+.property-details textarea.form-control {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.callback-modal {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.mobile-sticky-actions {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 120;
+    display: flex;
+    gap: 10px;
+    padding: 12px 14px calc(env(safe-area-inset-bottom) + 12px);
+    background: hsl(var(--white));
+    border-top: 1px solid var(--border-color);
+    box-shadow: 0 -4px 14px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 991.98px) {
+    .property-details {
+        padding-bottom: 96px;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes shakeX {
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    75% {
+        transform: translateX(5px);
     }
 }
 

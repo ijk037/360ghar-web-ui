@@ -1,21 +1,48 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
 import NavMenu from './NavMenu';
 import { MobileMenuContext } from '../contextApi/MobileMenuContext';
 import { ScrollHideContext } from '../contextApi/ScrollHideContext';
-import Button from './Button';
 import { useAuthStore } from '../store';
 import { toast } from 'react-toastify';
 
 import LazyImage from './LazyImage';
+
 const MobileMenu = () => {
     const navigate = useNavigate();
     const { toggleMobileMenu, handleMobileMenuClose } = useContext(MobileMenuContext);
     const { handleScrollHideClose } = useContext(ScrollHideContext);
+    const menuRef = useRef(null);
+    const overlayRef = useRef(null);
 
     // Authentication state
     const { user, isAuthenticated, logout } = useAuthStore();
+
+    useEffect(() => {
+        if (!toggleMobileMenu) {
+            return;
+        }
+
+        const handleEscape = (event) => {
+            if (event.key === 'Escape') {
+                handleMobileMenuClose();
+                handleScrollHideClose();
+            }
+        };
+
+        document.addEventListener('keydown', handleEscape);
+        return () => document.removeEventListener('keydown', handleEscape);
+    }, [toggleMobileMenu, handleMobileMenuClose, handleScrollHideClose]);
+
+    useEffect(() => {
+        if (!toggleMobileMenu || !menuRef.current) {
+            return;
+        }
+
+        const focusable = menuRef.current.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        focusable?.focus();
+    }, [toggleMobileMenu]);
 
     const handleLogout = async () => {
         await logout();
@@ -29,16 +56,29 @@ const MobileMenu = () => {
         navigate(path);
         handleMobileMenuClose();
         handleScrollHideClose();
-    }; 
-    
+    };
+
     return (
         <>
             {/* ==================== Mobile Menu Start Here ==================== */}
-            <div className={`side-overlay ${toggleMobileMenu ? 'show' : "" }`} onClick={()=> {handleMobileMenuClose(); handleScrollHideClose(); }}></div>
-            
-            <div className={`mobile-menu d-lg-none d-block ${toggleMobileMenu ? 'active' : "" }`}>
-                <button type="button" className="close-button" onClick={ ()=> {handleMobileMenuClose(); handleScrollHideClose(); }}>
-                    <i className="fas fa-times"></i> 
+            <div
+                ref={overlayRef}
+                className={`side-overlay ${toggleMobileMenu ? 'show' : ''}`}
+                onClick={() => { handleMobileMenuClose(); handleScrollHideClose(); }}
+            />
+
+            <div
+                ref={menuRef}
+                className={`mobile-menu d-lg-none d-block ${toggleMobileMenu ? 'active' : ''}`}
+                aria-hidden={!toggleMobileMenu}
+            >
+                <button
+                    type="button"
+                    className="close-button"
+                    onClick={() => { handleMobileMenuClose(); handleScrollHideClose(); }}
+                    aria-label="Close menu"
+                >
+                    <i className="fas fa-times" />
                 </button>
                 <div className="mobile-menu__inner">
 

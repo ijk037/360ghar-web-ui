@@ -13,15 +13,6 @@ const PropertyTopBar = () => {
   const { location, setLocation } = useLocationStore();
 
   // Sort options matching API documentation
-  const sortOptions = [
-    { value: 'newest', label: 'Newest First' },
-    { value: 'distance', label: 'Distance' },
-    { value: 'price_low', label: 'Price: Low to High' },
-    { value: 'price_high', label: 'Price: High to Low' },
-    { value: 'popular', label: 'Most Popular' },
-    { value: 'relevance', label: 'Relevance' }
-  ];
-
   // Handle location selection from Google Places
   const handleLocationSelect = ({ lat, lng, name }) => {
     setLocation({ lat, lng, name });
@@ -41,11 +32,12 @@ const PropertyTopBar = () => {
     <div className="property-top-bar">
       <div className="property-top-bar__search">
         <div className="property-top-bar__field">
-          <label className="property-top-bar__label">
+          <label htmlFor="property-search-input" className="property-top-bar__label">
             <i className="fas fa-search"></i>
             Search
           </label>
           <input
+            id="property-search-input"
             type="text"
             placeholder="Keyword, title, description..."
             className="common-input common-input--compact"
@@ -56,10 +48,10 @@ const PropertyTopBar = () => {
         </div>
 
         <div className="property-top-bar__field property-top-bar__field--location">
-          <label className="property-top-bar__label">
+          <span className="property-top-bar__label" role="presentation">
             <i className="fas fa-map-marker-alt"></i>
             Location
-          </label>
+          </span>
           <GooglePlacesInput
             placeholder={location?.name && location?.lat ? location.name : 'City, area, locality...'}
             className="common-input common-input--compact w-100"
@@ -70,25 +62,6 @@ const PropertyTopBar = () => {
       </div>
 
       <div className="property-top-bar__actions">
-        <div className="property-top-bar__field property-top-bar__field--sort">
-          <label className="property-top-bar__label">
-            <i className="fas fa-sort"></i>
-            Sort
-          </label>
-          <select
-            className="form-select common-input common-input--compact"
-            value={filters.sort_by || 'newest'}
-            onChange={(e) => {
-              updateFilter('sort_by', e.target.value);
-              applyFilters();
-            }}
-          >
-            {sortOptions.map(option => (
-              <option key={option.value} value={option.value}>{option.label}</option>
-            ))}
-          </select>
-        </div>
-
         <button
           type="button"
           className="btn btn-main property-top-bar__btn"
@@ -96,9 +69,15 @@ const PropertyTopBar = () => {
           disabled={isLoading}
         >
           {isLoading ? (
-            <span className="spinner-border spinner-border-sm" role="status"></span>
+            <>
+              <span className="spinner-border spinner-border-sm" role="status"></span>
+              <span className="ms-2">Searching</span>
+            </>
           ) : (
-            <i className="fas fa-search"></i>
+            <>
+              <i className="fas fa-search"></i>
+              <span className="ms-2">Search</span>
+            </>
           )}
         </button>
       </div>

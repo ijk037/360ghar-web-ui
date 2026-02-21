@@ -112,7 +112,7 @@ const PropertySidebarSection = () => {
                                     properties.map((property, index) => (
                                         <div className="col-sm-6" key={property.id || index}>
                                             <PropertyItem 
-                                                itemClass="property-item style-two style-shaped"
+                                                itemClass="style-two style-shaped compact-card"
                                                 btnClass="text-gradient fw-semibold"
                                                 property={property}
                                                 badgeText={property.status || "For Sale"}

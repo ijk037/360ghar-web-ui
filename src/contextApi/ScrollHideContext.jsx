@@ -6,29 +6,50 @@ const ScrollHideProvider = ({ children }) => {
 
     const [hideScroll, setHideScroll] = useState(false); 
 
-    const handleScrollHide = () => {
-        setHideScroll(!hideScroll); 
+    const removeAllScrollClasses = () => {
+        document.body.classList.remove('scroll-hide-sm');
+        document.body.classList.remove('scroll-hide');
+    };
+
+    const openScrollHideSm = () => {
+        setHideScroll(true);
         document.body.classList.add('scroll-hide-sm');
+    };
+
+    const handleScrollHide = () => {
+        if (hideScroll) {
+            handleScrollHideClose();
+            return;
+        }
+        openScrollHideSm();
     }
 
     const handleScrollHideClose = () => {
         setHideScroll(false); 
-        document.body.classList.remove('scroll-hide-sm');
+        removeAllScrollClasses();
     }
+
+    const openScrollHideLg = () => {
+        setHideScroll(true);
+        document.body.classList.add('scroll-hide');
+    };
 
     // Large Device Scroll Hide
     const handleScrollHideLg = () => {
-        setHideScroll(!hideScroll); 
-        document.body.classList.add('scroll-hide');
+        if (hideScroll) {
+            handleScrollHideLgClose();
+            return;
+        }
+        openScrollHideLg();
     }
 
     const handleScrollHideLgClose = () => {
         setHideScroll(false); 
-        document.body.classList.remove('scroll-hide');
+        removeAllScrollClasses();
     }
     
     return (
-        <ScrollHideContext.Provider value={{ hideScroll, handleScrollHide, handleScrollHideClose, handleScrollHideLg, handleScrollHideLgClose }}>
+        <ScrollHideContext.Provider value={{ hideScroll, handleScrollHide, handleScrollHideClose, handleScrollHideLg, handleScrollHideLgClose, openScrollHideSm, openScrollHideLg }}>
             { children }
         </ScrollHideContext.Provider>
     );

@@ -55,12 +55,13 @@ const AccountMyPropertyTab = () => {
                 <div className="card common-card min-w-maxContent">
                     <div className="card-body">
                         <table className="table style-two">
+                            <caption className="visually-hidden">Properties you listed on 360Ghar</caption>
                             <thead>
                                 <tr>
-                                <th>My Properties</th>
-                                <th>Date Added</th>
-                                <th>Actions</th>
-                                <th>Delete</th>
+                                <th scope="col">My Properties</th>
+                                <th scope="col">Date Added</th>
+                                <th scope="col">Actions</th>
+                                <th scope="col">Delete</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -102,13 +103,17 @@ const AccountMyPropertyTab = () => {
                                             <span className="date">{property.created_at ? new Date(property.created_at).toLocaleDateString() : new Date().toLocaleDateString()}</span>
                                         </td>
                                         <td>
-                                            <button type="button" className="rounded-btn edit-btn text-info bg-info m-auto bg-opacity-10 flex-shrink-0">
-                                                <i className="fas fa-edit"></i>
+                                            <button
+                                                type="button"
+                                                className="rounded-btn edit-btn text-info bg-info m-auto bg-opacity-10 flex-shrink-0"
+                                                aria-label={`Edit property ${property.title || property.id}`}
+                                            >
+                                                <i className="fas fa-edit" aria-hidden="true"></i>
                                             </button>
                                         </td>
                                         <td>
-                                            <button type="button" className="rounded-btn delete-btn text-danger bg-danger bg-opacity-10 flex-shrink-0">
-                                                <i className="fas fa-trash-alt"></i>
+                                            <button type="button" className="rounded-btn delete-btn text-danger bg-danger bg-opacity-10 flex-shrink-0" aria-label={`Delete property ${property.title || property.id}`}>
+                                                <i className="fas fa-trash-alt" aria-hidden="true"></i>
                                             </button>
                                         </td>
                                     </tr>

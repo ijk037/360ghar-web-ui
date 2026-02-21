@@ -1,8 +1,8 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import usePropertyStore from '../../store/propertyStore';
 import { useLocationStore } from '../../store/locationStore';
 
-const PropertyFilters = ({ showAdvanced = false }) => {
+const PropertyFilters = ({ showAdvanced = false, isMobile = false, onCloseDrawer }) => {
   const {
     filters,
     updateFilter,
@@ -13,10 +13,14 @@ const PropertyFilters = ({ showAdvanced = false }) => {
     getActiveFiltersCount
   } = usePropertyStore();
 
-  const { location, setLocation } = useLocationStore();
+  const { setLocation } = useLocationStore();
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(showAdvanced);
+  const [removingChip, setRemovingChip] = useState(null);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
   const activeFiltersCount = getActiveFiltersCount();
+  const advancedFiltersId = 'property-advanced-filters';
 
   // Property types matching API documentation
   const propertyTypes = [
@@ -56,6 +60,184 @@ const PropertyFilters = ({ showAdvanced = false }) => {
     'Built-in Wardrobes', 'False Ceiling', 'Wooden Flooring', 'Marble Flooring',
     'Corner Property', 'Park Facing', 'Main Road Facing', 'East Facing'
   ];
+
+  // Helper to format price
+  const formatPrice = (price) => {
+    if (!price) return '';
+    if (price >= 10000000) {
+      return `₹${(price / 10000000).toFixed(1)}Cr`;
+    } else if (price >= 100000) {
+      return `₹${(price / 100000).toFixed(0)}L`;
+    }
+    return `₹${price}`;
+  };
+
+  // Get active filters as array of chips
+  const getActiveFilterChips = () => {
+    const chips = [];
+
+    // Purpose
+    if (filters.purpose) {
+      const purposeLabel = purposes.find(p => p.value === filters.purpose)?.label;
+      if (purposeLabel) {
+        chips.push({
+          id: 'purpose',
+          label: 'Purpose',
+          value: purposeLabel,
+          onRemove: () => updateFilter('purpose', '')
+        });
+      }
+    }
+
+    // Property Types
+    if (filters.property_type?.length > 0) {
+      filters.property_type.forEach(type => {
+        const typeLabel = propertyTypes.find(t => t.value === type)?.label;
+        if (typeLabel) {
+          chips.push({
+            id: `type-${type}`,
+            label: 'Type',
+            value: typeLabel,
+            onRemove: () => handlePropertyTypeChange(type, false)
+          });
+        }
+      });
+    }
+
+    // Budget
+    if (filters.price_min !== null || filters.price_max !== null) {
+      const min = filters.price_min ? formatPrice(filters.price_min) : '0';
+      const max = filters.price_max ? formatPrice(filters.price_max) : 'Any';
+      chips.push({
+        id: 'budget',
+        label: 'Budget',
+        value: `${min} - ${max}`,
+        onRemove: () => {
+          updateFilter('price_min', null);
+          updateFilter('price_max', null);
+        }
+      });
+    }
+
+    // Bedrooms
+    if (filters.bedrooms_min !== null) {
+      const label = filters.bedrooms_min >= 4 ? '4+ BHK' : `${filters.bedrooms_min} BHK`;
+      chips.push({
+        id: 'bedrooms',
+        label: 'BHK',
+        value: label,
+        onRemove: () => {
+          updateFilter('bedrooms_min', null);
+          updateFilter('bedrooms_max', null);
+        }
+      });
+    }
+
+    // Bathrooms
+    if (filters.bathrooms_min !== null || filters.bathrooms_max !== null) {
+      const min = filters.bathrooms_min || '0';
+      const max = filters.bathrooms_max || 'Any';
+      chips.push({
+        id: 'bathrooms',
+        label: 'Bathrooms',
+        value: `${min} - ${max}`,
+        onRemove: () => {
+          updateFilter('bathrooms_min', null);
+          updateFilter('bathrooms_max', null);
+        }
+      });
+    }
+
+    // Area
+    if (filters.area_min !== null || filters.area_max !== null) {
+      const min = filters.area_min || '0';
+      const max = filters.area_max || 'Any';
+      chips.push({
+        id: 'area',
+        label: 'Area',
+        value: `${min} - ${max} sqft`,
+        onRemove: () => {
+          updateFilter('area_min', null);
+          updateFilter('area_max', null);
+        }
+      });
+    }
+
+    // Amenities
+    if (filters.amenities?.length > 0) {
+      filters.amenities.forEach(amenity => {
+        chips.push({
+          id: `amenity-${amenity}`,
+          label: 'Amenity',
+          value: amenity,
+          onRemove: () => handleAmenityChange(amenity, false)
+        });
+      });
+    }
+
+    // Features
+    if (filters.features?.length > 0) {
+      filters.features.forEach(feature => {
+        chips.push({
+          id: `feature-${feature}`,
+          label: 'Feature',
+          value: feature,
+          onRemove: () => handleFeatureChange(feature, false)
+        });
+      });
+    }
+
+    // Location
+    if (filters.city) {
+      chips.push({
+        id: 'city',
+        label: 'City',
+        value: filters.city,
+        onRemove: () => updateFilter('city', '')
+      });
+    }
+
+    if (filters.locality) {
+      chips.push({
+        id: 'locality',
+        label: 'Area',
+        value: filters.locality,
+        onRemove: () => updateFilter('locality', '')
+      });
+    }
+
+    // Radius
+    if (filters.radius && filters.lat && filters.lng) {
+      chips.push({
+        id: 'radius',
+        label: 'Radius',
+        value: `${filters.radius} km`,
+        onRemove: () => updateFilter('radius', 20)
+      });
+    }
+
+    return chips;
+  };
+
+  const activeChips = getActiveFilterChips();
+
+  // Handle chip removal with animation
+  const handleChipRemove = (chip) => {
+    setRemovingChip(chip.id);
+    setTimeout(() => {
+      chip.onRemove();
+      setRemovingChip(null);
+    }, 200);
+  };
+
+  // Show toast notification
+  const showToastMessage = (message) => {
+    setToastMessage(message);
+    setShowToast(true);
+    setTimeout(() => {
+      setShowToast(false);
+    }, 3000);
+  };
 
   // Handle property type change (multi-select)
   const handlePropertyTypeChange = useCallback((type, checked) => {
@@ -120,16 +302,52 @@ const PropertyFilters = ({ showAdvanced = false }) => {
   const handleSearch = async () => {
     if (!filtersChanged && !isLoading) return;
     await applyFilters();
+    if (isMobile && onCloseDrawer) {
+      onCloseDrawer();
+    }
   };
 
   // Handle clear filters
   const handleClearFilters = () => {
     clearFilters();
     setLocation({ lat: null, lng: null, name: 'Search any location...' });
+    showToastMessage('All filters cleared');
   };
 
-  return (
-    <div className="property-filter-sidebar">
+  // Render active filter chips
+  const renderActiveChips = () => {
+    if (activeChips.length === 0) return null;
+
+    return (
+      <div className="active-filters-bar">
+        <span className="active-filters-label">Active:</span>
+        {activeChips.map(chip => (
+          <div
+            key={chip.id}
+            className={`filter-chip ${removingChip === chip.id ? 'removing' : ''}`}
+          >
+            <span className="filter-chip__label">{chip.label}:</span>
+            <span className="filter-chip__value">{chip.value}</span>
+            <button
+              className="filter-chip__remove"
+              onClick={() => handleChipRemove(chip)}
+              title="Remove filter"
+            >
+              <i className="fas fa-times"></i>
+            </button>
+          </div>
+        ))}
+        <button className="clear-all-btn" onClick={handleClearFilters}>
+          <i className="fas fa-times"></i>
+          Clear All
+        </button>
+      </div>
+    );
+  };
+
+  // Render filter sidebar content
+  const renderFilterContent = () => (
+    <>
       {/* Purpose */}
       <div className="filter-group">
         <h6 className="filter-group__title">Purpose</h6>
@@ -154,7 +372,7 @@ const PropertyFilters = ({ showAdvanced = false }) => {
       </div>
 
       {/* Property Type */}
-      <div className="filter-group">
+      <div className="filter-group filter-group--two-col">
         <h6 className="filter-group__title">Property Type</h6>
         <div className="filter-group__content">
           {propertyTypes.map(type => (
@@ -245,6 +463,8 @@ const PropertyFilters = ({ showAdvanced = false }) => {
           type="button"
           className="filter-group__toggle"
           onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+          aria-expanded={showAdvancedFilters}
+          aria-controls={advancedFiltersId}
         >
           <span>{showAdvancedFilters ? 'Hide' : 'Show'} Advanced Filters</span>
           <i className={`fas fa-chevron-${showAdvancedFilters ? 'up' : 'down'}`}></i>
@@ -253,7 +473,7 @@ const PropertyFilters = ({ showAdvanced = false }) => {
 
       {/* Advanced Filters */}
       {showAdvancedFilters && (
-        <div className="filter-group filter-group--advanced">
+        <div className="filter-group filter-group--advanced" id={advancedFiltersId}>
           {/* Bathrooms */}
           <div className="filter-group__section">
             <h6 className="filter-group__subtitle">Bathrooms</h6>
@@ -418,7 +638,7 @@ const PropertyFilters = ({ showAdvanced = false }) => {
           {/* Amenities */}
           <div className="filter-group__section">
             <h6 className="filter-group__subtitle">Amenities</h6>
-            <div className="filter-group__grid">
+            <div className="filter-group__grid filter-group__grid--two-col">
               {amenities.map(amenity => (
                 <div key={amenity} className="common-check">
                   <input
@@ -439,7 +659,7 @@ const PropertyFilters = ({ showAdvanced = false }) => {
           {/* Features */}
           <div className="filter-group__section">
             <h6 className="filter-group__subtitle">Features</h6>
-            <div className="filter-group__grid">
+            <div className="filter-group__grid filter-group__grid--two-col">
               {features.map(feature => (
                 <div key={feature} className="common-check">
                   <input
@@ -495,7 +715,76 @@ const PropertyFilters = ({ showAdvanced = false }) => {
           </button>
         )}
       </div>
-    </div>
+    </>
+  );
+
+  // Mobile drawer view
+  if (isMobile) {
+    return (
+      <>
+        <div className="filter-drawer__header">
+          <h5>Filters</h5>
+          <button className="filter-drawer__close" onClick={onCloseDrawer}>
+            <i className="fas fa-times"></i>
+          </button>
+        </div>
+        <div className="filter-drawer__content">
+          <div className="property-sidebar-wrapper">
+            <div className="property-filter-sidebar">
+              {renderFilterContent()}
+            </div>
+          </div>
+        </div>
+        <div className="filter-drawer__footer">
+          {activeFiltersCount > 0 && (
+            <button
+              type="button"
+              className="btn btn-outline-secondary"
+              onClick={handleClearFilters}
+              disabled={isLoading}
+            >
+              Clear
+            </button>
+          )}
+          <button
+            type="button"
+            className={`btn btn-main ${filtersChanged ? 'btn-main-active' : ''}`}
+            onClick={handleSearch}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <span className="spinner-border spinner-border-sm me-2" role="status"></span>
+                Searching...
+              </>
+            ) : (
+              <>
+                Apply
+                {activeFiltersCount > 0 && (
+                  <span className="badge bg-white text-primary ms-2">{activeFiltersCount}</span>
+                )}
+              </>
+            )}
+          </button>
+        </div>
+      </>
+    );
+  }
+
+  // Desktop view with active chips
+  return (
+    <>
+      {renderActiveChips()}
+      <div className="property-filter-sidebar">
+        {renderFilterContent()}
+      </div>
+      
+      {/* Toast Notification */}
+      <div className={`filter-toast ${showToast ? 'show' : ''}`}>
+        <i className="fas fa-check-circle"></i>
+        {toastMessage}
+      </div>
+    </>
   );
 };
 

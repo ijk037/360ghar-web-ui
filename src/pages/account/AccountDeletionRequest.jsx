@@ -313,9 +313,7 @@ const AccountDeletionRequest = () => {
                                             required
                                         >
                                             <option value="">Select a reason</option>
-                                            <option value="privacy">
-                                                <i className="fas fa-lock"></i> Privacy concerns
-                                            </option>
+                                            <option value="privacy">Privacy concerns</option>
                                             <option value="inactivity">No longer using the platform</option>
                                             <option value="duplicate">Duplicate account</option>
                                             <option value="security">Security concerns</option>

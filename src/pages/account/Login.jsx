@@ -42,7 +42,7 @@ const Login = () => {
                 btnText="Login"
                 showForgotRemember={true}
                 showTermCondition={false}
-                haveAccountText = "Don\Don'tapos;t Have An Account? "
+                haveAccountText="Don't Have An Account? "
                 haveAccountLinkText = "Register"
                 haveAccountLink = "/register"
                 isLogin={true}

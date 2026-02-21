@@ -2,12 +2,25 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import ListGridButtons from '../../common/ListGridButtons';
 import usePropertyStore from '../../store/propertyStore';
 
-const PropertyFilterBottom = ({ total = 0, currentPage = 1 }) => {
+const PropertyFilterBottom = ({
+    total = 0,
+    currentPage = 1,
+    viewMode = 'grid',
+    onViewModeChange
+}) => {
     const { filters, updateFilter, applyFilters } = usePropertyStore();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
     const selectedSort = filters.sort_by || 'newest';
+    const sortOptions = [
+        { value: 'newest', label: 'Newest First' },
+        { value: 'distance', label: 'Nearest First' },
+        { value: 'price_low', label: 'Price: Low to High' },
+        { value: 'price_high', label: 'Price: High to Low' },
+        { value: 'popular', label: 'Most Popular' },
+        { value: 'relevance', label: 'Relevance' }
+    ];
 
     const handleSortChangeEnhanced = async (newSortValue) => {
         updateFilter('sort_by', newSortValue);
@@ -34,41 +47,24 @@ const PropertyFilterBottom = ({ total = 0, currentPage = 1 }) => {
                 </span>
                 {total > 0 && (
                     <div className="sort-options">
-                        <div className="btn-group btn-group-sm" role="group">
-                            <button
-                                type="button"
-                                className={`btn btn-outline-secondary ${selectedSort === 'newest' ? 'active' : ''}`}
-                                onClick={() => handleSortChangeEnhanced('newest')}
-                            >
-                                Newest
-                            </button>
-                            <button
-                                type="button"
-                                className={`btn btn-outline-secondary ${selectedSort === 'distance' ? 'active' : ''}`}
-                                onClick={() => handleSortChangeEnhanced('distance')}
-                            >
-                                Distance
-                            </button>
-                            <button
-                                type="button"
-                                className={`btn btn-outline-secondary ${selectedSort === 'price_low' ? 'active' : ''}`}
-                                onClick={() => handleSortChangeEnhanced('price_low')}
-                            >
-                                Price: Low
-                            </button>
-                            <button
-                                type="button"
-                                className={`btn btn-outline-secondary ${selectedSort === 'price_high' ? 'active' : ''}`}
-                                onClick={() => handleSortChangeEnhanced('price_high')}
-                            >
-                                Price: High
-                            </button>
-                        </div>
+                        <label htmlFor="property-sort-select" className="visually-hidden">Sort properties</label>
+                        <select
+                            id="property-sort-select"
+                            className="form-select form-select-sm"
+                            value={selectedSort}
+                            onChange={(e) => {
+                                void handleSortChangeEnhanced(e.target.value);
+                            }}
+                        >
+                            {sortOptions.map((option) => (
+                                <option key={option.value} value={option.value}>{option.label}</option>
+                            ))}
+                        </select>
                     </div>
                 )}
             </div>
             <div className="d-flex align-items-center gap-3">
-                <ListGridButtons/>
+                <ListGridButtons viewMode={viewMode} onViewModeChange={onViewModeChange} />
             </div>
         </div>
     );

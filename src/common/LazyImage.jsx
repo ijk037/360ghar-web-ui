@@ -95,12 +95,15 @@ const LazyImage = forwardRef(
       if (typeof onError === 'function') onError(event);
     };
 
+    const fetchPriorityProps = resolvedFetchPriority
+      ? { fetchpriority: resolvedFetchPriority }
+      : {};
+
     return (
       <img
         ref={ref}
         loading={resolvedLoading}
         decoding={resolvedDecoding}
-        fetchPriority={resolvedFetchPriority}
         referrerPolicy={resolvedReferrerPolicy}
         onError={handleError}
         srcSet={srcSet}
@@ -108,6 +111,7 @@ const LazyImage = forwardRef(
         width={width}
         height={height}
         style={computedStyle}
+        {...fetchPriorityProps}
         {...rest}
         src={currentSrc}
       />

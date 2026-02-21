@@ -1,4 +1,17 @@
 /* ================================= Form Css Start =========================== */
+/* Mobile touch optimization - prevent zoom on iOS */
+input, textarea, select {
+    font-size: 16px !important;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+@media (min-width: 768px) {
+    input, textarea, select {
+        font-size: inherit;
+    }
+}
+
 /* input Start */
 .common-input {
     border-radius: 5px;
@@ -6,17 +19,22 @@
     outline: none;
     width: 100%;
     padding: 17px 24px;
-    background-color: transparent !important; 
+    background-color: transparent !important;
     border: 1px solid var(--border-color);
-    color: hsl(var(--black)); 
+    color: hsl(var(--black));
     line-height: 1;
-    @include font-17; 
+    font-size: 16px !important;
+    min-height: 48px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
     @include md-screen {
         padding: 12px 24px;
     }
     @include sm-screen {
-        padding: 10px 16px;
-        @include font-15; 
+        padding: 14px 16px;
+        font-size: 16px !important;
+        min-height: 50px;
     }
     &::placeholder {
         color: var(--gray-800);
@@ -50,16 +68,17 @@
     &[type="password"] {
         color: hsl(var(--black)/.5);
         &:focus {
-            color: hsl(var(--black)); 
+            color: hsl(var(--black));
         }
     }
     &[type="file"] {
         line-height: 50px;
         padding: 0;
         position: relative;
+        min-height: 48px;
         &::file-selector-button {
             border: 1px solid hsl(var(--black) / .08);
-            padding: 4px 6px;
+            padding: 8px 12px;
             border-radius: .2em;
             background-color: hsl(var(--main)) !important;
             transition: .2s linear;
@@ -67,12 +86,22 @@
             position: relative;
             margin-left: 15px;
             color: hsl(var(--body-color)) !important;
+            min-height: 44px;
+            min-width: 44px;
+            touch-action: manipulation;
             &:hover {
                 background-color: hsl(var(--main));
                 border: 1px solid hsl(var(--main));
                 color: hsl(var(--black));
             }
+            &:active {
+                transform: scale(0.97);
+            }
         }
+    }
+    /* Touch feedback for inputs */
+    &:active {
+        background-color: hsl(var(--main)/0.05);
     }
 }
 .common-input {

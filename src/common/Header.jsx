@@ -16,19 +16,17 @@ const Header = ({
     logoBlack = true,
     logoWhite = false,
     headerMenusClass = "ms-auto menu-right",
-    btnClass = "btn btn-main d-lg-block d-none",
     btnLink = "/post-property",
     btnText = "Post Property",
     spanClass = "icon-right",
     showHeaderBtn = true,
-    showOffCanvasBtn = false,
-    offCanvasBtnClass = "",
-    ...otherProps
+    showOffCanvasBtn = true,
+    offCanvasBtnClass = ""
 }) => {
     const navigate = useNavigate();
-    const { handleMobileMenuClick } = useContext(MobileMenuContext);
-    const { handleOffCanvas } = useContext(OffCanvasContext);
-    const { handleScrollHide, handleScrollHideLg } = useContext(ScrollHideContext);
+    const { toggleMobileMenu, handleMobileMenuClick } = useContext(MobileMenuContext);
+    const { offCanvas, handleOffCanvas } = useContext(OffCanvasContext);
+    const { openScrollHideSm, handleScrollHideClose, openScrollHideLg, handleScrollHideLgClose } = useContext(ScrollHideContext);
 
     // Authentication state
     const { user, isAuthenticated, logout } = useAuthStore();
@@ -55,6 +53,26 @@ const Header = ({
         toastSuccess('Logged out successfully!');
         navigate('/');
         setShowUserDropdown(false);
+    };
+
+    const handleMobileMenuToggle = () => {
+        if (toggleMobileMenu) {
+            handleMobileMenuClick();
+            handleScrollHideClose();
+            return;
+        }
+        handleMobileMenuClick();
+        openScrollHideSm();
+    };
+
+    const handleOffCanvasToggle = () => {
+        if (offCanvas) {
+            handleOffCanvas();
+            handleScrollHideLgClose();
+            return;
+        }
+        handleOffCanvas();
+        openScrollHideLg();
     };
     
     useEffect(() => {
@@ -163,11 +181,7 @@ const Header = ({
                                     <div className="auth-buttons">
                                         <Link to="/login" className="btn btn-outline-main btn-sm">
                                             <i className="fas fa-sign-in-alt me-2"></i>
-                                            Login
-                                        </Link>
-                                        <Link to="/register" className="btn btn-main btn-sm">
-                                            <i className="fas fa-user-plus me-2"></i>
-                                            Sign Up
+                                            Sign In
                                         </Link>
                                     </div>
                                     {showHeaderBtn && (
@@ -185,7 +199,7 @@ const Header = ({
                             {
                                 showOffCanvasBtn && (
                                     <button type="button" className={`offcanvas-btn d-lg-block d-none ${offCanvasBtnClass}`}
-                                        onClick={() => { handleOffCanvas(); handleScrollHideLg(); }}
+                                        onClick={handleOffCanvasToggle}
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 30 24" fill="none">
                                             <line x1="0.0078125" y1="12.293" x2="30.0078" y2="12.293" stroke="#181616" strokeWidth="3"/>
@@ -199,7 +213,9 @@ const Header = ({
                             {/* Post Property button is included above within header-cta-group for guests */}
 
                             <button type="button" className="toggle-mobileMenu d-lg-none ms-3"
-                                onClick={() => { handleMobileMenuClick(); handleScrollHide(); }}
+                                aria-label="Toggle mobile menu"
+                                aria-expanded={toggleMobileMenu}
+                                onClick={handleMobileMenuToggle}
                             >
                                 <i className="fas fa-bars"></i>
                             </button>

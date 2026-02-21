@@ -1,10 +1,64 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 import LazyImage from '../../common/LazyImage';
+import TrustBadge from '../ui/TrustBadge';
+import { getRelativeTime, getViewCountText } from '../../utils/dateUtils';
 const PROPERTY_IMAGE_FALLBACK = '/assets/images/thumbs/property-1.png';
 
 const isUsableImageUrl = (value) =>
   typeof value === 'string' && value.trim() !== '' && !/kuula\.co/i.test(value);
+
+const ShareModal = ({ isOpen, onClose, propertyTitle, propertyURL }) => {
+  if (!isOpen) return null;
+
+  const fullURL = typeof window !== 'undefined' ? `${window.location.origin}${propertyURL}` : propertyURL;
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(fullURL);
+    alert('Link copied to clipboard!');
+    onClose();
+  };
+
+  const handleShareNative = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: propertyTitle,
+          url: fullURL,
+        });
+      } catch (err) {
+        console.log('Share cancelled');
+      }
+    }
+    onClose();
+  };
+
+  return (
+    <div className="share-modal-overlay" onClick={onClose}>
+      <div className="share-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="share-modal__header">
+          <h5>Share Property</h5>
+          <button className="share-modal__close" onClick={onClose}>
+            <i className="fas fa-times"></i>
+          </button>
+        </div>
+        <div className="share-modal__content">
+          <button className="share-modal__btn" onClick={handleCopyLink}>
+            <i className="fas fa-link"></i>
+            <span>Copy Link</span>
+          </button>
+          {navigator.share && (
+            <button className="share-modal__btn" onClick={handleShareNative}>
+              <i className="fas fa-share-alt"></i>
+              <span>Share</span>
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // Generate descriptive alt text for property images
 const generatePropertyAltText = (property) => {
@@ -58,15 +112,6 @@ const generatePropertyAltText = (property) => {
   return altText ? `${altText} - 360Ghar` : 'Property listing on 360Ghar';
 };
 
-function formatCurrency(value) {
-  if (value === null || value === undefined) return 'Price on request';
-  try {
-    return `₹${Number(value).toLocaleString('en-IN')}`;
-  } catch {
-    return `₹${value}`;
-  }
-}
-
 const PropertyItem = ({
   property,
   itemClass,
@@ -78,6 +123,11 @@ const PropertyItem = ({
   btnRenderRight,
   showFeatureBadges = true
 }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
+  const isCompactCard = typeof itemClass === 'string' && itemClass.includes('compact-card');
+  const visibleAmenitiesCount = isCompactCard ? 3 : 4;
   // Handle API-first data structure with fallbacks
   const id = property.id;
   const mainImageFromList = Array.isArray(property.images)
@@ -90,7 +140,6 @@ const PropertyItem = ({
 
   const purpose = property.purpose || property.price_type;
   const priceValue = purpose === 'rent' ? (property.monthly_rent || property.daily_rate || property.base_price) : property.base_price;
-  const price = formatCurrency(priceValue);
   const day = purpose === 'rent' ? (property.daily_rate ? '/per day' : '/per month') : '';
   const title = property.title || property.name || 'Property Title';
   const locationIcon = <i className="fas fa-map-marker-alt"></i>;
@@ -122,10 +171,23 @@ const PropertyItem = ({
   // URL
   const propertyURL = `/property/${id}`;
 
-  // Random badge (kept as design element)
-  const renderBadge = Math.random() < 0.5;
+  const normalizedPurpose = property.purpose === 'buy' ? 'For Sale' : property.purpose === 'rent' ? 'For Rent' : null;
+  const resolvedBadgeText = property.is_verified ? 'Verified' : (badgeText || normalizedPurpose);
+  const shouldRenderBadge = Boolean(resolvedBadgeText);
 
   // Server-side filtering is now used, no client-side filtering needed
+
+  const handleSaveClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsFavorite(!isFavorite);
+  };
+
+  const handleShareClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setShowShareModal(true);
+  };
 
   // Show distance if available
   const showDistance = property.distance_km && (
@@ -144,30 +206,72 @@ const PropertyItem = ({
   return (
     <>
       <div
-        className={`property-item ${itemClass}`}
+        className={`property-item ${itemClass} ${isHovered ? 'property-item--hovered' : ''}`}
         data-status={property.status}
         data-type={property.property_type}
         data-location={property.city}
         data-sort={property.sort_by || 'newest'}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
         <div className="property-item__thumb">
           <Link to={propertyURL} className="link">
             <LazyImage src={thumb} fallbackSrc={PROPERTY_IMAGE_FALLBACK} alt={generatePropertyAltText(property)} className="cover-img" />
           </Link>
-          {renderBadge && <span className={badgeClass}>{badgeText}</span>}
+          
+          {/* Verified Badge with TrustBadge Component */}
+          {property.is_verified && (
+            <TrustBadge 
+              type="verified" 
+              position="top-left" 
+              tooltip="Verified Property"
+            />
+          )}
+          
+          {/* Quick Action Buttons - Appear on Hover */}
+          <div className={`property-item__quick-actions ${isHovered ? 'property-item__quick-actions--visible' : ''}`}>
+            <button
+              className={`quick-action-btn quick-action-btn--save ${isFavorite ? 'quick-action-btn--active' : ''}`}
+              onClick={handleSaveClick}
+              title={isFavorite ? 'Remove from favorites' : 'Save to favorites'}
+              aria-label={isFavorite ? 'Remove from favorites' : 'Save property'}
+            >
+              <i className={`${isFavorite ? 'fas' : 'far'} fa-heart`}></i>
+            </button>
+            <button
+              className="quick-action-btn quick-action-btn--share"
+              onClick={handleShareClick}
+              title="Share property"
+              aria-label="Share property"
+            >
+              <i className="fas fa-share-alt"></i>
+            </button>
+          </div>
+          
+          {/* Property Type Badge */}
+          {property.purpose && (
+            <div className={`property-item__type-badge property-item__type-badge--${property.purpose}`}>
+              {property.purpose === 'rent' ? 'For Rent' : property.purpose === 'buy' ? 'For Sale' : 'PG'}
+            </div>
+          )}
+          
+          {shouldRenderBadge && !property.is_verified && <span className={badgeClass}>{resolvedBadgeText}</span>}
           {showDistance}
         </div>
         <div className="property-item__content">
           <div className="property-item__header">
-            <h6 className="property-item__price">
-              {price}
-              <span className="day">{day}</span>
-            </h6>
-            {property.price_per_sqft && (
-              <span className="property-item__price-per-sqft text-muted small">
-                ₹{property.price_per_sqft.toLocaleString()}/sqft
-              </span>
-            )}
+            <div className="property-item__price-wrapper">
+              <h6 className="property-item__price">
+                <span className="property-item__price-currency">₹</span>
+                <span className="property-item__price-value">{priceValue ? Number(priceValue).toLocaleString('en-IN') : 'Price on request'}</span>
+                <span className="property-item__price-period">{day}</span>
+              </h6>
+              {property.price_per_sqft && (
+                <span className="property-item__price-per-sqft">
+                  ₹{property.price_per_sqft.toLocaleString()}/sqft
+                </span>
+              )}
+            </div>
           </div>
 
           <h6 className="property-item__title">
@@ -185,7 +289,7 @@ const PropertyItem = ({
           <div className="property-item__tags mb-2">
             {property.purpose && (
               <span className="badge bg-primary me-1">
-                {property.purpose === 'buy' ? 'For Sale' : property.purpose === 'rent' ? 'For Rent' : 'Short Stay'}
+                {normalizedPurpose || 'Short Stay'}
               </span>
             )}
             {property.property_type && (
@@ -200,8 +304,8 @@ const PropertyItem = ({
 
           <div className="property-item__bottom flx-between gap-2">
             <ul className="amenities-list flx-align">
-              {amenities.slice(0, 4).map((amenity, amenityIndex) => (
-                <li className="amenities-list__item flx-align" key={amenityIndex}>
+              {amenities.slice(0, visibleAmenitiesCount).map((amenity, amenityIndex) => (
+                <li className="amenities-list__item flx-align" key={amenityIndex} title={amenity.text}>
                   <span className={`icon ${iconsClass}`}>{amenity.icon}</span>
                   <span className="text">{amenity.text}</span>
                 </li>
@@ -269,9 +373,15 @@ const PropertyItem = ({
           )}
         </div>
       </div>
+
+      <ShareModal
+        isOpen={showShareModal}
+        onClose={() => setShowShareModal(false)}
+        propertyTitle={title}
+        propertyURL={propertyURL}
+      />
     </>
   );
 };
 
 export default PropertyItem;
-

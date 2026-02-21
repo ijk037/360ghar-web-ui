@@ -6,6 +6,7 @@ import Cta from '../../components/ui/Cta';
 import AccountSection from '../../components/account/AccountSection';
 import PageTitle from '../../common/PageTitle';
 import SEO from '../../common/SEO';
+import PageLoader from '../../common/PageLoader';
 import { Navigate } from 'react-router-dom';
 import { useAuthStore } from '../../store';
 
@@ -13,7 +14,7 @@ const Account = () => {
     const { isAuthenticated, isInitializing } = useAuthStore();
 
     if (isInitializing) {
-        return null;
+        return <PageLoader />;
     }
 
     if (!isAuthenticated) {

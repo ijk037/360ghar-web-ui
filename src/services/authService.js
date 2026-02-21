@@ -92,6 +92,46 @@ export const authService = {
     await client.auth.signOut();
     localStorage.removeItem('user');
   },
+
+  // Change password - requires current password verification
+  changePassword: async (currentPassword, newPassword) => {
+    const client = ensureSupabaseClient();
+
+    // Get current user and their email/phone
+    const { data: { user } } = await client.auth.getUser();
+
+    if (!user) {
+      throw new Error('User not authenticated');
+    }
+
+    // Verify current password by attempting to sign in
+    // This ensures the user actually knows their current password
+    const identifier = user.email || user.phone;
+    if (!identifier) {
+      throw new Error('User has no email or phone associated');
+    }
+
+    const credentials = identifier.includes('@')
+      ? { email: identifier, password: currentPassword }
+      : { phone: identifier, password: currentPassword };
+
+    const { error: verifyError } = await client.auth.signInWithPassword(credentials);
+
+    if (verifyError) {
+      throw new Error('Current password is incorrect');
+    }
+
+    // Current password verified, now update to new password
+    const { error } = await client.auth.updateUser({
+      password: newPassword,
+    });
+
+    if (error) {
+      throw new Error(error.message || 'Failed to change password');
+    }
+
+    return { success: true };
+  },
 };
 
 export default authService; 
