@@ -6,9 +6,13 @@ export const siteMetadata = {
   defaultDescription:
     "360Ghar is India's first AI and VR-first real estate platform. Explore verified flats, apartments & villas in Gurgaon with studio-quality 360° virtual tours. Zero brokerage. No fake listings. AI-powered search.",
   defaultKeywords:
-    [
-      // Brand positioning
-      'India first AI enabled real estate platform', 'virtual tour first real estate', 'AI property search India', 'smart real estate platform',
+      [
+        // AI Agent & MCP
+        'AI real estate assistant', 'MCP server', 'ChatGPT real estate', 'AI property search India', 'conversational property finder', 
+        'AI booking assistant', 'smart property management', 'AI landlord assistant', 'MCP real estate', 'AI home search', 
+        'ChatGPT property search', 'Claude real estate', 'AI rent collection', 'AI tenant management', 'AI maintenance tracking',
+        // Brand positioning
+        'India first AI enabled real estate platform', 'virtual tour first real estate', 'AI property search India', 'smart real estate platform',
       // AI & technology
       'AI real estate platform', 'AI property search', 'AI virtual tours', 'smart real estate India', 'AI-powered property platform', 'AI home search',
       // Virtual tours

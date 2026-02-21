@@ -14,6 +14,7 @@ import CounterThree from '../components/ui/CounterThree';
 import Faq from '../components/layout/Faq';
 import BlogThree from '../components/blog/BlogThree';
 import ToolShowcase from '../components/ui/ToolShowcase';
+import AIAgentShowcase from '../components/ui/AIAgentShowcase';
 import PropertyManagementShowcase from '../components/ui/PropertyManagementShowcase';
 import PageTitle from '../common/PageTitle';
 import SEO from '../common/SEO';
@@ -162,6 +163,9 @@ const Home = () => {
 
                 {/* Counter Three */}
                 <CounterThree />
+
+                {/* AI Agent Showcase */}
+                <AIAgentShowcase />
 
                 {/* Tool Showcase */}
                 <ToolShowcase />

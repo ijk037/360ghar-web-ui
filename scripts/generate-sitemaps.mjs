@@ -43,6 +43,23 @@ const staticRoutes = [
   '/property-prices-gurugram',
   '/virtual-property-tours',
   '/for-ai',
+  // Comparison pages
+  '/vs/nobroker',
+  '/vs/magicbricks',
+  '/vs/99acres',
+  '/vs/housing',
+  '/vs/commonfloor',
+  '/vs/proptiger',
+  '/vs/squareyards',
+  '/vs/nestaway',
+  '/vs/zolo',
+  '/vs/stanza-living',
+  // Truth/Expose pages
+  '/truth/nobroker-listings',
+  '/truth/magicbricks-spam',
+  '/truth/99acres-fake',
+  '/truth/nestaway-collapse',
+  '/truth/zolo-issues',
 ];
 
 // Cities and facets for programmatic landing pages

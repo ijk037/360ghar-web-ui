@@ -40,3 +40,117 @@
 - Do not commit real API keys or secrets; use `.env.local` for machine-specific values (e.g., `VITE_API_BASE_URL`, `VITE_GOOGLE_PLACES_API_KEY`).
 - When changing API usage, update `src/services/` and keep configuration in Vite env variables, not hard-coded URLs.
 - Auth/session handling must stay SDK-managed via Supabase client (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`); do not reintroduce backend `/api/v1/auth/*` login/register flows.
+
+## Branding & Design Guidelines
+
+All UI components must follow the 360Ghar brand guidelines defined in `src/styles/_theme.scss`. Never hardcode colors - always use CSS custom properties.
+
+### Primary Brand Colors
+
+| Variable | Hex Value | Usage |
+|----------|-----------|-------|
+| `--main-color` | `#0F766E` | Primary teal - buttons, highlights, hero sections |
+| `--main-color-dark` | `#134E4A` | Darker variant - hover states, gradients |
+| `--main-color-light` | `#14B8A6` | Lighter variant - secondary highlights |
+| `--main-color-lighter` | `#F0FDFA` | Very light - subtle backgrounds |
+| `--cta-color` | `#0369A1` | Call-to-action buttons, links |
+
+### Semantic Colors
+
+| Variable | Hex Value | Usage |
+|----------|-----------|-------|
+| `--success-color` | `#28a745` | Success states, checkmarks, positive indicators |
+| `--danger-color` | `#dc3545` | Errors, warnings, negative indicators |
+| `--warning-color` | `#ffc107` | Caution states, partial success |
+| `--info-color` | `#17a2b8` | Informational messages |
+
+### Text Colors
+
+| Variable | Hex Value | Usage |
+|----------|-----------|-------|
+| `--text-primary` | `#181616` | Headings, primary text |
+| `--text-secondary` | `#777777` | Body text |
+| `--text-muted` | `#6b7385` | Secondary/muted text |
+
+### Border & Background Colors
+
+| Variable | Hex Value | Usage |
+|----------|-----------|-------|
+| `--border-color-light` | `#e0e6ed` | Card borders, dividers |
+| `--bg-light` | `#f8f8f8` | Light backgrounds |
+| `--bg-white` | `#ffffff` | White backgrounds |
+
+### Typography
+
+| Variable | Font | Usage |
+|----------|------|-------|
+| `--font-heading` | 'Cinzel', serif | All headings (h1-h6) |
+| `--font-body` | 'Josefin Sans', sans-serif | Body text, paragraphs |
+
+### Card Styling Pattern
+
+All cards should follow this consistent pattern:
+
+```scss
+.card-name {
+  background: #fff;
+  border: 1px solid var(--border-color-light);
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 12px 24px rgba(16, 24, 40, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-name:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 32px rgba(15, 118, 110, 0.1);
+}
+```
+
+### Section Padding Classes
+
+| Class | Padding | Usage |
+|-------|---------|-------|
+| `padding-y-120` | 120px top/bottom | Major sections |
+| `padding-y-60` | 60px top/bottom | Medium sections |
+| `padding-t-120 padding-b-60` | Mixed | Asymmetric sections |
+
+### Gradients (Brand Colors Only)
+
+```scss
+// Correct - Use brand teal gradient
+background: linear-gradient(135deg, var(--main-color) 0%, var(--main-color-dark) 100%);
+
+// Wrong - Never use generic purple/blue gradients
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+```
+
+### Buttons
+
+- Primary: `btn btn-main` or `btn btn-primary`
+- Outline: `btn btn-outline-main`
+- Hover effects: Use transform and box-shadow transitions
+
+### Common Components to Use
+
+- `SectionHeading` - For all section titles with subtitles
+- `Button` - For action buttons with icons
+- `Cta` - For bottom call-to-action sections
+- `LazyImage` - For lazy-loaded images
+- `SEO` - For meta tags and structured data
+
+### Do Not
+
+- ❌ Hardcode hex colors in components (e.g., `color: #0F766E`)
+- ❌ Use purple/blue gradients (use teal brand gradient)
+- ❌ Skip CSS custom properties
+- ❌ Use inline styles for colors
+- ❌ Create new color variables outside `_theme.scss`
+
+### Always
+
+- ✅ Use `var(--main-color)` for primary teal
+- ✅ Use `var(--success-color)` for positive indicators
+- ✅ Use `var(--danger-color)` for negative indicators
+- ✅ Use semantic classes like `text-success`, `text-muted`
+- ✅ Follow existing card patterns in `phase1-additions.scss`

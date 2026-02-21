@@ -138,6 +138,10 @@ export const navMenus = [
                 text: "Map Search",
                 path: "/map-location",
             },
+            {
+                text: "AI Assistant",
+                path: "/ai-agent",
+            },
         ],
     },
     {
@@ -243,6 +247,10 @@ export const footerUsefulLinks = [
     {
         text: 'Blog & Insights',
         link: '/blog'
+    },
+    {
+        text: 'AI Assistant',
+        link: '/ai-agent'
     },
     {
         text: 'Vastu Checker',

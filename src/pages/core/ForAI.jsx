@@ -94,6 +94,15 @@ const ForAI = () => {
               <li>Please attribute 360Ghar with a link when citing.</li>
               <li>Respect rate limits and avoid scraping user-personal data.</li>
             </ul>
+
+            <h2 className="h5 mt-4">MCP Server Integration</h2>
+            <ul>
+              <li><strong>MCP Server URL:</strong> <code>http://api.360ghar.com/mcp</code></li>
+              <li>AI assistants can connect to 360Ghar via the Model Context Protocol (MCP)</li>
+              <li>Supported assistants: Claude, ChatGPT, and any MCP-compatible AI</li>
+              <li>Capabilities: Property search, visit scheduling, rent tracking, tenant management, maintenance requests, document access</li>
+              <li>Learn more at: <a href="https://360ghar.com/ai-agent">https://360ghar.com/ai-agent</a></li>
+            </ul>
           </div>
         </section>
 

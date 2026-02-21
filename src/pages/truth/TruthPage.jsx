@@ -1,0 +1,211 @@
+import { Link } from 'react-router-dom';
+import Header from '../../common/Header';
+import Footer from '../../common/Footer';
+import MobileMenu from '../../common/MobileMenu';
+import OffCanvas from '../../common/OffCanvas';
+import Cta from '../../components/ui/Cta';
+import SEO from '../../common/SEO';
+import SectionHeading from '../../common/SectionHeading';
+import { 
+  WhyChooseUs, 
+  TestimonialCard, 
+  ComparisonFAQ,
+  ClaimsVsReality,
+  IssueCard,
+  CompareBreadcrumb
+} from '../../components/compare/ComparisonComponents';
+import { generateCompetitorBreadcrumbs } from '../../data/competitors';
+import { generateBreadcrumbStructuredData } from '../../seo/structuredData';
+import '../../components/compare/ComparisonStyles.scss';
+
+const TruthPage = ({ 
+  competitor,
+  pageTitle,
+  pageDescription,
+  canonicalPath,
+  truthTitle,
+  introText,
+  keyIssues
+}) => {
+  const competitorData = competitor;
+  
+  const breadcrumbs = generateCompetitorBreadcrumbs(competitorData.id, 'truth');
+  const breadcrumbItems = [
+    { name: 'Home', url: '/' },
+    { name: 'Truth', url: null },
+    { name: `${competitorData.name}`, url: null }
+  ];
+  
+  const structuredData = [
+    generateBreadcrumbStructuredData(breadcrumbs),
+    {
+      '@type': 'Article',
+      name: pageTitle,
+      description: pageDescription,
+      url: `https://360ghar.com${canonicalPath}`,
+      author: {
+        '@type': 'Organization',
+        name: '360Ghar'
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: '360Ghar'
+      }
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: competitorData.faqs.map(faq => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: faq.answer
+        }
+      }))
+    }
+  ];
+
+  return (
+    <>
+      <SEO
+        title={pageTitle}
+        description={pageDescription}
+        keywords={competitorData.seoKeywords}
+        canonical={canonicalPath}
+        structuredData={structuredData}
+      />
+      
+      <OffCanvas />
+      <MobileMenu />
+      
+      <main className="body-bg">
+        <Header
+          headerClass="dark-header has-border"
+          headerMenusClass="mx-auto"
+          btnClass="btn btn-outline-main btn-outline-main-dark d-lg-block d-none"
+          btnLink="/post-property"
+          btnText="Post Property"
+          spanClass="icon-right text-gradient"
+          showContactNumber={false}
+        />
+        
+        {/* Hero Section */}
+        <section className="truth-hero">
+          <div className="container container-two">
+            <div className="hero-content text-center">
+              <h1 className="hero-title">{truthTitle}</h1>
+              <p className="hero-subtitle" style={{ maxWidth: '700px', marginLeft: 'auto', marginRight: 'auto' }}>
+                {introText}
+              </p>
+              <div className="hero-buttons mt-4">
+                <Link to="/properties?city=Gurgaon&intent=buy" className="btn btn-white">
+                  Try Transparent Alternative
+                  <span className="ms-2"><i className="fas fa-arrow-right"></i></span>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        {/* Breadcrumb */}
+        <CompareBreadcrumb items={breadcrumbItems} />
+        
+        {/* The Truth Section */}
+        <section className="padding-y-120 bg-white">
+          <div className="container container-two">
+            <SectionHeading
+              headingClass="text-center"
+              subtitle="Investigation"
+              subtitleClass="bg-gray-100"
+              title={`The Claims vs Reality`}
+              renderDesc={true}
+              desc={`What ${competitorData.name} promises vs what users actually experience`}
+            />
+            
+            <div className="row mt-4">
+              <div className="col-lg-8 mx-auto">
+                <ClaimsVsReality claims={competitorData.claimsVsReality} />
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        {/* Key Issues Section */}
+        {keyIssues && keyIssues.length > 0 && (
+          <section className="padding-y-120 bg-light">
+            <div className="container container-two">
+              <SectionHeading
+                headingClass="text-center"
+                subtitle="Documented Issues"
+                subtitleClass="bg-gray-100"
+                title={`Key Problems Reported`}
+                renderDesc={true}
+                desc="Verified issues that users have experienced with this platform"
+              />
+              
+              <div className="row g-4 mt-4">
+                {keyIssues.map((issue, index) => (
+                  <div className="col-lg-6" key={index}>
+                    <IssueCard {...issue} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+        
+        {/* User Testimonials About Issues */}
+        <section className="padding-y-120 bg-white">
+          <div className="container container-two">
+            <SectionHeading
+              headingClass="text-center"
+              subtitle="User Experiences"
+              subtitleClass="bg-gray-100"
+              title={`What Users Actually Experience`}
+              renderDesc={true}
+              desc="Real reviews from people who have used this platform"
+            />
+            
+            <div className="row g-4 mt-4">
+              {competitorData.testimonials.map((testimonial, index) => (
+                <div className="col-lg-4 col-md-6" key={index}>
+                  <TestimonialCard {...testimonial} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+        
+        {/* How 360 Ghar Does It Better */}
+        <WhyChooseUs />
+        
+        {/* FAQ Section */}
+        <ComparisonFAQ 
+          faqs={competitorData.faqs}
+          title={`Common Questions Answered`}
+          subtitle="Get the facts you need to make an informed decision"
+        />
+        
+        {/* CTA Section */}
+        <section className="compare-cta-section">
+          <div className="container container-two">
+            <h3 className="cta-title">Don&apos;t Settle for Less. Choose Transparency.</h3>
+            <p className="cta-subtitle">Join thousands of happy property seekers who chose 360 Ghar</p>
+            <div className="mt-4">
+              <Link to="/properties?city=Gurgaon&intent=buy" className="btn btn-main">
+                Start Your Property Search
+                <span className="ms-2"><i className="fas fa-arrow-right"></i></span>
+              </Link>
+            </div>
+          </div>
+        </section>
+        
+        <Cta ctaClass="" />
+        
+        <Footer />
+      </main>
+    </>
+  );
+};
+
+export default TruthPage;

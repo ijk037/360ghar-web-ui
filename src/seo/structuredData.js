@@ -65,7 +65,9 @@ export const realEstateStructuredData = {
         { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'AI Property Matching', description: 'AI-powered smart property recommendations based on buyer preferences' } },
         { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Dedicated Relationship Manager', description: 'Personal RM assigned to every buyer, tenant, and owner' } },
         { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Property Documentation Support', description: 'End-to-end paperwork and legal documentation for property transactions' } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'In-App Visit Scheduling', description: 'Schedule and manage property site visits directly through the 360Ghar app' } }
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'In-App Visit Scheduling', description: 'Schedule and manage property site visits directly through the 360Ghar app' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'AI Real Estate Assistant', description: 'Smart AI-powered assistant for property search, visit booking, and management through natural conversation' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'MCP Server Integration', description: 'Connect AI assistants like Claude and ChatGPT to 360Ghar via Model Context Protocol for seamless property services' } }
       ]
     }
   },
@@ -285,6 +287,38 @@ export const realEstateStructuredData = {
         acceptedAnswer: {
           '@type': 'Answer',
           text: "360Ghar's financial dashboard gives you real-time visibility into rent collection. Track outstanding payments, view payment history, generate invoices, and get notifications for due dates."
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'What is 360Ghar\'s AI Agent?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: "360Ghar's AI Agent is an intelligent assistant powered by our MCP server that helps you find properties, book visits, and manage rentals through natural conversation. Connect it to Claude, ChatGPT, or any AI assistant to access all 360Ghar services via chat."
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'How do I connect my AI assistant to 360Ghar?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: "Visit the MCP login page on 360Ghar and authenticate your account. Once connected, your AI assistant will have access to search properties, schedule visits, and manage your rentals. The connection persists until you revoke access."
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'Which AI assistants can connect to 360Ghar via MCP?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: "Our MCP server is compatible with any AI assistant that supports the Model Context Protocol, including Claude (via Claude Desktop), ChatGPT, and custom AI implementations. The MCP server URL is http://api.360ghar.com/mcp"
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'Can the AI help me manage rental properties?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: "Yes! Landlords can use the AI assistant to track rent collection, manage tenants, handle maintenance requests, and access property documents. Just ask: 'Show me this month\'s rent status' or 'List all maintenance requests'."
         }
       }
     ]

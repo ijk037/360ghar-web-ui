@@ -50,10 +50,28 @@ const PropertyInvestment = lazy(() => import('./pages/core/PropertyInvestment'))
 const ForAI = lazy(() => import('./pages/core/ForAI'));
 const FacetLanding = lazy(() => import('./pages/landing/FacetLanding'));
 const McpLogin = lazy(() => import('./pages/account/McpLogin'));
-
-// Locality pages dynamic template
+const AIAgent = lazy(() => import('./pages/core/AIAgent'));
 const LocalityTemplate = lazy(() => import('./pages/localities/LocalityTemplate'));
 const LocalitiesDirectory = lazy(() => import('./pages/localities/LocalitiesDirectory'));
+
+// Comparison pages
+const VsNoBroker = lazy(() => import('./pages/compare/vs-nobroker'));
+const VsMagicBricks = lazy(() => import('./pages/compare/vs-magicbricks'));
+const Vs99acres = lazy(() => import('./pages/compare/vs-99acres'));
+const VsHousing = lazy(() => import('./pages/compare/vs-housing'));
+const VsCommonFloor = lazy(() => import('./pages/compare/vs-commonfloor'));
+const VsPropTiger = lazy(() => import('./pages/compare/vs-proptiger'));
+const VsSquareYards = lazy(() => import('./pages/compare/vs-squareyards'));
+const VsNestAway = lazy(() => import('./pages/compare/vs-nestaway'));
+const VsZolo = lazy(() => import('./pages/compare/vs-zolo'));
+const VsStanzaLiving = lazy(() => import('./pages/compare/vs-stanza-living'));
+
+// Truth/Expose pages
+const TruthNoBroker = lazy(() => import('./pages/truth/nobroker-listings'));
+const TruthMagicBricks = lazy(() => import('./pages/truth/magicbricks-spam'));
+const Truth99acres = lazy(() => import('./pages/truth/99acres-fake'));
+const TruthNestAway = lazy(() => import('./pages/truth/nestaway-collapse'));
+const TruthZolo = lazy(() => import('./pages/truth/zolo-issues'));
 
 function App() {
   const initializeLocation = useLocationStore((state) => state.initializeLocation);
@@ -118,6 +136,27 @@ function App() {
             <Route path="/gurugram-real-estate-guide" element={<GurugramGuide />} />
             <Route path="/property-investment-gurugram" element={<PropertyInvestment />} />
             <Route path="/for-ai" element={<ForAI />} />
+            <Route path="/ai-agent" element={<AIAgent />} />
+            
+            {/* Comparison pages */}
+            <Route path="/vs/nobroker" element={<VsNoBroker />} />
+            <Route path="/vs/magicbricks" element={<VsMagicBricks />} />
+            <Route path="/vs/99acres" element={<Vs99acres />} />
+            <Route path="/vs/housing" element={<VsHousing />} />
+            <Route path="/vs/commonfloor" element={<VsCommonFloor />} />
+            <Route path="/vs/proptiger" element={<VsPropTiger />} />
+            <Route path="/vs/squareyards" element={<VsSquareYards />} />
+            <Route path="/vs/nestaway" element={<VsNestAway />} />
+            <Route path="/vs/zolo" element={<VsZolo />} />
+            <Route path="/vs/stanza-living" element={<VsStanzaLiving />} />
+            
+            {/* Truth/Expose pages */}
+            <Route path="/truth/nobroker-listings" element={<TruthNoBroker />} />
+            <Route path="/truth/magicbricks-spam" element={<TruthMagicBricks />} />
+            <Route path="/truth/99acres-fake" element={<Truth99acres />} />
+            <Route path="/truth/nestaway-collapse" element={<TruthNestAway />} />
+            <Route path="/truth/zolo-issues" element={<TruthZolo />} />
+            
             {/* Facet landings: BHK and Budget */}
             <Route path="/:citySlug/:intent/:type/:bhk" element={<FacetLanding />} />
             <Route path="/:citySlug/:intent/:type/budget/:budget" element={<FacetLanding />} />
