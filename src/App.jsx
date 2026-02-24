@@ -53,6 +53,7 @@ const McpLogin = lazy(() => import('./pages/account/McpLogin'));
 const AIAgent = lazy(() => import('./pages/core/AIAgent'));
 const LocalityTemplate = lazy(() => import('./pages/localities/LocalityTemplate'));
 const LocalitiesDirectory = lazy(() => import('./pages/localities/LocalitiesDirectory'));
+const ReferAndEarn = lazy(() => import('./pages/core/ReferAndEarn'));
 
 // Comparison pages
 const VsNoBroker = lazy(() => import('./pages/compare/vs-nobroker'));
@@ -135,6 +136,7 @@ function App() {
             <Route path="/locality/:slug-gurgaon" element={<LocalityTemplate />} />
             <Route path="/gurugram-real-estate-guide" element={<GurugramGuide />} />
             <Route path="/property-investment-gurugram" element={<PropertyInvestment />} />
+            <Route path="/refer-and-earn" element={<ReferAndEarn />} />
             <Route path="/for-ai" element={<ForAI />} />
             <Route path="/ai-agent" element={<AIAgent />} />
             

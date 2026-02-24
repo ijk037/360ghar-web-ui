@@ -33,6 +33,7 @@ const staticRoutes = [
   '/project',
   '/blog',
   '/policies',
+  '/refer-and-earn',
   // Real estate specific content pages
   '/gurugram-real-estate-guide',
   '/buy-property-gurugram',

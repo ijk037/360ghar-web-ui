@@ -142,6 +142,10 @@ export const navMenus = [
                 text: "AI Assistant",
                 path: "/ai-agent",
             },
+            {
+                text: "Refer & Earn",
+                path: "/refer-and-earn",
+            },
         ],
     },
     {
@@ -257,6 +261,10 @@ export const footerUsefulLinks = [
         link: '/vastu-checker'
     },
     {
+        text: 'Refer & Earn',
+        link: '/refer-and-earn'
+    },
+    {
         text: 'EMI Calculator',
         link: '/emi-calculator'
     },
@@ -337,6 +345,10 @@ export const BottomFooterLink = [
     {
         text: 'Privacy Policy',
         link: '/policies/privacy-policy'
+    },
+    {
+        text: 'Refer & Earn',
+        link: '/refer-and-earn'
     },
     {
         text: 'For AI Assistants',

@@ -16,6 +16,7 @@ import BlogThree from '../components/blog/BlogThree';
 import ToolShowcase from '../components/ui/ToolShowcase';
 import AIAgentShowcase from '../components/ui/AIAgentShowcase';
 import PropertyManagementShowcase from '../components/ui/PropertyManagementShowcase';
+import ReferEarnCta from '../components/ui/ReferEarnCta';
 import PageTitle from '../common/PageTitle';
 import SEO from '../common/SEO';
 import { realEstateStructuredData } from '../seo/structuredData';
@@ -58,10 +59,10 @@ const FAQ_DATA = {
         },
         {
             '@type': 'Question',
-            name: 'Does 360Ghar charge any brokerage?',
+            name: 'Does 360Ghar charge any upfront fees?',
             acceptedAnswer: {
                 '@type': 'Answer',
-                text: '360Ghar charges zero brokerage fees to property owners to list their property. We connect direct buyers and tenants directly to property owners to ensure maximum transparency.'
+                text: '360Ghar charges no upfront fees to property owners to list their property. We connect direct buyers and tenants directly to property owners to ensure maximum transparency.'
             }
         },
         {
@@ -140,6 +141,9 @@ const Home = () => {
 
                 {/* About Three */}
                 <AboutThree />
+
+                {/* Refer & Earn CTA */}
+                <ReferEarnCta />
 
                 {/* Property Type */}
                 <PropertyType />

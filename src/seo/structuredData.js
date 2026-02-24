@@ -9,7 +9,7 @@ export const realEstateStructuredData = {
     name: '360Ghar',
     alternateName: ['360 Ghar', '360Ghar.com', 'Three Sixty Ghar'],
     legalName: '360Ghar Technologies Pvt Ltd',
-    description: "India's first AI and VR-first real estate platform offering verified properties with 360° virtual tours in Gurgaon. Buy, sell, or rent flats, apartments, villas and plots with zero brokerage and AI-powered matching.",
+    description: "India's first AI and VR-first real estate platform offering verified properties with 360° virtual tours in Gurgaon. Buy, sell, or rent flats, apartments, villas and plots with no upfront fees and AI-powered matching.",
     url: 'https://360ghar.com',
     logo: {
       '@type': 'ImageObject',

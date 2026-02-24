@@ -636,7 +636,7 @@ export const comparisonFeatures = [
   { key: 'AI Property Match', description: 'Smart AI-powered recommendations' },
   { key: 'Data Privacy', description: 'User data not sold to third parties' },
   { key: 'Customer Support', description: 'Responsive and helpful support team' },
-  { key: 'Zero Brokerage', description: 'No brokerage for renters/buyers' }
+  { key: 'No Upfront Fees', description: 'No upfront fees for renters/buyers' }
 ];
 
 export const ourAdvantages = [
