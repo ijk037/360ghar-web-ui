@@ -1,0 +1,134 @@
+import { getApiBaseUrl, createAxiosInstance } from './http';
+import { getSupabaseAccessToken } from './supabaseClient';
+
+/**
+ * Stream a chat message via SSE (Server-Sent Events) using fetch + POST.
+ * EventSource cannot be used because it only supports GET with no custom headers.
+ *
+ * @param {string} message - The user's message (1-4000 chars)
+ * @param {number|null} conversationId - Existing conversation ID, or null to start new
+ * @param {(type: string, data: object) => void} onEvent - Called for each SSE event
+ * @param {AbortSignal} signal - AbortController signal for cancellation
+ */
+async function streamChat(message, conversationId, onEvent, signal) {
+  const token = await getSupabaseAccessToken();
+  if (!token) {
+    throw new Error('Authentication required');
+  }
+
+  const url = `${getApiBaseUrl()}/agent/chat`;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      message,
+      conversation_id: conversationId,
+    }),
+    signal,
+  });
+
+  if (!response.ok) {
+    throw new Error(`Chat request failed with status ${response.status}`);
+  }
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+
+      // Split on double newline to find complete SSE events
+      const segments = buffer.split('\n\n');
+
+      // All segments except the last are complete events; keep the last as the new buffer
+      for (let i = 0; i < segments.length - 1; i++) {
+        const segment = segments[i].trim();
+        if (!segment) continue;
+
+        let eventType = '';
+        let dataStr = '';
+
+        for (const line of segment.split('\n')) {
+          if (line.startsWith('event:')) {
+            eventType = line.slice('event:'.length).trim();
+          } else if (line.startsWith('data:')) {
+            dataStr = line.slice('data:'.length).trim();
+          }
+        }
+
+        if (eventType && dataStr) {
+          try {
+            const parsedData = JSON.parse(dataStr);
+            onEvent(eventType, parsedData);
+          } catch {
+            // Malformed JSON in SSE data — skip this event
+          }
+        }
+      }
+
+      buffer = segments[segments.length - 1];
+    }
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      return;
+    }
+    throw err;
+  }
+}
+
+/**
+ * Get list of conversations for the current user.
+ *
+ * @param {number} limit
+ * @param {number} offset
+ */
+async function getConversations(limit = 50, offset = 0) {
+  const api = createAxiosInstance({ withAuth: true });
+  const response = await api.get(
+    `${getApiBaseUrl()}/agent/conversations?limit=${limit}&offset=${offset}`
+  );
+  return response.data;
+}
+
+/**
+ * Get messages for a specific conversation.
+ *
+ * @param {number} conversationId
+ * @param {number} limit
+ */
+async function getConversationMessages(conversationId, limit = 100) {
+  const api = createAxiosInstance({ withAuth: true });
+  const response = await api.get(
+    `${getApiBaseUrl()}/agent/conversations/${conversationId}/messages?limit=${limit}`
+  );
+  return response.data;
+}
+
+/**
+ * Delete a conversation by ID.
+ *
+ * @param {number} conversationId
+ */
+async function deleteConversation(conversationId) {
+  const api = createAxiosInstance({ withAuth: true });
+  const response = await api.delete(
+    `${getApiBaseUrl()}/agent/conversations/${conversationId}`
+  );
+  return response.data;
+}
+
+export const chatService = {
+  streamChat,
+  getConversations,
+  getConversationMessages,
+  deleteConversation,
+};
