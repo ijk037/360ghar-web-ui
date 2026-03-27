@@ -1,23 +1,14 @@
 import { useEffect, useRef } from 'react';
 import { useChatStore } from '../../store';
+import UserMessage from './messages/UserMessage';
+import BotMessage from './messages/BotMessage';
 
-// Simple fallback renders — Phase 4 will add proper styling via ./messages/* components
-function FallbackUserMsg({ message }) {
-  return <div className="chatbot-msg chatbot-msg--user">{message.content}</div>;
-}
-
-function FallbackBotMsg({ message }) {
-  return (
-    <div className="chatbot-msg chatbot-msg--bot">
-      {message.content || (message.isStreaming ? '...' : '')}
-      {message.isError && <span className="chatbot-msg-error"> (Error)</span>}
-    </div>
-  );
-}
-
-function FallbackWidget({ message }) {
-  return <div className="chatbot-widget">[Widget: {message.widget?.widgetName}]</div>;
-}
+// ChatWidget will be created in Phase 5
+const ChatWidget = ({ message }) => (
+  <div className="chatbot-widget chatbot-widget--placeholder">
+    <span className="chatbot-widget__name">{message.widget?.widgetName}</span>
+  </div>
+);
 
 function WelcomeState({ onQuickAction }) {
   const quickActions = [
@@ -105,11 +96,11 @@ export default function ChatMessages() {
   const renderMessage = (message) => {
     switch (message.role) {
       case 'user':
-        return <FallbackUserMsg key={message.id} message={message} />;
+        return <UserMessage key={message.id} message={message} />;
       case 'bot':
-        return <FallbackBotMsg key={message.id} message={message} />;
+        return <BotMessage key={message.id} message={message} />;
       case 'widget':
-        return <FallbackWidget key={message.id} message={message} />;
+        return <ChatWidget key={message.id} message={message} />;
       default:
         return null;
     }

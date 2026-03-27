@@ -2,13 +2,7 @@ import { useChatStore } from '../../store';
 import ChatHeader from './ChatHeader';
 import ChatMessages from './ChatMessages';
 import ChatInput from './ChatInput';
-
-// GuestPrompt will be replaced by import from './messages/GuestPrompt' in Phase 4
-const GuestPrompt = () => (
-  <div className="chatbot-guest-placeholder" style={{ padding: '16px', textAlign: 'center', color: '#666' }}>
-    <p>Please log in to start chatting</p>
-  </div>
-);
+import GuestPrompt from './messages/GuestPrompt';
 
 function ChatPanel({ isAuthenticated }) {
   const isOpen = useChatStore((state) => state.isOpen);
