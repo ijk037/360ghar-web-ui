@@ -78,5 +78,17 @@ export const toolSchemas = {
         description: 'Design your dream home with our interactive 3D blueprint tool. Create floor plans, arrange furniture, and visualize your space.',
         keywords: 'floor planner, 3D home design, blueprint designer, floor plan creator, home design tool, online floor plan, 3D floor plan creator, house layout designer, room planner, interior design tool',
         category: 'DesignApplication'
+    },
+    stampDutyCalculator: {
+        name: 'Stamp Duty Calculator Gurugram',
+        description: 'Calculate stamp duty and registration charges for property purchase in Gurugram. Haryana stamp duty rates: 7% male, 5% female, 6% joint. Instant calculation.',
+        keywords: 'stamp duty calculator Gurugram, stamp duty Haryana, property registration charges, stamp duty calculator India, Haryana stamp duty rate, property stamp duty, registration fee calculator, stamp duty on property purchase Gurgaon',
+        category: 'FinanceApplication'
+    },
+    verifyOwnership: {
+        name: 'Property Ownership Verification',
+        description: 'Verify property ownership in Gurugram using Haryana Jamabandi land records. Check owner names, area, mutation status, and encumbrance online.',
+        keywords: 'property ownership verification Gurugram, Jamabandi land records Haryana, verify property owner, land record check Gurgaon, property ownership check online, Haryana land records, khasra number search, tehsil records Gurugram',
+        category: 'BusinessApplication'
     }
 };

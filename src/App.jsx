@@ -68,6 +68,12 @@ const Truth99acres = lazy(() => import('./pages/truth/99acres-fake'));
 const TruthNestAway = lazy(() => import('./pages/truth/nestaway-collapse'));
 const TruthZolo = lazy(() => import('./pages/truth/zolo-issues'));
 
+const CircleRateDirectory = lazy(() => import('./pages/data-hub/CircleRateDirectory'));
+const CircleRateDetail = lazy(() => import('./pages/data-hub/CircleRateDetail'));
+const StampDutyCalculator = lazy(() => import('./pages/data-hub/StampDutyCalculator'));
+const ReraProjectDirectory = lazy(() => import('./pages/data-hub/ReraProjectDirectory'));
+const BankAuctions = lazy(() => import('./pages/data-hub/BankAuctions'));
+const BankAuctionDetail = lazy(() => import('./pages/data-hub/BankAuctionDetail'));
 const VerifyOwnership = lazy(() => import('./pages/data-hub/VerifyOwnership'));
 const ZoneChecker = lazy(() => import('./pages/data-hub/ZoneChecker'));
 const ZoneCheckerDetail = lazy(() => import('./pages/data-hub/ZoneCheckerDetail'));
@@ -125,6 +131,12 @@ const toolRoutes = [
 ];
 
 const dataHubRoutes = [
+  { path: '/circle-rates', element: <CircleRateDirectory /> },
+  { path: '/circle-rate/:slug', element: <CircleRateDetail /> },
+  { path: '/stamp-duty-calculator', element: <StampDutyCalculator /> },
+  { path: '/rera-projects', element: <ReraProjectDirectory /> },
+  { path: '/bank-auctions', element: <BankAuctions /> },
+  { path: '/bank-auctions/:id', element: <BankAuctionDetail /> },
   { path: '/verify-ownership', element: <VerifyOwnership /> },
   { path: '/zone-checker', element: <ZoneChecker /> },
   { path: '/zone-checker/:slug', element: <ZoneCheckerDetail /> },

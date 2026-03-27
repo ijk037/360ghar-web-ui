@@ -119,6 +119,44 @@ export const navMenus = [
         path: "/design-blueprint",
     },
     {
+        text: "Data Hub",
+        path: "#",
+        submenus: [
+            {
+                text: "Circle Rates",
+                path: "/circle-rates",
+            },
+            {
+                text: "RERA Projects",
+                path: "/rera-projects",
+            },
+            {
+                text: "Bank Auctions",
+                path: "/bank-auctions",
+            },
+            {
+                text: "Stamp Duty Calc",
+                path: "/stamp-duty-calculator",
+            },
+            {
+                text: "Verify Ownership",
+                path: "/verify-ownership",
+            },
+            {
+                text: "Zone Checker",
+                path: "/zone-checker",
+            },
+            {
+                text: "Regulatory Updates",
+                path: "/regulatory-updates",
+            },
+            {
+                text: "Builder Reputation",
+                path: "/builder-reputation",
+            },
+        ],
+    },
+    {
         text: "Services",
         path: "#",
         submenus: [
@@ -281,6 +319,18 @@ export const footerUsefulLinks = [
         link: '/property-document-checklist'
     },
     {
+        text: 'Circle Rates',
+        link: '/circle-rates'
+    },
+    {
+        text: 'RERA Projects',
+        link: '/rera-projects'
+    },
+    {
+        text: 'Stamp Duty Calculator',
+        link: '/stamp-duty-calculator'
+    },
+    {
         text: 'Success Stories',
         link: '/about-us'
     },
@@ -298,44 +348,6 @@ export const footerUsefulLinks = [
     },
 ]
 
-import FooterGallery1 from '/assets/images/thumbs/gallery1.png';
-import FooterGallery2 from '/assets/images/thumbs/gallery2.png';
-import FooterGallery3 from '/assets/images/thumbs/gallery3.png';
-import FooterGallery4 from '/assets/images/thumbs/gallery4.png';
-import FooterGallery5 from '/assets/images/thumbs/gallery5.png';
-import FooterGallery6 from '/assets/images/thumbs/gallery6.png';
-export const footerGallery = [
-    {
-        img: FooterGallery1,
-        link: 'https://www.instagram.com/360ghar/',
-        icon: <i className="fab fa-instagram"></i>
-    },
-    {
-        img: FooterGallery2,
-        link: 'https://www.instagram.com/360ghar/',
-        icon: <i className="fab fa-instagram"></i>
-    },
-    {
-        img: FooterGallery3,
-        link: 'https://www.instagram.com/360ghar/',
-        icon: <i className="fab fa-instagram"></i>
-    },
-    {
-        img: FooterGallery4,
-        link: 'https://www.instagram.com/360ghar/',
-        icon: <i className="fab fa-instagram"></i>
-    },
-    {
-        img: FooterGallery5,
-        link: 'https://www.instagram.com/360ghar/',
-        icon: <i className="fab fa-instagram"></i>
-    },
-    {
-        img: FooterGallery6,
-        link: 'https://www.instagram.com/360ghar/',
-        icon: <i className="fab fa-instagram"></i>
-    },
-]
 
 export const BottomFooterLink = [
     {
