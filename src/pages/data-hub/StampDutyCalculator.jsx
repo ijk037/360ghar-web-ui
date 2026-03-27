@@ -1,0 +1,159 @@
+import { useState, useEffect } from 'react';
+import Header from '../../common/Header';
+import Footer from '../../common/Footer';
+import MobileMenu from '../../common/MobileMenu';
+import OffCanvas from '../../common/OffCanvas';
+import SEO from '../../common/SEO';
+import { dataHubService } from '../../services/dataHubService';
+import { useDataHubStore } from '../../store/dataHubStore';
+
+const BUYER_TYPES = [
+  { value: 'male', label: 'Male', rate: 7 },
+  { value: 'female', label: 'Female', rate: 5 },
+  { value: 'joint', label: 'Joint', rate: 6 },
+];
+
+const fmt = (n) => `₹${Number(n).toLocaleString('en-IN')}`;
+
+const StampDutyCalculator = () => {
+  const { circleRateSectors, fetchCircleRateSectors } = useDataHubStore();
+  const [form, setForm] = useState({ property_value: '', buyer_type: 'male', sector: '', property_type: '' });
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => { fetchCircleRateSectors(); }, [fetchCircleRateSectors]);
+
+  const calculate = async () => {
+    if (!form.property_value) return;
+    setLoading(true);
+    try {
+      const data = await dataHubService.calculateStampDuty({
+        property_value: Number(form.property_value),
+        buyer_type: form.buyer_type,
+        sector: form.sector || undefined,
+      });
+      setResult(data);
+    } catch (e) {
+      console.error('Stamp duty calculation error', e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const selectedBuyer = BUYER_TYPES.find(b => b.value === form.buyer_type);
+
+  return (
+    <>
+      <SEO
+        title="Haryana Stamp Duty Calculator 2024 | Gurugram Property Registration Cost | 360Ghar"
+        description="Calculate stamp duty and registration charges for property in Gurugram, Haryana. Male: 7%, Female: 5%, Joint: 6%. Includes circle rate comparison and EMI estimation."
+        keywords="Haryana stamp duty calculator, Gurugram property registration charges, DLC rate stamp duty, stamp duty female buyer Haryana, property registration cost Gurgaon"
+        canonical="/stamp-duty-calculator"
+      />
+      <OffCanvas />
+      <MobileMenu />
+      <main className="body-bg">
+        <Header />
+        <section className="pt-60 pb-60">
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-7">
+                <h1 className="fs-28 fw-600 mb-10">Haryana Stamp Duty Calculator</h1>
+                <p className="mb-30 color-text-3">Calculate stamp duty and registration fees for property registration in Gurugram, Haryana.</p>
+
+                <div className="p-30 border-radius-8 mb-30" style={{ background: '#f9fafb', border: '1px solid #e5e7eb' }}>
+                  <div className="row mb-20">
+                    <div className="col-12">
+                      <label className="form-label fw-500">Property Value (₹)</label>
+                      <input type="number" className="form-control"
+                        placeholder="e.g. 8500000"
+                        value={form.property_value}
+                        onChange={(e) => setForm(f => ({ ...f, property_value: e.target.value }))} />
+                    </div>
+                  </div>
+
+                  <div className="row mb-20">
+                    <div className="col-12">
+                      <label className="form-label fw-500">Buyer Type</label>
+                      <div className="d-flex gap-10">
+                        {BUYER_TYPES.map(({ value, label, rate }) => (
+                          <button key={value}
+                            className={`btn btn-sm ${form.buyer_type === value ? 'btn-primary' : 'btn-outline-secondary'}`}
+                            onClick={() => setForm(f => ({ ...f, buyer_type: value }))}>
+                            {label} ({rate}%)
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row mb-20">
+                    <div className="col-sm-6">
+                      <label className="form-label fw-500">Sector (optional)</label>
+                      <select className="form-select" value={form.sector}
+                        onChange={(e) => setForm(f => ({ ...f, sector: e.target.value }))}>
+                        <option value="">Select sector for circle rate comparison</option>
+                        {circleRateSectors.map(s => <option key={s} value={s}>{s}</option>)}
+                      </select>
+                    </div>
+                  </div>
+
+                  <button className="btn btn-primary w-100" onClick={calculate} disabled={loading || !form.property_value}>
+                    {loading ? 'Calculating...' : 'Calculate Stamp Duty'}
+                  </button>
+                </div>
+
+                {/* Result */}
+                {result && (
+                  <div className="p-30 border-radius-8" style={{ background: '#fff', border: '1px solid #d1fae5' }}>
+                    <h3 className="fs-20 fw-600 mb-20">Calculation Result</h3>
+                    <div className="row">
+                      {[
+                        { label: 'Property Value', value: fmt(result.property_value) },
+                        { label: `Stamp Duty (${selectedBuyer?.rate}% — ${selectedBuyer?.label})`, value: fmt(result.stamp_duty_amount) },
+                        { label: 'Registration Fee (1%)', value: fmt(result.registration_fee) },
+                        { label: 'Total Registration Cost', value: fmt(result.total_cost), highlight: true },
+                      ].map(({ label, value, highlight }) => (
+                        <div key={label} className="col-sm-6 mb-15">
+                          <div className={`p-15 border-radius-6 ${highlight ? '' : ''}`}
+                            style={{ background: highlight ? '#ecfdf5' : '#f9fafb', border: `1px solid ${highlight ? '#6ee7b7' : '#e5e7eb'}` }}>
+                            <p className="fs-12 color-text-3 mb-5">{label}</p>
+                            <p className={`fs-20 fw-700 mb-0 ${highlight ? 'color-primary' : ''}`}>{value}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    {result.current_bank_rate && (
+                      <p className="mt-15 fs-13 color-text-3">
+                        Current home loan rate: <strong>{result.current_bank_rate}% p.a.</strong> — You can use the <a href="/emi-calculator" className="color-primary">EMI Calculator</a> to estimate your monthly installment.
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Sidebar: Rate Reference Table */}
+              <div className="col-lg-5 mt-40 mt-lg-0">
+                <div className="p-25 border-radius-8" style={{ background: '#f9fafb', border: '1px solid #e5e7eb', position: 'sticky', top: 80 }}>
+                  <h3 className="fs-18 fw-600 mb-15">Haryana Stamp Duty Rates</h3>
+                  <table className="table table-sm table-bordered mb-20">
+                    <thead className="table-light"><tr><th>Buyer Type</th><th>Stamp Duty</th><th>Reg. Fee</th></tr></thead>
+                    <tbody>
+                      {BUYER_TYPES.map(({ label, rate }) => (
+                        <tr key={label}><td>{label}</td><td>{rate}%</td><td>1%</td></tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <p className="fs-12 color-text-3">Source: Haryana Government, applicable across all districts including Gurugram.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <Footer />
+      </main>
+    </>
+  );
+};
+
+export default StampDutyCalculator;
