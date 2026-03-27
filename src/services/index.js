@@ -10,6 +10,7 @@ import visitService from './visitService';
 import agentService from './agentService';
 import blogService from './blogService';
 import utilityService from './utilityService';
+import { dataHubService } from './dataHubService';
 
 export {
   api,
@@ -24,4 +25,5 @@ export {
   agentService,
   blogService,
   utilityService,
+  dataHubService,
 };
