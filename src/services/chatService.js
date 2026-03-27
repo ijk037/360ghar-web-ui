@@ -65,9 +65,9 @@ async function streamChat(message, conversationId, onEvent, signal) {
           }
         }
 
-        if (eventType && dataStr) {
+        if (eventType) {
           try {
-            const parsedData = JSON.parse(dataStr);
+            const parsedData = dataStr ? JSON.parse(dataStr) : {};
             onEvent(eventType, parsedData);
           } catch {
             // Malformed JSON in SSE data — skip this event

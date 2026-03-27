@@ -1,6 +1,14 @@
 import { create } from 'zustand';
 import { chatService } from '../services/chatService';
 
+const extractError = (err, fallback = 'Request failed') => {
+  const d = err?.response?.data?.detail ?? err?.message;
+  if (!d) return fallback;
+  if (Array.isArray(d)) return d.map((x) => x?.msg || x?.message || x).join(', ');
+  if (typeof d === 'object') return d.msg || d.message || JSON.stringify(d);
+  return String(d);
+};
+
 const useChatStore = create((set, get) => ({
   isOpen: false,
   conversationId: null,
@@ -224,7 +232,7 @@ const useChatStore = create((set, get) => ({
           isStreaming: false,
           streamingMessageId: null,
           _abortController: null,
-          error: err.message,
+          error: extractError(err, 'Chat failed. Please try again.'),
         }));
       }
     }
