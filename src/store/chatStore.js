@@ -240,11 +240,17 @@ const useChatStore = create((set, get) => ({
 
   cancelStream: () => {
     get()._abortController?.abort();
-    set({
+    const streamingId = get().streamingMessageId;
+    set((state) => ({
       isStreaming: false,
       streamingMessageId: null,
       _abortController: null,
-    });
+      messages: streamingId
+        ? state.messages.map((msg) =>
+            msg.id === streamingId ? { ...msg, isStreaming: false } : msg
+          )
+        : state.messages,
+    }));
   },
 
   resetChat: () => {

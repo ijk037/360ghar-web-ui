@@ -69,25 +69,21 @@ function ChatHeader() {
         <span className="chatbot-header__title">360Ghar AI</span>
       </div>
 
-      <div className="chatbot-header__status">
+      <div className="chatbot-header__center">
         {isStreaming ? (
           <>
-            <span className="chatbot-header__status-dots">
-              <span></span>
-              <span></span>
-              <span></span>
-            </span>
-            <span className="chatbot-header__status-text">Thinking...</span>
+            <span className="chatbot-header__status-dot chatbot-header__status-dot--streaming"></span>
+            <span>Thinking...</span>
           </>
         ) : (
           <>
-            <span className="chatbot-header__status-dot chatbot-header__status-dot--online"></span>
-            <span className="chatbot-header__status-text">Online</span>
+            <span className="chatbot-header__status-dot"></span>
+            <span>Online</span>
           </>
         )}
       </div>
 
-      <div className="chatbot-header__actions">
+      <div className="chatbot-header__right">
         <button
           className="chatbot-header__btn chatbot-header__btn--reset"
           onClick={resetChat}

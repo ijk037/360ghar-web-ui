@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useChatStore } from '../../store';
+import { useChatStore, useAuthStore } from '../../store';
 import UserMessage from './messages/UserMessage';
 import BotMessage from './messages/BotMessage';
 import ChatWidget from './messages/ChatWidget';
@@ -56,6 +56,7 @@ export default function ChatMessages() {
   const messages = useChatStore((state) => state.messages);
   const isStreaming = useChatStore((state) => state.isStreaming);
   const sendMessage = useChatStore((state) => state.sendMessage);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   const scrollContainerRef = useRef(null);
   const messagesEndRef = useRef(null);
@@ -84,6 +85,7 @@ export default function ChatMessages() {
   const showWelcome = displayMessages.length === 0;
 
   const handleQuickAction = (prompt) => {
+    if (!isAuthenticated) return;
     sendMessage(prompt);
   };
 
