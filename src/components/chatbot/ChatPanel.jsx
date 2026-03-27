@@ -1,15 +1,13 @@
 import { useChatStore } from '../../store';
 import ChatHeader from './ChatHeader';
+import ChatMessages from './ChatMessages';
+import ChatInput from './ChatInput';
 
-// Temporary placeholders - will be replaced by actual imports in Phase 3
-const MessagesPlaceholder = () => (
-  <div className="chatbot-messages-placeholder" style={{ flex: 1 }} />
-);
-const InputPlaceholder = () => (
-  <div className="chatbot-input-placeholder" style={{ height: '60px' }} />
-);
-const GuestPlaceholder = () => (
-  <div className="chatbot-guest-placeholder" style={{ height: '60px' }} />
+// GuestPrompt will be replaced by import from './messages/GuestPrompt' in Phase 4
+const GuestPrompt = () => (
+  <div className="chatbot-guest-placeholder" style={{ padding: '16px', textAlign: 'center', color: '#666' }}>
+    <p>Please log in to start chatting</p>
+  </div>
 );
 
 function ChatPanel({ isAuthenticated }) {
@@ -25,8 +23,8 @@ function ChatPanel({ isAuthenticated }) {
       style={{ zIndex: 9998 }}
     >
       <ChatHeader />
-      <MessagesPlaceholder />
-      {isAuthenticated ? <InputPlaceholder /> : <GuestPlaceholder />}
+      <ChatMessages />
+      {isAuthenticated ? <ChatInput /> : <GuestPrompt />}
     </div>
   );
 }
