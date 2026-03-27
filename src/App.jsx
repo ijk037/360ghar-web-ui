@@ -1,5 +1,5 @@
 import { useEffect, Suspense, lazy } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import './App.css';
 // Toast CSS is now lazy-loaded via LazyToast.jsx
 import { useLocationStore } from './store/locationStore';
@@ -9,10 +9,7 @@ import ScrollToTop from './common/ScrollToTop';
 import SEO from './common/SEO';
 import { realEstateStructuredData } from './seo/structuredData';
 
-// Lazy load pages
 const Home = lazy(() => import('./pages/Home'));
-const HomeTwo = lazy(() => import('./pages/unused/HomeTwo'));
-const HomeThree = lazy(() => import('./pages/unused/HomeThree'));
 const PropertySidebar = lazy(() => import('./pages/properties/PropertySidebar'));
 const Property = lazy(() => import('./pages/properties/Property'));
 const PropertyDetails = lazy(() => import('./pages/properties/PropertyDetails'));
@@ -20,8 +17,6 @@ const AddListing = lazy(() => import('./pages/properties/AddListing'));
 const MapLocation = lazy(() => import('./pages/MapLocation'));
 const AboutUs = lazy(() => import('./pages/core/AboutUs'));
 const FaqPage = lazy(() => import('./pages/core/FaqPage'));
-const Checkout = lazy(() => import('./pages/unused/Checkout'));
-const Cart = lazy(() => import('./pages/unused/Cart'));
 const Login = lazy(() => import('./pages/account/Login'));
 const Account = lazy(() => import('./pages/account/Account'));
 const Project = lazy(() => import('./pages/projects/Project'));
@@ -54,8 +49,8 @@ const AIAgent = lazy(() => import('./pages/core/AIAgent'));
 const LocalityTemplate = lazy(() => import('./pages/localities/LocalityTemplate'));
 const LocalitiesDirectory = lazy(() => import('./pages/localities/LocalitiesDirectory'));
 const ReferAndEarn = lazy(() => import('./pages/core/ReferAndEarn'));
+const ChatBot = lazy(() => import('./components/chatbot/ChatBot'));
 
-// Comparison pages
 const VsNoBroker = lazy(() => import('./pages/compare/vs-nobroker'));
 const VsMagicBricks = lazy(() => import('./pages/compare/vs-magicbricks'));
 const Vs99acres = lazy(() => import('./pages/compare/vs-99acres'));
@@ -67,12 +62,107 @@ const VsNestAway = lazy(() => import('./pages/compare/vs-nestaway'));
 const VsZolo = lazy(() => import('./pages/compare/vs-zolo'));
 const VsStanzaLiving = lazy(() => import('./pages/compare/vs-stanza-living'));
 
-// Truth/Expose pages
 const TruthNoBroker = lazy(() => import('./pages/truth/nobroker-listings'));
 const TruthMagicBricks = lazy(() => import('./pages/truth/magicbricks-spam'));
 const Truth99acres = lazy(() => import('./pages/truth/99acres-fake'));
 const TruthNestAway = lazy(() => import('./pages/truth/nestaway-collapse'));
 const TruthZolo = lazy(() => import('./pages/truth/zolo-issues'));
+
+const propertyRoutes = [
+  { path: '/properties', element: <Property /> },
+  { path: '/property-sidebar', element: <PropertySidebar /> },
+  { path: '/property/:id', element: <PropertyDetails /> },
+  { path: '/add-new-listing', element: <AddListing /> },
+  { path: '/post-property', element: <PostProperty /> },
+  { path: '/map-location', element: <MapLocation /> },
+];
+
+const accountRoutes = [
+  { path: '/login', element: <Login /> },
+  { path: '/mcp/login', element: <McpLogin /> },
+  { path: '/register', element: <Register /> },
+  { path: '/account', element: <Account /> },
+  { path: '/delete-account', element: <AccountDeletionRequest /> },
+];
+
+const contentRoutes = [
+  { path: '/', element: <Home /> },
+  { path: '/about-us', element: <AboutUs /> },
+  { path: '/faq', element: <FaqPage /> },
+  { path: '/project', element: <Project /> },
+  { path: '/project/:title', element: <ProjectDetails /> },
+  { path: '/blog', element: <BlogClassic /> },
+  { path: '/blog/:title', element: <BlogDetails /> },
+  { path: '/contact', element: <Contact /> },
+  { path: '/policies', element: <Policies /> },
+  { path: '/policies/:slug', element: <PolicyDetails /> },
+  { path: '/gurugram-real-estate-guide', element: <GurugramGuide /> },
+  { path: '/property-investment-gurugram', element: <PropertyInvestment /> },
+  { path: '/refer-and-earn', element: <ReferAndEarn /> },
+  { path: '/for-ai', element: <ForAI /> },
+  { path: '/ai-agent', element: <AIAgent /> },
+  { path: '/localities', element: <LocalitiesDirectory /> },
+  { path: '/locality/:slug', element: <LocalityTemplate /> },
+];
+
+const toolRoutes = [
+  { path: '/emi-calculator', element: <EmiCalculator /> },
+  { path: '/area-converter', element: <AreaConverter /> },
+  { path: '/loan-eligibility-calculator', element: <LoanEligibilityCalculator /> },
+  { path: '/area-calculator', element: <AreaCalculator /> },
+  { path: '/property-document-checklist', element: <PropertyChecklist /> },
+  { path: '/capital-gains-tax-calculator', element: <CapitalGainsCalculator /> },
+  { path: '/design-blueprint', element: <DesignBlueprint /> },
+  { path: '/vastu-checker', element: <VastuChecker /> },
+  { path: '/ai-design-studio', element: <AIDesignStudio /> },
+];
+
+const comparisonRoutes = [
+  { path: '/vs/nobroker', element: <VsNoBroker /> },
+  { path: '/vs/magicbricks', element: <VsMagicBricks /> },
+  { path: '/vs/99acres', element: <Vs99acres /> },
+  { path: '/vs/housing', element: <VsHousing /> },
+  { path: '/vs/commonfloor', element: <VsCommonFloor /> },
+  { path: '/vs/proptiger', element: <VsPropTiger /> },
+  { path: '/vs/squareyards', element: <VsSquareYards /> },
+  { path: '/vs/nestaway', element: <VsNestAway /> },
+  { path: '/vs/zolo', element: <VsZolo /> },
+  { path: '/vs/stanza-living', element: <VsStanzaLiving /> },
+];
+
+const truthRoutes = [
+  { path: '/truth/nobroker-listings', element: <TruthNoBroker /> },
+  { path: '/truth/magicbricks-spam', element: <TruthMagicBricks /> },
+  { path: '/truth/99acres-fake', element: <Truth99acres /> },
+  { path: '/truth/nestaway-collapse', element: <TruthNestAway /> },
+  { path: '/truth/zolo-issues', element: <TruthZolo /> },
+];
+
+const programmaticRoutes = [
+  { path: '/:citySlug/:intent/:type/:bhk', element: <FacetLanding /> },
+  { path: '/:citySlug/:intent/:type/budget/:budget', element: <FacetLanding /> },
+  { path: '/:citySlug/:intent/:type/amenity/:amenity', element: <FacetLanding /> },
+  { path: '/:citySlug/:intent/:type', element: <Landing /> },
+];
+
+const routeGroups = [
+  ...contentRoutes,
+  ...accountRoutes,
+  ...propertyRoutes,
+  ...toolRoutes,
+  ...comparisonRoutes,
+  ...truthRoutes,
+  ...programmaticRoutes,
+];
+
+// Scrolls window to top on every route change
+function RouteScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
 
 function App() {
   const initializeLocation = useLocationStore((state) => state.initializeLocation);
@@ -91,82 +181,18 @@ function App() {
   return (
     <>
       <BrowserRouter>
+        <RouteScrollToTop />
         <SEO structuredData={globalSchemas} />
         <Suspense fallback={<PageLoader />}>
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/home-two" element={<HomeTwo />} />
-            <Route path="/home-three" element={<HomeThree />} />
-            <Route path="/properties" element={<Property />} />
-            <Route path="/property-sidebar" element={<PropertySidebar />} />
-            <Route path="/property/:id" element={<PropertyDetails />} />
-            <Route path="/add-new-listing" element={<AddListing />} />
-            <Route path="/map-location" element={<MapLocation />} />
-            <Route path="/about-us" element={<AboutUs />} />
-            <Route path="/faq" element={<FaqPage />} />
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/mcp/login" element={<McpLogin />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/account" element={<Account />} />
-            <Route path="/project" element={<Project />} />
-            <Route path="/project/:title" element={<ProjectDetails />} />
-
-            <Route path="/blog" element={<BlogClassic />} />
-            <Route path="/blog/:title" element={<BlogDetails />} />
-
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/post-property" element={<PostProperty />} />
-            <Route path="/delete-account" element={<AccountDeletionRequest />} />
-            <Route path="/policies" element={<Policies />} />
-            <Route path="/policies/:slug" element={<PolicyDetails />} />
-            <Route path="/emi-calculator" element={<EmiCalculator />} />
-            <Route path="/area-converter" element={<AreaConverter />} />
-            <Route path="/loan-eligibility-calculator" element={<LoanEligibilityCalculator />} />
-            <Route path="/area-calculator" element={<AreaCalculator />} />
-            <Route path="/property-document-checklist" element={<PropertyChecklist />} />
-            <Route path="/capital-gains-tax-calculator" element={<CapitalGainsCalculator />} />
-            <Route path="/design-blueprint" element={<DesignBlueprint />} />
-            <Route path="/vastu-checker" element={<VastuChecker />} />
-            <Route path="/ai-design-studio" element={<AIDesignStudio />} />
-
-            {/* Locality pages dynamic route handling 1000+ locations */}
-            <Route path="/localities" element={<LocalitiesDirectory />} />
-            <Route path="/locality/:slug-gurgaon" element={<LocalityTemplate />} />
-            <Route path="/gurugram-real-estate-guide" element={<GurugramGuide />} />
-            <Route path="/property-investment-gurugram" element={<PropertyInvestment />} />
-            <Route path="/refer-and-earn" element={<ReferAndEarn />} />
-            <Route path="/for-ai" element={<ForAI />} />
-            <Route path="/ai-agent" element={<AIAgent />} />
-            
-            {/* Comparison pages */}
-            <Route path="/vs/nobroker" element={<VsNoBroker />} />
-            <Route path="/vs/magicbricks" element={<VsMagicBricks />} />
-            <Route path="/vs/99acres" element={<Vs99acres />} />
-            <Route path="/vs/housing" element={<VsHousing />} />
-            <Route path="/vs/commonfloor" element={<VsCommonFloor />} />
-            <Route path="/vs/proptiger" element={<VsPropTiger />} />
-            <Route path="/vs/squareyards" element={<VsSquareYards />} />
-            <Route path="/vs/nestaway" element={<VsNestAway />} />
-            <Route path="/vs/zolo" element={<VsZolo />} />
-            <Route path="/vs/stanza-living" element={<VsStanzaLiving />} />
-            
-            {/* Truth/Expose pages */}
-            <Route path="/truth/nobroker-listings" element={<TruthNoBroker />} />
-            <Route path="/truth/magicbricks-spam" element={<TruthMagicBricks />} />
-            <Route path="/truth/99acres-fake" element={<Truth99acres />} />
-            <Route path="/truth/nestaway-collapse" element={<TruthNestAway />} />
-            <Route path="/truth/zolo-issues" element={<TruthZolo />} />
-            
-            {/* Facet landings: BHK and Budget */}
-            <Route path="/:citySlug/:intent/:type/:bhk" element={<FacetLanding />} />
-            <Route path="/:citySlug/:intent/:type/budget/:budget" element={<FacetLanding />} />
-            <Route path="/:citySlug/:intent/:type/amenity/:amenity" element={<FacetLanding />} />
-            {/* Programmatic SEO landing pages: /city/intent/type */}
-            <Route path="/:citySlug/:intent/:type" element={<Landing />} />
+            {routeGroups.map((route) => (
+              <Route key={route.path} path={route.path} element={route.element} />
+            ))}
             <Route path="*" element={<NotFound />} />
           </Routes>
+        </Suspense>
+        <Suspense fallback={null}>
+          <ChatBot />
         </Suspense>
       </BrowserRouter>
 
