@@ -35,7 +35,7 @@
     &::before {
         position: absolute;
         content: "";
-        background-image: url(assets/images/shapes/polygon-shape.png);
+        background-image: url(/assets/images/shapes/polygon-shape.png);
         background-position: center top;
         background-size: cover;
         left: 0;
@@ -51,8 +51,8 @@
     &__inner {
         padding: 52px 30px;
         background-color: var(--gray-100);
-        -webkit-mask: url(assets/images/shapes/polygon-shape.png) no-repeat 50% 50%;
-        mask: url(assets/images/shapes/polygon-shape.png) no-repeat 50% 50%;
+        -webkit-mask: url(/assets/images/shapes/polygon-shape.png) no-repeat 50% 50%;
+        mask: url(/assets/images/shapes/polygon-shape.png) no-repeat 50% 50%;
         -webkit-mask-size: 156px;
         mask-size: 156px;
         @include md-screen {

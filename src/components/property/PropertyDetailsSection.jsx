@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Lightbox from 'yet-another-react-lightbox';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
 import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails';
@@ -17,6 +18,8 @@ import WhatsAppButton from '../ui/WhatsAppButton';
 import LoadingSkeleton from '../ui/LoadingSkeleton';
 import { propertyAPIService } from '../../services/propertyAPIService';
 import { hapticLight, hapticSuccess } from '../../utils/hapticFeedback';
+import { localInputToServerTimestamp } from '../../utils/dateUtils';
+import { getListingLabel, getPropertyTypeLabel } from '../../utils/propertyTaxonomy';
 const PROPERTY_IMAGE_FALLBACK = '/assets/images/thumbs/property-1.png';
 function formatCurrency(value) {
   if (value === null || value === undefined) return 'Price on request';
@@ -85,6 +88,7 @@ MediaTabButton.propTypes = {
 };
 
 const PropertyDetailsSection = ({ property }) => {
+  const navigate = useNavigate();
   const images = Array.isArray(property?.images) ? property.images : [];
   const galleryImages = useMemo(
     () => images.filter((i) => i?.image_url && !/kuula\.co/i.test(i.image_url)),
@@ -162,18 +166,36 @@ const PropertyDetailsSection = ({ property }) => {
   ].filter((x) => x.value !== null && x.value !== undefined && x.value !== '');
 
   const features = Array.isArray(property?.features) ? property.features : [];
+  const listingPreferences = property?.listing_preferences || {};
+  const propertyTypeLabel = getPropertyTypeLabel(property?.property_type);
+  const listingLabel = getListingLabel({
+    propertyType: property?.property_type,
+    purpose: property?.purpose || property?.price_type,
+  });
 
   const keyDetails = useMemo(() => ([
-    { label: 'Property Type', value: property?.property_type },
-    { label: 'Purpose', value: property?.purpose || property?.price_type },
+    { label: 'Property Type', value: propertyTypeLabel },
+    { label: 'Listing', value: listingLabel },
     { label: 'Status', value: property?.status },
     { label: 'Available', value: property?.is_available === true ? 'Yes' : (property?.is_available === false ? 'No' : null) },
     { label: 'Available From', value: formatDate(property?.available_from) },
     { label: 'Builder', value: property?.builder_name },
     { label: 'Owner', value: property?.owner_name },
     { label: 'Owner Contact', value: property?.owner_contact },
+    listingPreferences?.gender_preference
+      ? {
+          label: 'Gender Preference',
+          value: listingPreferences.gender_preference.replace(/_/g, ' '),
+        }
+      : null,
+    listingPreferences?.sharing_type
+      ? {
+          label: 'Room Type',
+          value: listingPreferences.sharing_type.replace(/_/g, ' '),
+        }
+      : null,
     { label: 'Listing ID', value: property?.id },
-  ].filter(i => i.value !== null && i.value !== undefined && i.value !== '')), [property]);
+  ].filter(i => i.value !== null && i.value !== undefined && i.value !== '')), [listingLabel, listingPreferences, property, propertyTypeLabel]);
 
   const pricingDetails = useMemo(() => ([
     { label: purpose === 'rent' ? 'Monthly Rent' : 'Base Price', value: formatCurrency(priceValue) },
@@ -346,7 +368,7 @@ const PropertyDetailsSection = ({ property }) => {
 
   const toggleLike = async () => {
     if (!isAuthenticated) {
-      window.location.href = '/login';
+      navigate('/login', { state: { from: `/property/${property?.id}` } });
       return;
     }
     setLikeLoading(true);
@@ -358,10 +380,10 @@ const PropertyDetailsSection = ({ property }) => {
     }
   };
 
-    const onSchedule = async (e) => {
+  const onSchedule = async (e) => {
     e.preventDefault();
     if (!isAuthenticated) {
-      window.location.href = '/login';
+      navigate('/login', { state: { from: `/property/${property?.id}` } });
       return;
     }
     
@@ -385,7 +407,11 @@ const PropertyDetailsSection = ({ property }) => {
     }
     
     setVisitErrors({});
-    const isoDate = new Date(visitDate).toISOString();
+    const isoDate = localInputToServerTimestamp(visitDate);
+    if (!isoDate) {
+      setVisitErrors({ visitDate: 'Please enter a valid date and time' });
+      return;
+    }
     const res = await scheduleVisit({ property_id: property?.id, scheduled_date: isoDate, special_requirements: visitNotes });
     if (res) {
       setVisitNotes('');
@@ -447,7 +473,7 @@ const PropertyDetailsSection = ({ property }) => {
       else if (node.webkitRequestFullscreen) node.webkitRequestFullscreen();
       else if (node.mozRequestFullScreen) node.mozRequestFullScreen();
       else if (node.msRequestFullscreen) node.msRequestFullscreen();
-    } catch (_) {
+    } catch {
       // Ignored
     }
   };

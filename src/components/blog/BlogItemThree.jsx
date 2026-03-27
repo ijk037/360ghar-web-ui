@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../../common/Button';
-import { BlogDataContext } from '../../contextApi/BlogDataContext';
+import { BlogDataContext } from '../../contextApi/BlogDataContextValue';
 
 import LazyImage from '../../common/LazyImage';
 const BlogItemThree = ({blogItem}) => {

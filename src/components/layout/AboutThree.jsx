@@ -15,7 +15,7 @@ const AboutThree = () => {
                         <div className="col-lg-6">
                             <div className="about-three-thumb">
                                 <div className="about-three-thumb__inner">
-                                    <LazyImage src={AboutThreeThumb} alt=""/>
+                                    <LazyImage src={AboutThreeThumb} alt="360Ghar team and services" width={580} height={480}/>
                                     <div className="project-content">
                                         <div className="project-content__inner">
                                             <h2 className="project-content__number">

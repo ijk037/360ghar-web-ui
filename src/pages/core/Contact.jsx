@@ -5,9 +5,9 @@ import OffCanvas from '../../common/OffCanvas';
 import Cta from '../../components/ui/Cta';
 import ContactTop from '../../components/contact/ContactTop';
 import ContactUsSection from '../../components/contact/ContactUsSection';
-import PageTitle from '../../common/PageTitle';
 import SEO from '../../common/SEO';
 import { siteMetadata, absoluteUrl } from '../../seo/siteMetadata';
+import { generateBreadcrumbStructuredData } from '../../seo/structuredData';
 
 const Contact = () => {
   return (
@@ -44,6 +44,10 @@ const Contact = () => {
               availableLanguage: ['en', 'hi'],
             },
           },
+          generateBreadcrumbStructuredData([
+            { name: 'Home', url: 'https://360ghar.com/' },
+            { name: 'Contact', url: 'https://360ghar.com/contact' }
+          ]),
           {
             '@context': 'https://schema.org',
             '@type': ['LocalBusiness', 'RealEstateAgent'],
@@ -94,7 +98,6 @@ const Contact = () => {
           }
         ]}
       />
-      <PageTitle title="360Ghar - Dedicated Relationship Manager Support" />
 
       <OffCanvas />
       <MobileMenu />

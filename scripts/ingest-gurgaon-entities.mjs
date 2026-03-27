@@ -94,7 +94,6 @@ async function main() {
 
   for (const source of SOURCE_URLS) {
     // sequential to keep rate predictable
-    // eslint-disable-next-line no-await-in-loop
     const rows = await fetchSource(source);
     raw.push(...rows);
   }

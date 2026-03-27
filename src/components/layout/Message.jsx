@@ -1,5 +1,3 @@
-import { ToastContainer, toast } from 'react-toastify';
-
 import messageThumb from '/assets/images/thumbs/message-img.png';
 import ValidationForm from './ValidationForm';
 
@@ -7,14 +5,13 @@ import LazyImage from '../../common/LazyImage';
 const Message = () => {
     return (
         <>
-         <ToastContainer />
             {/* ========================= Message Section Start ======================== */}
             <section className="message">
                 <div className="container container-two">
                     <div className="row">
                         <div className="col-lg-5">
                             <div className="message-thumb">
-                                <LazyImage src={messageThumb} alt="" className="cover-img"/>
+                                <LazyImage src={messageThumb} alt="Contact 360Ghar for a free quote" className="cover-img" width={480} height={600}/>
                             </div>
                         </div>
                         <div className="col-lg-7">
@@ -40,5 +37,4 @@ const Message = () => {
 };
 
 export default Message;
-
 

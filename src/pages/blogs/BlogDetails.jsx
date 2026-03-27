@@ -6,11 +6,11 @@ import OffCanvas from '../../common/OffCanvas';
 import Cta from '../../components/ui/Cta';
 import { useParams } from 'react-router-dom';
 import BlogDetailsSection from '../../components/blog/BlogDetailsSection';
-import { BlogDataContext } from '../../contextApi/BlogDataContext';
-import PageTitle from '../../common/PageTitle';
+import { BlogDataContext } from '../../contextApi/BlogDataContextValue';
 import SEO from '../../common/SEO';
-import { generateBlogStructuredData } from '../../seo/structuredData';
+import { generateBlogStructuredData, generateBreadcrumbStructuredData } from '../../seo/structuredData';
 import { siteMetadata } from '../../seo/siteMetadata';
+import { getAuthor } from '../../data/authors';
 
 const BlogDetails = () => {
     useParams(); 
@@ -22,6 +22,9 @@ const BlogDetails = () => {
         const descText = blogData?.desc || 'Read insights on buying, renting, PGs, locality guides, and investment trends in Gurugram and Delhi NCR.';
         const image = blogData?.thumb || siteMetadata.defaultOgImage;
         const url = blogData?.slug ? `/blog/${blogData.slug}` : undefined;
+        const authorSlug = blogData?.author_slug || '360ghar-team';
+        const authorInfo = getAuthor(authorSlug);
+        const authorName = blogData?.author_name || blogData?.admin?.replace(/^By\s+/, '') || authorInfo.name;
         const ld = generateBlogStructuredData({
             title: titleText,
             description: descText,
@@ -30,8 +33,17 @@ const BlogDetails = () => {
             slug: blogData?.slug,
             publishedAt: blogData?.publishedAt,
             updatedAt: blogData?.updatedAt,
+            authorSlug,
+            authorName,
         });
-        return { titleText, descText, image, url, ld };
+        const blogTitle = titleText;
+        const blogUrl = url ? `${siteMetadata.siteUrl}${url}` : 'https://360ghar.com/blog';
+        const breadcrumb = generateBreadcrumbStructuredData([
+            { name: 'Home', url: 'https://360ghar.com/' },
+            { name: 'Blog', url: 'https://360ghar.com/blog' },
+            { name: blogTitle, url: blogUrl }
+        ]);
+        return { titleText, descText, image, url, ld, breadcrumb };
     }, [blogData]);
 
     return (
@@ -43,10 +55,8 @@ const BlogDetails = () => {
               canonical={meta.url}
               image={meta.image}
               type="article"
-              structuredData={meta.ld}
+              structuredData={[meta.ld, meta.breadcrumb]}
             />
-            <PageTitle title={meta.titleText} />
-
             <OffCanvas />
             <MobileMenu />
 

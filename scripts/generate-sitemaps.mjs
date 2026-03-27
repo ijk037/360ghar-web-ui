@@ -44,6 +44,17 @@ const staticRoutes = [
   '/property-prices-gurugram',
   '/virtual-property-tours',
   '/for-ai',
+  '/ai-agent',
+  '/ai-design-studio',
+  '/localities',
+  // Tool pages
+  '/area-converter',
+  '/area-calculator',
+  '/loan-eligibility-calculator',
+  '/capital-gains-tax-calculator',
+  '/property-document-checklist',
+  '/design-blueprint',
+  '/vastu-checker',
   // Comparison pages
   '/vs/nobroker',
   '/vs/magicbricks',

@@ -6,9 +6,9 @@ import Cta from '../../components/ui/Cta';
 import FaqTwo from '../../components/layout/FaqTwo';
 import FaqContactUs from '../../components/layout/FaqContactUs';
 import CounterFour from '../../components/ui/CounterFour';
-import PageTitle from '../../common/PageTitle';
 import SEO from '../../common/SEO';
 import { siteMetadata } from '../../seo/siteMetadata';
+import { generateBreadcrumbStructuredData } from '../../seo/structuredData';
 import { faqs } from '../../data/HomeThreeData/HomeThreeData';
 
 const FaqPage = () => {
@@ -21,19 +21,24 @@ const FaqPage = () => {
                 canonical="/faq"
                 image={siteMetadata.defaultOgImage}
                 type="website"
-                structuredData={{
-                  '@type': 'FAQPage',
-                  mainEntity: faqs.map((f) => ({
-                    '@type': 'Question',
-                    name: f.btnText,
-                    acceptedAnswer: {
-                      '@type': 'Answer',
-                      text: f.bodyText,
-                    },
-                  })),
-                }}
+                structuredData={[
+                  {
+                    '@type': 'FAQPage',
+                    mainEntity: faqs.map((f) => ({
+                      '@type': 'Question',
+                      name: f.btnText,
+                      acceptedAnswer: {
+                        '@type': 'Answer',
+                        text: f.bodyText,
+                      },
+                    })),
+                  },
+                  generateBreadcrumbStructuredData([
+                    { name: 'Home', url: 'https://360ghar.com/' },
+                    { name: 'FAQ', url: 'https://360ghar.com/faq' }
+                  ])
+                ]}
             />
-            <PageTitle title="360Ghar - Frequently Ask Question" />
 
             <OffCanvas />
             <MobileMenu />

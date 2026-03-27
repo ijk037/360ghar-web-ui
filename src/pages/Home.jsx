@@ -17,9 +17,8 @@ import ToolShowcase from '../components/ui/ToolShowcase';
 import AIAgentShowcase from '../components/ui/AIAgentShowcase';
 import PropertyManagementShowcase from '../components/ui/PropertyManagementShowcase';
 import ReferEarnCta from '../components/ui/ReferEarnCta';
-import PageTitle from '../common/PageTitle';
 import SEO from '../common/SEO';
-import { realEstateStructuredData } from '../seo/structuredData';
+import { realEstateStructuredData, generateBreadcrumbStructuredData } from '../seo/structuredData';
 import { siteMetadata } from '../seo/siteMetadata';
 
 const FAQ_DATA = {
@@ -113,7 +112,10 @@ const Home = () => {
     const homeStructuredData = [
         realEstateStructuredData.website,
         realEstateStructuredData.localBusiness,
-        FAQ_DATA
+        FAQ_DATA,
+        generateBreadcrumbStructuredData([
+            { name: 'Home', url: 'https://360ghar.com/' }
+        ])
     ];
 
     return (
@@ -127,7 +129,6 @@ const Home = () => {
                 type="website"
                 structuredData={homeStructuredData}
             />
-            <PageTitle title="India's First AI-Enabled & Virtual Tour First Real Estate Platform | Verified Properties | 360Ghar" />
             <OffCanvas />
             <MobileMenu />
 

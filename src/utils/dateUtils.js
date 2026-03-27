@@ -2,6 +2,73 @@
  * Date utility functions
  */
 
+const OFFSET_OR_Z_SUFFIX = /([zZ]|[+-]\d{2}:\d{2})$/;
+
+const padDatePart = (value) => String(value).padStart(2, '0');
+
+const normalizeServerTimestamp = (value) => {
+  if (typeof value !== 'string') return value;
+
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+
+  if (trimmed.includes('T') && !OFFSET_OR_Z_SUFFIX.test(trimmed)) {
+    return `${trimmed}Z`;
+  }
+
+  return trimmed;
+};
+
+export const parseServerTimestamp = (value) => {
+  if (!value) return null;
+
+  if (value instanceof Date) {
+    return Number.isNaN(value.getTime()) ? null : value;
+  }
+
+  const parsed = new Date(normalizeServerTimestamp(value));
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+};
+
+export const serverTimestampToLocalInput = (value) => {
+  const parsed = parseServerTimestamp(value);
+  if (!parsed) return '';
+
+  return [
+    parsed.getFullYear(),
+    padDatePart(parsed.getMonth() + 1),
+    padDatePart(parsed.getDate()),
+  ].join('-') + `T${padDatePart(parsed.getHours())}:${padDatePart(parsed.getMinutes())}`;
+};
+
+export const localInputToServerTimestamp = (value) => {
+  if (!value || typeof value !== 'string') return null;
+
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return null;
+
+  return parsed.toISOString();
+};
+
+export const formatDateOnlyForApi = (value) => {
+  if (!value) return null;
+
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    if (!trimmed) return null;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return trimmed;
+  }
+
+  const parsed = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(parsed.getTime())) return null;
+
+  return [
+    parsed.getFullYear(),
+    padDatePart(parsed.getMonth() + 1),
+    padDatePart(parsed.getDate()),
+  ].join('-');
+};
+
 /**
  * Get relative time string from a date
  * @param {string|Date} date - Date to format
@@ -12,7 +79,7 @@ export const getRelativeTime = (date) => {
   
   try {
     const now = new Date();
-    const past = new Date(date);
+    const past = parseServerTimestamp(date) || new Date(date);
     const diffMs = now - past;
     const diffSecs = Math.floor(diffMs / 1000);
     const diffMins = Math.floor(diffSecs / 60);

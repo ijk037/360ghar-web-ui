@@ -1,13 +1,14 @@
- import React, { useState, useEffect } from 'react'; // eslint-disable-line no-unused-vars
+ import { useState } from 'react';
  import Header from '../../common/Header';
  import Footer from '../../common/Footer';
  import MobileMenu from '../../common/MobileMenu';
  import OffCanvas from '../../common/OffCanvas';
- import PageTitle from '../../common/PageTitle';
+ 
  import SEO from '../../common/SEO';
  import Cta from '../../components/ui/Cta';
  import { siteMetadata } from '../../seo/siteMetadata';
  import { generateToolSchema, toolSchemas } from '../../seo/toolSchemas';
+import { generateBreadcrumbStructuredData } from '../../seo/structuredData';
  
  const PropertyChecklist = () => {
      const checklistData = {
@@ -32,15 +33,10 @@
          ]
      };
  
-     const [checkedItems, setCheckedItems] = useState({});
- 
-     // Load progress from local storage
-     useEffect(() => {
+     const [checkedItems, setCheckedItems] = useState(() => {
          const saved = localStorage.getItem('propertyChecklist');
-         if (saved) {
-             setCheckedItems(JSON.parse(saved));
-         }
-     }, []);
+         return saved ? JSON.parse(saved) : {};
+     });
  
      const handleCheck = (id) => {
          const updated = { ...checkedItems, [id]: !checkedItems[id] };
@@ -63,18 +59,21 @@
                  canonical="/property-document-checklist"
                  image={siteMetadata.defaultOgImage}
                  type="website"
-                 structuredData={generateToolSchema(
-                     toolSchemas.propertyChecklist.name,
-                     toolSchemas.propertyChecklist.description,
-                     toolSchemas.propertyChecklist.keywords,
-                     toolSchemas.propertyChecklist.category
-                 )}
+                 structuredData={[
+                    generateToolSchema(
+                        toolSchemas.propertyChecklist.name,
+                        toolSchemas.propertyChecklist.description,
+                        toolSchemas.propertyChecklist.keywords,
+                        toolSchemas.propertyChecklist.category
+                    ),
+                    generateBreadcrumbStructuredData([
+                        { name: 'Home', url: 'https://360ghar.com/' },
+                        { name: 'Tools', url: 'https://360ghar.com/emi-calculator' },
+                        { name: toolSchemas.propertyChecklist.name, url: 'https://360ghar.com/property-document-checklist' }
+                    ])
+                 ]}
              />
-             <PageTitle
-                 title="Property Document Checklist - Home Buying Guide India | 360Ghar"
-                 description="Don\Don'tapos;t miss a thing. Use our interactive checklist to ensure you have all essential legal and financial documents in place for your property purchase in India."
-             />
-             
+
              <OffCanvas />
              <MobileMenu />
  

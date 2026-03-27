@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
 import SEO from '../../common/SEO';
-import PageTitle from '../../common/PageTitle';
 import { 
     aiAgentShowcaseContent, 
     aiAgentHowItWorks, 
@@ -41,6 +40,17 @@ const AIAgent = () => {
                 '@type': 'Organization',
                 name: '360Ghar'
             }
+        },
+        {
+            '@type': 'FAQPage',
+            mainEntity: aiAgentFAQs.map((faq) => ({
+                '@type': 'Question',
+                name: faq.question,
+                acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: faq.answer
+                }
+            }))
         }
     ];
 
@@ -54,7 +64,6 @@ const AIAgent = () => {
                 image={siteMetadata.defaultOgImage}
                 structuredData={structuredData}
             />
-            <PageTitle title="AI Real Estate Assistant | 360Ghar" />
             <Header headerClass="dark-header has-border" />
 
             <main className="body-bg">
@@ -117,7 +126,7 @@ const AIAgent = () => {
                                         Yes, this Saturday afternoon
                                     </div>
                                     <div className="ai-hero__chat-message ai-hero__chat-message--ai">
-                                        ✓ Visit scheduled for Saturday, 2:00 PM at DLF Phase 3 property (₹32,000). You'll receive a confirmation shortly.
+                                        ✓ Visit scheduled for Saturday, 2:00 PM at DLF Phase 3 property (₹32,000). You&apos;ll receive a confirmation shortly.
                                     </div>
                                 </div>
                             </div>
@@ -271,7 +280,7 @@ const AIAgent = () => {
                         <div className="ai-section-header">
                             <span className="ai-section-header__badge">FAQ</span>
                             <h2 className="ai-section-header__title">Frequently Asked Questions</h2>
-                            <p className="ai-section-header__desc">Everything you need to know about 360Ghar's AI Agent</p>
+                            <p className="ai-section-header__desc">Everything you need to know about 360Ghar&apos;s AI Agent</p>
                         </div>
                         <div className="ai-faq__grid">
                             {aiAgentFAQs.map((faq, index) => (

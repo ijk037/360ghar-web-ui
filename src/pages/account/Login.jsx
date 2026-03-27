@@ -4,15 +4,12 @@ import MobileMenu from '../../common/MobileMenu';
 import OffCanvas from '../../common/OffCanvas';
 import Cta from '../../components/ui/Cta';
 import LoginRegister from '../../components/forms/LoginRegister';
-import PageTitle from '../../common/PageTitle';
 import SEO from '../../common/SEO';
 
 const Login = () => {
     return (
         <>
         <SEO title="Login | 360Ghar" description="User login page." canonical="/login" noindex />
-        <PageTitle title="360Ghar - Login" />
-
         <OffCanvas />
         <MobileMenu />
 

@@ -1,16 +1,15 @@
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
+import MobileMenu from '../../common/MobileMenu';
+import OffCanvas from '../../common/OffCanvas';
 import Cta from '../../components/ui/Cta';
 import AddListingSection from '../../components/forms/AddListingSection';
-import PageTitle from '../../common/PageTitle';
 import SEO from '../../common/SEO';
 
 const AddListing = () => {
     return (
         <>
         <SEO title="Add Listing | 360Ghar" description="Add a new property listing." canonical="/add-new-listing" noindex />
-        <PageTitle title="360Ghar - Add Listing" />
-
         <main className="body-bg">
             
             {/* Header */}
@@ -34,7 +33,10 @@ const AddListing = () => {
             {/* Footer */}
             <Footer/>
 
-        </main>   
+        </main>
+
+        <MobileMenu />
+        <OffCanvas />
         </>
     );
 };

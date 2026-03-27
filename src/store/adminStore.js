@@ -57,15 +57,6 @@ const useAdminStore = create((set) => ({
     }
   },
 
-  verifyProperty: async () => {
-    set({ isLoading: false, error: 'Property verification is yet to be implemented' });
-    // Show notification
-    if (typeof window !== 'undefined' && window.alert) {
-      window.alert('Property verification is yet to be implemented');
-    }
-    return null;
-  },
-
   clearError: () => set({ error: null }),
 }));
 

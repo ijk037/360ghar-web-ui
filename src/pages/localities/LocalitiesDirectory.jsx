@@ -4,7 +4,7 @@ import Header from '../../common/Header';
 import Footer from '../../common/Footer';
 import MobileMenu from '../../common/MobileMenu';
 import OffCanvas from '../../common/OffCanvas';
-import PageTitle from '../../common/PageTitle';
+
 import SEO from '../../common/SEO';
 import { siteMetadata } from '../../seo/siteMetadata';
 
@@ -119,8 +119,6 @@ const LocalitiesDirectory = () => {
                 image={siteMetadata.defaultOgImage}
                 type="website"
             />
-            <PageTitle title="Browse Localities | 360Ghar" />
-
             <OffCanvas />
             <MobileMenu />
 

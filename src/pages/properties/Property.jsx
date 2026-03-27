@@ -4,7 +4,6 @@ import MobileMenu from '../../common/MobileMenu';
 import OffCanvas from '../../common/OffCanvas';
 import PropertyPageSection from '../../components/property/PropertyPageSection';
 import Cta from '../../components/ui/Cta';
-import PageTitle from '../../common/PageTitle';
 import SEO from '../../common/SEO';
 import { siteMetadata } from '../../seo/siteMetadata';
 import { realEstateStructuredData, generateBreadcrumbStructuredData } from '../../seo/structuredData';
@@ -30,8 +29,6 @@ const Property = () => {
           type="website"
           structuredData={propertyStructuredData}
         />
-        <PageTitle title="360Ghar - Verified Properties with AI-Powered Search" />
-
         <OffCanvas />
         <MobileMenu />
 

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BlogDataContext } from '../contextApi/BlogDataContext';
+import { BlogDataContext } from '../contextApi/BlogDataContextValue';
 import { blogService } from '../services/blogService';
 
 import LazyImage from './LazyImage';
@@ -46,7 +46,7 @@ const SidebarRecentPost = () => {
                     <div className="latest-blog" key={post.id || idx}>
                         <div className="latest-blog__thumb">
                             <Link to={blogURL} onClick={handleBlogClick}>
-                                <LazyImage src={thumb} className="cover-img" alt="" />
+                                <LazyImage src={thumb} className="cover-img" alt={title} width={80} height={60} />
                             </Link>
                         </div>
                         <div className="latest-blog__content">

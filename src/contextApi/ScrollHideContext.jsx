@@ -1,6 +1,5 @@
-import { createContext, useState }  from 'react';
-
-export const ScrollHideContext = createContext(); 
+import { useState }  from 'react';
+import { ScrollHideContext } from './ScrollHideContextValue';
 
 const ScrollHideProvider = ({ children }) => {
 

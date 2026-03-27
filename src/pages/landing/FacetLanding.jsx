@@ -7,11 +7,16 @@ import OffCanvas from '../../common/OffCanvas';
 import Cta from '../../components/ui/Cta';
 import SEO from '../../common/SEO';
 import { generateBreadcrumbStructuredData } from '../../seo/structuredData';
+import { buildPropertySearchQuery } from '../../store/propertyFilters';
+import {
+  getPropertyTypeLabel,
+  normalizePropertyTypeToken,
+} from '../../utils/propertyTaxonomy';
+import { buildFacetKeywords } from '../../utils/landingKeywords';
 
 const pretty = (s) => (s || '').replace(/-/g, ' ').replace(/\b\w/g, (m) => m.toUpperCase());
 
 const VALID_INTENTS = ['buy', 'rent', 'pg'];
-const VALID_TYPES = ['flats','apartments','independent-house','builder-floor','villa','plots','land','office-space','shop'];
 const VALID_BHKS = ['1-bhk','2-bhk','3-bhk','4-bhk','5-bhk'];
 const VALID_BUDGETS = [
   'under-10k','under-15k','under-20k', // rent
@@ -23,31 +28,55 @@ const FacetLanding = () => {
 
   const validCity = pretty(citySlug);
   const validIntent = VALID_INTENTS.includes(intent) ? intent : 'buy';
-  const validType = VALID_TYPES.includes(type) ? type : 'flats';
+  const canonicalType = validIntent === 'pg'
+    ? 'pg'
+    : normalizePropertyTypeToken(type)[0] || 'apartment';
+  const intentLabel = validIntent === 'pg' ? 'PG' : validIntent === 'rent' ? 'Rent' : 'Buy';
   const isBhk = bhk && VALID_BHKS.includes(bhk);
   const isBudget = budget && VALID_BUDGETS.includes(budget);
   const isAmenity = Boolean(amenity);
 
-  const facetText = pretty(validType);
+  const facetText = getPropertyTypeLabel(canonicalType);
   const bhkText = isBhk ? bhk.replace('-bhk', ' BHK').toUpperCase() : '';
   const budgetText = isBudget ? budget.replace(/-/g,' ') : '';
+  const browseQuery = buildPropertySearchQuery({
+    city: validCity,
+    purpose: validIntent === 'pg' ? 'rent' : validIntent,
+    property_type: [canonicalType],
+    bhk: isBhk ? bhk.replace('-bhk', '') : '',
+    budget: isBudget ? budget : '',
+    amenity: isAmenity ? amenity : '',
+  });
 
   const title = useMemo(() => {
-    const verb = validIntent === 'rent' ? 'Rent' : validIntent === 'pg' ? 'PG' : 'Buy';
+    if (validIntent === 'pg') {
+      const bits = [
+        isBhk ? `${bhkText}` : null,
+        facetText,
+        'in',
+        validCity,
+        isBudget ? `| ${budgetText}` : null,
+        isAmenity ? `| ${pretty(amenity)}` : null,
+      ].filter(Boolean).join(' ');
+      return `${bits} | 360Ghar`;
+    }
+
     const bits = [
       isBhk ? `${bhkText}` : null,
       facetText,
-      'for', verb,
+      'for', intentLabel,
       'in', validCity,
       isBudget ? `| ${budgetText}` : null,
       isAmenity ? `| ${pretty(amenity)}` : null,
     ].filter(Boolean).join(' ');
     return `${bits} | 360Ghar`;
-  }, [validCity, facetText, validIntent, isBhk, bhkText, isBudget, budgetText, isAmenity, amenity]);
+  }, [validCity, facetText, validIntent, intentLabel, isBhk, bhkText, isBudget, budgetText, isAmenity, amenity]);
 
   const description = useMemo(() => {
     const parts = [
-      `Explore verified ${facetText.toLowerCase()} in ${validCity} to ${validIntent}.`,
+      validIntent === 'pg'
+        ? `Explore verified ${facetText.toLowerCase()} and co-living options in ${validCity}.`
+        : `Explore verified ${facetText.toLowerCase()} in ${validCity} to ${validIntent}.`,
       isBhk ? `${bhkText} options available.` : null,
       isBudget ? `Budget: ${budgetText}.` : null,
       isAmenity ? `Amenity: ${pretty(amenity)}.` : null,
@@ -56,38 +85,10 @@ const FacetLanding = () => {
     return parts.join(' ');
   }, [facetText, validCity, validIntent, isBhk, bhkText, isBudget, budgetText, isAmenity, amenity]);
 
-  const keywords = useMemo(() => {
-    const lcFacet = facetText.toLowerCase();
-    const city = validCity;
-    const tSyn = (() => {
-      if (lcFacet.includes('apartment') || lcFacet.includes('flat')) return ['flats','apartments','society flats'];
-      if (lcFacet.includes('independent')) return ['independent house','independent floor','house','kothi'];
-      if (lcFacet.includes('builder')) return ['builder floor','independent floor'];
-      if (lcFacet.includes('villa')) return ['villa','bungalow'];
-      if (lcFacet.includes('plot')) return ['plots','residential plots','residential land'];
-      if (lcFacet.includes('land')) return ['land','residential land','commercial land'];
-      if (lcFacet.includes('office')) return ['office space','commercial office','coworking','co-working'];
-      if (lcFacet.includes('shop')) return ['shop','retail shop','showroom'];
-      return [lcFacet];
-    })();
-    const iSyn = validIntent === 'buy'
-      ? ['buy','purchase','for sale','resale','new launch','under construction','ready to move']
-      : validIntent === 'rent'
-        ? ['rent','on rent','for rent','lease','rental','without brokerage','no broker','owner']
-        : ['pg','paying guest','co-living','hostel','boys pg','girls pg'];
-    const bhkSyn = isBhk ? [bhkText, bhkText.toLowerCase()] : [];
-    const budgetSyn = isBudget ? [budgetText, budgetText.replace('under','below')] : [];
-    const base = [
-      `${facetText} for ${validIntent} in ${city}`,
-      ...tSyn.flatMap(t => iSyn.map(i => `${t} ${i} ${city}`)),
-      ...bhkSyn.map(b => `${b} ${lcFacet} ${validIntent} in ${city}`),
-      ...budgetSyn.map(b => `${lcFacet} ${validIntent} ${b} in ${city}`),
-      isAmenity ? `${pretty(amenity)} ${lcFacet} ${validIntent} in ${city}` : null,
-      'near metro', 'pet friendly', 'ready to move', 'no broker',
-      'verified properties', '360 virtual tours', 'AI property search', 'on-site verified'
-    ];
-    return Array.from(new Set(base.filter(Boolean))).join(', ');
-  }, [facetText, validCity, validIntent, isBhk, bhkText, isBudget, budgetText, isAmenity, amenity]);
+  const keywords = useMemo(
+    () => buildFacetKeywords({ facetText, validCity, validIntent, isBhk, bhkText, isBudget, budgetText, isAmenity, amenity, pretty }),
+    [facetText, validCity, validIntent, isBhk, bhkText, isBudget, budgetText, isAmenity, amenity]
+  );
 
   const canonicalPath = useMemo(() => {
     if (isBhk) return `/${citySlug}/${intent}/${type}/${bhk}`;
@@ -107,22 +108,15 @@ const FacetLanding = () => {
     [
       { name: 'Home', url: 'https://360ghar.com/' },
       { name: validCity, url: citySearchUrl },
-      { name: `${facetText} - ${pretty(validIntent)}`, url: `https://360ghar.com/${citySlug}/${intent}/${type}` },
+      { name: `${facetText} - ${intentLabel}`, url: `https://360ghar.com/${citySlug}/${intent}/${type}` },
       isBhk ? { name: bhkText, url: `https://360ghar.com/${citySlug}/${intent}/${type}/${bhk}` } : null,
       isBudget ? { name: budgetText, url: `https://360ghar.com/${citySlug}/${intent}/${type}/budget/${budget}` } : null,
       isAmenity ? { name: pretty(amenity), url: `https://360ghar.com/${citySlug}/${intent}/${type}/amenity/${amenity}` } : null,
     ].filter(Boolean)
-  ), [validCity, citySearchUrl, facetText, validIntent, citySlug, intent, type, isBhk, bhkText, bhk, isBudget, budgetText, budget, isAmenity, amenity]);
+  ), [validCity, citySearchUrl, facetText, intentLabel, citySlug, intent, type, isBhk, bhkText, bhk, isBudget, budgetText, budget, isAmenity, amenity]);
 
   const targetUrl = () => {
-    const u = new URL('https://360ghar.com/properties');
-    u.searchParams.set('city', validCity);
-    u.searchParams.set('intent', validIntent);
-    u.searchParams.set('type', facetText);
-    if (isBhk) u.searchParams.set('bhk', bhkText.replace(' BHK',''));
-    if (isBudget) u.searchParams.set('budget', budget);
-    if (isAmenity) u.searchParams.set('amenity', amenity);
-    return `${u.pathname}${u.search}`.replace('https://360ghar.com','');
+    return `/properties?${browseQuery}`;
   };
 
   return (
@@ -166,11 +160,11 @@ const FacetLanding = () => {
             <div className="mt-5">
               <h2 className="h5 mb-3">Popular searches</h2>
               <ul className="text-start">
-                <li>{facetText} {validIntent} near metro in {validCity}</li>
-                {isBhk && <li>{bhkText} {facetText} {validIntent} in {validCity}</li>}
-                {isBudget && <li>{facetText} {validIntent} {budgetText} in {validCity}</li>}
-                <li>Ready to move {facetText} for {validIntent} in {validCity}</li>
-                <li>No broker {facetText} for {validIntent} in {validCity}</li>
+                <li>{facetText} {validIntent === 'pg' ? 'near metro' : validIntent} in {validCity}</li>
+                {isBhk && <li>{bhkText} {facetText} {validIntent === 'pg' ? '' : validIntent} in {validCity}</li>}
+                {isBudget && <li>{facetText} {validIntent === 'pg' ? '' : validIntent} {budgetText} in {validCity}</li>}
+                <li>Ready to move {facetText} {validIntent === 'pg' ? 'in' : `for ${validIntent} in`} {validCity}</li>
+                <li>No broker {facetText} {validIntent === 'pg' ? 'in' : `for ${validIntent} in`} {validCity}</li>
                 <li>Verified {facetText} with 360° virtual tours in {validCity}</li>
               </ul>
               <h2 className="h5 mb-3 mt-4">Why 360Ghar?</h2>

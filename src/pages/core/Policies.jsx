@@ -5,7 +5,6 @@ import Footer from '../../common/Footer';
 import MobileMenu from '../../common/MobileMenu';
 import OffCanvas from '../../common/OffCanvas';
 import Cta from '../../components/ui/Cta';
-import PageTitle from '../../common/PageTitle';
 import SEO from '../../common/SEO';
 import { siteMetadata } from '../../seo/siteMetadata';
 import { pageService } from '../../services/pageService';
@@ -143,7 +142,6 @@ const Policies = () => {
         type="article"
         structuredData={structuredData}
       />
-      <PageTitle title="360Ghar - Policies" />
 
       <OffCanvas />
       <MobileMenu />

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { socialLists } from '../../data/CommonData/CommonData';
 import { Link } from 'react-router-dom';
 
@@ -7,26 +7,24 @@ const TeamItem = ({ team }) => {
     
     const {thumb, name, designation, shareIcon} = team; 
 
-    const [showIcon, setShowIcon] = useState();
+    const [showIcon, setShowIcon] = useState(false);
+    const shareRef = useRef(null);
 
     // Handle Show Icon 
     const handleShowIcon = () => {
-        const shareButtons = document.querySelectorAll('.social-share'); 
-        shareButtons.forEach(button => {
-            button.classList.remove('active')
-        });
+        setShowIcon((currentValue) => !currentValue); 
+    };
 
-        setShowIcon(!showIcon); 
-    }
+    useEffect(() => {
+        const handleDocumentClick = (event) => {
+            if (shareRef.current && !shareRef.current.contains(event.target)) {
+                setShowIcon(false);
+            }
+        };
 
-    // Handle Body Click
-    document.addEventListener('click', (event) => {
-        if(
-            event.target.closest('.social-share') === null
-        ) {
-            setShowIcon(false);    
-        }
-    })
+        document.addEventListener('click', handleDocumentClick);
+        return () => document.removeEventListener('click', handleDocumentClick);
+    }, []);
 
     return (
         <div className="team-item">
@@ -38,7 +36,7 @@ const TeamItem = ({ team }) => {
                     <h6 className="team-item__name mb-1 text-white">{name}</h6>
                     <span className="team-item__designation font-12 text-white fw-light">{designation}</span>
                 </div>
-                <div className={`social-share ${showIcon ? 'active' : ''}`}>
+                <div className={`social-share ${showIcon ? 'active' : ''}`} ref={shareRef}>
                     <button type="button" className={`social-share__button`} onClick={handleShowIcon}>
                         {shareIcon}
                     </button>
@@ -62,6 +60,5 @@ const TeamItem = ({ team }) => {
 };
 
 export default TeamItem;
-
 
 

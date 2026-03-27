@@ -1,41 +1,26 @@
- import React, { useState, useEffect } from 'react'; // eslint-disable-line no-unused-vars
+ import { useMemo, useState } from 'react';
  import Header from '../../common/Header';
  import Footer from '../../common/Footer';
  import MobileMenu from '../../common/MobileMenu';
  import OffCanvas from '../../common/OffCanvas';
- import PageTitle from '../../common/PageTitle';
+ 
  import SEO from '../../common/SEO';
  import Cta from '../../components/ui/Cta';
  import { siteMetadata } from '../../seo/siteMetadata';
  import { generateToolSchema, toolSchemas } from '../../seo/toolSchemas';
+import { generateBreadcrumbStructuredData } from '../../seo/structuredData';
  
  const AreaCalculator = () => {
      const [superArea, setSuperArea] = useState(1000);
      const [loading, setLoading] = useState(30);
-     const [carpetArea, setCarpetArea] = useState(0);
-     const [builtUpArea, setBuiltUpArea] = useState(0);
- 
-     useEffect(() => {
-         // Logic:
-         // Super Built-up = Built-up + Common Areas
-         // Built-up = Carpet + Walls/Balconies
-         
-         // Simplified reverse calculation from Super Area given a loading %
-         // Often: Super Area = Carpet Area * (1 + Loading%)
-         // So Carpet Area = Super Area / (1 + Loading%)
-         // Or typically loading is defined on Super Area directly: Loading = X% of Super Area.
-         // Real estate convention: Super Area - Loading% = Carpet Area (roughly).
-         // Let's use the standard approach:
-         // Carpet Area is approximately (100 - Loading)% of Super Built-up Area.
-         
+     const { carpetArea, builtUpArea } = useMemo(() => {
          const calculatedCarpet = superArea * ((100 - loading) / 100);
-         
-         // Built-up is usually Carpet + ~10-15% for walls
-         const calculatedBuiltUp = calculatedCarpet * 1.15; 
- 
-         setCarpetArea(Math.round(calculatedCarpet));
-         setBuiltUpArea(Math.min(Math.round(calculatedBuiltUp), superArea)); // Shouldn't exceed super area
-         
+         const calculatedBuiltUp = calculatedCarpet * 1.15;
+
+         return {
+             carpetArea: Math.round(calculatedCarpet),
+             builtUpArea: Math.min(Math.round(calculatedBuiltUp), superArea),
+         };
      }, [superArea, loading]);
  
      return (
@@ -47,18 +32,21 @@
                  canonical="/area-calculator"
                  image={siteMetadata.defaultOgImage}
                  type="website"
-                 structuredData={generateToolSchema(
-                     toolSchemas.areaCalculator.name,
-                     toolSchemas.areaCalculator.description,
-                     toolSchemas.areaCalculator.keywords,
-                     toolSchemas.areaCalculator.category
-                 )}
+                 structuredData={[
+                    generateToolSchema(
+                        toolSchemas.areaCalculator.name,
+                        toolSchemas.areaCalculator.description,
+                        toolSchemas.areaCalculator.keywords,
+                        toolSchemas.areaCalculator.category
+                    ),
+                    generateBreadcrumbStructuredData([
+                        { name: 'Home', url: 'https://360ghar.com/' },
+                        { name: 'Tools', url: 'https://360ghar.com/emi-calculator' },
+                        { name: toolSchemas.areaCalculator.name, url: 'https://360ghar.com/area-calculator' }
+                    ])
+                 ]}
              />
-             <PageTitle
-                 title="Carpet Area vs Built-up Area Calculator - RERA Compliant | 360Ghar"
-                 description="Calculate the actual usable area (Carpet Area) from the advertised Super Built-up Area by adjusting for loading factor. RERA compliant area calculation for Indian properties."
-             />
-             
+
              <OffCanvas />
              <MobileMenu />
  

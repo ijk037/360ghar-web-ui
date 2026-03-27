@@ -1,39 +1,55 @@
 import { useMemo } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import { absoluteUrl } from '../seo/siteMetadata';
 
 /**
- * Functional Pagination component
+ * Functional Pagination component with crawlable links
  * @param {number} currentPage - Current active page (1-indexed)
  * @param {number} totalPages - Total number of pages
  * @param {function} onPageChange - Callback when page changes
  * @param {number} maxVisiblePages - Maximum visible page numbers (default: 5)
  */
 const Pagination = ({ currentPage = 1, totalPages = 1, onPageChange, maxVisiblePages = 5 }) => {
+    const location = useLocation();
+
+    // Generate page URL with ?page=N query param
+    const getPageUrl = (page) => {
+        const params = new URLSearchParams(location.search);
+        if (page === 1) {
+            params.delete('page');
+        } else {
+            params.set('page', page.toString());
+        }
+        const qs = params.toString();
+        return `${location.pathname}${qs ? `?${qs}` : ''}`;
+    };
+
+    // Compute prev/next URLs for SEO
+    const prevLink = currentPage > 1 ? absoluteUrl(getPageUrl(currentPage - 1)) : null;
+    const nextLink = currentPage < totalPages ? absoluteUrl(getPageUrl(currentPage + 1)) : null;
+
     // Generate page numbers to display
     const pageNumbers = useMemo(() => {
         const pages = [];
 
         if (totalPages <= maxVisiblePages) {
-            // Show all pages if total is less than max visible
             for (let i = 1; i <= totalPages; i++) {
                 pages.push(i);
             }
         } else {
-            // Calculate range around current page
             const halfVisible = Math.floor(maxVisiblePages / 2);
             let startPage = Math.max(1, currentPage - halfVisible);
             let endPage = Math.min(totalPages, currentPage + halfVisible);
 
-            // Adjust if we're near the start
             if (currentPage <= halfVisible) {
                 endPage = maxVisiblePages;
             }
 
-            // Adjust if we're near the end
             if (currentPage > totalPages - halfVisible) {
                 startPage = totalPages - maxVisiblePages + 1;
             }
 
-            // Add first page and ellipsis if needed
             if (startPage > 1) {
                 pages.push(1);
                 if (startPage > 2) {
@@ -41,14 +57,12 @@ const Pagination = ({ currentPage = 1, totalPages = 1, onPageChange, maxVisibleP
                 }
             }
 
-            // Add visible page numbers
             for (let i = startPage; i <= endPage; i++) {
                 if (!pages.includes(i)) {
                     pages.push(i);
                 }
             }
 
-            // Add ellipsis and last page if needed
             if (endPage < totalPages) {
                 if (endPage < totalPages - 1) {
                     pages.push('ellipsis-end');
@@ -67,41 +81,39 @@ const Pagination = ({ currentPage = 1, totalPages = 1, onPageChange, maxVisibleP
         return null;
     }
 
-    const handlePageClick = (page) => {
+    const handlePageClick = (e, page) => {
         if (page !== currentPage && onPageChange) {
             onPageChange(page);
         }
     };
 
-    const handlePrevClick = () => {
-        if (currentPage > 1 && onPageChange) {
-            onPageChange(currentPage - 1);
-        }
-    };
-
-    const handleNextClick = () => {
-        if (currentPage < totalPages && onPageChange) {
-            onPageChange(currentPage + 1);
-        }
-    };
-
     return (
-        <nav aria-label="Page navigation" className="mt-4">
+        <>
+            {/* SEO: rel prev/next for pagination */}
+            {prevLink && <link rel="prev" href={prevLink} />}
+            {nextLink && <link rel="next" href={nextLink} />}
+            <nav aria-label="Page navigation" className="mt-4">
             <ul className="pagination common-pagination justify-content-center">
                 {/* Previous Button */}
                 <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                    <button
-                        className="page-link"
-                        onClick={handlePrevClick}
-                        disabled={currentPage === 1}
-                        aria-label="Previous page"
-                    >
-                        <i className="fas fa-chevron-left"></i>
-                    </button>
+                    {currentPage > 1 ? (
+                        <Link
+                            className="page-link"
+                            to={getPageUrl(currentPage - 1)}
+                            onClick={(e) => handlePageClick(e, currentPage - 1)}
+                            aria-label="Previous page"
+                        >
+                            <i className="fas fa-chevron-left"></i>
+                        </Link>
+                    ) : (
+                        <span className="page-link" aria-label="Previous page" aria-disabled="true">
+                            <i className="fas fa-chevron-left"></i>
+                        </span>
+                    )}
                 </li>
 
                 {/* Page Numbers */}
-                {pageNumbers.map((page, index) => {
+                {pageNumbers.map((page) => {
                     if (page === 'ellipsis-start' || page === 'ellipsis-end') {
                         return (
                             <li key={page} className="page-item disabled">
@@ -110,36 +122,45 @@ const Pagination = ({ currentPage = 1, totalPages = 1, onPageChange, maxVisibleP
                         );
                     }
 
+                    const isActive = currentPage === page;
                     return (
                         <li
                             key={page}
-                            className={`page-item ${currentPage === page ? 'active' : ''}`}
+                            className={`page-item ${isActive ? 'active' : ''}`}
                         >
-                            <button
+                            <Link
                                 className="page-link"
-                                onClick={() => handlePageClick(page)}
+                                to={getPageUrl(page)}
+                                onClick={(e) => handlePageClick(e, page)}
                                 aria-label={`Page ${page}`}
-                                aria-current={currentPage === page ? 'page' : undefined}
+                                aria-current={isActive ? 'page' : undefined}
                             >
                                 {page}
-                            </button>
+                            </Link>
                         </li>
                     );
                 })}
 
                 {/* Next Button */}
                 <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                    <button
-                        className="page-link"
-                        onClick={handleNextClick}
-                        disabled={currentPage === totalPages}
-                        aria-label="Next page"
-                    >
-                        <i className="fas fa-chevron-right"></i>
-                    </button>
+                    {currentPage < totalPages ? (
+                        <Link
+                            className="page-link"
+                            to={getPageUrl(currentPage + 1)}
+                            onClick={(e) => handlePageClick(e, currentPage + 1)}
+                            aria-label="Next page"
+                        >
+                            <i className="fas fa-chevron-right"></i>
+                        </Link>
+                    ) : (
+                        <span className="page-link" aria-label="Next page" aria-disabled="true">
+                            <i className="fas fa-chevron-right"></i>
+                        </span>
+                    )}
                 </li>
             </ul>
         </nav>
+        </>
     );
 };
 

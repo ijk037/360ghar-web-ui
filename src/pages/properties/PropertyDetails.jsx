@@ -6,11 +6,17 @@ import OffCanvas from '../../common/OffCanvas';
 import Cta from '../../components/ui/Cta';
 import PropertyDetailsSection from '../../components/property/PropertyDetailsSection';
 import { useParams } from 'react-router-dom';
-import PageTitle from '../../common/PageTitle';
+
 import SEO from '../../common/SEO';
 import { siteMetadata } from '../../seo/siteMetadata';
 import { generateBreadcrumbStructuredData } from '../../seo/structuredData';
 import usePropertyStore from '../../store/propertyStore';
+import {
+    getAccommodationSchemaType,
+    getListingLabel,
+    getListingSchemaType,
+    getPropertyTypeLabel,
+} from '../../utils/propertyTaxonomy';
 
 const PropertyDetails = () => {
     const { id } = useParams();
@@ -27,17 +33,28 @@ const PropertyDetails = () => {
         }
     }, [id, fetchPropertyById]);
 
+    const propertyTypeLabel = getPropertyTypeLabel(propertyData?.property_type);
+    const listingLabel = getListingLabel({
+        propertyType: propertyData?.property_type,
+        purpose: propertyData?.purpose,
+    });
+    const locationLabel = propertyData?.locality || propertyData?.city || 'Gurgaon';
+    const priceValue = propertyData?.purpose === 'rent'
+        ? (propertyData?.monthly_rent || propertyData?.daily_rate || propertyData?.base_price || 0)
+        : (propertyData?.base_price || propertyData?.monthly_rent || propertyData?.daily_rate || 0);
+    const bhkLabel = propertyData?.bhk
+        ? `${propertyData.bhk} BHK`
+        : propertyData?.bedrooms
+            ? `${propertyData.bedrooms} Bedroom`
+            : '';
+
     // Generate enhanced structured data for property
     const generatePropertyStructured = () => {
         if (!propertyData) return [];
 
         // SingleFamilyResidence / Accommodation schema
         const basePropertySchema = {
-            '@type': propertyData.property_type === 'villa' || propertyData.property_type === 'independent-house'
-                ? 'SingleFamilyResidence'
-                : propertyData.property_type === 'apartment' || propertyData.property_type === 'flat'
-                    ? 'Apartment'
-                    : 'Accommodation',
+            '@type': getAccommodationSchemaType(propertyData.property_type),
             name: propertyData.title || 'Property in Gurgaon',
             description: propertyData.description || 'Premium property with 360° virtual tour in Gurgaon',
             url: `https://360ghar.com/property/${propertyData.id}`,
@@ -65,11 +82,7 @@ const PropertyDetails = () => {
                 value: propertyData.area_sqft || 1000,
                 unitCode: 'FTK'
             },
-            accommodationCategory: propertyData.property_type === 'apartment' || propertyData.property_type === 'flat'
-                ? 'Apartment'
-                : propertyData.property_type === 'villa'
-                    ? 'House'
-                    : propertyData.property_type || 'Apartment',
+            accommodationCategory: propertyTypeLabel,
             amenities: propertyData.amenities || [],
             petsAllowed: propertyData.amenities?.includes('pet-friendly') ? true : false,
         };
@@ -77,14 +90,15 @@ const PropertyDetails = () => {
         // RealEstateListing schema
         const listingSchema = {
             '@type': 'RealEstateListing',
-            name: `${propertyData.title || 'Property'} - ${propertyData.purpose === 'rent' ? 'For Rent' : 'For Sale'}`,
+            name: `${propertyData.title || propertyTypeLabel} - ${listingLabel || 'Listing'}`,
             description: propertyData.description,
             url: `https://360ghar.com/property/${propertyData.id}`,
-            listingType: propertyData.purpose === 'rent' ? 'forRent' : 'forSale',
+            listingType: getListingSchemaType({
+                propertyType: propertyData.property_type,
+                purpose: propertyData.purpose,
+            }),
             datePosted: propertyData.created_at,
-            price: propertyData.purpose === 'rent'
-                ? (propertyData.monthly_rent || propertyData.daily_rate || propertyData.base_price || 0)
-                : (propertyData.base_price || 0),
+            price: priceValue,
             priceCurrency: 'INR',
             availability: propertyData.is_available !== false
                 ? 'https://schema.org/InStock'
@@ -111,19 +125,19 @@ const PropertyDetails = () => {
         <>
             <SEO
                 title={propertyData?.title
-                    ? `${propertyData.bedrooms || ''} ${propertyData.bhk || ''} BHK ${propertyData.property_type || 'Apartment'} ${propertyData.purpose === 'rent' ? 'for Rent' : 'for Sale'} in ${propertyData.locality || propertyData.city || 'Gurgaon'} | ₹${propertyData.purpose === 'rent' ? (propertyData.monthly_rent || propertyData.base_price) : propertyData.base_price} | 360Ghar`
+                    ? [bhkLabel, propertyTypeLabel, listingLabel, 'in', locationLabel, `| ₹${priceValue}`, '| 360Ghar']
+                        .filter(Boolean)
+                        .join(' ')
                     : 'Property Details | 360Ghar - Best Real Estate Platform'
                 }
                 description={propertyData?.description
-                    ? `${propertyData.description.slice(0, 160)} Verified by on-site team with 360° virtual tour in ${propertyData.locality || propertyData.city || 'Gurgaon'}. ${propertyData.purpose === 'rent' ? 'Rent' : 'Buy'} directly from owner.`
+                    ? `${propertyData.description.slice(0, 160)} Verified by on-site team with 360° virtual tour in ${locationLabel}. ${listingLabel || 'Browse'} directly from owner.`
                     : siteMetadata.defaultDescription
                 }
                 image={mainImage}
                 type="product"
                 structuredData={generatePropertyStructured()}
             />
-            <PageTitle title={propertyData?.title ? `${propertyData.title} | 360Ghar` : "Property Details | 360Ghar - Best Real Estate Platform"} />
-
             <main className="body-bg">
                 <OffCanvas />
                 <MobileMenu />

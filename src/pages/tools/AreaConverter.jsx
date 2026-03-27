@@ -3,11 +3,12 @@
  import Footer from '../../common/Footer';
  import MobileMenu from '../../common/MobileMenu';
  import OffCanvas from '../../common/OffCanvas';
- import PageTitle from '../../common/PageTitle';
+ 
  import SEO from '../../common/SEO';
  import Cta from '../../components/ui/Cta';
  import { siteMetadata } from '../../seo/siteMetadata';
  import { generateToolSchema, toolSchemas } from '../../seo/toolSchemas';
+import { generateBreadcrumbStructuredData } from '../../seo/structuredData';
  
  const AreaConverter = () => {
      const [amount, setAmount] = useState(1);
@@ -69,18 +70,21 @@
                  canonical="/area-converter"
                  image={siteMetadata.defaultOgImage}
                  type="website"
-                 structuredData={generateToolSchema(
-                     toolSchemas.areaConverter.name,
-                     toolSchemas.areaConverter.description,
-                     toolSchemas.areaConverter.keywords,
-                     toolSchemas.areaConverter.category
-                 )}
+                 structuredData={[
+                    generateToolSchema(
+                        toolSchemas.areaConverter.name,
+                        toolSchemas.areaConverter.description,
+                        toolSchemas.areaConverter.keywords,
+                        toolSchemas.areaConverter.category
+                    ),
+                    generateBreadcrumbStructuredData([
+                        { name: 'Home', url: 'https://360ghar.com/' },
+                        { name: 'Tools', url: 'https://360ghar.com/emi-calculator' },
+                        { name: toolSchemas.areaConverter.name, url: 'https://360ghar.com/area-converter' }
+                    ])
+                 ]}
              />
-             <PageTitle
-                 title="Land Area Unit Converter - Indian Real Estate Calculator | 360Ghar"
-                 description="Instantly convert between different land measurement units used in Indian real estate including Gaj, Bigha, Kanal, Marla, Acre, and Square Feet."
-             />
-             
+
              <OffCanvas />
              <MobileMenu />
  

@@ -2,12 +2,35 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useAuthStore } from '../../store';
 
 import LoginRegisterThumb from '/assets/images/thumbs/login-img.avif';
 
 import LazyImage from '../../common/LazyImage';
+
+// Tooltip for form field help - defined at module scope to avoid re-creation on each render
+const Tooltip = ({ text, children }) => {
+    const [isVisible, setIsVisible] = useState(false);
+    return (
+        <div
+            className="tooltip-wrapper d-inline-flex align-items-center"
+            onMouseEnter={() => setIsVisible(true)}
+            onMouseLeave={() => setIsVisible(false)}
+            onFocus={() => setIsVisible(true)}
+            onBlur={() => setIsVisible(false)}
+        >
+            {children}
+            {isVisible && (
+                <div className="custom-tooltip">
+                    {text}
+                    <div className="custom-tooltip__arrow" />
+                </div>
+            )}
+        </div>
+    );
+};
+
 const LoginRegister = ({titleText, firstNameCol, showFirstName, lastNameCol, showLastName, passwordCol, showConfirm, btnText, showForgotRemember, showTermCondition, haveAccountText, haveAccountLink, haveAccountLinkText, isLogin = false}) => {
 
     const [showPassword, setShowPassword] = useState(false);
@@ -58,28 +81,6 @@ const LoginRegister = ({titleText, firstNameCol, showFirstName, lastNameCol, sho
     const getPasswordStrengthColor = (strength) => {
         const colors = ['#e9ecef', '#dc3545', '#fd7e14', '#ffc107', '#20c997', '#198754'];
         return colors[strength] || '#e9ecef';
-    };
-
-    // Tooltip component for form field help
-    const Tooltip = ({ text, children }) => {
-        const [isVisible, setIsVisible] = useState(false);
-        return (
-            <div 
-                className="tooltip-wrapper d-inline-flex align-items-center"
-                onMouseEnter={() => setIsVisible(true)}
-                onMouseLeave={() => setIsVisible(false)}
-                onFocus={() => setIsVisible(true)}
-                onBlur={() => setIsVisible(false)}
-            >
-                {children}
-                {isVisible && (
-                    <div className="custom-tooltip">
-                        {text}
-                        <div className="custom-tooltip__arrow" />
-                    </div>
-                )}
-            </div>
-        );
     };
 
     // **************************** Form Validation Start ************************
@@ -147,7 +148,7 @@ const LoginRegister = ({titleText, firstNameCol, showFirstName, lastNameCol, sho
             setSubmitting(false);
 
             if (success) {
-              resetForm({ values: "" });
+              resetForm();
               setAgreedToTerms(false);
               toast.success(`${isLogin ? 'Login' : 'Registration'} successful!`, {
                 theme: "colored",
@@ -160,7 +161,7 @@ const LoginRegister = ({titleText, firstNameCol, showFirstName, lastNameCol, sho
                 navigate('/account');
               }
             }
-          } catch (err) {
+          } catch {
             setSubmitting(false);
             toast.error(error || `${isLogin ? 'Login' : 'Registration'} failed. Please try again.`, {
               theme: "colored",
@@ -198,7 +199,6 @@ const LoginRegister = ({titleText, firstNameCol, showFirstName, lastNameCol, sho
     
     return (
         <>
-        <ToastContainer/>
             <section className="loginRegister padding-y-120">
                 <div className="container container-two">
                     <div className="loginRegister-box card common-card">
@@ -206,7 +206,7 @@ const LoginRegister = ({titleText, firstNameCol, showFirstName, lastNameCol, sho
                             <div className="row gy-4">
                                 <div className="col-lg-6">
                                     <div className="loginRegister-thumb rounded overflow-hidden me-lg-2 d-flex h-100">
-                                        <LazyImage src={LoginRegisterThumb} alt=""/>
+                                        <LazyImage src={LoginRegisterThumb} alt="360Ghar real estate platform" width={540} height={600}/>
                                     </div>
                                 </div>
                                 <div className="col-lg-6">

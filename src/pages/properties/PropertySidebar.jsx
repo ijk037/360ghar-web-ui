@@ -1,8 +1,9 @@
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
+import MobileMenu from '../../common/MobileMenu';
+import OffCanvas from '../../common/OffCanvas';
 import Cta from '../../components/ui/Cta';
 import PropertySidebarSection from '../../components/property/PropertySidebarSection';
-import PageTitle from '../../common/PageTitle';
 import SEO from '../../common/SEO';
 
 const Property = () => {
@@ -13,8 +14,6 @@ const Property = () => {
                 description="Filter and search verified properties in Gurugram on 360Ghar's property portal."
                 canonical="/property-sidebar"
             />
-            <PageTitle title="360Ghar - Property With Sidebar" />
-
             <main className="body-bg">
 
                 {/* Header */}
@@ -39,6 +38,9 @@ const Property = () => {
                 <Footer />
 
             </main>
+
+            <MobileMenu />
+            <OffCanvas />
         </>
     );
 };

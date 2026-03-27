@@ -4,7 +4,6 @@ import MobileMenu from '../common/MobileMenu';
 import OffCanvas from '../common/OffCanvas';
 import Cta from '../components/ui/Cta';
 import MapLocationSection from '../components/layout/MapLocationSection';
-import PageTitle from '../common/PageTitle';
 import SEO from '../common/SEO';
 import { siteMetadata } from '../seo/siteMetadata';
 
@@ -19,7 +18,6 @@ const MapLocation = () => {
             image={siteMetadata.defaultOgImage}
             type="website"
         />
-        <PageTitle title="360Ghar - Map Location" />
 
         <OffCanvas />
         <MobileMenu />

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { authService } from '../../services/authService';
 
 const AccountChangePasswordTab = () => {
@@ -69,7 +69,6 @@ const AccountChangePasswordTab = () => {
 
   return (
     <>
-      <ToastContainer />
       <form onSubmit={formik.handleSubmit}>
         <div className="card common-card">
           <div className="card-body">

@@ -148,6 +148,7 @@
             margin-left: 16px;
             display: none;
             transition: 0s;
+            pointer-events: auto;
             &__link {
                 width: 100%;
                 padding: 12px 0;

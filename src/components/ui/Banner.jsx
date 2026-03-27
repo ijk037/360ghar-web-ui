@@ -30,7 +30,7 @@ const Banner = () => {
                             </div>
                             <div className="col-lg-6 order-lg-0 order-1">
                                     <div className="banner-thumb">
-                                    <LazyImage src={bannerContent.thumb} alt="" priority />
+                                    <LazyImage src={bannerContent.thumb} alt="Find your dream home with 360Ghar" width={629} height={571} priority />
                                     <LazyImage src="assets/images/shapes/shape-triangle.png" alt="" className="shape-element one"/>
                                     <LazyImage src="assets/images/shapes/shape-circle.png" alt="" className="shape-element two"/>
                                     <LazyImage src="assets/images/shapes/shape-moon.png" alt="" className="shape-element three"/>

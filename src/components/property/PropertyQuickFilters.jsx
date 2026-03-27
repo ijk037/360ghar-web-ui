@@ -1,4 +1,8 @@
 import usePropertyStore from '../../store/propertyStore';
+import {
+  COMMERCIAL_PROPERTY_TYPES,
+  isCommercialSelection,
+} from '../../utils/propertyTaxonomy';
 
 const PropertyQuickFilters = ({ inline = false }) => {
   const { filters, updateFilter, clearFilters, getActiveFiltersCount } = usePropertyStore();
@@ -20,8 +24,8 @@ const PropertyQuickFilters = ({ inline = false }) => {
   const propertyTypeOptions = [
     { value: 'house', label: 'House', icon: 'fa-home' },
     { value: 'apartment', label: 'Apt', icon: 'fa-building' },
-    { value: 'builder_floor', label: 'Floor', icon: 'fa-layer-group' },
-    { value: 'room', label: 'Room', icon: 'fa-door-open' }
+    { value: 'pg', label: 'PG', icon: 'fa-bed' },
+    { value: 'commercial', label: 'Commercial', icon: 'fa-briefcase' }
   ];
 
   const handleBHKClick = (value) => {
@@ -53,6 +57,14 @@ const PropertyQuickFilters = ({ inline = false }) => {
 
   const handlePropertyTypeClick = (type) => {
     const currentTypes = filters.property_type || [];
+    if (type === 'commercial') {
+      if (isCommercialSelection(currentTypes)) {
+        updateFilter('property_type', currentTypes.filter((value) => !COMMERCIAL_PROPERTY_TYPES.includes(value)));
+      } else {
+        updateFilter('property_type', [...new Set([...currentTypes, ...COMMERCIAL_PROPERTY_TYPES])]);
+      }
+      return;
+    }
     if (currentTypes.includes(type)) {
       updateFilter('property_type', currentTypes.filter(t => t !== type));
     } else {
@@ -61,6 +73,11 @@ const PropertyQuickFilters = ({ inline = false }) => {
   };
 
   const activeFiltersCount = getActiveFiltersCount();
+  const isTypeActive = (type) => (
+    type === 'commercial'
+      ? isCommercialSelection(filters.property_type || [])
+      : (filters.property_type || []).includes(type)
+  );
 
   // Inline compact layout for map page
   if (inline) {
@@ -86,9 +103,7 @@ const PropertyQuickFilters = ({ inline = false }) => {
         {propertyTypeOptions.slice(0, 2).map(option => (
           <button
             key={option.value}
-            className={`quick-filter-btn ${
-              (filters.property_type || []).includes(option.value) ? 'active' : ''
-            }`}
+            className={`quick-filter-btn ${isTypeActive(option.value) ? 'active' : ''}`}
             onClick={() => handlePropertyTypeClick(option.value)}
           >
             <i className={`fas ${option.icon} me-1`}></i>
@@ -162,9 +177,7 @@ const PropertyQuickFilters = ({ inline = false }) => {
           {propertyTypeOptions.map(option => (
             <button
               key={option.value}
-              className={`quick-filter-btn ${
-                (filters.property_type || []).includes(option.value) ? 'active' : ''
-              }`}
+              className={`quick-filter-btn ${isTypeActive(option.value) ? 'active' : ''}`}
               onClick={() => handlePropertyTypeClick(option.value)}
             >
               <i className={`fas ${option.icon} me-1`}></i>

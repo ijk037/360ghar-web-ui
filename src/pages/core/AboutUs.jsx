@@ -8,7 +8,6 @@ import PropertyTypeThree from '../../components/ui/PropertyTypeThree';
 import AreasWeCover from '../../components/layout/AreasWeCover';
 import OwnerCta from '../../components/ui/OwnerCta';
 import Team from '../../components/ui/Team';
-import PageTitle from '../../common/PageTitle';
 import SEO from '../../common/SEO';
 import { siteMetadata } from '../../seo/siteMetadata';
 import { generateBreadcrumbStructuredData } from '../../seo/structuredData';
@@ -26,7 +25,28 @@ const AboutUs = () => {
         generateBreadcrumbStructuredData([
             { name: 'Home', url: 'https://360ghar.com/' },
             { name: 'About Us', url: 'https://360ghar.com/about-us' }
-        ])
+        ]),
+        {
+            '@type': 'Person',
+            name: 'Arjun Mehta',
+            jobTitle: 'President of Sales',
+            worksFor: { '@type': 'Organization', name: '360Ghar', url: 'https://360ghar.com' },
+            image: 'https://360ghar.com/assets/images/thumbs/team1.png',
+        },
+        {
+            '@type': 'Person',
+            name: 'Priya Singh',
+            jobTitle: 'Manager of Sales',
+            worksFor: { '@type': 'Organization', name: '360Ghar', url: 'https://360ghar.com' },
+            image: 'https://360ghar.com/assets/images/thumbs/team2.png',
+        },
+        {
+            '@type': 'Person',
+            name: 'Vikram Malhotra',
+            jobTitle: 'Director of Sales',
+            worksFor: { '@type': 'Organization', name: '360Ghar', url: 'https://360ghar.com' },
+            image: 'https://360ghar.com/assets/images/thumbs/team3.png',
+        },
     ];
 
     return (
@@ -40,7 +60,6 @@ const AboutUs = () => {
                 type="website"
                 structuredData={aboutStructuredData}
             />
-            <PageTitle title="About 360Ghar - India's First AI-Enabled Real Estate Platform" />
 
             <OffCanvas />
             <MobileMenu />

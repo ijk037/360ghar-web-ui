@@ -2,10 +2,10 @@ import { useContext, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
 import NavMenu from './NavMenu';
-import { MobileMenuContext } from '../contextApi/MobileMenuContext';
-import { ScrollHideContext } from '../contextApi/ScrollHideContext';
+import { MobileMenuContext } from '../contextApi/MobileMenuContextValue';
+import { ScrollHideContext } from '../contextApi/ScrollHideContextValue';
 import { useAuthStore } from '../store';
-import { toast } from 'react-toastify';
+import { useLazyToast } from './useLazyToast';
 
 import LazyImage from './LazyImage';
 
@@ -18,6 +18,7 @@ const MobileMenu = () => {
 
     // Authentication state
     const { user, isAuthenticated, logout } = useAuthStore();
+    const { success: toastSuccess } = useLazyToast();
 
     useEffect(() => {
         if (!toggleMobileMenu) {
@@ -46,7 +47,7 @@ const MobileMenu = () => {
 
     const handleLogout = async () => {
         await logout();
-        toast.success('Logged out successfully!');
+        toastSuccess('Logged out successfully!');
         navigate('/');
         handleMobileMenuClose();
         handleScrollHideClose();
@@ -54,6 +55,11 @@ const MobileMenu = () => {
 
     const handleNavigation = (path) => {
         navigate(path);
+        handleMobileMenuClose();
+        handleScrollHideClose();
+    };
+
+    const handleMenuNavigation = () => {
         handleMobileMenuClose();
         handleScrollHideClose();
     };
@@ -145,7 +151,7 @@ const MobileMenu = () => {
                         )}
 
                         {/* Nav Menu */}
-                        <NavMenu navMenusClass="nav-menu--mobile" />
+                        <NavMenu navMenusClass="nav-menu--mobile" onNavigate={handleMenuNavigation} />
 
                         {/* Authentication Buttons */}
                         {!isAuthenticated && (

@@ -12,6 +12,18 @@ import LazyToastProvider from './common/LazyToast.jsx'
 
 // Lazy load PostHog analytics after initial render
 const loadAnalytics = () => {
+  // Load Google Tag Manager
+  if (import.meta.env.PROD) {
+    const gtmId = 'GTM-XXXXXXX'
+    window.dataLayer = window.dataLayer || []
+    window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' })
+    const script = document.createElement('script')
+    script.async = true
+    script.src = `https://www.googletagmanager.com/gtm.js?id=${gtmId}`
+    document.head.appendChild(script)
+  }
+
+  // Load PostHog
   // Only load in production
   if (import.meta.env.PROD && import.meta.env.VITE_PUBLIC_POSTHOG_KEY) {
     import('posthog-js').then(({ default: posthog }) => {

@@ -6,7 +6,7 @@ const BlogTesti = () => {
         <>
             <div className="blog-testi">
                 <div className="blog-testi__thumb">
-                    <LazyImage src={BlogTestiThumb} alt=""/>
+                    <LazyImage src={BlogTestiThumb} alt="Mark Wood testimonial" width={80} height={80}/>
                 </div>
                 <p className="blog-testi__desc">Real estate is a lucrative industry that involves the buying selling and renting properties It encompasses residential commercial and industrial properties. Real estate agents play a crucial role in facilitating at transactions and helping commercial, and industrial </p>
                 <div className="blog-testi__bottom flx-between">

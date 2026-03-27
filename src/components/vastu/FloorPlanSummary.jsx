@@ -9,7 +9,6 @@ const FloorPlanSummary = ({ floorPlanAnalysis }) => {
         kitchen,
         toilets,
         staircase,
-        balconies,
         center_area,
         compass_visible
     } = floorPlanAnalysis;

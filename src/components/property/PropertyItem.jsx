@@ -3,7 +3,12 @@ import { useState } from 'react';
 
 import LazyImage from '../../common/LazyImage';
 import TrustBadge from '../ui/TrustBadge';
-import { getRelativeTime, getViewCountText } from '../../utils/dateUtils';
+import { usePropertyStore } from '../../store';
+import { useAuthStore } from '../../store';
+import {
+  getListingLabel,
+  getPropertyTypeLabel,
+} from '../../utils/propertyTaxonomy';
 const PROPERTY_IMAGE_FALLBACK = '/assets/images/thumbs/property-1.png';
 
 const isUsableImageUrl = (value) =>
@@ -27,7 +32,7 @@ const ShareModal = ({ isOpen, onClose, propertyTitle, propertyURL }) => {
           title: propertyTitle,
           url: fullURL,
         });
-      } catch (err) {
+      } catch {
         console.log('Share cancelled');
       }
     }
@@ -70,20 +75,12 @@ const generatePropertyAltText = (property) => {
   }
 
   // Add property type
-  const propertyType = property.property_type === 'apartment' || property.property_type === 'flat'
-    ? 'Apartment'
-    : property.property_type === 'villa'
-      ? 'Villa'
-      : property.property_type === 'builder_floor'
-        ? 'Builder Floor'
-        : property.property_type === 'independent-house'
-          ? 'Independent House'
-          : property.property_type || 'Property';
+  const propertyType = getPropertyTypeLabel(property.property_type);
   parts.push(propertyType);
 
   // Add purpose
   if (property.purpose) {
-    parts.push(property.purpose === 'rent' ? 'for Rent' : property.purpose === 'buy' ? 'for Sale' : 'in');
+    parts.push(getListingLabel({ propertyType: property.property_type, purpose: property.purpose }) || 'in');
   }
 
   // Add location
@@ -124,8 +121,10 @@ const PropertyItem = ({
   showFeatureBadges = true
 }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(property.is_liked ?? false);
   const [showShareModal, setShowShareModal] = useState(false);
+  const recordSwipe = usePropertyStore((state) => state.recordSwipe);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const isCompactCard = typeof itemClass === 'string' && itemClass.includes('compact-card');
   const visibleAmenitiesCount = isCompactCard ? 3 : 4;
   // Handle API-first data structure with fallbacks
@@ -171,7 +170,10 @@ const PropertyItem = ({
   // URL
   const propertyURL = `/property/${id}`;
 
-  const normalizedPurpose = property.purpose === 'buy' ? 'For Sale' : property.purpose === 'rent' ? 'For Rent' : null;
+  const normalizedPurpose = getListingLabel({
+    propertyType: property.property_type,
+    purpose: property.purpose,
+  });
   const resolvedBadgeText = property.is_verified ? 'Verified' : (badgeText || normalizedPurpose);
   const shouldRenderBadge = Boolean(resolvedBadgeText);
 
@@ -180,7 +182,11 @@ const PropertyItem = ({
   const handleSaveClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsFavorite(!isFavorite);
+    const newValue = !isFavorite;
+    setIsFavorite(newValue);
+    if (isAuthenticated && id) {
+      recordSwipe(id, newValue);
+    }
   };
 
   const handleShareClick = (e) => {
@@ -251,7 +257,7 @@ const PropertyItem = ({
           {/* Property Type Badge */}
           {property.purpose && (
             <div className={`property-item__type-badge property-item__type-badge--${property.purpose}`}>
-              {property.purpose === 'rent' ? 'For Rent' : property.purpose === 'buy' ? 'For Sale' : 'PG'}
+              {normalizedPurpose}
             </div>
           )}
           
@@ -289,15 +295,12 @@ const PropertyItem = ({
           <div className="property-item__tags mb-2">
             {property.purpose && (
               <span className="badge bg-primary me-1">
-                {normalizedPurpose || 'Short Stay'}
+                {normalizedPurpose || 'Listing'}
               </span>
             )}
             {property.property_type && (
               <span className="badge bg-secondary">
-                {property.property_type === 'house' ? 'House' :
-                  property.property_type === 'apartment' ? 'Apartment' :
-                    property.property_type === 'builder_floor' ? 'Builder Floor' :
-                      property.property_type === 'room' ? 'Room' : property.property_type}
+                {getPropertyTypeLabel(property.property_type)}
               </span>
             )}
           </div>

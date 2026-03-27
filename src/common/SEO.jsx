@@ -15,6 +15,8 @@ const SEO = ({
   hreflangs,
   structuredData, // object or array of objects
   noindex = false,
+  prevUrl,
+  nextUrl,
 }) => {
   const location = useLocation();
   const path = `${location.pathname || ''}${location.search || ''}`;
@@ -41,6 +43,8 @@ const SEO = ({
       {metaDesc && <meta name="description" content={metaDesc} />}
       {metaKeywords && <meta name="keywords" content={metaKeywords} />}
       <link rel="canonical" href={canonicalUrl} />
+      {prevUrl && <link rel="prev" href={absoluteUrl(prevUrl)} />}
+      {nextUrl && <link rel="next" href={absoluteUrl(nextUrl)} />}
 
       {/* Additional SEO meta tags */}
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -63,9 +67,9 @@ const SEO = ({
       <meta name="realEstateListingType" content="Sale, Rent, PG" />
 
       {/* Dublin Core */}
-      <meta name="DC.title" content="360Ghar – Real Estate in Gurgaon" />
-      <meta name="DC.subject" content="Real Estate, Property for Sale, Property for Rent, Gurgaon, Gurugram, VR Property Tour, AI Real Estate" />
-      <meta name="DC.description" content="India's first AI and VR real estate platform. Verified properties in Gurgaon with 360° virtual tours." />
+      <meta name="DC.title" content={metaTitle} />
+      {metaKeywords && <meta name="DC.subject" content={metaKeywords} />}
+      {metaDesc && <meta name="DC.description" content={metaDesc} />}
       <meta name="DC.language" content="en-IN" />
       <meta name="DC.coverage" content="Gurgaon, Haryana, India" />
       <meta name="DC.publisher" content="360Ghar" />
@@ -104,6 +108,8 @@ const SEO = ({
       <meta name="twitter:title" content={metaTitle} />
       {metaDesc && <meta name="twitter:description" content={metaDesc} />}
       <meta name="twitter:image" content={ogImage} />
+      <meta name="twitter:site" content="@360ghar" />
+      <meta name="twitter:creator" content="@360ghar" />
 
       {/* Structured Data */}
       {ldBlocks.map((ld, idx) => (

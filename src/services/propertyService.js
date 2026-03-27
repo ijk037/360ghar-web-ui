@@ -1,21 +1,15 @@
 import api from './api';
 
 export const propertyService = {
-  // Get all public properties with optional filters
+  // Get all properties with optional filters (admin also uses this endpoint with auth)
   getAllProperties: async (filters = {}) => {
     const response = await api.get('/properties/', { params: filters });
     return response.data;
   },
 
-  // Get all properties (admin only)
-  getAllPropertiesAdmin: async (params = {}) => {
-    const response = await api.get('/properties/all/', { params });
-    return response.data;
-  },
-
   // Get properties belonging to the current user
   getUserProperties: async (params = {}) => {
-    const response = await api.get('/properties/me/', { params });
+    const response = await api.get('/properties/me', { params });
     return response.data;
   },
 
@@ -39,15 +33,9 @@ export const propertyService = {
 
   // Delete property
   deleteProperty: async (id) => {
-    const response = await api.delete(`/properties/${id}/`);
+    const response = await api.delete(`/properties/${id}`);
     return response.data;
   },
-
-  // Verify property (admin only)
-  verifyProperty: async (id) => {
-    const response = await api.put(`/properties/${id}/verify/`);
-    return response.data;
-  }
 };
 
-export default propertyService; 
+export default propertyService;

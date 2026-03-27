@@ -21,7 +21,7 @@ test('buildLocalitySitemapXml escapes XML special characters in URLs', () => {
   ]);
 
   // Verify special characters are escaped
-  assert.doesNotMatch(xml, /<loc>[^<]*<[^\/][^<]*<\/loc>/, 'Should not contain unescaped < in URL');
+  assert.doesNotMatch(xml, /<loc>[^<]*<[^/][^<]*<\/loc>/, 'Should not contain unescaped < in URL');
   assert.match(xml, /&lt;/, 'Should escape < as &lt;');
   assert.match(xml, /&gt;/, 'Should escape > as &gt;');
   assert.match(xml, /&quot;/, 'Should escape " as &quot;');

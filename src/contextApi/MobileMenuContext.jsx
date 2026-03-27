@@ -1,6 +1,5 @@
-import { createContext, useState }  from 'react';
-
-export const MobileMenuContext = createContext(); 
+import { useState }  from 'react';
+import { MobileMenuContext } from './MobileMenuContextValue';
 
 const MobileMenuProvider = ({ children }) => {
         

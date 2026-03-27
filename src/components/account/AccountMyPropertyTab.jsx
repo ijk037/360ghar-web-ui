@@ -85,7 +85,7 @@ const AccountMyPropertyTab = () => {
                                         <td>
                                             <div className="d-flex align-items-center gap-3">
                                                 <div className="cart-item__thumb">
-                                                    <LazyImage src={renderThumb(property)} fallbackSrc={PROPERTY_IMAGE_FALLBACK} alt=""/>
+                                                    <LazyImage src={renderThumb(property)} fallbackSrc={PROPERTY_IMAGE_FALLBACK} alt={property.title || property.name || `Property #${property.id}`} width={80} height={60}/>
                                                 </div>
                                                 <div className="cart-item__content">
                                                     <h6 className="cart-item__title fw-500 font-18">

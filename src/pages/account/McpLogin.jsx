@@ -3,7 +3,6 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
 import Cta from '../../components/ui/Cta';
-import PageTitle from '../../common/PageTitle';
 import SEO from '../../common/SEO';
 import useAuthStore from '../../store/authStore';
 import { getSupabaseAccessToken } from '../../services/supabaseClient';
@@ -86,8 +85,6 @@ const McpLogin = () => {
         canonical="/mcp/login"
         noindex
       />
-      <PageTitle title="Connect AI Assistant" />
-
       <main className="body-bg">
         <Header
           headerClass="dark-header has-border"

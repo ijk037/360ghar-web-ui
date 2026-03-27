@@ -9,4 +9,5 @@ export { default as DesignPromptInput } from './DesignPromptInput';
 export { default as DesignLoadingState, LOADING_STEPS } from './DesignLoadingState';
 export { default as DesignResult } from './DesignResult';
 export { default as BeforeAfterCompare } from './BeforeAfterCompare';
-export { default as DesignGallery, saveToGallery } from './DesignGallery';
+export { default as DesignGallery } from './DesignGallery';
+export { saveToGallery } from './designGalleryStorage';

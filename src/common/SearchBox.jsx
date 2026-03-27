@@ -3,6 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { useLocationStore } from '../store/locationStore';
 import GooglePlacesInput from './GooglePlacesInput';
+import {
+  PROPERTY_TYPE_FILTER_OPTIONS,
+  PURPOSE_OPTIONS,
+} from '../utils/propertyTaxonomy';
+import { buildPropertySearchQuery } from '../store/propertyFilters';
+
+const quickSearchTypeOptions = PROPERTY_TYPE_FILTER_OPTIONS.filter(
+  ({ value }) => ['apartment', 'house', 'pg', 'commercial'].includes(value)
+);
 
 const SearchBox = () => {
   const navigate = useNavigate();
@@ -20,40 +29,24 @@ const SearchBox = () => {
       radius: '20'
     },
     onSubmit: (values) => {
-      const params = new URLSearchParams();
+      const query = buildPropertySearchQuery({
+        q: values.keyword,
+        property_type: values.type && values.type !== 'All' ? [values.type] : [],
+        purpose: values.purpose,
+        price_min: values.minPrice || null,
+        price_max: values.maxPrice || null,
+        bedrooms_min: values.bedrooms || null,
+        lat: location.lat || null,
+        lng: location.lng || null,
+        radius: location.lat && location.lng ? values.radius || '20' : null,
+        sort_by: location.lat && location.lng
+          ? searchMode === 'location'
+            ? 'distance'
+            : 'relevance'
+          : 'newest',
+      });
 
-      // Basic search
-      if (values.keyword) params.set('q', values.keyword);
-
-      // Property type
-      if (values.type && values.type !== 'All') {
-        const map = { Houses: 'house', Apartments: 'apartment', Office: 'builder_floor', Villa: 'house' };
-        params.append('property_type', map[values.type] || values.type.toLowerCase());
-      }
-
-      // Purpose
-      if (values.purpose && values.purpose !== 'all') {
-        params.set('purpose', values.purpose);
-      }
-
-      // Price range
-      if (values.minPrice) params.set('price_min', values.minPrice);
-      if (values.maxPrice) params.set('price_max', values.maxPrice);
-
-      // Bedrooms
-      if (values.bedrooms) params.set('bedrooms_min', values.bedrooms);
-
-      // Location and sorting
-      if (location.lat && location.lng) {
-        params.set('lat', String(location.lat));
-        params.set('lng', String(location.lng));
-        params.set('radius', values.radius || '20');
-        params.set('sort_by', searchMode === 'location' ? 'distance' : 'relevance');
-      } else {
-        params.set('sort_by', 'newest');
-      }
-
-      navigate(`/properties?${params.toString()}`);
+      navigate(`/properties?${query}`);
     },
   });
 
@@ -103,10 +96,11 @@ const SearchBox = () => {
                     onChange={formik.handleChange}
                   >
                     <option value="All">All Types</option>
-                    <option value="Houses">Houses</option>
-                    <option value="Apartments">Apartments</option>
-                    <option value="Office">Office</option>
-                    <option value="Villa">Villa</option>
+                    {quickSearchTypeOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="col-md-2">
@@ -116,10 +110,11 @@ const SearchBox = () => {
                     value={formik.values.purpose}
                     onChange={formik.handleChange}
                   >
-                    <option value="all">All Purposes</option>
-                    <option value="buy">For Sale</option>
-                    <option value="rent">For Rent</option>
-                    <option value="short_stay">Short Stay</option>
+                    {PURPOSE_OPTIONS.map((option) => (
+                      <option key={option.value || 'all'} value={option.value || 'all'}>
+                        {option.label}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="col-md-2 d-grid">
@@ -211,10 +206,11 @@ const SearchBox = () => {
                   onChange={formik.handleChange}
                 >
                   <option value="All">All Types</option>
-                  <option value="Houses">Houses</option>
-                  <option value="Apartments">Apartments</option>
-                  <option value="Office">Office</option>
-                  <option value="Villa">Villa</option>
+                  {quickSearchTypeOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="col-md-3">
@@ -224,10 +220,11 @@ const SearchBox = () => {
                   value={formik.values.purpose}
                   onChange={formik.handleChange}
                 >
-                  <option value="all">All Purposes</option>
-                  <option value="buy">For Sale</option>
-                  <option value="rent">For Rent</option>
-                  <option value="short_stay">Short Stay</option>
+                  {PURPOSE_OPTIONS.map((option) => (
+                    <option key={option.value || 'all'} value={option.value || 'all'}>
+                      {option.label}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="col-md-3">

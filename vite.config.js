@@ -4,6 +4,15 @@ import compression from 'vite-plugin-compression'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
 import { VitePWA } from 'vite-plugin-pwa'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { createRequire } from 'node:module'
+
+// vite-plugin-prerender uses CJS require() internally, so we use createRequire
+// to load it in this ESM config file
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const require = createRequire(import.meta.url)
+const Prerender = require('vite-plugin-prerender')
 
 // Custom plugin to optimize modulepreload hints
 const optimizeModulepreload = () => ({
@@ -123,6 +132,62 @@ export default defineConfig({
             },
           },
         ],
+      },
+    }),
+
+    // Prerender static pages for SEO (only in production build)
+    // IMPORTANT: Keep routes list small. Dynamic/programmatic pages stay SPA-rendered.
+    process.env.VITE_ENABLE_PRERENDER && Prerender({
+      staticDir: path.join(__dirname, 'dist'),
+      routes: [
+        '/',
+        '/properties',
+        '/about-us',
+        '/contact',
+        '/faq',
+        '/blog',
+        '/project',
+        '/policies',
+        '/refer-and-earn',
+        '/emi-calculator',
+        '/area-converter',
+        '/area-calculator',
+        '/loan-eligibility-calculator',
+        '/capital-gains-tax-calculator',
+        '/property-document-checklist',
+        '/design-blueprint',
+        '/vastu-checker',
+        '/ai-design-studio',
+        '/ai-agent',
+        '/localities',
+        '/for-ai',
+        '/gurugram-real-estate-guide',
+        '/property-investment-gurugram',
+        '/vs/nobroker',
+        '/vs/magicbricks',
+        '/vs/99acres',
+        '/vs/housing',
+        '/vs/commonfloor',
+        '/vs/proptiger',
+        '/vs/squareyards',
+        '/vs/nestaway',
+        '/vs/zolo',
+        '/vs/stanza-living',
+        '/truth/nobroker-listings',
+        '/truth/magicbricks-spam',
+        '/truth/99acres-fake',
+        '/truth/nestaway-collapse',
+        '/truth/zolo-issues',
+      ],
+      renderer: '@prerenderer/renderer-puppeteer',
+      postProcess(renderedRoute) {
+        // Ensure viewport meta tag is present
+        if (!renderedRoute.html.includes('viewport')) {
+          renderedRoute.html = renderedRoute.html.replace(
+            '<head>',
+            '<head><meta name="viewport" content="width=device-width, initial-scale=1.0">'
+          );
+        }
       },
     }),
 

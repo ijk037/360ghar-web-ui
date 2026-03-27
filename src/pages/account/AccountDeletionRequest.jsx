@@ -4,7 +4,6 @@ import Footer from '../../common/Footer';
 import MobileMenu from '../../common/MobileMenu';
 import OffCanvas from '../../common/OffCanvas';
 import Cta from '../../components/ui/Cta';
-import PageTitle from '../../common/PageTitle';
 import SEO from '../../common/SEO';
 import { useForm, ValidationError } from '@formspree/react';
 import '../../styles/account-deletion.scss';
@@ -49,8 +48,6 @@ const AccountDeletionRequest = () => {
         return (
             <>
             <SEO title="Account Deletion Request | 360Ghar" description="Request deletion of your account or data." canonical="/delete-account" noindex />
-            <PageTitle title="360Ghar - Account Deletion Request" />
-
             <OffCanvas />
             <MobileMenu />
 
@@ -104,8 +101,6 @@ const AccountDeletionRequest = () => {
 
     return (
         <>
-        <PageTitle title="360Ghar - Account Deletion Request" />
-
         <OffCanvas />
         <MobileMenu />
 
@@ -136,6 +131,7 @@ const AccountDeletionRequest = () => {
                         </div>
 
                         <form onSubmit={onFormSubmit} className="contact-form__form">
+                            <input type="hidden" name="form_type" value="account_deletion" />
                             <div className="row gy-4">
                                 {/* Email */}
                                 <div className="col-lg-12">

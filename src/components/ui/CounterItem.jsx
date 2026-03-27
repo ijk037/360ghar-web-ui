@@ -1,4 +1,3 @@
-import { useState }  from 'react';
 import CountUp from 'react-countup';
 
 const CounterItem = ({ count }) => {

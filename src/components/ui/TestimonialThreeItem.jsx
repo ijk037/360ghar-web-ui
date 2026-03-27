@@ -11,7 +11,7 @@ const TestimonialThreeItem = ({ testimonialThreeItem }) => {
                 <div className="testimonial-item__top flx-between gap-2">
                     <div className="testimonial-item__info flx-align">
                         <div className="testimonial-item__thumb">
-                            <LazyImage src={image} alt=""/>
+                            <LazyImage src={image} alt={name || 'Reviewer'} width={50} height={50}/>
                         </div>
                         <div>
                             <h6 className="testimonial-item__name">{name}</h6>

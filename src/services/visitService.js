@@ -10,11 +10,11 @@ export const visitService = {
     return response.data;
   },
   getUpcoming: async () => {
-    const response = await api.get('/visits/upcoming/');
+    const response = await api.get('/visits/upcoming');
     return response.data;
   },
   getPast: async () => {
-    const response = await api.get('/visits/past/');
+    const response = await api.get('/visits/past');
     return response.data;
   },
   getById: async (visitId) => {

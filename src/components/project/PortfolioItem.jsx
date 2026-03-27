@@ -7,7 +7,7 @@ const PortfolioItem = ({ portfolio }) => {
     return (
         <div className="portfolio-item">
             <div className="portfolio-item__thumb">
-                <LazyImage src={thumb} alt="" className="cover-img"/>
+                <LazyImage src={thumb} alt={title || 'Portfolio item'} className="cover-img" width={400} height={300}/>
             </div>
             <div className="portfolio-item__content">
                 <Link to="/portfolio-details" className="btn btn-icon"> 

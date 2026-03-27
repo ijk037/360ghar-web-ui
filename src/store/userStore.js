@@ -13,7 +13,6 @@ const extractError = (err, fallback = 'Request failed') => {
 const useUserStore = create((set, get) => ({
   profile: null,
   preferences: null,
-  assignedAgent: null,
   isLoading: false,
   error: null,
 
@@ -64,18 +63,6 @@ const useUserStore = create((set, get) => ({
     } catch (err) {
       set({ isLoading: false, error: extractError(err, 'Failed to update location') });
       return false;
-    }
-  },
-
-  getAssignedAgent: async () => {
-    try {
-      set({ isLoading: true, error: null });
-      const data = await userService.getAssignedAgent();
-      set({ assignedAgent: data, isLoading: false });
-      return data;
-    } catch (err) {
-      set({ isLoading: false, error: extractError(err, 'Failed to fetch assigned agent') });
-      return null;
     }
   },
 

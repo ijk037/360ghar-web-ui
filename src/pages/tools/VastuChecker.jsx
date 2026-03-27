@@ -3,10 +3,11 @@ import Header from '../../common/Header';
 import Footer from '../../common/Footer';
 import MobileMenu from '../../common/MobileMenu';
 import OffCanvas from '../../common/OffCanvas';
-import PageTitle from '../../common/PageTitle';
+
 import SEO from '../../common/SEO';
 import { siteMetadata } from '../../seo/siteMetadata';
 import { generateToolSchema, toolSchemas } from '../../seo/toolSchemas';
+import { generateBreadcrumbStructuredData } from '../../seo/structuredData';
 import FloorPlanUpload from '../../components/vastu/FloorPlanUpload';
 import DirectionSelector from '../../components/vastu/DirectionSelector';
 import VastuLoadingState from '../../components/vastu/VastuLoadingState';
@@ -133,16 +134,19 @@ const VastuChecker = () => {
                 canonical="/vastu-checker"
                 image={siteMetadata.defaultOgImage}
                 type="website"
-                structuredData={generateToolSchema(
-                    toolSchemas.vastuChecker.name,
-                    toolSchemas.vastuChecker.description,
-                    toolSchemas.vastuChecker.keywords,
-                    toolSchemas.vastuChecker.category
-                )}
-            />
-            <PageTitle
-                title="Free Vastu Checker - AI Floor Plan Analysis | 360Ghar"
-                description="Upload your floor plan and get instant Vastu Shastra analysis with AI-powered insights and practical remedies."
+                structuredData={[
+                    generateToolSchema(
+                        toolSchemas.vastuChecker.name,
+                        toolSchemas.vastuChecker.description,
+                        toolSchemas.vastuChecker.keywords,
+                        toolSchemas.vastuChecker.category
+                    ),
+                    generateBreadcrumbStructuredData([
+                        { name: 'Home', url: 'https://360ghar.com/' },
+                        { name: 'Tools', url: 'https://360ghar.com/emi-calculator' },
+                        { name: toolSchemas.vastuChecker.name, url: 'https://360ghar.com/vastu-checker' }
+                    ])
+                ]}
             />
 
             <OffCanvas />

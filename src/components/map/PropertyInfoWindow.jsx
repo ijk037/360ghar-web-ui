@@ -1,4 +1,8 @@
 import { Link } from 'react-router-dom';
+import {
+  getListingLabel,
+  getPropertyTypeLabel,
+} from '../../utils/propertyTaxonomy';
 
 const PropertyInfoWindow = ({ property, onClose }) => {
   if (!property) return null;
@@ -15,6 +19,11 @@ const PropertyInfoWindow = ({ property, onClose }) => {
   const priceLabel = property.purpose === 'rent'
     ? property.daily_rate ? '/day' : '/month'
     : '';
+  const listingLabel = getListingLabel({
+    propertyType: property.property_type,
+    purpose: property.purpose,
+  });
+  const propertyTypeLabel = getPropertyTypeLabel(property.property_type);
 
   const mainImage = property.main_image_url || property.image_url || '/assets/images/thumbs/property-1.png';
 
@@ -26,15 +35,21 @@ const PropertyInfoWindow = ({ property, onClose }) => {
       
       <div className="info-window-image">
         <img src={mainImage} alt={property.title} />
-        {property.purpose && (
+        {listingLabel && (
           <span className="info-window-badge">
-            {property.purpose === 'buy' ? 'For Sale' : property.purpose === 'rent' ? 'For Rent' : 'Short Stay'}
+            {listingLabel}
           </span>
         )}
       </div>
       
       <div className="info-window-content">
         <h6 className="info-window-title">{property.title}</h6>
+        {property.property_type && (
+          <p className="info-window-location mb-2">
+            <i className="fas fa-building me-1"></i>
+            {propertyTypeLabel}
+          </p>
+        )}
         
         <p className="info-window-price">
           {price}

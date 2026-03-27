@@ -1,7 +1,12 @@
-import { useState }  from 'react';
-import { bedBaths, priceRanges, propertyTypes, reasons, searchAmenities } from '../data/OthersPageData/OthersPageData';
+import { bedBaths, priceRanges, searchAmenities } from '../data/OthersPageData/OthersPageData';
 import CustomRangeSlider from './CustomRangeSlider';
 import usePropertyStore from '../store/propertyStore';
+import {
+    COMMERCIAL_PROPERTY_TYPES,
+    PROPERTY_TYPE_FILTER_OPTIONS,
+    PURPOSE_OPTIONS,
+    isCommercialSelection,
+} from '../utils/propertyTaxonomy';
 
 const SearchSidebar = () => {
     const { filters, updateFilter, applyFilters } = usePropertyStore();
@@ -14,6 +19,13 @@ const SearchSidebar = () => {
     
     const handlePropertyTypeChange = (value, checked) => {
         const currentTypes = [...(filters.property_type || [])];
+        if (value === 'commercial') {
+            const nextTypes = checked
+                ? [...new Set([...currentTypes, ...COMMERCIAL_PROPERTY_TYPES])]
+                : currentTypes.filter((type) => !COMMERCIAL_PROPERTY_TYPES.includes(type));
+            handleFilterChange('property_type', nextTypes);
+            return;
+        }
         if (checked) {
             if (!currentTypes.includes(value)) {
                 handleFilterChange('property_type', [...currentTypes, value]);
@@ -21,7 +33,10 @@ const SearchSidebar = () => {
         } else {
             handleFilterChange('property_type', currentTypes.filter(t => t !== value));
         }
-    }; 
+    };
+
+    const propertyTypes = PROPERTY_TYPE_FILTER_OPTIONS;
+    const purposes = PURPOSE_OPTIONS.filter((option) => option.value);
     
     return (
         <>
@@ -38,13 +53,17 @@ const SearchSidebar = () => {
                                     <input 
                                         className="form-check-input" 
                                         type="checkbox" 
-                                        id={propertyType.text} 
+                                        id={propertyType.value} 
                                         value={propertyType.value}
-                                        checked={filters.property_type?.includes(propertyType.value) || false}
+                                        checked={
+                                            propertyType.value === 'commercial'
+                                                ? isCommercialSelection(filters.property_type || [])
+                                                : filters.property_type?.includes(propertyType.value) || false
+                                        }
                                         onChange={(e) => handlePropertyTypeChange(propertyType.value, e.target.checked)}
                                     />
-                                    <label className="form-check-label" htmlFor={propertyType.text}>
-                                        {propertyType.text}
+                                    <label className="form-check-label" htmlFor={propertyType.value}>
+                                        {propertyType.label}
                                     </label>
                                 </div>
                             )
@@ -55,20 +74,20 @@ const SearchSidebar = () => {
                 <div className="search-sidebar__item">
                     <h6 className="search-sidebar__title mb-4">Status</h6>
                     {
-                        reasons.map((reason, reasonIndex) => {
+                        purposes.map((reason, reasonIndex) => {
                             return (
                                 <div className="common-radio" key={reasonIndex}>
                                     <input 
                                         className="form-check-input" 
                                         type="radio" 
                                         name="room" 
-                                        id={reason.text} 
+                                        id={reason.value} 
                                         value={reason.value}
                                         checked={filters.purpose === reason.value}
                                         onChange={(e) => handleFilterChange('purpose', e.target.value)}
                                     />
-                                    <label className="form-check-label" htmlFor={reason.text}>
-                                        {reason.text}
+                                    <label className="form-check-label" htmlFor={reason.value}>
+                                        {reason.label}
                                     </label>
                                 </div>
                             )

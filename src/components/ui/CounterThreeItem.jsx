@@ -8,7 +8,7 @@ const CounterThreeItem = ({ counterThreeItem }) => {
         <>
          <div className="counter-three-item flx-align">
             <span className="counter-three-item__icon">
-                <LazyImage src={icon} alt="Icon"/>
+                <LazyImage src={icon} alt=""/>
             </span>
             <div className="counter-three-item__content">
                 <h2 className="counter-three-item__number">

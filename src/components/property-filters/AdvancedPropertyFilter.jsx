@@ -1,10 +1,20 @@
 import { useState } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useLocationStore } from '../../store/locationStore';
 import GooglePlacesInput from '../../common/GooglePlacesInput';
+import {
+  COMMERCIAL_PROPERTY_TYPES,
+  GENDER_PREFERENCE_OPTIONS,
+  PROPERTY_TYPE_FILTER_OPTIONS,
+  PURPOSE_OPTIONS,
+  SHARING_TYPE_OPTIONS,
+  includesPgOrFlatmateType,
+  isCommercialSelection,
+} from '../../utils/propertyTaxonomy';
+import { buildPropertySearchQuery } from '../../store/propertyFilters';
 
 const AdvancedPropertyFilter = ({ buttonText = "Search Properties" }) => {
   const { location, setLocation } = useLocationStore();
@@ -41,6 +51,8 @@ const AdvancedPropertyFilter = ({ buttonText = "Search Properties" }) => {
       floor_number_min: '',
       floor_number_max: '',
       age_max: '',
+      gender_preference: '',
+      sharing_type: '',
 
       // Short Stay
       check_in: '',
@@ -68,60 +80,36 @@ const AdvancedPropertyFilter = ({ buttonText = "Search Properties" }) => {
     }),
     onSubmit: (values) => {
       try {
-        // Build query parameters
-        const params = new URLSearchParams();
-
-        // Basic search
-        if (values.searchKeyword) params.set('q', values.searchKeyword);
-        if (values.purpose && values.purpose !== 'all') params.set('purpose', values.purpose);
-
-        // Property types
-        if (values.property_type.length > 0) {
-          values.property_type.forEach(type => params.append('property_type', type));
-        }
-
-        // Location
-        if (values.city) params.set('city', values.city);
-        if (values.locality) params.set('locality', values.locality);
-
-        // Price
-        if (values.min_price) params.set('price_min', values.min_price);
-        if (values.max_price) params.set('price_max', values.max_price);
-
-        // Property details
-        if (values.bedrooms_min) params.set('bedrooms_min', values.bedrooms_min);
-        if (values.bedrooms_max) params.set('bedrooms_max', values.bedrooms_max);
-        if (values.bathrooms_min) params.set('bathrooms_min', values.bathrooms_min);
-        if (values.bathrooms_max) params.set('bathrooms_max', values.bathrooms_max);
-        if (values.area_min) params.set('area_min', values.area_min);
-        if (values.area_max) params.set('area_max', values.area_max);
-
-        // Advanced filters
-        if (values.amenities.length > 0) {
-          values.amenities.forEach(amenity => params.append('amenities', amenity));
-        }
-        if (values.features.length > 0) {
-          values.features.forEach(feature => params.append('features', feature));
-        }
-        if (values.parking_spaces_min) params.set('parking_spaces_min', values.parking_spaces_min);
-        if (values.floor_number_min) params.set('floor_number_min', values.floor_number_min);
-        if (values.floor_number_max) params.set('floor_number_max', values.floor_number_max);
-        if (values.age_max) params.set('age_max', values.age_max);
-
-        // Short stay
-        if (values.check_in) params.set('check_in', values.check_in);
-        if (values.check_out) params.set('check_out', values.check_out);
-        if (values.guests) params.set('guests', values.guests);
-
-        // Sorting
-        if (values.sort_by && values.sort_by !== 'newest') params.set('sort_by', values.sort_by);
-
-        // Location coordinates
-        if (location.lat && location.lng) {
-          params.set('lat', location.lat.toString());
-          params.set('lng', location.lng.toString());
-          params.set('radius', '20');
-        }
+        const query = buildPropertySearchQuery({
+          q: values.searchKeyword,
+          purpose: values.purpose,
+          property_type: values.property_type,
+          city: values.city,
+          locality: values.locality,
+          price_min: values.min_price || null,
+          price_max: values.max_price || null,
+          bedrooms_min: values.bedrooms_min || null,
+          bedrooms_max: values.bedrooms_max || null,
+          bathrooms_min: values.bathrooms_min || null,
+          bathrooms_max: values.bathrooms_max || null,
+          area_min: values.area_min || null,
+          area_max: values.area_max || null,
+          amenities: values.amenities,
+          features: values.features,
+          parking_spaces_min: values.parking_spaces_min || null,
+          floor_number_min: values.floor_number_min || null,
+          floor_number_max: values.floor_number_max || null,
+          age_max: values.age_max || null,
+          gender_preference: values.gender_preference,
+          sharing_type: values.sharing_type,
+          check_in: values.check_in,
+          check_out: values.check_out,
+          guests: values.guests || null,
+          sort_by: values.sort_by,
+          lat: location.lat || null,
+          lng: location.lng || null,
+          radius: location.lat && location.lng ? 20 : null,
+        });
 
         toast.success("Search filters applied successfully!", {
           theme: "colored",
@@ -129,9 +117,9 @@ const AdvancedPropertyFilter = ({ buttonText = "Search Properties" }) => {
         });
 
         // Navigate to property page with filters
-        navigate(`/properties?${params.toString()}`);
+        navigate(`/properties?${query}`);
 
-      } catch (error) {
+      } catch {
         toast.error("Error applying filters. Please try again.", {
           theme: "colored"
         });
@@ -139,18 +127,8 @@ const AdvancedPropertyFilter = ({ buttonText = "Search Properties" }) => {
     },
   });
 
-  const propertyTypes = [
-    { value: 'house', label: 'House' },
-    { value: 'apartment', label: 'Apartment' },
-    { value: 'builder_floor', label: 'Builder Floor' },
-    { value: 'room', label: 'Room' }
-  ];
-
-  const purposes = [
-    { value: 'buy', label: 'For Sale' },
-    { value: 'rent', label: 'For Rent' },
-    { value: 'short_stay', label: 'Short Stay' }
-  ];
+  const propertyTypes = PROPERTY_TYPE_FILTER_OPTIONS;
+  const purposes = PURPOSE_OPTIONS.filter((option) => option.value);
 
   const amenities = [
     'Parking', 'Security', 'Garden', 'Gym', 'Swimming Pool', 'Power Backup',
@@ -175,6 +153,13 @@ const AdvancedPropertyFilter = ({ buttonText = "Search Properties" }) => {
 
   const handlePropertyTypeChange = (type, checked) => {
     const currentTypes = [...formik.values.property_type];
+    if (type === 'commercial') {
+      const nextTypes = checked
+        ? [...new Set([...currentTypes, ...COMMERCIAL_PROPERTY_TYPES])]
+        : currentTypes.filter((value) => !COMMERCIAL_PROPERTY_TYPES.includes(value));
+      formik.setFieldValue('property_type', nextTypes);
+      return;
+    }
     if (checked) {
       if (!currentTypes.includes(type)) {
         formik.setFieldValue('property_type', [...currentTypes, type]);
@@ -214,7 +199,6 @@ const AdvancedPropertyFilter = ({ buttonText = "Search Properties" }) => {
 
   return (
     <>
-      <ToastContainer />
       <div className="advanced-property-filter">
         <form onSubmit={formik.handleSubmit}>
           <div className="row gy-4">
@@ -282,7 +266,11 @@ const AdvancedPropertyFilter = ({ buttonText = "Search Properties" }) => {
                           className="form-check-input"
                           type="checkbox"
                           id={`type-${type.value}`}
-                          checked={formik.values.property_type.includes(type.value)}
+                          checked={
+                            type.value === 'commercial'
+                              ? isCommercialSelection(formik.values.property_type)
+                              : formik.values.property_type.includes(type.value)
+                          }
                           onChange={(e) => handlePropertyTypeChange(type.value, e.target.checked)}
                         />
                         <label className="form-check-label" htmlFor={`type-${type.value}`}>
@@ -510,6 +498,41 @@ const AdvancedPropertyFilter = ({ buttonText = "Search Properties" }) => {
                     max="20"
                   />
                 </div>
+
+                {includesPgOrFlatmateType(formik.values.property_type) && (
+                  <>
+                    <div className="col-lg-3 col-md-4 col-sm-6">
+                      <label className="form-label">Gender Preference</label>
+                      <select
+                        className="select common-input"
+                        name="gender_preference"
+                        value={formik.values.gender_preference}
+                        onChange={formik.handleChange}
+                      >
+                        {GENDER_PREFERENCE_OPTIONS.map((option) => (
+                          <option key={option.value || 'gender-any'} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="col-lg-3 col-md-4 col-sm-6">
+                      <label className="form-label">Room Type</label>
+                      <select
+                        className="select common-input"
+                        name="sharing_type"
+                        value={formik.values.sharing_type}
+                        onChange={formik.handleChange}
+                      >
+                        {SHARING_TYPE_OPTIONS.map((option) => (
+                          <option key={option.value || 'sharing-any'} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </>
+                )}
 
                 {/* Amenities */}
                 <div className="col-12">

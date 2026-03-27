@@ -1,8 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 const ScrollToTop = () => {
     const [visible, setVisible] = useState(false);
-    const scrollTop = useRef(null);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -18,14 +17,15 @@ const ScrollToTop = () => {
     };
 
     return (
-        <div
+        <button
+            type="button"
             className="scrollToTop"
             style={{ visibility: visible ? 'visible' : 'hidden' }}
             onClick={scrollToTop}
-            ref={scrollTop}
+            aria-label="Scroll to top"
         >
             <i className="fas fa-chevron-up text-gradient"></i>
-        </div>
+        </button>
     );
 };
 

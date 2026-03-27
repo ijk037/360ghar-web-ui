@@ -1,22 +1,20 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
 import MobileMenu from '../../common/MobileMenu';
 import OffCanvas from '../../common/OffCanvas';
-import PageTitle from '../../common/PageTitle';
+
 import SEO from '../../common/SEO';
 import { siteMetadata } from '../../seo/siteMetadata';
 import { generateToolSchema, toolSchemas } from '../../seo/toolSchemas';
+import { generateBreadcrumbStructuredData } from '../../seo/structuredData';
 
 const EmiCalculator = () => {
+    const resultsRef = useRef(null);
     const [loanAmount, setLoanAmount] = useState(1000000);
     const [interestRate, setInterestRate] = useState(8.5);
     const [loanTenure, setLoanTenure] = useState(20);
-    const [emi, setEmi] = useState(0);
-    const [totalInterest, setTotalInterest] = useState(0);
-    const [totalPayment, setTotalPayment] = useState(0);
-
-    const calculateEMI = useCallback(() => {
+    const emiBreakdown = useMemo(() => {
         const principal = parseFloat(loanAmount);
         const rate = parseFloat(interestRate) / 12 / 100; // Monthly interest rate
         const time = parseFloat(loanTenure) * 12; // Total months
@@ -26,15 +24,14 @@ const EmiCalculator = () => {
             const totalAmount = emiAmount * time;
             const totalInterestAmount = totalAmount - principal;
 
-            setEmi(emiAmount);
-            setTotalPayment(totalAmount);
-            setTotalInterest(totalInterestAmount);
+            return {
+                emi: emiAmount,
+                totalPayment: totalAmount,
+                totalInterest: totalInterestAmount,
+            };
         }
+        return { emi: 0, totalPayment: 0, totalInterest: 0 };
     }, [loanAmount, interestRate, loanTenure]);
-
-    useEffect(() => {
-        calculateEMI();
-    }, [loanAmount, interestRate, loanTenure, calculateEMI]);
 
     const formatCurrency = (amount) => {
         return new Intl.NumberFormat('en-IN', {
@@ -63,19 +60,20 @@ const EmiCalculator = () => {
           canonical="/emi-calculator"
           image={siteMetadata.defaultOgImage}
           type="website"
-          structuredData={generateToolSchema(
-              toolSchemas.emiCalculator.name,
-              toolSchemas.emiCalculator.description,
-              toolSchemas.emiCalculator.keywords,
-              toolSchemas.emiCalculator.category
-          )}
+          structuredData={[
+            generateToolSchema(
+                toolSchemas.emiCalculator.name,
+                toolSchemas.emiCalculator.description,
+                toolSchemas.emiCalculator.keywords,
+                toolSchemas.emiCalculator.category
+            ),
+            generateBreadcrumbStructuredData([
+                { name: 'Home', url: 'https://360ghar.com/' },
+                { name: 'Tools', url: 'https://360ghar.com/emi-calculator' },
+                { name: toolSchemas.emiCalculator.name, url: 'https://360ghar.com/emi-calculator' }
+            ])
+          ]}
         />
-            <PageTitle
-                title="Home Loan EMI Calculator - Calculate EMI Online | 360Ghar"
-                description="Use 360Ghar's free EMI calculator to calculate your home loan monthly installments. Get accurate EMI calculations for property purchase based on loan amount, interest rate, and tenure."
-                keywords="home loan EMI, loan EMI calculator, mortgage calculator, EMI calculation, housing loan EMI, property loan EMI calculator, loan repayment calculator"
-            />
-
             <OffCanvas/>
             <MobileMenu/>
 
@@ -204,7 +202,7 @@ const EmiCalculator = () => {
                                                     <button
                                                         type="button"
                                                         className="btn btn-main flex-fill"
-                                                        onClick={calculateEMI}
+                                                        onClick={() => resultsRef.current?.scrollIntoView({ behavior: 'smooth' })}
                                                     >
                                                         <i className="fas fa-calculator me-2"></i>
                                                         Calculate EMI
@@ -222,7 +220,7 @@ const EmiCalculator = () => {
                                         </div>
 
                                         {/* Results Section */}
-                                        <div className="col-lg-6">
+                                        <div className="col-lg-6" ref={resultsRef}>
                                             <div className="calculator-results bg-white p-4 rounded-3 shadow-sm">
                                                 <h3 className="results-title mb-4">EMI Calculation Results</h3>
 
@@ -230,7 +228,7 @@ const EmiCalculator = () => {
                                                     <div className="d-flex justify-content-between align-items-center mb-2">
                                                         <span className="result-label text-muted">Monthly EMI</span>
                                                         <span className="result-value fs-4 fw-bold text-main">
-                                                            {formatCurrency(emi)}
+                                                        {formatCurrency(emiBreakdown.emi)}
                                                         </span>
                                                     </div>
                                                     <div className="progress" style={{ height: '6px' }}>
@@ -245,7 +243,7 @@ const EmiCalculator = () => {
                                                     <div className="d-flex justify-content-between align-items-center">
                                                         <span className="result-label text-muted">Total Interest</span>
                                                         <span className="result-value fs-5 fw-bold text-warning">
-                                                            {formatCurrency(totalInterest)}
+                                                        {formatCurrency(emiBreakdown.totalInterest)}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -254,7 +252,7 @@ const EmiCalculator = () => {
                                                     <div className="d-flex justify-content-between align-items-center">
                                                         <span className="result-label text-muted">Total Payment</span>
                                                         <span className="result-value fs-5 fw-bold text-success">
-                                                            {formatCurrency(totalPayment)}
+                                                        {formatCurrency(emiBreakdown.totalPayment)}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -267,7 +265,7 @@ const EmiCalculator = () => {
                                                             <div
                                                                 className="principal-bar"
                                                                 style={{
-                                                                    width: `${(loanAmount / totalPayment) * 100}%`,
+                                                                    width: `${(loanAmount / emiBreakdown.totalPayment) * 100}%`,
                                                                 backgroundColor: 'var(--success-color)'
                                                                 }}
                                                                 title={`Principal: ${formatCurrency(loanAmount)}`}
@@ -275,20 +273,20 @@ const EmiCalculator = () => {
                                                             <div
                                                                 className="interest-bar"
                                                                 style={{
-                                                                    width: `${(totalInterest / totalPayment) * 100}%`,
+                                                                    width: `${(emiBreakdown.totalInterest / emiBreakdown.totalPayment) * 100}%`,
                                                                 backgroundColor: 'var(--warning-color)'
                                                                 }}
-                                                                title={`Interest: ${formatCurrency(totalInterest)}`}
+                                                                title={`Interest: ${formatCurrency(emiBreakdown.totalInterest)}`}
                                                             ></div>
                                                         </div>
                                                         <div className="breakdown-legend d-flex justify-content-between mt-2">
                                                             <span className="legend-item">
                                                             <span className="legend-color" style={{ backgroundColor: 'var(--success-color)' }}></span>
-                                                                Principal ({formatNumber(Math.round((loanAmount / totalPayment) * 100))}%)
+                                                                Principal ({formatNumber(Math.round((loanAmount / emiBreakdown.totalPayment) * 100))}%)
                                                             </span>
                                                             <span className="legend-item">
                                                                 <span className="legend-color" style={{ backgroundColor: '#ffc107' }}></span>
-                                                                Interest ({formatNumber(Math.round((totalInterest / totalPayment) * 100))}%)
+                                                                Interest ({formatNumber(Math.round((emiBreakdown.totalInterest / emiBreakdown.totalPayment) * 100))}%)
                                                             </span>
                                                         </div>
                                                     </div>

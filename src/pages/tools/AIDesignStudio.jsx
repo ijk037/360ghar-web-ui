@@ -3,8 +3,9 @@ import Header from '../../common/Header';
 import Footer from '../../common/Footer';
 import MobileMenu from '../../common/MobileMenu';
 import OffCanvas from '../../common/OffCanvas';
-import PageTitle from '../../common/PageTitle';
+
 import SEO from '../../common/SEO';
+import { generateBreadcrumbStructuredData } from '../../seo/structuredData';
 
 import {
   PuterAuthPrompt,
@@ -124,7 +125,7 @@ const AIDesignStudio = () => {
         if (puterService.isAuthenticated()) {
           setAppState('input');
         }
-      } catch (error) {
+      } catch {
         console.log('Puter SDK not yet loaded');
       }
     };
@@ -225,24 +226,19 @@ const AIDesignStudio = () => {
       if (stepTimer1) clearTimeout(stepTimer1);
       if (stepTimer2) clearTimeout(stepTimer2);
 
-      let message = 'Failed to generate design. Please try again.';
-      let type = 'general';
-
       if (error.message?.includes('sign in') || error.message?.includes('authenticated')) {
-        type = 'validation';
-        message = 'Please sign in with Puter to generate images.';
+        setErrorMessage('Please sign in with Puter to generate images.');
+        setErrorType('validation');
         setAppState('auth');
         return;
-      } else if (error.message?.includes('quota') || error.message?.includes('limit')) {
-        type = 'quota';
-        message = 'You have reached your Puter usage limit. Please check your Puter account.';
-      } else if (error.message?.includes('timeout')) {
-        type = 'timeout';
-        message = 'The generation is taking too long. Please try again with a simpler prompt.';
-      } else if (!navigator.onLine) {
-        type = 'network';
-        message = 'No internet connection. Please check your network and try again.';
       }
+      const [type, message] = error.message?.includes('quota') || error.message?.includes('limit')
+        ? ['quota', 'You have reached your Puter usage limit. Please check your Puter account.']
+        : error.message?.includes('timeout')
+          ? ['timeout', 'The generation is taking too long. Please try again with a simpler prompt.']
+          : !navigator.onLine
+            ? ['network', 'No internet connection. Please check your network and try again.']
+            : ['general', 'Failed to generate design. Please try again.'];
 
       setErrorMessage(message);
       setErrorType(type);
@@ -317,12 +313,12 @@ const AIDesignStudio = () => {
         keywords="AI interior design, AI exterior design, room design generator, home design AI, interior decorator AI, 360ghar, free design tool"
         canonical="/ai-design-studio"
         type="website"
+        structuredData={generateBreadcrumbStructuredData([
+          { name: 'Home', url: 'https://360ghar.com/' },
+          { name: 'Tools', url: 'https://360ghar.com/emi-calculator' },
+          { name: 'AI Design Studio', url: 'https://360ghar.com/ai-design-studio' }
+        ])}
       />
-      <PageTitle
-        title="AI Design Studio"
-        description="Create stunning interior and exterior designs with AI"
-      />
-
       <OffCanvas />
       <MobileMenu />
 

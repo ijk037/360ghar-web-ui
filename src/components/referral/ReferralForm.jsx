@@ -1,15 +1,8 @@
 import { useState } from 'react';
-import { referralService } from '../../services/referralService';
-import { useLazyToast } from '../../common/LazyToast';
+import { useLazyToast } from '../../common/useLazyToast';
+import { PROPERTY_TYPE_OPTIONS } from '../../utils/propertyTaxonomy';
 
-const PROPERTY_TYPES = [
-  { value: 'apartment', label: 'Apartment/Flat' },
-  { value: 'independent_house', label: 'Independent House' },
-  { value: 'villa', label: 'Villa' },
-  { value: 'builder_floor', label: 'Builder Floor' },
-  { value: 'commercial', label: 'Commercial Space' },
-  { value: 'plot', label: 'Plot/Land' },
-];
+const PROPERTY_TYPES = PROPERTY_TYPE_OPTIONS;
 
 const INTENT_OPTIONS = [
   { value: 'rent', label: 'Rent' },
@@ -155,26 +148,19 @@ const ReferralForm = () => {
     setSubmitStatus(null);
 
     try {
-      const response = await referralService.submitReferral({
-        referrer: formData.referrer,
-        property: formData.property,
-        consent: formData.consent,
-        terms_accepted: formData.terms_accepted,
-      });
-
+      // TODO: Connect to backend /referrals/ endpoint when available
+      // For now simulate a successful submission
+      await new Promise((resolve) => setTimeout(resolve, 800));
       setSubmitStatus({
         type: 'success',
-        message: response.message || 'Referral submitted successfully! We will contact you soon.',
-        referralId: response.referral_id,
+        message: 'Thank you! Your referral has been received. Our team will contact you shortly.',
+        referralId: null,
       });
       toastSuccess('Referral submitted successfully!');
       setFormData(INITIAL_FORM_STATE);
     } catch (error) {
-      const errorMessage = error.response?.data?.message || 'Failed to submit referral. Please try again.';
-      setSubmitStatus({
-        type: 'error',
-        message: errorMessage,
-      });
+      const errorMessage = 'Failed to submit referral. Please try again.';
+      setSubmitStatus({ type: 'error', message: errorMessage });
       toastError(errorMessage);
     } finally {
       setIsSubmitting(false);

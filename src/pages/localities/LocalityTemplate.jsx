@@ -4,7 +4,7 @@ import Header from '../../common/Header';
 import Footer from '../../common/Footer';
 import MobileMenu from '../../common/MobileMenu';
 import OffCanvas from '../../common/OffCanvas';
-import PageTitle from '../../common/PageTitle';
+
 import SEO from '../../common/SEO';
 import { siteMetadata } from '../../seo/siteMetadata';
 import { generateBreadcrumbStructuredData } from '../../seo/structuredData';
@@ -14,7 +14,7 @@ import LocalityHero from '../../components/locality/LocalityHero';
 import LocalityAmenities from '../../components/locality/LocalityAmenities';
 import ConnectivitySection from '../../components/locality/ConnectivitySection';
 import NearbyLocalities from '../../components/locality/NearbyLocalities';
-import LocalityFaq from '../../components/locality/LocalityFaq';
+import LocalityFaq, { defaultFaqBuilder } from '../../components/locality/LocalityFaq';
 
 let localitiesDataPromise = null;
 let cachedLocalitiesData = null;
@@ -191,8 +191,8 @@ const buildConnectivityItems = (localityName, city) => [
 
 const LocalityTemplate = () => {
     const params = useParams();
-    const slugWithSuffix = params['slug-gurgaon'] || '';
-    const slug = slugWithSuffix.replace(/-gurgaon$/i, '');
+    // URL param is the full slug (may include -gurgaon suffix for SEO)
+    const slug = (params.slug || '').replace(/-gurgaon$/i, '');
 
     const [localityInfo, setLocalityInfo] = useState(null);
     const [allLocalities, setAllLocalities] = useState([]);
@@ -308,6 +308,8 @@ const LocalityTemplate = () => {
         { name: `${computed.localityName}, ${computed.city}`, url: `https://360ghar.com/locality/${computed.localitySlug}-gurgaon` }
     ];
 
+    const faqItems = defaultFaqBuilder(computed.localityName, computed.entityType);
+
     const localityStructuredData = [
         generateBreadcrumbStructuredData(breadcrumbs),
         {
@@ -326,6 +328,17 @@ const LocalityTemplate = () => {
             name: `${computed.localityName}, ${computed.city}`,
             url: `https://360ghar.com/locality/${computed.localitySlug}-gurgaon`,
             dateModified: localityInfo.lastVerifiedAt || new Date().toISOString().split('T')[0]
+        },
+        {
+            '@type': 'FAQPage',
+            mainEntity: faqItems.map((faq) => ({
+                '@type': 'Question',
+                name: faq.question,
+                acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: faq.answer
+                }
+            }))
         }
     ];
 
@@ -340,8 +353,6 @@ const LocalityTemplate = () => {
                 type="website"
                 structuredData={localityStructuredData}
             />
-            <PageTitle title={`${computed.localityName}, ${computed.city} | 360Ghar Localities`} />
-
             <OffCanvas />
             <MobileMenu />
 

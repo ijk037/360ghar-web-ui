@@ -1,38 +1,23 @@
-import { useState, useEffect, useCallback }  from 'react';
-
-const STORAGE_KEY = 'designGallery';
-const MAX_DESIGNS = 20;
+import { useState, useCallback }  from 'react';
+import { clearGallery, loadDesignGallery, removeFromGallery } from './designGalleryStorage';
 
 /**
  * DesignGallery - History of generated designs stored in localStorage
  */
 const DesignGallery = ({ onSelectDesign }) => {
-  const [designs, setDesigns] = useState([]);
+  const [designs, setDesigns] = useState(loadDesignGallery);
   const [selectedDesign, setSelectedDesign] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // Load designs from localStorage
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        setDesigns(JSON.parse(stored));
-      }
-    } catch (error) {
-      console.error('Failed to load gallery:', error);
-    }
-  }, []);
-
   const handleDelete = useCallback((designId, e) => {
     e.stopPropagation();
-    const updated = designs.filter((d) => d.id !== designId);
+    const updated = removeFromGallery(designId);
     setDesigns(updated);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
 
     if (selectedDesign?.id === designId) {
       setSelectedDesign(null);
     }
-  }, [designs, selectedDesign]);
+  }, [selectedDesign]);
 
   const handleSelect = useCallback((design) => {
     setSelectedDesign(design);
@@ -45,12 +30,12 @@ const DesignGallery = ({ onSelectDesign }) => {
     if (window.confirm('Are you sure you want to clear all saved designs?')) {
       setDesigns([]);
       setSelectedDesign(null);
-      localStorage.removeItem(STORAGE_KEY);
+      clearGallery();
     }
   }, []);
 
   if (designs.length === 0) {
-    return null; // Don\Don'tapos;t show gallery if empty
+    return null;
   }
 
   const visibleDesigns = isExpanded ? designs : designs.slice(0, 4);
@@ -162,32 +147,6 @@ const DesignGallery = ({ onSelectDesign }) => {
       )}
     </div>
   );
-};
-
-/**
- * Helper to save a design to the gallery
- */
-export const saveToGallery = (design) => {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    const gallery = stored ? JSON.parse(stored) : [];
-
-    gallery.unshift({
-      id: Date.now(),
-      imageUrl: design.imageUrl,
-      originalUrl: design.originalUrl,
-      prompt: design.prompt,
-      settings: design.settings,
-      createdAt: new Date().toISOString(),
-    });
-
-    // Keep only last MAX_DESIGNS
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(gallery.slice(0, MAX_DESIGNS)));
-    return true;
-  } catch (error) {
-    console.error('Failed to save to gallery:', error);
-    return false;
-  }
 };
 
 export default DesignGallery;

@@ -1,6 +1,5 @@
-import { createContext, useState }  from 'react';
-
-export const BlogDataContext = createContext(); 
+import { useState }  from 'react';
+import { BlogDataContext } from './BlogDataContextValue';
 
 const BlogDataProvider = ({ children }) => {
    

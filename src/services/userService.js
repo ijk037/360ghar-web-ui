@@ -3,19 +3,19 @@ import api from './api';
 export const userService = {
   // Current user profile
   getProfile: async () => {
-    const response = await api.get('/users/profile/');
+    const response = await api.get('/users/profile');
     return response.data;
   },
   updateProfile: async (profileData) => {
-    const response = await api.put('/users/profile/', profileData);
+    const response = await api.put('/users/profile', profileData);
     return response.data;
   },
   updatePreferences: async (preferences) => {
-    const response = await api.put('/users/preferences/', preferences);
+    const response = await api.put('/users/preferences', preferences);
     return response.data;
   },
   updateLocation: async (location) => {
-    const response = await api.put('/users/location/', location);
+    const response = await api.put('/users/location', location);
     return response.data;
   },
 
@@ -23,19 +23,12 @@ export const userService = {
     const response = await api.get('/users/notification-settings');
     return response.data;
   },
-
   updateNotificationSettings: async (settings) => {
     const response = await api.put('/users/notification-settings', settings);
     return response.data;
   },
 
-  // Agents
-  getAssignedAgent: async () => {
-    const response = await api.get('/agents/assigned/');
-    return response.data;
-  },
-
-  // Admin (placeholders/backward compatibility)
+  // Admin
   getUserById: async (id) => {
     const response = await api.get(`/users/${id}`);
     return response.data;
@@ -54,4 +47,4 @@ export const userService = {
   },
 };
 
-export default userService; 
+export default userService;

@@ -1,8 +1,8 @@
 import { useContext }  from 'react';
 import { Link } from 'react-router-dom';
 import LogoWhite from './LogoWhite';
-import { OffCanvasContext } from '../contextApi/OffCanvasContext';
-import { ScrollHideContext } from '../contextApi/ScrollHideContext';
+import { OffCanvasContext } from '../contextApi/OffCanvasContextValue';
+import { ScrollHideContext } from '../contextApi/ScrollHideContextValue';
 import { offCanvasInfos } from '../data/CommonData/CommonData';
 import SearchBox from './SearchBox';
 import SocialList from './SocialList';

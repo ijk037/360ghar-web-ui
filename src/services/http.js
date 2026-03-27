@@ -122,10 +122,9 @@ export const createAxiosInstance = ({ withAuth = false, enableRetry = true } = {
           error.config?.url?.includes(endpoint)
         );
 
-        // Only redirect to login if it's not a public endpoint and an auth header was present
+        // Let route guards and calling components handle re-authentication.
         if (!isPublicEndpoint && error.config?.headers?.Authorization) {
           localStorage.removeItem('user');
-          window.location.href = '/login';
         }
       }
 

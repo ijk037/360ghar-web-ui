@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { BlogDataContext } from '../../contextApi/BlogDataContext';
+import { BlogDataContext } from '../../contextApi/BlogDataContextValue';
 
 import LazyImage from '../../common/LazyImage';
 const BlogItemTwo = ({ blog }) => {

@@ -79,7 +79,7 @@ const Testimonial = () => {
 
                             <div className="col-lg-6">
                                 <div className="testimonial-thumb">
-                                    <LazyImage src={TestimonialThumb} alt="" className="cover-img" />
+                                    <LazyImage src={TestimonialThumb} alt="Client testimonials" className="cover-img" width={570} height={450} />
                                 </div>
                             </div>
                         </div>

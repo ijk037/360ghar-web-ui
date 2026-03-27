@@ -169,7 +169,7 @@ export const aiAgentFAQs = [
     },
     {
         question: "Can the AI help me with property management?",
-        answer: "Yes! Landlords can use the AI to track rent collection, manage tenants, handle maintenance requests, and access property documents. Just ask: 'Show me this month\'s rent status' or 'List all open maintenance requests'."
+        answer: "Yes! Landlords can use the AI to track rent collection, manage tenants, handle maintenance requests, and access property documents. Just ask: \"Show me this month's rent status\" or \"List all open maintenance requests\"."
     },
     {
         question: "What can I search for using natural language?",

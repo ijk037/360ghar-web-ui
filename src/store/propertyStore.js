@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import propertyService from '../services/propertyService';
 import { propertyAPIService } from '../services/propertyAPIService';
 import swipeService from '../services/swipeService';
+import { cleanPropertyFilters, cloneDefaultPropertyFilters } from './propertyFilters';
 
 // Normalize various API error shapes (FastAPI/Pydantic v2 arrays, objects, strings)
 const extractErrorMessage = (err, fallback = 'Something went wrong') => {
@@ -17,7 +18,7 @@ const extractErrorMessage = (err, fallback = 'Something went wrong') => {
     }
     if (typeof detail === 'string') return detail;
     return fallback;
-  } catch (_) {
+  } catch {
     return fallback;
   }
 };
@@ -32,61 +33,13 @@ const usePropertyStore = create((set, get) => ({
   propertyMedia: [],
   pagination: { page: 1, totalPages: 1, total: 0, limit: 12 },
   // Comprehensive filters matching API documentation
-  filters: {
-    // Text Search
-    q: '',
-    
-    // Property Filters
-    property_type: [],
-    purpose: '',
-    
-    // Price Filters
-    price_min: null,
-    price_max: null,
-    
-    // Room Filters
-    bedrooms_min: null,
-    bedrooms_max: null,
-    bathrooms_min: null,
-    bathrooms_max: null,
-    
-    // Area Filters
-    area_min: null,
-    area_max: null,
-    
-    // Location Filters
-    city: '',
-    locality: '',
-    pincode: '',
-    
-    // Location-based Search
-    lat: null,
-    lng: null,
-    radius: 20,
-    
-    // Additional Filters
-    amenities: [],
-    features: [],
-    parking_spaces_min: null,
-    floor_number_min: null,
-    floor_number_max: null,
-    age_max: null,
-    
-    // Short Stay Filters
-    check_in: '',
-    check_out: '',
-    guests: null,
-    
-    // Sorting & Pagination
-    sort_by: 'newest',
-    page: 1,
-    limit: 12,
-  },
+  filters: cloneDefaultPropertyFilters(),
   
   // Track if filters have changed since last search
   filtersChanged: false,
-  
-  isLoading: false,
+
+  isLoading: false,        // Main page-level loading (fetch properties, fetch by ID)
+  isSwipeLoading: false,   // Background swipe operations (won't block page UI)
   error: null,
   
   // Actions
@@ -104,20 +57,7 @@ const usePropertyStore = create((set, get) => ({
       const searchLimit = limit || searchFilters.limit || 12;
       
       // Clean up null/undefined/empty values for API call
-      const cleanFilters = {};
-      Object.keys(searchFilters).forEach(key => {
-        const value = searchFilters[key];
-        if (value !== null && value !== undefined && value !== '') {
-          // Handle arrays - only include if they have items
-          if (Array.isArray(value)) {
-            if (value.length > 0) {
-              cleanFilters[key] = value;
-            }
-          } else {
-            cleanFilters[key] = value;
-          }
-        }
-      });
+      const cleanFilters = cleanPropertyFilters(searchFilters);
 
       const response = await propertyAPIService.searchProperties(cleanFilters, searchPage, searchLimit);
       const payload = response.data || {};
@@ -148,58 +88,58 @@ const usePropertyStore = create((set, get) => ({
     }
   },
 
-  // Swipe actions (auth required)
+  // Swipe actions (auth required) - use isSwipeLoading to avoid blocking page UI
   recordSwipe: async (propertyId, isLiked = true) => {
     try {
-      set({ isLoading: true, error: null });
+      set({ isSwipeLoading: true });
       await swipeService.recordSwipe({ property_id: propertyId, is_liked: isLiked });
       // Optimistically update liked flag on current lists
       set((state) => ({
-        properties: state.properties.map((p) => (p.id === propertyId ? { ...p, liked: isLiked } : p)),
-        currentProperty: state.currentProperty?.id === propertyId ? { ...state.currentProperty, liked: isLiked } : state.currentProperty,
-        isLoading: false,
+        properties: state.properties.map((p) => (p.id === propertyId ? { ...p, is_liked: isLiked } : p)),
+        currentProperty: state.currentProperty?.id === propertyId ? { ...state.currentProperty, is_liked: isLiked } : state.currentProperty,
+        isSwipeLoading: false,
       }));
       return true;
     } catch (error) {
-      set({ isLoading: false, error: extractErrorMessage(error, 'Failed to record swipe') });
+      set({ isSwipeLoading: false, error: extractErrorMessage(error, 'Failed to record swipe') });
       return false;
     }
   },
 
   fetchLikedProperties: async (filters = {}) => {
     try {
-      set({ isLoading: true, error: null });
+      set({ isSwipeLoading: true });
       const params = { ...filters, is_liked: true };
       const data = await swipeService.getSwipes(params);
       const items = data?.properties || [];
-      set({ likedProperties: items, isLoading: false });
+      set({ likedProperties: items, isSwipeLoading: false });
       return items;
     } catch (error) {
-      set({ isLoading: false, error: extractErrorMessage(error, 'Failed to load liked properties') });
+      set({ isSwipeLoading: false, error: extractErrorMessage(error, 'Failed to load liked properties') });
       return [];
     }
   },
 
   undoLastSwipe: async () => {
     try {
-      set({ isLoading: true, error: null });
+      set({ isSwipeLoading: true });
       await swipeService.undoLast();
-      set({ isLoading: false });
+      set({ isSwipeLoading: false });
       return true;
     } catch (error) {
-      set({ isLoading: false, error: extractErrorMessage(error, 'Failed to undo swipe') });
+      set({ isSwipeLoading: false, error: extractErrorMessage(error, 'Failed to undo swipe') });
       return false;
     }
   },
 
   getSwipeStats: async () => {
     try {
-      set({ isLoading: true, error: null });
+      set({ isSwipeLoading: true });
       const data = await swipeService.stats();
-      set({ isLoading: false });
+      set({ isSwipeLoading: false });
       return data;
     } catch (error) {
-      set({ isLoading: false, error: extractErrorMessage(error, 'Failed to fetch swipe stats') });
+      set({ isSwipeLoading: false, error: extractErrorMessage(error, 'Failed to fetch swipe stats') });
       return null;
     }
   },
@@ -334,56 +274,6 @@ const usePropertyStore = create((set, get) => ({
     }
   },
   
-  uploadPropertyMedia: async (formData) => {
-    try {
-      set({ isLoading: true, error: null });
-      // TODO: Import mediaService when available
-      
-      // Temporary mock implementation until mediaService is available
-      const newMedia = {
-        id: Math.random().toString(36).substring(7),
-        url: URL.createObjectURL(formData.get('file') || new Blob()),
-        created_at: new Date().toISOString()
-      };
-      
-      // Add new media to propertyMedia array
-      set(state => ({
-        propertyMedia: [...state.propertyMedia, newMedia],
-        isLoading: false,
-      }));
-      
-      return newMedia;
-    } catch (error) {
-      set({
-        isLoading: false,
-        error: extractErrorMessage(error, 'Failed to upload media')
-      });
-      return null;
-    }
-  },
-  
-  deletePropertyMedia: async (mediaId) => {
-    try {
-      set({ isLoading: true, error: null });
-      // TODO: Import mediaService when available
-      // await mediaService.deleteMedia(mediaId);
-      
-      // Remove media from propertyMedia array locally
-      set(state => ({
-        propertyMedia: state.propertyMedia.filter(media => media.id !== mediaId),
-        isLoading: false,
-      }));
-      
-      return true;
-    } catch (error) {
-      set({
-        isLoading: false,
-        error: extractErrorMessage(error, 'Failed to delete media')
-      });
-      return false;
-    }
-  },
-  
   setFilters: (newFilters) => {
     set(state => ({
       filters: {
@@ -408,37 +298,7 @@ const usePropertyStore = create((set, get) => ({
   // Clear all filters
   clearFilters: () => {
     set({
-      filters: {
-        q: '',
-        property_type: [],
-        purpose: '',
-        price_min: null,
-        price_max: null,
-        bedrooms_min: null,
-        bedrooms_max: null,
-        bathrooms_min: null,
-        bathrooms_max: null,
-        area_min: null,
-        area_max: null,
-        city: '',
-        locality: '',
-        pincode: '',
-        lat: null,
-        lng: null,
-        radius: 20,
-        amenities: [],
-        features: [],
-        parking_spaces_min: null,
-        floor_number_min: null,
-        floor_number_max: null,
-        age_max: null,
-        check_in: '',
-        check_out: '',
-        guests: null,
-        sort_by: 'newest',
-        page: 1,
-        limit: 12,
-      },
+      filters: cloneDefaultPropertyFilters(),
       filtersChanged: true
     });
   },
@@ -478,6 +338,8 @@ const usePropertyStore = create((set, get) => ({
     if (filters.check_in) count++;
     if (filters.check_out) count++;
     if (filters.guests !== null) count++;
+    if (filters.gender_preference) count++;
+    if (filters.sharing_type) count++;
     
     return count;
   },

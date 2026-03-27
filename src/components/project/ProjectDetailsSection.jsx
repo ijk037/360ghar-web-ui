@@ -23,7 +23,7 @@ const ProjectDetailsSection = () => {
                     <div className="row gy-4">
                         <div className="col-lg-8">
                             <div className="project-details__thumb">
-                                <LazyImage src={location.state.thumb} alt="" className='cover-img' priority />
+                                <LazyImage src={location.state.thumb} alt={location.state.title || 'Project details'} className='cover-img' width={800} height={500} priority />
                             </div>
                             <div className="project-details__content">
                                 <h2 className="project-details__title">{location.state.title}</h2>

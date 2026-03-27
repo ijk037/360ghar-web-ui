@@ -2,7 +2,6 @@ import Header from '../../common/Header';
 import Footer from '../../common/Footer';
 import MobileMenu from '../../common/MobileMenu';
 import OffCanvas from '../../common/OffCanvas';
-import PageTitle from '../../common/PageTitle';
 import SEO from '../../common/SEO';
 import { siteMetadata } from '../../seo/siteMetadata';
 import { generateBreadcrumbStructuredData } from '../../seo/structuredData';
@@ -37,7 +36,6 @@ const ReferAndEarn = () => {
         type="website"
         structuredData={pageStructuredData}
       />
-      <PageTitle title="Refer & Earn - 360Ghar Referral Program" />
 
       <OffCanvas />
       <MobileMenu />

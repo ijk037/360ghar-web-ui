@@ -12,7 +12,7 @@ const Comment = () => {
                 <ul className="comment-list">
                     <li className="comment-list__item d-flex">
                         <div className="comment-list__thumb">
-                            <LazyImage src={CommentThumb1} className="cover-img" alt=""/>
+                            <LazyImage src={CommentThumb1} className="cover-img" alt="Amit Sharma" width={60} height={60}/>
                         </div>
                         <div className="comment-list__content">
                             <div className="flx-align gap-2 gap-sm-4">
@@ -39,7 +39,7 @@ const Comment = () => {
                     </li>
                     <li className="comment-list__item d-flex">
                         <div className="comment-list__thumb">
-                            <LazyImage src={CommentThumb2} className="cover-img" alt=""/>
+                            <LazyImage src={CommentThumb2} className="cover-img" alt="Neha Kapoor" width={60} height={60}/>
                         </div>
                         <div className="comment-list__content">
                             <div className="flx-align gap-2 gap-sm-4">

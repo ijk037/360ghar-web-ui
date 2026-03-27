@@ -95,7 +95,6 @@ async function createResponsiveVariants(relativePath) {
   const name = path.basename(inputPath, ext);
 
   try {
-    const stats = await fs.stat(inputPath);
     const results = [];
 
     for (const width of CONFIG.responsiveSizes) {
@@ -126,7 +125,7 @@ async function main() {
   // Check if sharp is available
   try {
     await sharp({ create: { width: 1, height: 1, channels: 3, background: '#fff' } }).webp().toBuffer();
-  } catch (error) {
+  } catch {
     console.error('Error: Sharp library not working. Run: npm install sharp');
     process.exit(1);
   }

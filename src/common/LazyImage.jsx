@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useMemo, useState } from 'react';
+import { forwardRef, useMemo, useState } from 'react';
 
 /**
  * Centralized <img> wrapper that defaults to native lazy loading while
@@ -32,7 +32,7 @@ const normalizeSrc = (raw) => {
   return src;
 };
 
-const LazyImage = forwardRef(
+const LazyImageBase = forwardRef(
   (
     {
       priority = false,
@@ -60,15 +60,8 @@ const LazyImage = forwardRef(
     const normalizedSrc = useMemo(() => normalizeSrc(rest.src), [rest.src]);
     const normalizedFallbackSrc = useMemo(() => normalizeSrc(fallbackSrc), [fallbackSrc]);
 
-    const [currentSrc, setCurrentSrc] = useState(
-      normalizedSrc || normalizedFallbackSrc || ''
-    );
+    const [currentSrc, setCurrentSrc] = useState(normalizedSrc || normalizedFallbackSrc || '');
     const [didFallback, setDidFallback] = useState(false);
-
-    useEffect(() => {
-      setCurrentSrc(normalizedSrc || normalizedFallbackSrc || '');
-      setDidFallback(false);
-    }, [normalizedSrc, normalizedFallbackSrc]);
 
     const resolvedReferrerPolicy = useMemo(() => {
       if (referrerPolicy) return referrerPolicy;
@@ -118,6 +111,16 @@ const LazyImage = forwardRef(
     );
   }
 );
+
+LazyImageBase.displayName = 'LazyImageBase';
+
+const LazyImage = forwardRef((props, ref) => {
+  const normalizedSrc = normalizeSrc(props.src);
+  const normalizedFallbackSrc = normalizeSrc(props.fallbackSrc);
+  const imageKey = `${normalizedSrc}::${normalizedFallbackSrc}`;
+
+  return <LazyImageBase key={imageKey} ref={ref} {...props} />;
+});
 
 LazyImage.displayName = 'LazyImage';
 

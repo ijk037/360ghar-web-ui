@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import usePropertyStore from '../store/propertyStore';
 import { useLocationStore } from '../store/locationStore';
 import GooglePlacesInput from './GooglePlacesInput';
+import { buildPropertySearchQuery } from '../store/propertyFilters';
 
 const SimplifiedFilter = ({ buttonText = 'Search' }) => {
   const navigate = useNavigate();
@@ -10,8 +11,7 @@ const SimplifiedFilter = ({ buttonText = 'Search' }) => {
     filters,
     updateFilter,
     clearFilters,
-    isLoading,
-    filtersChanged
+    isLoading
   } = usePropertyStore();
   
   const { location, setLocation } = useLocationStore();
@@ -25,23 +25,12 @@ const SimplifiedFilter = ({ buttonText = 'Search' }) => {
 
   // Build URL parameters from current filters
   const buildFilterParams = useCallback(() => {
-    const params = new URLSearchParams();
-    
-    // Add purpose filter
-    if (filters.purpose) {
-      params.append('purpose', filters.purpose);
-    }
-    
-    // Add location filters
-    if (filters.lat && filters.lng) {
-      params.append('lat', filters.lat.toString());
-      params.append('lng', filters.lng.toString());
-      if (filters.radius) {
-        params.append('radius', filters.radius.toString());
-      }
-    }
-    
-    return params.toString();
+    return buildPropertySearchQuery({
+      purpose: filters.purpose,
+      lat: filters.lat,
+      lng: filters.lng,
+      radius: filters.radius,
+    });
   }, [filters]);
 
   // Handle search button click - navigate to properties page with filters

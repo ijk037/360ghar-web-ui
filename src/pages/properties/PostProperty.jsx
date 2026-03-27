@@ -4,12 +4,24 @@ import Footer from '../../common/Footer';
 import MobileMenu from '../../common/MobileMenu';
 import OffCanvas from '../../common/OffCanvas';
 import Cta from '../../components/ui/Cta';
-import PageTitle from '../../common/PageTitle';
+
 import SEO from '../../common/SEO';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import { PROPERTY_TYPE_OPTIONS } from '../../utils/propertyTaxonomy';
+
+const postPropertyTypeOptions = [
+    ...PROPERTY_TYPE_OPTIONS,
+    { value: 'other', label: 'Other (Tell us more)' }
+];
+
+const listingTypeOptions = [
+    { value: 'buy', label: 'For Sale' },
+    { value: 'rent', label: 'For Rent' },
+    { value: 'short_stay', label: 'Short Stay' }
+];
 
 const validationSchema = yup.object({
     full_name: yup.string()
@@ -66,7 +78,8 @@ const PostPropertyForm = () => {
                     },
                     body: JSON.stringify({
                         ...values,
-                        phone: `+91${values.phone}`
+                        phone: `+91${values.phone}`,
+                        form_type: 'property_posting',
                     })
                 });
 
@@ -79,7 +92,7 @@ const PostPropertyForm = () => {
                 } else {
                     throw new Error('Failed to submit form');
                 }
-            } catch (error) {
+            } catch {
                 setGlobalError('Failed to submit your request. Please try again.');
                 toast.error('Failed to submit your request. Please try again.', {
                     theme: 'colored'
@@ -197,14 +210,11 @@ const PostPropertyForm = () => {
                                             value={formik.values.property_type}
                                         >
                                             <option value="">Select Property Type</option>
-                                            <option value="apartment">Apartment</option>
-                                            <option value="villa">Villa</option>
-                                            <option value="plot">Plot</option>
-                                            <option value="commercial">Commercial</option>
-                                            <option value="office">Office Space</option>
-                                            <option value="shop">Shop</option>
-                                            <option value="warehouse">Warehouse</option>
-                                            <option value="other">Other</option>
+                                            {postPropertyTypeOptions.map((option) => (
+                                                <option key={option.value} value={option.value}>
+                                                    {option.label}
+                                                </option>
+                                            ))}
                                         </select>
                                     </div>
                                     {formik.touched.property_type && formik.errors.property_type && (
@@ -265,9 +275,11 @@ const PostPropertyForm = () => {
                                             value={formik.values.listing_type}
                                         >
                                             <option value="">Select Listing Type</option>
-                                            <option value="sale">For Sale</option>
-                                            <option value="rent">For Rent</option>
-                                            <option value="both">Both</option>
+                                            {listingTypeOptions.map((option) => (
+                                                <option key={option.value} value={option.value}>
+                                                    {option.label}
+                                                </option>
+                                            ))}
                                         </select>
                                     </div>
                                 </div>
@@ -333,10 +345,7 @@ const PostPropertyForm = () => {
 const PostProperty = () => {
     return (
         <>
-            <ToastContainer />
             <SEO title="Post a Property | 360Ghar" description="Request assistance to post your property on 360Ghar." canonical="/post-property" noindex />
-            <PageTitle title="360Ghar - Post a Property" />
-
             <OffCanvas />
             <MobileMenu />
 

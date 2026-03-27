@@ -3,11 +3,12 @@
  import Footer from '../../common/Footer';
  import MobileMenu from '../../common/MobileMenu';
  import OffCanvas from '../../common/OffCanvas';
- import PageTitle from '../../common/PageTitle';
+ 
  import SEO from '../../common/SEO';
  import Cta from '../../components/ui/Cta';
  import { siteMetadata } from '../../seo/siteMetadata';
  import { generateToolSchema, toolSchemas } from '../../seo/toolSchemas';
+import { generateBreadcrumbStructuredData } from '../../seo/structuredData';
  
  const LoanEligibilityCalculator = () => {
      const [income, setIncome] = useState(50000);
@@ -70,18 +71,21 @@
                  canonical="/loan-eligibility-calculator"
                  image={siteMetadata.defaultOgImage}
                  type="website"
-                 structuredData={generateToolSchema(
-                     toolSchemas.loanEligibility.name,
-                     toolSchemas.loanEligibility.description,
-                     toolSchemas.loanEligibility.keywords,
-                     toolSchemas.loanEligibility.category
-                 )}
+                 structuredData={[
+                    generateToolSchema(
+                        toolSchemas.loanEligibility.name,
+                        toolSchemas.loanEligibility.description,
+                        toolSchemas.loanEligibility.keywords,
+                        toolSchemas.loanEligibility.category
+                    ),
+                    generateBreadcrumbStructuredData([
+                        { name: 'Home', url: 'https://360ghar.com/' },
+                        { name: 'Tools', url: 'https://360ghar.com/emi-calculator' },
+                        { name: toolSchemas.loanEligibility.name, url: 'https://360ghar.com/loan-eligibility-calculator' }
+                    ])
+                 ]}
              />
-             <PageTitle
-                 title="Home Loan Eligibility Calculator - Maximum Loan Amount | 360Ghar"
-                 description="Find out the maximum home loan amount you may be eligible for based on your income and existing financial obligations. FOIR-based calculation for Indian banks."
-             />
-             
+
              <OffCanvas />
              <MobileMenu />
  

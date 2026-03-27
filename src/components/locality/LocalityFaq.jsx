@@ -75,4 +75,5 @@ const LocalityFaq = ({ localityName, entityType, items = [] }) => {
     );
 };
 
+export { defaultFaqBuilder };
 export default LocalityFaq;

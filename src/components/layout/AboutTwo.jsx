@@ -50,7 +50,7 @@ const AboutTwo = () => {
                             </div>
                             <div className="col-lg-6">
                                 <div className="about-two__thumb">
-                                    <LazyImage src={aboutTwoRight.thumb} alt="" className="cover-img"/>
+                                    <LazyImage src={aboutTwoRight.thumb} alt="Our property verification team" className="cover-img" width={580} height={480}/>
                                     <div className="about-two-info">
                                         <h6 className="about-two-info__title">{aboutTwoRight.title}</h6>
                                         <span className="about-two-info__date font-18">{aboutTwoRight.date}</span>

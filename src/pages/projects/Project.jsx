@@ -4,7 +4,7 @@ import MobileMenu from '../../common/MobileMenu';
 import OffCanvas from '../../common/OffCanvas';
 import Cta from '../../components/ui/Cta';
 import ProjectSection from '../../components/project/ProjectSection';
-import PageTitle from '../../common/PageTitle';
+
 import SEO from '../../common/SEO';
 import { siteMetadata } from '../../seo/siteMetadata';
 
@@ -19,8 +19,6 @@ const Project = () => {
             image={siteMetadata.defaultOgImage}
             type="website"
         />
-        <PageTitle title="360Ghar - Project" />
-
         <OffCanvas />
         <MobileMenu />
 

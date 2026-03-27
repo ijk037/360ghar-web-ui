@@ -2,9 +2,10 @@ import { useContext, useEffect, useState, useMemo, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import CommonSidebar from '../../common/CommonSidebar';
-import { BlogDataContext } from '../../contextApi/BlogDataContext';
+import { BlogDataContext } from '../../contextApi/BlogDataContextValue';
 import { blogService } from '../../services/blogService';
 import LazyImage from '../../common/LazyImage';
+import { getAuthor } from '../../data/authors';
 import './BlogDetails.scss';
 
 /**
@@ -299,7 +300,9 @@ const BlogDetailsSection = () => {
 
     const thumb = post.thumbnail_url || post.cover_image_url;
     const title = post.title || 'Blog Details';
-    const authorName = post.author_name || 'Admin';
+    const authorSlug = post.author_slug || '360ghar-team';
+    const authorInfo = getAuthor(authorSlug);
+    const authorName = post.author_name || authorInfo.name;
     const categories = post.categories || [];
     const tags = post.tags || [];
 
@@ -322,7 +325,7 @@ const BlogDetailsSection = () => {
                                 <ul className="blog-infos mb-3">
                                     <li className="blog-infos__item">
                                         <span className="icon"><i className="fas fa-user"></i></span>
-                                        By {authorName}
+                                        By <Link to={`/blog/author/${authorSlug}`}>{authorName}</Link>
                                     </li>
                                     <li className="blog-infos__item">
                                         <span className="icon"><i className="fas fa-calendar"></i></span>

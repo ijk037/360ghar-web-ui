@@ -24,7 +24,7 @@ const ProjectSection = () => {
                                 return (
                                     <div className={`col-md-4 col-sm-6 col-xs-6`} key={projectItemIndex}>
                                         <div className="project-page-thumb">
-                                            <LazyImage src={thumb} alt="" className="cover-img"/>
+                                            <LazyImage src={thumb} alt={title || 'Project'} className="cover-img" width={400} height={300}/>
                                             <div className="project-page-content">
                                                 <h6 className="project-page-content__title">
                                                     <Link to={projectURL} state={{ id, title, thumb, desc }} className="link">{title}</Link>

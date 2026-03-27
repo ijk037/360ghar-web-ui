@@ -20,7 +20,7 @@ export const realEstateStructuredData = {
     image: 'https://360ghar.com/og-image-home.jpg',
     telephone: siteMetadata.organization.telephone,
     email: siteMetadata.organization.email,
-    foundingDate: '2023',
+    foundingDate: '2025',
     foundingLocation: 'Gurgaon, Haryana, India',
     slogan: "India's First AI + VR Real Estate Platform",
     keywords: 'real estate Gurgaon, verified property, 360 virtual tour, VR real estate India, AI property search',
@@ -318,7 +318,7 @@ export const realEstateStructuredData = {
         name: 'Can the AI help me manage rental properties?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: "Yes! Landlords can use the AI assistant to track rent collection, manage tenants, handle maintenance requests, and access property documents. Just ask: 'Show me this month\'s rent status' or 'List all maintenance requests'."
+          text: "Yes! Landlords can use the AI assistant to track rent collection, manage tenants, handle maintenance requests, and access property documents. Just ask: \"Show me this month's rent status\" or \"List all maintenance requests\"."
         }
       }
     ]
@@ -334,7 +334,7 @@ export const realEstateStructuredData = {
     url: siteMetadata.siteUrl,
     logo: siteMetadata.defaultOgImage,
     image: siteMetadata.defaultOgImage,
-    foundingDate: '2024',
+    foundingDate: '2025',
     sameAs: [
       'https://www.facebook.com/360ghar',
       'https://www.instagram.com/360ghar',
@@ -600,14 +600,15 @@ export const generatePropertyStructuredData = (property) => ({
 });
 
 // Blog post structured data generator
-export const generateBlogStructuredData = (blog) => ({
+export const generateBlogStructuredData = ({ authorSlug, authorName, ...blog }) => ({
   '@type': 'BlogPosting',
   headline: blog.title || 'Real Estate Blog',
   description: blog.description || 'Latest real estate insights and tips',
   image: blog.image || siteMetadata.defaultOgImage,
   author: {
-    '@type': 'Organization',
-    name: siteMetadata.siteName
+    '@type': authorSlug ? 'Person' : 'Organization',
+    name: authorName || siteMetadata.siteName,
+    ...(authorSlug ? { url: `https://360ghar.com/blog/author/${authorSlug}` } : {})
   },
   publisher: {
     '@type': 'Organization',

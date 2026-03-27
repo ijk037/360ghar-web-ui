@@ -75,7 +75,7 @@ export const absoluteUrl = (urlOrPath) => {
 
     new URL(urlOrPath);
     return urlOrPath;
-  } catch (_) {
+  } catch {
     return `${siteMetadata.siteUrl.replace(/\/$/, '')}/${String(urlOrPath).replace(/^\//, '')}`;
   }
 };

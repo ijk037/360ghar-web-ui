@@ -5,7 +5,7 @@ import OffCanvas from '../../common/OffCanvas';
 import Cta from '../../components/ui/Cta';
 import ProjectDetailsSection from '../../components/project/ProjectDetailsSection';
 import { useParams } from 'react-router-dom';
-import PageTitle from '../../common/PageTitle';
+
 import SEO from '../../common/SEO';
 import { siteMetadata } from '../../seo/siteMetadata';
 
@@ -22,8 +22,6 @@ const ProjectDetails = () => {
             image={siteMetadata.defaultOgImage}
             type="website"
         />
-        <PageTitle title="360Ghar - Project Details" />
-
         <OffCanvas />
         <MobileMenu />
 

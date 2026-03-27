@@ -20,12 +20,21 @@ const NavMenu = (props) => {
         isMobileMenu ? [] : navMenus.slice(visibleCount)
     ), [isMobileMenu, visibleCount]);
 
+    const closeMenus = () => {
+        setActiveIndex(null);
+    };
+
+    const handleNavigate = () => {
+        closeMenus();
+        props.onNavigate?.();
+    };
+
     const handleDropdownOpen = (e, index, hasSubmenu) => {
         if (hasSubmenu) {
             e.preventDefault();
             e.stopPropagation();
         }
-        setActiveIndex(activeIndex === index ? null : index);
+        setActiveIndex((currentIndex) => currentIndex === index ? null : index);
     };
 
     const getActiveClass = ({ isActive }) => isActive ? 'nav-menu__link active' : 'nav-menu__link';
@@ -54,7 +63,6 @@ const NavMenu = (props) => {
 
     useEffect(() => {
         if (isMobileMenu) {
-            setVisibleCount(navMenus.length);
             return;
         }
 
@@ -122,19 +130,20 @@ const NavMenu = (props) => {
                         type="button"
                         className="nav-menu__link bg-transparent border-0"
                         onClick={(e) => handleDropdownOpen(e, itemKey, hasSubmenu)}
+                        aria-haspopup="menu"
                         aria-expanded={activeIndex === itemKey}
                         aria-controls={`submenu-${itemKey}`}
                     >
                         {navMenu.text}
                     </button>
                 ) : (
-                    <NavLink to={navMenu.path} className={getActiveClass} onClick={() => setActiveIndex(null)}>{navMenu.text}</NavLink>
+                    <NavLink to={navMenu.path} className={getActiveClass} onClick={handleNavigate}>{navMenu.text}</NavLink>
                 )}
                 {hasSubmenu && (
                     <ul className="nav-submenu" id={`submenu-${itemKey}`}>
                         {navMenu.submenus.map((submenu, subIndex) => (
                             <li className="nav-submenu__item" key={subIndex}>
-                                <Link to={submenu.path} className="nav-submenu__link" onClick={() => setActiveIndex(null)}>{submenu.text}</Link>
+                                <Link to={submenu.path} className="nav-submenu__link" onClick={handleNavigate}>{submenu.text}</Link>
                             </li>
                         ))}
                     </ul>
@@ -156,6 +165,7 @@ const NavMenu = (props) => {
                                     type="button"
                                     className="nav-menu__link bg-transparent border-0"
                                     onClick={(e) => handleDropdownOpen(e, 'more-menu', true)}
+                                    aria-haspopup="menu"
                                     aria-expanded={activeIndex === 'more-menu'}
                                     aria-controls="submenu-more-menu"
                                 >
@@ -169,14 +179,14 @@ const NavMenu = (props) => {
                                                 <ul className="nav-submenu__nested">
                                                     {menuItem.submenus.map((submenu, subIndex) => (
                                                         <li className="nav-submenu__item" key={`overflow-sub-${subIndex}`}>
-                                                            <Link to={submenu.path} className="nav-submenu__link" onClick={() => setActiveIndex(null)}>{submenu.text}</Link>
+                                                            <Link to={submenu.path} className="nav-submenu__link" onClick={handleNavigate}>{submenu.text}</Link>
                                                         </li>
                                                     ))}
                                                 </ul>
                                             </li>
                                         ) : (
                                             <li className="nav-submenu__item" key={`overflow-${menuIndex}`}>
-                                                <Link to={menuItem.path} className="nav-submenu__link" onClick={() => setActiveIndex(null)}>{menuItem.text}</Link>
+                                                <Link to={menuItem.path} className="nav-submenu__link" onClick={handleNavigate}>{menuItem.text}</Link>
                                             </li>
                                         )
                                     ))}

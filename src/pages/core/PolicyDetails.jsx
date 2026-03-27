@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
-import PageTitle from '../../common/PageTitle';
+import MobileMenu from '../../common/MobileMenu';
+import OffCanvas from '../../common/OffCanvas';
 import SEO from '../../common/SEO';
 import { siteMetadata } from '../../seo/siteMetadata';
 import { pageService } from '../../services/pageService';
@@ -87,7 +88,6 @@ const PolicyDetails = () => {
           dateModified: lastUpdated || undefined,
         }}
       />
-      <PageTitle title={`360Ghar - ${title}`} />
 
       <Header
         headerClass="dark-header has-border"
@@ -143,6 +143,8 @@ const PolicyDetails = () => {
       </section>
 
       <Footer />
+      <MobileMenu />
+      <OffCanvas />
     </>
   );
 };

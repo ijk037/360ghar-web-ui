@@ -9,7 +9,7 @@ const extractError = (err, fallback = 'Request failed') => {
   return String(d);
 };
 
-const useVisitStore = create((set, get) => ({
+const useVisitStore = create((set) => ({
   visits: [],
   upcomingVisits: [],
   pastVisits: [],

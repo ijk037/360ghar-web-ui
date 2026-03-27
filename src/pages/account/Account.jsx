@@ -4,7 +4,6 @@ import MobileMenu from '../../common/MobileMenu';
 import OffCanvas from '../../common/OffCanvas';
 import Cta from '../../components/ui/Cta';
 import AccountSection from '../../components/account/AccountSection';
-import PageTitle from '../../common/PageTitle';
 import SEO from '../../common/SEO';
 import PageLoader from '../../common/PageLoader';
 import { Navigate } from 'react-router-dom';
@@ -24,8 +23,6 @@ const Account = () => {
     return (
         <>
         <SEO title="Account | 360Ghar" description="Manage your 360Ghar account." canonical="/account" noindex />
-        <PageTitle title="360Ghar - Account Page" />
-
         <OffCanvas />
         <MobileMenu />
 

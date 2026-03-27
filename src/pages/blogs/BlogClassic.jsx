@@ -4,9 +4,9 @@ import MobileMenu from '../../common/MobileMenu';
 import OffCanvas from '../../common/OffCanvas';
 import Cta from '../../components/ui/Cta';
 import BlogClassicSection from '../../components/blog/BlogClassicSection';
-import PageTitle from '../../common/PageTitle';
 import SEO from '../../common/SEO';
 import { siteMetadata } from '../../seo/siteMetadata';
+import { generateBreadcrumbStructuredData } from '../../seo/structuredData';
 
 const BlogClassic = () => {
     // Generate CollectionPage schema for blog listings
@@ -36,10 +36,14 @@ const BlogClassic = () => {
           canonical="/blog"
           image={siteMetadata.defaultOgImage}
           type="blog"
-          structuredData={blogCollectionSchema}
+          structuredData={[
+            blogCollectionSchema,
+            generateBreadcrumbStructuredData([
+              { name: 'Home', url: 'https://360ghar.com/' },
+              { name: 'Blog', url: 'https://360ghar.com/blog' }
+            ])
+          ]}
         />
-        <PageTitle title="Real Estate Blog | 360Ghar" />
-
         <OffCanvas />
         <MobileMenu />
 

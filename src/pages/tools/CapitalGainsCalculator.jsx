@@ -1,13 +1,41 @@
-import React, { useState, useEffect, useCallback } from 'react'; // eslint-disable-line no-unused-vars
+import { useMemo, useState } from 'react';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
 import MobileMenu from '../../common/MobileMenu';
 import OffCanvas from '../../common/OffCanvas';
-import PageTitle from '../../common/PageTitle';
+
 import SEO from '../../common/SEO';
 import Cta from '../../components/ui/Cta';
 import { siteMetadata } from '../../seo/siteMetadata';
 import { generateToolSchema, toolSchemas } from '../../seo/toolSchemas';
+import { generateBreadcrumbStructuredData } from '../../seo/structuredData';
+
+const ciiData = {
+    '2001-2002': 100,
+    '2002-2003': 105,
+    '2003-2004': 109,
+    '2004-2005': 113,
+    '2005-2006': 117,
+    '2006-2007': 122,
+    '2007-2008': 129,
+    '2008-2009': 137,
+    '2009-2010': 148,
+    '2010-2011': 167,
+    '2011-2012': 184,
+    '2012-2013': 200,
+    '2013-2014': 220,
+    '2014-2015': 240,
+    '2015-2016': 254,
+    '2016-2017': 264,
+    '2017-2018': 272,
+    '2018-2019': 280,
+    '2019-2020': 289,
+    '2020-2021': 301,
+    '2021-2022': 317,
+    '2022-2023': 331,
+    '2023-2024': 348,
+    '2024-2025': 363
+};
 
 const CapitalGainsCalculator = () => {
     const [salePrice, setSalePrice] = useState(5000000);
@@ -17,88 +45,35 @@ const CapitalGainsCalculator = () => {
     const [transferExpenses, setTransferExpenses] = useState(50000);
     const [improvementCost] = useState(0);
 
-    const [gainType, setGainType] = useState('');
-    const [indexedCost, setIndexedCost] = useState(0);
-    const [capitalGain, setCapitalGain] = useState(0);
-    const [taxLiability, setTaxLiability] = useState(0);
-
-    // Cost Inflation Index (CII) Data (As of FY 2024-25)
-    const ciiData = { // eslint-disable-line react-hooks/exhaustive-deps
-        '2001-2002': 100,
-        '2002-2003': 105,
-        '2003-2004': 109,
-        '2004-2005': 113,
-        '2005-2006': 117,
-        '2006-2007': 122,
-        '2007-2008': 129,
-        '2008-2009': 137,
-        '2009-2010': 148,
-        '2010-2011': 167,
-        '2011-2012': 184,
-        '2012-2013': 200,
-        '2013-2014': 220,
-        '2014-2015': 240,
-        '2015-2016': 254,
-        '2016-2017': 264,
-        '2017-2018': 272,
-        '2018-2019': 280,
-        '2019-2020': 289,
-        '2020-2021': 301,
-        '2021-2022': 317,
-        '2022-2023': 331,
-        '2023-2024': 348,
-        '2024-2025': 363 // Estimated/Provisional for calculation
-    };
-
-    const calculateTax = useCallback(() => {
+    const taxSummary = useMemo(() => {
         const pYear = parseInt(purchaseYear.split('-')[0]);
         const sYear = parseInt(saleYear.split('-')[0]);
 
         // Determine Gain Type (Long Term if held > 24 months)
         // Simplified: Using financial year difference for estimation
         const isLongTerm = (sYear - pYear) >= 2;
-        setGainType(isLongTerm ? 'Long Term Capital Asset (LTCG)' : 'Short Term Capital Asset (STCG)');
+        const gainType = isLongTerm ? 'Long Term Capital Asset (LTCG)' : 'Short Term Capital Asset (STCG)';
 
-        let finalCost = purchasePrice + improvementCost;
-
-        if (isLongTerm) {
+        const finalCost = isLongTerm ? (() => {
             // Calculate Indexed Cost of Acquisition
             // Formula: Cost * (CII of Sale Year / CII of Purchase Year)
             const ciiSale = ciiData[saleYear] || 363;
             const ciiPurchase = ciiData[purchaseYear] || 100;
 
-            finalCost = (purchasePrice * ciiSale) / ciiPurchase;
-
-            // Add improvement cost (simplified - ideally improvement also needs indexation based on its year)
-            // For this basic tool, we'll just add un-indexed improvement cost or assume it's included in purchase for simplicity
-            // or better: add it to indexed cost directly if user enters it (approximation)
-            finalCost += improvementCost;
-        } else {
-            // Short Term: No indexation benefit
-            finalCost = purchasePrice + improvementCost;
-        }
-
-        setIndexedCost(Math.round(finalCost));
+            return (purchasePrice * ciiSale) / ciiPurchase + improvementCost;
+        })() : purchasePrice + improvementCost;
 
         const netSaleConsideration = salePrice - transferExpenses;
         const gain = netSaleConsideration - finalCost;
+        const taxLiability = isLongTerm && gain > 0 ? Math.round(gain * 0.20) : 0;
 
-        setCapitalGain(Math.round(gain));
-
-        // Calculate Tax
-        // LTCG: 20% with indexation (New regime might have options, sticking to standard 20% with indexation)
-        // STCG: Added to income and taxed as per slab (Here we can't calc exact, but can show gain)
-
-        if (isLongTerm && gain > 0) {
-            setTaxLiability(Math.round(gain * 0.20)); // 20% tax
-        } else {
-            setTaxLiability(0); // For STCG, it depends on total income, so we display "As per slab"
-        }
-    }, [salePrice, purchasePrice, purchaseYear, saleYear, transferExpenses, improvementCost, ciiData]);
-
-    useEffect(() => {
-        calculateTax();
-    }, [calculateTax]);
+        return {
+            gainType,
+            indexedCost: Math.round(finalCost),
+            capitalGain: Math.round(gain),
+            taxLiability,
+        };
+    }, [improvementCost, purchasePrice, purchaseYear, salePrice, saleYear, transferExpenses]);
 
     const formatCurrency = (val) => {
         return new Intl.NumberFormat('en-IN', {
@@ -117,16 +92,19 @@ const CapitalGainsCalculator = () => {
                 canonical="/capital-gains-tax-calculator"
                 image={siteMetadata.defaultOgImage}
                 type="website"
-                structuredData={generateToolSchema(
-                    toolSchemas.capitalGains.name,
-                    toolSchemas.capitalGains.description,
-                    toolSchemas.capitalGains.keywords,
-                    toolSchemas.capitalGains.category
-                )}
-            />
-            <PageTitle
-                title="Capital Gains Tax Calculator - Property Sale Tax India | 360Ghar"
-                description="Estimate your tax liability when selling a property in India. Supports both Long Term (LTCG) and Short Term (STCG) calculations with Cost Inflation Index (CII) indexation."
+                structuredData={[
+                    generateToolSchema(
+                        toolSchemas.capitalGains.name,
+                        toolSchemas.capitalGains.description,
+                        toolSchemas.capitalGains.keywords,
+                        toolSchemas.capitalGains.category
+                    ),
+                    generateBreadcrumbStructuredData([
+                        { name: 'Home', url: 'https://360ghar.com/' },
+                        { name: 'Tools', url: 'https://360ghar.com/emi-calculator' },
+                        { name: toolSchemas.capitalGains.name, url: 'https://360ghar.com/capital-gains-tax-calculator' }
+                    ])
+                ]}
             />
 
             <OffCanvas />
@@ -176,7 +154,7 @@ const CapitalGainsCalculator = () => {
                                                 <div className="col-6 mb-3">
                                                     <label className="form-label">Sale Year</label>
                                                     <select className="form-select" value={saleYear} onChange={(e) => setSaleYear(e.target.value)}>
-                                                        {Object.keys(ciiData).reverse().map(year => (
+                                                        {[...Object.keys(ciiData)].reverse().map(year => (
                                                             <option key={year} value={year}>{year}</option>
                                                         ))}
                                                     </select>
@@ -201,15 +179,15 @@ const CapitalGainsCalculator = () => {
 
                                             <div className="mb-3">
                                                 <label className="text-muted small fw-bold">ASSET TYPE</label>
-                                                <div className={`fs-5 fw-bold ${gainType.includes('Long') ? 'text-success' : 'text-warning'}`}>
-                                                    {gainType}
+                                                <div className={`fs-5 fw-bold ${taxSummary.gainType.includes('Long') ? 'text-success' : 'text-warning'}`}>
+                                                    {taxSummary.gainType}
                                                 </div>
                                             </div>
 
                                             <div className="mb-3 p-3 bg-light rounded-2">
                                                 <div className="d-flex justify-content-between mb-2">
                                                     <span className="text-muted">Indexed Cost of Acquisition</span>
-                                                    <span className="fw-bold">{formatCurrency(indexedCost)}</span>
+                                                    <span className="fw-bold">{formatCurrency(taxSummary.indexedCost)}</span>
                                                 </div>
                                                 <div className="small text-muted fst-italic">
                                                     (Purchase Price adjusted for inflation using CII)
@@ -219,8 +197,8 @@ const CapitalGainsCalculator = () => {
                                             <div className="mb-4 p-3 bg-light rounded-2">
                                                 <div className="d-flex justify-content-between mb-2">
                                                     <span className="text-muted">Capital Gains</span>
-                                                    <span className={`fw-bold ${capitalGain > 0 ? 'text-success' : 'text-danger'}`}>
-                                                        {formatCurrency(capitalGain)}
+                                                    <span className={`fw-bold ${taxSummary.capitalGain > 0 ? 'text-success' : 'text-danger'}`}>
+                                                        {formatCurrency(taxSummary.capitalGain)}
                                                     </span>
                                                 </div>
                                             </div>
@@ -228,10 +206,10 @@ const CapitalGainsCalculator = () => {
                                             <div className="p-3 bg-main bg-opacity-10 rounded-2 border border-main">
                                                 <label className="text-main small fw-bold">ESTIMATED TAX LIABILITY</label>
                                                 <div className="display-6 fw-bold text-main">
-                                                    {gainType.includes('Long') ? formatCurrency(taxLiability) : 'As per Tax Slab'}
+                                                    {taxSummary.gainType.includes('Long') ? formatCurrency(taxSummary.taxLiability) : 'As per Tax Slab'}
                                                 </div>
                                                 <div className="small text-muted mt-1">
-                                                    {gainType.includes('Long')
+                                                    {taxSummary.gainType.includes('Long')
                                                         ? '@ 20% on gains with indexation benefit'
                                                         : 'Short term gains are added to your total income and taxed as per your slab.'}
                                                 </div>

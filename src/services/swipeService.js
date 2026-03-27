@@ -16,19 +16,19 @@ export const swipeService = {
 
   // Undo last swipe
   undoLast: async () => {
-    const response = await api.delete('/swipes/undo/');
+    const response = await api.delete('/swipes/undo');
     return response.data;
   },
 
   // Toggle like status for a swipe by ID
   toggle: async (swipeId) => {
-    const response = await api.put(`/swipes/${swipeId}/toggle/`);
+    const response = await api.put(`/swipes/${swipeId}/toggle`);
     return response.data;
   },
 
   // Get swipe statistics
   stats: async () => {
-    const response = await api.get('/swipes/stats/');
+    const response = await api.get('/swipes/stats');
     return response.data;
   },
 };

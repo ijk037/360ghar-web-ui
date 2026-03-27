@@ -1,6 +1,5 @@
-import { createContext, useState }  from 'react';
-
-export const OffCanvasContext = createContext(); 
+import { useState }  from 'react';
+import { OffCanvasContext } from './OffCanvasContextValue';
 
 const OffCanvasProvider = ({ children }) => {
 

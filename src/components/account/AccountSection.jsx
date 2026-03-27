@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useAuthStore } from '../../store';
 import AccountHomeTab from './AccountHomeTab';
 import AccountProfileTab from './AccountProfileTab';
@@ -66,7 +66,6 @@ const AccountSection = () => {
 
   return (
     <>
-      <ToastContainer />
       <section className="account padding-y-120">
         <div className="container container-two">
           <Tabs selectedIndex={selectedIndex} onSelect={handleSelect}>

@@ -1,6 +1,16 @@
 import { useState, useCallback } from 'react';
 import usePropertyStore from '../../store/propertyStore';
 import { useLocationStore } from '../../store/locationStore';
+import {
+  COMMERCIAL_PROPERTY_TYPES,
+  GENDER_PREFERENCE_OPTIONS,
+  PROPERTY_TYPE_FILTER_OPTIONS,
+  PURPOSE_OPTIONS,
+  SHARING_TYPE_OPTIONS,
+  getPropertyTypeLabel,
+  includesPgOrFlatmateType,
+  isCommercialSelection,
+} from '../../utils/propertyTaxonomy';
 
 const PropertyFilters = ({ showAdvanced = false, isMobile = false, onCloseDrawer }) => {
   const {
@@ -22,21 +32,8 @@ const PropertyFilters = ({ showAdvanced = false, isMobile = false, onCloseDrawer
   const activeFiltersCount = getActiveFiltersCount();
   const advancedFiltersId = 'property-advanced-filters';
 
-  // Property types matching API documentation
-  const propertyTypes = [
-    { value: 'house', label: 'House' },
-    { value: 'apartment', label: 'Apartment' },
-    { value: 'builder_floor', label: 'Builder Floor' },
-    { value: 'room', label: 'Room' }
-  ];
-
-  // Purpose options matching API documentation
-  const purposes = [
-    { value: '', label: 'All' },
-    { value: 'buy', label: 'For Sale' },
-    { value: 'rent', label: 'For Rent' },
-    { value: 'short_stay', label: 'Short Stay' }
-  ];
+  const propertyTypes = PROPERTY_TYPE_FILTER_OPTIONS;
+  const purposes = PURPOSE_OPTIONS;
 
   // Bedroom options
   const bedroomOptions = [
@@ -75,6 +72,7 @@ const PropertyFilters = ({ showAdvanced = false, isMobile = false, onCloseDrawer
   // Get active filters as array of chips
   const getActiveFilterChips = () => {
     const chips = [];
+    const selectedTypes = [...(filters.property_type || [])];
 
     // Purpose
     if (filters.purpose) {
@@ -90,18 +88,52 @@ const PropertyFilters = ({ showAdvanced = false, isMobile = false, onCloseDrawer
     }
 
     // Property Types
-    if (filters.property_type?.length > 0) {
-      filters.property_type.forEach(type => {
-        const typeLabel = propertyTypes.find(t => t.value === type)?.label;
-        if (typeLabel) {
-          chips.push({
-            id: `type-${type}`,
-            label: 'Type',
-            value: typeLabel,
-            onRemove: () => handlePropertyTypeChange(type, false)
-          });
-        }
+    if (isCommercialSelection(selectedTypes)) {
+      chips.push({
+        id: 'type-commercial',
+        label: 'Type',
+        value: 'Commercial',
+        onRemove: () => handlePropertyTypeChange('commercial', false)
       });
+    }
+    const explicitTypes = isCommercialSelection(selectedTypes)
+      ? selectedTypes.filter(type => !COMMERCIAL_PROPERTY_TYPES.includes(type))
+      : selectedTypes;
+    explicitTypes.forEach(type => {
+      chips.push({
+        id: `type-${type}`,
+        label: 'Type',
+        value: getPropertyTypeLabel(type),
+        onRemove: () => handlePropertyTypeChange(type, false)
+      });
+    });
+
+    if (filters.gender_preference) {
+      const genderLabel = GENDER_PREFERENCE_OPTIONS.find(
+        (option) => option.value === filters.gender_preference
+      )?.label;
+      if (genderLabel) {
+        chips.push({
+          id: 'gender-preference',
+          label: 'Gender',
+          value: genderLabel,
+          onRemove: () => updateFilter('gender_preference', '')
+        });
+      }
+    }
+
+    if (filters.sharing_type) {
+      const sharingLabel = SHARING_TYPE_OPTIONS.find(
+        (option) => option.value === filters.sharing_type
+      )?.label;
+      if (sharingLabel) {
+        chips.push({
+          id: 'sharing-type',
+          label: 'Room Type',
+          value: sharingLabel,
+          onRemove: () => updateFilter('sharing_type', '')
+        });
+      }
     }
 
     // Budget
@@ -242,6 +274,13 @@ const PropertyFilters = ({ showAdvanced = false, isMobile = false, onCloseDrawer
   // Handle property type change (multi-select)
   const handlePropertyTypeChange = useCallback((type, checked) => {
     const currentTypes = [...(filters.property_type || [])];
+    if (type === 'commercial') {
+      const nextTypes = checked
+        ? [...new Set([...currentTypes, ...COMMERCIAL_PROPERTY_TYPES])]
+        : currentTypes.filter((value) => !COMMERCIAL_PROPERTY_TYPES.includes(value));
+      updateFilter('property_type', nextTypes);
+      return;
+    }
     if (checked) {
       if (!currentTypes.includes(type)) {
         updateFilter('property_type', [...currentTypes, type]);
@@ -381,7 +420,11 @@ const PropertyFilters = ({ showAdvanced = false, isMobile = false, onCloseDrawer
                 className="form-check-input"
                 type="checkbox"
                 id={`type-${type.value}`}
-                checked={filters.property_type?.includes(type.value) || false}
+                checked={
+                  type.value === 'commercial'
+                    ? isCommercialSelection(filters.property_type || [])
+                    : filters.property_type?.includes(type.value) || false
+                }
                 onChange={(e) => handlePropertyTypeChange(type.value, e.target.checked)}
               />
               <label className="form-check-label" htmlFor={`type-${type.value}`}>
@@ -600,6 +643,40 @@ const PropertyFilters = ({ showAdvanced = false, isMobile = false, onCloseDrawer
               onChange={(e) => updateFilter('pincode', e.target.value)}
             />
           </div>
+
+          {includesPgOrFlatmateType(filters.property_type || []) && (
+            <div className="filter-group__section">
+              <h6 className="filter-group__subtitle">PG / Flatmate Preferences</h6>
+              <div className="mb-2">
+                <label className="form-label small">Gender Preference</label>
+                <select
+                  className="form-select common-input common-input--sm"
+                  value={filters.gender_preference || ''}
+                  onChange={(e) => updateFilter('gender_preference', e.target.value)}
+                >
+                  {GENDER_PREFERENCE_OPTIONS.map((option) => (
+                    <option key={option.value || 'gender-any'} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="form-label small">Room Type</label>
+                <select
+                  className="form-select common-input common-input--sm"
+                  value={filters.sharing_type || ''}
+                  onChange={(e) => updateFilter('sharing_type', e.target.value)}
+                >
+                  {SHARING_TYPE_OPTIONS.map((option) => (
+                    <option key={option.value || 'sharing-any'} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          )}
 
           {/* Short Stay Filters */}
           {filters.purpose === 'short_stay' && (

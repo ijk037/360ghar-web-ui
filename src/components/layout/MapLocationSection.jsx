@@ -7,9 +7,29 @@ import PropertyFilters from '../property-filters/PropertyFilters';
 import PropertyQuickFilters from '../property/PropertyQuickFilters';
 import MapControls from '../map/MapControls';
 import RadiusSlider from '../map/RadiusSlider';
-import SkeletonLoader from '../ui/SkeletonLoader';
+import LoadingSkeleton from '../ui/LoadingSkeleton';
 import GooglePlacesInput from '../../common/GooglePlacesInput';
 import { Loader } from '@googlemaps/js-api-loader';
+
+let googleMapsLoader;
+
+const getMapsLoader = () => {
+    if (typeof window !== 'undefined' && window.google?.maps) {
+        return { load: async () => {} };
+    }
+
+    if (!googleMapsLoader) {
+        const apiKey = import.meta.env.VITE_GOOGLE_PLACES_API_KEY || import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+        if (!apiKey || apiKey === 'your_google_places_api_key_here') {
+            console.error('Google Maps API key missing.');
+            return null;
+        }
+
+        googleMapsLoader = new Loader({ apiKey, version: 'weekly', id: 'google-maps-js', libraries: ['places'] });
+    }
+
+    return googleMapsLoader;
+};
 
 const MapLocationSection = () => {
     const {
@@ -49,25 +69,6 @@ const MapLocationSection = () => {
     const markersRef = useRef(new Map());
     const circleRef = useRef(null);
     const gmapsRef = useRef({ Map: null, Marker: null, Size: null, LatLngBounds: null, Circle: null });
-
-    // Reuse a single loader instance
-    const getMapsLoader = (() => {
-        let loader;
-        return () => {
-            if (typeof window !== 'undefined' && window.google?.maps) {
-                return { load: async () => { } };
-            }
-            if (!loader) {
-                const apiKey = import.meta.env.VITE_GOOGLE_PLACES_API_KEY || import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-                if (!apiKey || apiKey === 'your_google_places_api_key_here') {
-                    console.error('Google Maps API key missing.');
-                    return null;
-                }
-                loader = new Loader({ apiKey, version: 'weekly', id: 'google-maps-js', libraries: ['places'] });
-            }
-            return loader;
-        };
-    })();
 
     // Initialize location on mount
     useEffect(() => {
@@ -137,7 +138,7 @@ const MapLocationSection = () => {
         };
         init();
         return () => { mounted = false; };
-    }, [getMapsLoader, location.lat, location.lng, mapType, mapZoom, radius]);
+    }, [location.lat, location.lng, mapType, mapZoom, radius]);
 
     // Update map type
     useEffect(() => {
@@ -526,7 +527,7 @@ const MapLocationSection = () => {
                             <div className="row gy-4">
                                 {[1, 2, 3, 4].map(i => (
                                     <div key={i} className={gridClass}>
-                                        <SkeletonLoader type="property-card" count={1} />
+                                        <LoadingSkeleton variant="card" count={1} />
                                     </div>
                                 ))}
                             </div>

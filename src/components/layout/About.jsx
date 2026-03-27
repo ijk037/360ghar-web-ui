@@ -14,7 +14,7 @@ const About = () => {
                     <div className="row gy-4 align-items-center">
                         <div className="col-lg-6">
                             <div className="about-thumb">
-                                <LazyImage src={aboutContent.thumb} alt=""/>
+                                <LazyImage src={aboutContent.thumb} alt="About 360Ghar real estate platform" width={580} height={480}/>
                                 <div className="client-statistics flx-align">
                                     <span className="client-statistics__icon">
                                         {aboutStatistics.icon}

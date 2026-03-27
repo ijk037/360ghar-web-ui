@@ -11,6 +11,7 @@ import { useLocationStore } from '../../store/locationStore';
 import { propertyAPIService } from '../../services/propertyAPIService';
 import LoadingSkeleton from '../ui/LoadingSkeleton';
 import { hapticLight } from '../../utils/hapticFeedback';
+import { parsePropertySearchParams } from '../../store/propertyFilters';
 
 const PropertyPageSection = () => {
     const { setLocation } = useLocationStore();
@@ -25,17 +26,16 @@ const PropertyPageSection = () => {
         clearFilters,
         applyFilters
     } = usePropertyStore();
-    const [viewMode, setViewMode] = useState(searchParams.get('view') === 'list' ? 'list' : 'grid');
     const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
     const drawerRef = useRef(null);
     const filterTriggerRef = useRef(null);
+    const viewMode = searchParams.get('view') === 'list' ? 'list' : 'grid';
+    const closeFilterDrawer = useCallback(() => {
+        setIsFilterDrawerOpen(false);
+        filterTriggerRef.current?.focus();
+    }, []);
 
     const activeFiltersCount = getActiveFiltersCount();
-
-    useEffect(() => {
-        const nextView = searchParams.get('view') === 'list' ? 'list' : 'grid';
-        setViewMode(nextView);
-    }, [searchParams]);
 
     // Prevent body scroll when drawer is open
     useEffect(() => {
@@ -47,7 +47,7 @@ const PropertyPageSection = () => {
         return () => {
             document.body.style.overflow = '';
         };
-    }, [isFilterDrawerOpen]);
+    }, [closeFilterDrawer, isFilterDrawerOpen]);
 
     useEffect(() => {
         if (!isFilterDrawerOpen) {
@@ -91,83 +91,21 @@ const PropertyPageSection = () => {
             document.removeEventListener('keydown', handleEscape);
             document.removeEventListener('keydown', handleTabTrap);
         };
-    }, [isFilterDrawerOpen]);
+    }, [closeFilterDrawer, isFilterDrawerOpen]);
 
     // Container class approach for list/grid view - no body manipulation
     // View mode is applied via CSS class on the section element
 
     // Parse search parameters and apply them to filters on initial load
     useEffect(() => {
-        const urlFilters = {};
+        const urlFilters = parsePropertySearchParams(searchParams);
         let locationUpdate = null;
-
-        const paramMappings = {
-            'q': 'q',
-            'purpose': 'purpose',
-            'price_min': 'price_min',
-            'price_max': 'price_max',
-            'bedrooms_min': 'bedrooms_min',
-            'bedrooms_max': 'bedrooms_max',
-            'bathrooms_min': 'bathrooms_min',
-            'bathrooms_max': 'bathrooms_max',
-            'area_min': 'area_min',
-            'area_max': 'area_max',
-            'city': 'city',
-            'locality': 'locality',
-            'pincode': 'pincode',
-            'parking_spaces_min': 'parking_spaces_min',
-            'floor_number_min': 'floor_number_min',
-            'floor_number_max': 'floor_number_max',
-            'age_max': 'age_max',
-            'check_in': 'check_in',
-            'check_out': 'check_out',
-            'guests': 'guests',
-            'sort_by': 'sort_by',
-            'radius': 'radius'
-        };
-
-        Object.entries(paramMappings).forEach(([urlParam, filterKey]) => {
-            const value = searchParams.get(urlParam);
-            if (value) {
-                if (['price_min', 'price_max', 'area_min', 'area_max', 'guests', 'radius',
-                     'bedrooms_min', 'bedrooms_max', 'bathrooms_min', 'bathrooms_max',
-                     'parking_spaces_min', 'floor_number_min', 'floor_number_max', 'age_max'].includes(filterKey)) {
-                    urlFilters[filterKey] = parseFloat(value);
-                } else {
-                    urlFilters[filterKey] = value;
-                }
-            }
-        });
-
-        const propertyTypes = searchParams.getAll('property_type');
-        if (propertyTypes.length > 0) {
-            urlFilters.property_type = propertyTypes;
-        }
-
-        const amenities = searchParams.getAll('amenities');
-        if (amenities.length > 0) {
-            urlFilters.amenities = amenities;
-        }
-
-        const features = searchParams.getAll('features');
-        if (features.length > 0) {
-            urlFilters.features = features;
-        }
-
-        const lat = searchParams.get('lat');
-        const lng = searchParams.get('lng');
-        if (lat && lng) {
-            const latNum = parseFloat(lat);
-            const lngNum = parseFloat(lng);
-
+        if (typeof urlFilters.lat === 'number' && typeof urlFilters.lng === 'number') {
             locationUpdate = {
-                lat: latNum,
-                lng: lngNum,
+                lat: urlFilters.lat,
+                lng: urlFilters.lng,
                 name: 'Search Location'
             };
-
-            urlFilters.lat = latNum;
-            urlFilters.lng = lngNum;
         }
 
         if (Object.keys(urlFilters).length > 0) {
@@ -269,7 +207,6 @@ const PropertyPageSection = () => {
 
     const handleViewModeChange = (mode) => {
         if (mode === viewMode) return;
-        setViewMode(mode);
         const params = new URLSearchParams(searchParams);
         params.set('view', mode);
         navigate(`?${params.toString()}`, { replace: true });
@@ -279,14 +216,10 @@ const PropertyPageSection = () => {
         setIsFilterDrawerOpen(true);
     };
 
-    const closeFilterDrawer = () => {
-        setIsFilterDrawerOpen(false);
-        filterTriggerRef.current?.focus();
-    };
-
     const handleClearFiltersAndRefresh = async () => {
         clearFilters();
         await applyFilters();
+        navigate('/properties', { replace: true });
     };
 
     return (

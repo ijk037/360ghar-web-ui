@@ -1,6 +1,6 @@
 import ChatBubble from './ChatBubble';
 import ChatPanel from './ChatPanel';
-import { useChatStore, useAuthStore } from '../../store';
+import { useAuthStore } from '../../store';
 
 function ChatBot() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);

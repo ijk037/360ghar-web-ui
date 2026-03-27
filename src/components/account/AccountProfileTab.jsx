@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useUserStore } from '../../store';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 import LazyImage from '../../common/LazyImage';
 const AccountProfileTab = () => {
@@ -61,7 +61,6 @@ const AccountProfileTab = () => {
 
     return (
         <>
-            <ToastContainer />
             <div className="card common-card mb-4">
                 <div className="card-body">
                     <div className="profile-info d-flex gap-4 align-items-center">

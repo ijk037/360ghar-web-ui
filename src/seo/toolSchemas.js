@@ -26,12 +26,7 @@ export const generateToolSchema = (toolName, description, keywords, category = '
     softwareVersion: '1.0',
     applicationSuite: '360Ghar Real Estate Tools',
     downloadUrl: `${siteMetadata.siteUrl}/${toolName.toLowerCase().replace(/\s+/g, '-')}`,
-    featureList: keywords.split(', '),
-    aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '4.8',
-        ratingCount: '500'
-    }
+    featureList: keywords.split(', ')
 });
 
 // Tool-specific schema data

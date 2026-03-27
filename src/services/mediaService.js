@@ -1,39 +1,39 @@
 import api from './api';
 
 export const mediaService = {
-  // Get media for a specific property
-  getPropertyMedia: async (propertyId, params = {}) => {
-    const response = await api.get(`/media/property/${propertyId}`, { params });
-    return response.data;
-  },
-  
-  // Upload new media file
+  // Upload a single media file (multipart/form-data)
   uploadMedia: async (formData) => {
-    const response = await api.post('/media/upload', formData, {
+    const response = await api.post('/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
     return response.data;
   },
-  
-  // Create media with URL
-  createMedia: async (mediaData) => {
-    const response = await api.post('/media', mediaData);
+
+  // List media files (supports query params like property_id, media_type, etc.)
+  listMedia: async (params = {}) => {
+    const response = await api.get('/upload/media', { params });
     return response.data;
   },
-  
-  // Update media
+
+  // Get a single media file by ID
+  getMedia: async (mediaId) => {
+    const response = await api.get(`/upload/media/${mediaId}`);
+    return response.data;
+  },
+
+  // Update media metadata
   updateMedia: async (id, mediaData) => {
-    const response = await api.put(`/media/${id}`, mediaData);
+    const response = await api.patch(`/upload/media/${id}`, mediaData);
     return response.data;
   },
-  
-  // Delete media
+
+  // Delete a media file
   deleteMedia: async (id) => {
-    const response = await api.delete(`/media/${id}`);
+    const response = await api.delete(`/upload/media/${id}`);
     return response.data;
-  }
+  },
 };
 
-export default mediaService; 
+export default mediaService;
