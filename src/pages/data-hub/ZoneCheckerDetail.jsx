@@ -48,9 +48,6 @@ const ZoneCheckerDetail = () => {
 
   useEffect(() => {
     if (!slug) return;
-    setLoading(true);
-    setNotFound(false);
-    setError(false);
     dataHubService
       .getZoningBySlug(slug)
       .then((data) => setZone(data))

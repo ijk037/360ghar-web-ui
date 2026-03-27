@@ -68,8 +68,6 @@ const ZoneChecker = () => {
 
   // Fetch zoning data
   useEffect(() => {
-    setZonesLoading(true);
-    setZonesError(false);
     dataHubService
       .getZoningData({ search: debouncedSearch, page: zonePage, limit: PAGE_SIZE })
       .then((res) => {
@@ -84,8 +82,6 @@ const ZoneChecker = () => {
 
   // Fetch colony approvals
   useEffect(() => {
-    setColoniesLoading(true);
-    setColoniesError(false);
     dataHubService
       .getColonyApprovals({ page: colonyPage, limit: COLONY_PAGE_SIZE })
       .then((res) => {

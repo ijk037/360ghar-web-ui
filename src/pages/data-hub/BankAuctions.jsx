@@ -48,8 +48,6 @@ const BankAuctions = () => {
   }, []);
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
     const params = { page, limit: PAGE_LIMIT };
     if (filters.bank_name) params.bank_name = filters.bank_name;
     if (filters.property_type) params.property_type = filters.property_type;

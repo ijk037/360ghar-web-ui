@@ -55,8 +55,6 @@ const BankAuctionDetail = () => {
 
   useEffect(() => {
     if (!id) return;
-    setLoading(true);
-    setError(null);
     dataHubService.getAuction(id)
       .then(setAuction)
       .catch((err) => {

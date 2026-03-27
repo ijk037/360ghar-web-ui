@@ -19,13 +19,12 @@ const StampDutyCalculator = () => {
   const { circleRateSectors, fetchCircleRateSectors } = useDataHubStore();
   const [form, setForm] = useState({ property_value: '', buyer_type: 'male', sector: '', property_type: '' });
   const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => { fetchCircleRateSectors(); }, [fetchCircleRateSectors]);
 
   const calculate = async () => {
     if (!form.property_value) return;
-    setLoading(true);
     try {
       const data = await dataHubService.calculateStampDuty({
         property_value: Number(form.property_value),

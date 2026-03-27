@@ -60,9 +60,6 @@ const BuilderReputationDetail = () => {
   // Fetch builder profile
   useEffect(() => {
     if (!slug) return;
-    setLoading(true);
-    setError(null);
-    setNotFound(false);
     dataHubService.getBuilder(slug)
       .then((data) => {
         setBuilder(data);
@@ -81,7 +78,6 @@ const BuilderReputationDetail = () => {
   // Fetch RERA projects for this builder when on projects tab
   useEffect(() => {
     if (!builder || activeTab !== 'projects') return;
-    setProjectsLoading(true);
     const params = { page: projectsPage, limit: PAGE_LIMIT };
     if (builder.name) params.developer = builder.name;
 

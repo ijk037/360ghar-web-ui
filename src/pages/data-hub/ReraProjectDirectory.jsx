@@ -38,8 +38,6 @@ const ReraProjectDirectory = () => {
   const totalPages = Math.ceil(total / PAGE_LIMIT);
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
     const params = { page, limit: PAGE_LIMIT };
     if (filters.search) params.search = filters.search;
     if (filters.status) params.status = filters.status;

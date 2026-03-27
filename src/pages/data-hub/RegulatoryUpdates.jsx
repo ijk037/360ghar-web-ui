@@ -29,8 +29,6 @@ const RegulatoryUpdates = () => {
   const totalPages = Math.ceil(total / PAGE_LIMIT);
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
     const params = { page, limit: PAGE_LIMIT };
     if (activeTab) params.gazette_type = activeTab;
 

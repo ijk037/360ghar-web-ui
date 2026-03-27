@@ -25,8 +25,6 @@ const CircleRateDirectory = () => {
   }, []);
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
     dataHubService.getCircleRates({ ...filters, page, limit: 20 })
       .then((data) => {
         setRates(data?.items || []);

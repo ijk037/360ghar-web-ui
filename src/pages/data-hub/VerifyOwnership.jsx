@@ -23,7 +23,7 @@ const VerifyOwnership = () => {
   const [captchaToken, setCaptchaToken] = useState('');
   const [captchaUrl, setCaptchaUrl] = useState(null);
   const [captchaLoading, setCaptchaLoading] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const captchaBlobRef = useRef(null);
@@ -39,7 +39,6 @@ const VerifyOwnership = () => {
 
   const loadCaptcha = async () => {
     setCaptchaLoading(true);
-    setError(null);
     try {
       // Revoke previous blob URL if any
       if (captchaBlobRef.current) {
@@ -61,8 +60,6 @@ const VerifyOwnership = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!tehsil || !village || !khasraNumber || !captchaToken) return;
-    setLoading(true);
-    setError(null);
     setResult(null);
     try {
       const data = await dataHubService.lookupJamabandi({

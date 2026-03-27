@@ -49,8 +49,6 @@ const BuilderReputation = () => {
   const totalPages = Math.ceil(total / PAGE_LIMIT);
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
     dataHubService.getBuilders({ search, sort_by: sortBy, page, limit: PAGE_LIMIT })
       .then((data) => {
         setBuilders(data?.items || []);

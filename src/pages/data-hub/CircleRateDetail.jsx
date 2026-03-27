@@ -15,7 +15,6 @@ const CircleRateDetail = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
     dataHubService.getCircleRateBySlug(slug)
       .then(setRate)
       .catch(() => setError(true))
