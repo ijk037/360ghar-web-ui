@@ -1,0 +1,296 @@
+import { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import Header from '../../common/Header';
+import Footer from '../../common/Footer';
+import MobileMenu from '../../common/MobileMenu';
+import OffCanvas from '../../common/OffCanvas';
+import SEO from '../../common/SEO';
+import AuctionAlertModal from '../../components/data-hub/AuctionAlertModal';
+import { dataHubService } from '../../services/dataHubService';
+
+/**
+ * Format a rupee amount into human-readable lakh/crore notation.
+ * e.g. 4500000 → "₹45 Lakh", 12000000 → "₹1.2 Cr"
+ */
+const formatPrice = (amount) => {
+  if (amount == null) return '—';
+  const n = Number(amount);
+  if (isNaN(n)) return '—';
+  if (n >= 10000000) {
+    const cr = (n / 10000000).toFixed(2).replace(/\.?0+$/, '');
+    return `₹${cr} Cr`;
+  }
+  if (n >= 100000) {
+    const lakh = (n / 100000).toFixed(2).replace(/\.?0+$/, '');
+    return `₹${lakh} Lakh`;
+  }
+  return `₹${n.toLocaleString('en-IN')}`;
+};
+
+/**
+ * Returns days remaining until a future date, or null if past/missing.
+ */
+const daysUntil = (dateStr) => {
+  if (!dateStr) return null;
+  const target = new Date(dateStr);
+  const now = new Date();
+  const diff = Math.ceil((target - now) / (1000 * 60 * 60 * 24));
+  return diff > 0 ? diff : null;
+};
+
+const sourceBadgeStyle = (source, caseNumber) => {
+  const isBank = !caseNumber;
+  if (isBank) {
+    return { background: '#dbeafe', color: '#1e40af', padding: '4px 12px', borderRadius: 6, fontSize: 13, fontWeight: 600, display: 'inline-block' };
+  }
+  return { background: '#fef3c7', color: '#92400e', padding: '4px 12px', borderRadius: 6, fontSize: 13, fontWeight: 600, display: 'inline-block' };
+};
+
+const BankAuctionDetail = () => {
+  const { id } = useParams();
+  const [auction, setAuction] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [alertModal, setAlertModal] = useState(false);
+
+  useEffect(() => {
+    if (!id) return;
+    setLoading(true);
+    setError(null);
+    dataHubService.getAuction(id)
+      .then(setAuction)
+      .catch((err) => {
+        if (err?.response?.status === 404) {
+          setError('not_found');
+        } else {
+          setError('error');
+        }
+      })
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  const isBank = auction ? !auction.case_number : true;
+  const sourceBadge = auction
+    ? (isBank ? (auction.source || 'SARFAESI').toUpperCase() : 'Court Ordered')
+    : '';
+  const institution = auction ? (auction.bank_name || auction.court_name || '') : '';
+  const remaining = auction ? daysUntil(auction.auction_date) : null;
+
+  const pageTitle = auction
+    ? `${auction.property_description || auction.property_type || 'Property'} — Auction | 360Ghar`
+    : 'Auction Detail | 360Ghar';
+
+  return (
+    <>
+      <SEO
+        title={pageTitle}
+        description={
+          auction
+            ? `${sourceBadge} auction by ${institution || 'bank'}. Reserve price: ${formatPrice(auction.reserve_price)}. Auction date: ${auction.auction_date ? new Date(auction.auction_date).toLocaleDateString('en-IN') : 'TBD'}.`
+            : 'Property auction detail — Gurugram bank and court auctions on 360Ghar.'
+        }
+        keywords="bank auction property, SARFAESI auction Gurugram, court ordered sale, property auction detail"
+        canonical={`/bank-auctions/${id}`}
+      />
+      <OffCanvas />
+      <MobileMenu />
+      <main className="body-bg">
+        <Header />
+
+        <section className="pt-60 pb-60">
+          <div className="container">
+            {/* Back link */}
+            <div className="mb-20">
+              <Link to="/bank-auctions" style={{ fontSize: 14, color: '#6b7280', display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                <i className="fas fa-arrow-left" style={{ fontSize: 12 }}></i>
+                Back to Auctions
+              </Link>
+            </div>
+
+            {loading ? (
+              <div className="row justify-content-center">
+                <div className="col-lg-8">
+                  <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: 32 }}>
+                    <div style={{ height: 24, background: '#e5e7eb', borderRadius: 4, marginBottom: 16, width: '60%' }}></div>
+                    <div style={{ height: 16, background: '#f3f4f6', borderRadius: 4, marginBottom: 12, width: '40%' }}></div>
+                    <div style={{ height: 16, background: '#f3f4f6', borderRadius: 4, marginBottom: 12, width: '50%' }}></div>
+                    <div style={{ height: 16, background: '#f3f4f6', borderRadius: 4, width: '35%' }}></div>
+                  </div>
+                </div>
+              </div>
+            ) : error === 'not_found' ? (
+              <div className="text-center py-60">
+                <i className="fas fa-search" style={{ fontSize: 48, color: '#d1d5db', display: 'block', marginBottom: 16 }}></i>
+                <h2 className="fs-24 fw-600 mb-10">Auction Not Found</h2>
+                <p className="color-text-3 mb-20">This auction listing may have been removed or the ID is incorrect.</p>
+                <Link to="/bank-auctions" className="btn btn-main">Browse All Auctions</Link>
+              </div>
+            ) : error ? (
+              <div className="text-center py-60">
+                <p className="color-danger fs-16">Auction data temporarily unavailable. Please try again later.</p>
+                <Link to="/bank-auctions" className="btn btn-outline-secondary mt-20">Back to Auctions</Link>
+              </div>
+            ) : auction ? (
+              <div className="row justify-content-center">
+                <div className="col-lg-8">
+                  <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: 32 }}>
+                    {/* Badges */}
+                    <div className="d-flex flex-wrap gap-10 mb-20">
+                      <span style={sourceBadgeStyle(auction.source, auction.case_number)}>{sourceBadge}</span>
+                      {institution && (
+                        <span style={{ background: '#f3f4f6', color: '#374151', padding: '4px 12px', borderRadius: 6, fontSize: 13, fontWeight: 500, display: 'inline-block' }}>
+                          {institution}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Property heading */}
+                    <h1 style={{ fontSize: 22, fontWeight: 700, color: '#111827', marginBottom: 8 }}>
+                      {auction.property_description || auction.property_type || 'Property Auction'}
+                    </h1>
+
+                    {auction.full_address && (
+                      <p style={{ fontSize: 15, color: '#6b7280', marginBottom: 24 }}>
+                        <i className="fas fa-map-marker-alt" style={{ marginRight: 6, color: '#9ca3af' }}></i>
+                        {auction.full_address}
+                      </p>
+                    )}
+
+                    {/* Key details grid */}
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 16, marginBottom: 28, padding: '20px 24px', background: '#f8fafc', borderRadius: 10 }}>
+                      <div>
+                        <p style={{ margin: 0, fontSize: 11, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Reserve Price</p>
+                        <p style={{ margin: '4px 0 0', fontSize: 20, fontWeight: 700, color: '#111827' }}>{formatPrice(auction.reserve_price)}</p>
+                      </div>
+                      {auction.emd_amount != null && (
+                        <div>
+                          <p style={{ margin: 0, fontSize: 11, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>EMD Amount</p>
+                          <p style={{ margin: '4px 0 0', fontSize: 18, fontWeight: 600, color: '#374151' }}>{formatPrice(auction.emd_amount)}</p>
+                        </div>
+                      )}
+                      <div>
+                        <p style={{ margin: 0, fontSize: 11, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Auction Date</p>
+                        <p style={{ margin: '4px 0 0', fontSize: 15, fontWeight: 600, color: '#374151' }}>
+                          {auction.auction_date
+                            ? new Date(auction.auction_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })
+                            : 'TBD'}
+                        </p>
+                        {remaining && (
+                          <p style={{ margin: '2px 0 0', fontSize: 12, color: '#059669', fontWeight: 600 }}>
+                            {remaining} day{remaining !== 1 ? 's' : ''} remaining
+                          </p>
+                        )}
+                      </div>
+                      {auction.property_type && (
+                        <div>
+                          <p style={{ margin: 0, fontSize: 11, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Property Type</p>
+                          <p style={{ margin: '4px 0 0', fontSize: 15, fontWeight: 600, color: '#374151', textTransform: 'capitalize' }}>{auction.property_type}</p>
+                        </div>
+                      )}
+                      {(auction.area || auction.area_sqft) && (
+                        <div>
+                          <p style={{ margin: 0, fontSize: 11, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Area</p>
+                          <p style={{ margin: '4px 0 0', fontSize: 15, fontWeight: 600, color: '#374151' }}>
+                            {auction.area || auction.area_sqft} {auction.area_unit || 'sq ft'}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Additional details */}
+                    {(auction.case_number || auction.loan_account_number || auction.borrower_name) && (
+                      <div style={{ marginBottom: 24 }}>
+                        <h3 style={{ fontSize: 15, fontWeight: 600, color: '#374151', marginBottom: 12 }}>Additional Information</h3>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                          {auction.case_number && (
+                            <div className="d-flex gap-10">
+                              <span style={{ fontSize: 13, color: '#9ca3af', minWidth: 140 }}>Case Number</span>
+                              <span style={{ fontSize: 13, color: '#374151', fontFamily: 'monospace' }}>{auction.case_number}</span>
+                            </div>
+                          )}
+                          {auction.loan_account_number && (
+                            <div className="d-flex gap-10">
+                              <span style={{ fontSize: 13, color: '#9ca3af', minWidth: 140 }}>Loan Account</span>
+                              <span style={{ fontSize: 13, color: '#374151', fontFamily: 'monospace' }}>{auction.loan_account_number}</span>
+                            </div>
+                          )}
+                          {auction.borrower_name && (
+                            <div className="d-flex gap-10">
+                              <span style={{ fontSize: 13, color: '#9ca3af', minWidth: 140 }}>Borrower</span>
+                              <span style={{ fontSize: 13, color: '#374151' }}>{auction.borrower_name}</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Contact information */}
+                    {(auction.contact_name || auction.contact_phone || auction.contact_email) && (
+                      <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 8, padding: '16px 20px', marginBottom: 24 }}>
+                        <h3 style={{ fontSize: 14, fontWeight: 600, color: '#166534', marginBottom: 10 }}>Contact for Auction</h3>
+                        {auction.contact_name && <p style={{ margin: '0 0 4px', fontSize: 14, color: '#166534' }}>{auction.contact_name}</p>}
+                        {auction.contact_phone && (
+                          <p style={{ margin: '0 0 4px', fontSize: 14 }}>
+                            <a href={`tel:${auction.contact_phone}`} style={{ color: '#166534' }}>{auction.contact_phone}</a>
+                          </p>
+                        )}
+                        {auction.contact_email && (
+                          <p style={{ margin: 0, fontSize: 14 }}>
+                            <a href={`mailto:${auction.contact_email}`} style={{ color: '#166534' }}>{auction.contact_email}</a>
+                          </p>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Action button */}
+                    <div className="d-flex gap-3 flex-wrap">
+                      <button
+                        className="btn btn-main"
+                        onClick={() => setAlertModal(true)}
+                      >
+                        <i className="fas fa-bell me-2"></i>
+                        Set Alert for Similar Properties
+                      </button>
+                      <Link to="/bank-auctions" className="btn btn-outline-secondary">
+                        Browse All Auctions
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="cta-section bg-main text-white padding-y-60">
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-lg-8 text-center">
+                <h2 className="cta-title mb-3">Explore More Investment Opportunities</h2>
+                <p className="mb-4">Browse regular listings and RERA-verified projects alongside auction properties.</p>
+                <div className="d-flex justify-content-center gap-3 flex-wrap">
+                  <a href="/properties" className="btn btn-white btn-main">Browse Properties</a>
+                  <a href="/rera-projects" className="btn btn-outline-white">RERA Projects</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <Footer />
+      </main>
+
+      <AuctionAlertModal
+        isOpen={alertModal}
+        onClose={() => setAlertModal(false)}
+        initialData={auction ? {
+          bank_name: auction.bank_name || '',
+          property_type: auction.property_type || '',
+        } : {}}
+      />
+    </>
+  );
+};
+
+export default BankAuctionDetail;
