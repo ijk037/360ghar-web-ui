@@ -39,7 +39,7 @@ const ReraProjectDirectory = () => {
 
   useEffect(() => {
     const params = { page, limit: PAGE_LIMIT };
-    if (filters.search) params.search = filters.search;
+    if (filters.search) params.q = filters.search;
     if (filters.status) params.status = filters.status;
     if (filters.property_type) params.property_type = filters.property_type;
 
@@ -64,7 +64,7 @@ const ReraProjectDirectory = () => {
     setVerifyResult(null);
     try {
       const data = await dataHubService.verifyRera(num);
-      setVerifyResult({ found: true, project: data });
+      setVerifyResult({ found: data.valid === true, project: data });
     } catch {
       setVerifyResult({ found: false, project: null });
     } finally {

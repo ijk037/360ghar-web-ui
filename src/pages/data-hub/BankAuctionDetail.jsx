@@ -147,10 +147,10 @@ const BankAuctionDetail = () => {
                       {auction.property_description || auction.property_type || 'Property Auction'}
                     </h1>
 
-                    {auction.full_address && (
+                    {auction.address && (
                       <p style={{ fontSize: 15, color: '#6b7280', marginBottom: 24 }}>
                         <i className="fas fa-map-marker-alt" style={{ marginRight: 6, color: '#9ca3af' }}></i>
-                        {auction.full_address}
+                        {auction.address}
                       </p>
                     )}
 

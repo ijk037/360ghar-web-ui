@@ -12,8 +12,8 @@ import { dataHubService } from '../../services/dataHubService';
 const PROPERTY_TYPES = ['residential', 'commercial', 'plot', 'industrial'];
 const SOURCE_TYPES = [
   { label: 'All', value: '' },
-  { label: 'SARFAESI', value: 'SARFAESI' },
-  { label: 'Court Ordered', value: 'Court Ordered' },
+  { label: 'SARFAESI (Bank)', value: 'bank' },
+  { label: 'Court Ordered', value: 'court' },
 ];
 const PAGE_LIMIT = 12;
 
@@ -49,13 +49,13 @@ const BankAuctions = () => {
 
   useEffect(() => {
     const params = { page, limit: PAGE_LIMIT };
-    if (filters.bank_name) params.bank_name = filters.bank_name;
+    if (filters.bank_name) params.bank = filters.bank_name;
     if (filters.property_type) params.property_type = filters.property_type;
-    if (filters.price_min) params.price_min = Number(filters.price_min);
-    if (filters.price_max) params.price_max = Number(filters.price_max);
+    if (filters.price_min) params.min_price = Number(filters.price_min);
+    if (filters.price_max) params.max_price = Number(filters.price_max);
     if (filters.date_from) params.date_from = filters.date_from;
     if (filters.date_to) params.date_to = filters.date_to;
-    if (filters.source_type) params.source_type = filters.source_type;
+    if (filters.source_type) params.type = filters.source_type;
 
     dataHubService.getAuctions(params)
       .then((data) => {

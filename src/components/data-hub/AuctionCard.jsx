@@ -23,8 +23,8 @@ const AuctionCard = ({ auction, onSetAlert }) => {
       <p style={{ margin: '0 0 8px', fontWeight: 600, fontSize: 14, color: '#111827' }}>
         {auction.property_description || auction.property_type || 'Property'}
       </p>
-      {auction.full_address && (
-        <p style={{ margin: '0 0 8px', fontSize: 13, color: '#6b7280' }}>{auction.full_address}</p>
+      {auction.address && (
+        <p style={{ margin: '0 0 8px', fontSize: 13, color: '#6b7280' }}>{auction.address}</p>
       )}
       <div style={{ display: 'flex', gap: 16, marginBottom: 8 }}>
         <div>

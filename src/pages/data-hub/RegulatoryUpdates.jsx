@@ -30,7 +30,7 @@ const RegulatoryUpdates = () => {
 
   useEffect(() => {
     const params = { page, limit: PAGE_LIMIT };
-    if (activeTab) params.gazette_type = activeTab;
+    if (activeTab) params.type = activeTab;
 
     dataHubService.getGazetteNotifications(params)
       .then((data) => {

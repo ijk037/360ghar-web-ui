@@ -19,7 +19,12 @@ const NeighbourhoodScorePanel = ({ listingId }) => {
   if (loading) return <div style={{ fontSize: 13, color: '#6b7280' }}>Loading neighbourhood score...</div>;
   if (!score) return null;
 
-  const cats = score.category_scores || {};
+  const categoryScores = {
+    transit: score.transit_score ?? 0,
+    education: score.education_score ?? 0,
+    health: score.health_score ?? 0,
+    retail: score.retail_score ?? 0,
+  };
 
   return (
     <div style={{ border: '1px solid #e5e7eb', borderRadius: 8, padding: 16 }}>
@@ -27,7 +32,7 @@ const NeighbourhoodScorePanel = ({ listingId }) => {
       <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'center' }}>
         <ScoreWheel score={score.overall_score ?? 0} size={80} label="Overall" />
         {CATEGORIES.map((cat) => (
-          <ScoreWheel key={cat} score={cats[cat] ?? 0} size={60}
+          <ScoreWheel key={cat} score={categoryScores[cat] ?? 0} size={60}
             label={cat.charAt(0).toUpperCase() + cat.slice(1)} />
         ))}
       </div>

@@ -63,7 +63,7 @@ const BuilderReputationDetail = () => {
     dataHubService.getBuilder(slug)
       .then((data) => {
         setBuilder(data);
-        setComplaints(data?.complaints || []);
+        setComplaints(data?.recent_complaints || []);
       })
       .catch((err) => {
         if (err?.response?.status === 404) {
@@ -79,7 +79,7 @@ const BuilderReputationDetail = () => {
   useEffect(() => {
     if (!builder || activeTab !== 'projects') return;
     const params = { page: projectsPage, limit: PAGE_LIMIT };
-    if (builder.name) params.developer = builder.name;
+    if (builder.builder_name) params.developer = builder.builder_name;
 
     dataHubService.getReraProjects(params)
       .then((data) => {
@@ -150,8 +150,8 @@ const BuilderReputationDetail = () => {
     );
   }
 
-  const builderName = builder?.name || 'Builder';
-  const score = Math.round(builder?.score ?? 0);
+  const builderName = builder?.builder_name || 'Builder';
+  const score = Math.round(builder?.builder_score ?? 0);
 
   return (
     <>
@@ -365,16 +365,16 @@ const BuilderReputationDetail = () => {
                                   {complaint.project_name}
                                 </p>
                               )}
-                              {complaint.nature_of_complaint && (
+                              {complaint.complaint_nature && (
                                 <p style={{ margin: 0, fontSize: 13, color: '#6b7280' }}>
-                                  {complaint.nature_of_complaint}
+                                  {complaint.complaint_nature}
                                 </p>
                               )}
                             </div>
                             <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                              {complaint.complaint_date && (
+                              {complaint.order_date && (
                                 <p style={{ margin: '0 0 4px', fontSize: 12, color: '#9ca3af' }}>
-                                  {formatDate(complaint.complaint_date)}
+                                  {formatDate(complaint.order_date)}
                                 </p>
                               )}
                               {complaint.penalty_amount != null && (
