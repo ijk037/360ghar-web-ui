@@ -2,6 +2,9 @@
   publish = "dist"
   command = "npm run build"
 
+[build.environment]
+  PUPPETEER_CACHE_DIR = "./node_modules/.cache/puppeteer"
+
 # ── Server-side redirects (processed top-to-bottom, BEFORE the SPA catch-all) ──
 
 # WWW → non-www (consolidate authority)

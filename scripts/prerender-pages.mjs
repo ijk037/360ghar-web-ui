@@ -12,7 +12,13 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const DIST_DIR = path.join(ROOT, 'dist');
 const require = createRequire(import.meta.url);
-const puppeteer = require('puppeteer');
+let puppeteer;
+try {
+  puppeteer = require('puppeteer');
+} catch {
+  console.warn('⚠ puppeteer not installed — skipping prerender step');
+  process.exit(0);
+}
 const ROUTE_WAIT_TIMEOUT = 60000;
 const BROWSER_OPTIONS = {
   headless: true,
