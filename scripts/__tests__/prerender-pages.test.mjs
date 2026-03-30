@@ -78,6 +78,33 @@ test('resolvePreviewPort falls back to an ephemeral port when the requested port
   }
 });
 
+test('prerenderRoutes continues after a route failure and reports failed routes', async () => {
+  const browser = {
+    closeCalls: 0,
+    async close() { this.closeCalls += 1; },
+  };
+  const calls = [];
+
+  const result = await prerenderRoutes(
+    'http://127.0.0.1:4317',
+    [{ route: '/' }, { route: '/bad-route' }, { route: '/about-us' }],
+    {
+      launchBrowser: async () => browser,
+      prerenderRouteImpl: async (_baseUrl, routeConfig) => {
+        calls.push(routeConfig.route);
+        if (routeConfig.route === '/bad-route') {
+          throw new Error('TimeoutError: Waiting failed: 60000ms exceeded');
+        }
+      },
+    }
+  );
+
+  assert.deepEqual(calls, ['/', '/bad-route', '/about-us']);
+  assert.equal(result.failed.length, 1);
+  assert.equal(result.failed[0].route, '/bad-route');
+  assert.equal(browser.closeCalls, 1);
+});
+
 test('prerenderRoutes reuses one browser instance across all routes', async () => {
   const browser = {
     closeCalls: 0,

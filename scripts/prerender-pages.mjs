@@ -157,14 +157,30 @@ export async function prerenderRoutes(baseUrl, routeConfigs, options = {}) {
     prerenderRouteImpl = prerenderRoute,
   } = options;
   const browser = await launchBrowser();
+  const failed = [];
 
   try {
     for (const routeConfig of routeConfigs) {
-      await prerenderRouteImpl(baseUrl, routeConfig, browser);
+      try {
+        await prerenderRouteImpl(baseUrl, routeConfig, browser);
+      } catch (error) {
+        failed.push({ route: routeConfig.route, error });
+        console.error(`[prerender] FAILED ${routeConfig.route}: ${error.message}`);
+      }
     }
   } finally {
     await browser.close().catch(() => {});
   }
+
+  if (failed.length > 0) {
+    console.warn(`\n[prerender] ${failed.length} route(s) failed:`);
+    for (const { route, error } of failed) {
+      console.warn(`  - ${route}: ${error.message}`);
+    }
+    console.warn('');
+  }
+
+  return { failed };
 }
 
 export async function resolvePreviewPort(preferredPort = PREVIEW_PORT) {
