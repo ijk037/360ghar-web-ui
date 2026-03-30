@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import './LazySection.css';
 
 const shouldRenderImmediately = () => {
   if (typeof window === 'undefined') return true;
@@ -23,13 +24,15 @@ const shouldRenderImmediately = () => {
  * @param {React.ReactNode} props.children - Content to render when visible
  * @param {string} [props.rootMargin='200px'] - Distance before viewport to start loading
  * @param {string} [props.minHeight='0px'] - Min-height of placeholder to prevent CLS
+ * @param {boolean} [props.animate=true] - Enable smooth fade-in animation
  */
-const LazySection = ({ children, rootMargin = '200px', minHeight = '0px' }) => {
+const LazySection = ({ children, rootMargin = '200px', minHeight = '0px', animate = true }) => {
   const [isVisible, setIsVisible] = useState(shouldRenderImmediately);
+  const [hasAnimated, setHasAnimated] = useState(false);
   const ref = useRef(null);
 
   useEffect(() => {
-    if (isVisible) return; // Already visible (IO not supported), nothing to observe
+    if (isVisible) return;
 
     const el = ref.current;
     if (!el) return;
@@ -48,9 +51,29 @@ const LazySection = ({ children, rootMargin = '200px', minHeight = '0px' }) => {
     return () => observer.disconnect();
   }, [isVisible, rootMargin]);
 
-  if (isVisible) return children;
+  useEffect(() => {
+    if (isVisible && animate && !hasAnimated) {
+      const timer = setTimeout(() => setHasAnimated(true), 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isVisible, animate, hasAnimated]);
 
-  return <div ref={ref} style={{ minHeight }} aria-hidden="true" />;
+  if (!isVisible) {
+    return <div ref={ref} style={{ minHeight }} aria-hidden="true" />;
+  }
+
+  if (animate && !hasAnimated) {
+    return (
+      <div 
+        className="lazy-section lazy-section--animating" 
+        style={{ minHeight }}
+      >
+        {children}
+      </div>
+    );
+  }
+
+  return <div className="lazy-section">{children}</div>;
 };
 
 export default LazySection;

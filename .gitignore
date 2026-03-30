@@ -28,6 +28,7 @@ dist-ssr
 # Temp/scratch files
 .tmp_*
 current-locality-page.png
+current-home-loader.png
 *.tmp.html
 *.tmp.xml
 

@@ -50,9 +50,23 @@ export async function fetchPaginatedCollection({
 
   while (true) {
     const url = buildApiPageUrl(baseUrl, path, page, cappedPageSize);
-    const response = await fetchImpl(url, {
-      signal: AbortSignal.timeout(timeoutMs),
-    });
+    let response;
+    let lastFetchErr;
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        response = await fetchImpl(url, {
+          signal: AbortSignal.timeout(timeoutMs),
+        });
+        lastFetchErr = null;
+        break;
+      } catch (err) {
+        lastFetchErr = err;
+        if (attempt < 3) {
+          await new Promise((r) => setTimeout(r, 1000 * 2 ** (attempt - 1)));
+        }
+      }
+    }
+    if (lastFetchErr) throw lastFetchErr;
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status} from ${url}`);

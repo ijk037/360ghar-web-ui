@@ -7,6 +7,7 @@ import BannerThree from '../components/ui/BannerThree';
 import AboutThree from '../components/layout/AboutThree';
 import SEO from '../common/SEO';
 import LazySection from '../common/LazySection';
+import SectionLoader from '../common/SectionLoader';
 import { realEstateStructuredData, generateBreadcrumbStructuredData } from '../seo/structuredData';
 import { siteMetadata } from '../seo/siteMetadata';
 
@@ -145,74 +146,74 @@ const Home = () => {
 
                 {/* Below-fold — lazy-loaded as user scrolls */}
                 <LazySection minHeight="200px">
-                    <Suspense fallback={<div style={{ minHeight: '200px' }} />}>
+                    <Suspense fallback={<SectionLoader height="200px" />}>
                         <ReferEarnCta />
                     </Suspense>
                 </LazySection>
 
                 <LazySection minHeight="300px">
-                    <Suspense fallback={<div style={{ minHeight: '300px' }} />}>
+                    <Suspense fallback={<SectionLoader height="300px" />}>
                         <PropertyType />
                     </Suspense>
                 </LazySection>
 
                 <LazySection minHeight="400px">
-                    <Suspense fallback={<div style={{ minHeight: '400px' }} />}>
+                    <Suspense fallback={<SectionLoader height="400px" />}>
                         <PropertyTwo />
                     </Suspense>
                 </LazySection>
 
                 <LazySection minHeight="200px">
-                    <Suspense fallback={<div style={{ minHeight: '200px' }} />}>
+                    <Suspense fallback={<SectionLoader height="200px" />}>
                         <MessageThree />
                     </Suspense>
                 </LazySection>
 
                 <LazySection minHeight="300px">
-                    <Suspense fallback={<div style={{ minHeight: '300px' }} />}>
+                    <Suspense fallback={<SectionLoader height="300px" />}>
                         <PropertyManagementShowcase />
                     </Suspense>
                 </LazySection>
 
                 <LazySection minHeight="200px">
-                    <Suspense fallback={<div style={{ minHeight: '200px' }} />}>
+                    <Suspense fallback={<SectionLoader height="200px" />}>
                         <Newsletter />
                         <AppDownload />
                     </Suspense>
                 </LazySection>
 
                 <LazySection minHeight="300px">
-                    <Suspense fallback={<div style={{ minHeight: '300px' }} />}>
+                    <Suspense fallback={<SectionLoader height="300px" />}>
                         <TestimonialThree />
                     </Suspense>
                 </LazySection>
 
                 <LazySection minHeight="200px">
-                    <Suspense fallback={<div style={{ minHeight: '200px' }} />}>
+                    <Suspense fallback={<SectionLoader height="200px" />}>
                         <CounterThree />
                     </Suspense>
                 </LazySection>
 
                 <LazySection minHeight="300px">
-                    <Suspense fallback={<div style={{ minHeight: '300px' }} />}>
+                    <Suspense fallback={<SectionLoader height="300px" />}>
                         <AIAgentShowcase />
                     </Suspense>
                 </LazySection>
 
                 <LazySection minHeight="300px">
-                    <Suspense fallback={<div style={{ minHeight: '300px' }} />}>
+                    <Suspense fallback={<SectionLoader height="300px" />}>
                         <ToolShowcase />
                     </Suspense>
                 </LazySection>
 
                 <LazySection minHeight="300px">
-                    <Suspense fallback={<div style={{ minHeight: '300px' }} />}>
+                    <Suspense fallback={<SectionLoader height="300px" />}>
                         <Faq />
                     </Suspense>
                 </LazySection>
 
                 <LazySection minHeight="400px">
-                    <Suspense fallback={<div style={{ minHeight: '400px' }} />}>
+                    <Suspense fallback={<SectionLoader height="400px" />}>
                         <BlogFeed />
                     </Suspense>
                 </LazySection>
@@ -256,7 +257,7 @@ const Home = () => {
                 </LazySection>
 
                 <LazySection minHeight="400px">
-                    <Suspense fallback={<div style={{ minHeight: '400px' }} />}>
+                    <Suspense fallback={<SectionLoader height="400px" />}>
                         <Footer />
                     </Suspense>
                 </LazySection>

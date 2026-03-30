@@ -3,115 +3,112 @@ import './PageLoader.css';
 const PageLoader = () => {
   return (
     <div className="page-loader">
+      {/* Animated Background Elements */}
+      <div className="loader-bg-elements">
+        <div className="bg-circle bg-circle--1"></div>
+        <div className="bg-circle bg-circle--2"></div>
+        <div className="bg-circle bg-circle--3"></div>
+      </div>
+
       <div className="loader-content">
-        {/* House Animation */}
-        <div className="house-animation">
-          {/* Floating particles */}
-          <div className="particles">
-            <div className="particle"></div>
-            <div className="particle"></div>
-            <div className="particle"></div>
-            <div className="particle"></div>
-          </div>
-
-          {/* SVG House with draw animation */}
-          <svg className="house-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              {/* House gradient */}
-              <linearGradient id="houseGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#ff8c3a" />
-                <stop offset="100%" stopColor="#cc5500" />
-              </linearGradient>
-
-              {/* Pin gradient */}
-              <linearGradient id="pinGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#ff8c3a" />
-                <stop offset="100%" stopColor="#cc5500" />
-              </linearGradient>
-            </defs>
-
-            {/* House outline - single path for draw animation */}
-            <path
-              className="house-path"
-              d="M50 15 L85 45 L85 85 L15 85 L15 45 Z"
-            />
-
+        {/* 3D Rotating House Container */}
+        <div className="house-wrapper">
+          <div className="house-3d">
+            {/* Front Face - House Body */}
+            <div className="house-face house-face--front">
+              <svg className="house-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="houseGradientNew" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="var(--main-color)" />
+                    <stop offset="100%" stopColor="var(--main-color-dark)" />
+                  </linearGradient>
+                  <linearGradient id="glowGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="var(--main-color-light)" />
+                    <stop offset="100%" stopColor="var(--main-color)" />
+                  </linearGradient>
+                </defs>
+                
+                {/* House Body */}
+                <path
+                  className="house-body-path"
+                  d="M50 20 L85 50 L85 90 L15 90 L15 50 Z"
+                />
+                
+                {/* Windows */}
+                <rect className="window window--left" x="25" y="55" width="14" height="14" rx="2" />
+                <rect className="window window--right" x="61" y="55" width="14" height="14" rx="2" />
+                
+                {/* Door */}
+                <rect className="door-new" x="42" y="65" width="16" height="25" rx="2" />
+              </svg>
+            </div>
+            
             {/* Roof */}
-            <path
-              className="house-path"
-              d="M10 45 L50 15 L90 45"
-              style={{ animationDelay: '0.3s' }}
-            />
+            <div className="house-roof">
+              <svg className="roof-svg" viewBox="0 0 120 50" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="roofGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="var(--main-color)" />
+                    <stop offset="100%" stopColor="var(--main-color-dark)" />
+                  </linearGradient>
+                </defs>
+                <path className="roof-path" d="M10 45 L60 5 L110 45" />
+              </svg>
+            </div>
+            
+            {/* Location Pin */}
+            <div className="location-pin-3d">
+              <svg className="pin-svg" viewBox="0 0 40 50" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="pinGradientNew" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="var(--main-color-light)" />
+                    <stop offset="100%" stopColor="var(--main-color-dark)" />
+                  </linearGradient>
+                </defs>
+                <path className="pin-path" d="M20 0 C10 0 2 10 2 22 C2 35 20 48 20 48 C20 48 38 35 38 22 C38 10 30 0 20 0 Z" />
+                <circle className="pin-dot" cx="20" cy="22" r="6" />
+              </svg>
+              <div className="pin-glow"></div>
+            </div>
+          </div>
+          
+          {/* Orbiting Elements */}
+          <div className="orbit orbit--1">
+            <div className="orbit-dot"></div>
+          </div>
+          <div className="orbit orbit--2">
+            <div className="orbit-dot"></div>
+          </div>
+          <div className="orbit orbit--3">
+            <div className="orbit-dot"></div>
+          </div>
+        </div>
 
-            {/* House fill (appears after stroke) */}
-            <path
-              className="house-fill"
-              d="M50 15 L85 45 L85 85 L15 85 L15 45 Z"
-            />
-
-            {/* Left Window */}
-            <rect
-              className="window-left"
-              x="25" y="50"
-              width="15" height="15"
-              rx="2"
-            />
-            <rect
-              className="window-glow-left"
-              x="25" y="50"
-              width="15" height="15"
-              rx="2"
-            />
-
-            {/* Right Window */}
-            <rect
-              className="window-right"
-              x="60" y="50"
-              width="15" height="15"
-              rx="2"
-            />
-            <rect
-              className="window-glow-right"
-              x="60" y="50"
-              width="15" height="15"
-              rx="2"
-            />
-
-            {/* Door */}
-            <rect
-              className="door"
-              x="42" y="60"
-              width="16" height="25"
-              rx="2"
-            />
-
-            {/* Location Pin on roof */}
-            <g className="location-pin-group">
-              <path
-                className="location-pin"
-                d="M50 5 C46 5 43 8 43 12 C43 17 50 25 50 25 C50 25 57 17 57 12 C57 8 54 5 50 5 Z"
-              />
-              <circle
-                className="location-pin-dot"
-                cx="50" cy="12" r="3"
-              />
-            </g>
-          </svg>
+        {/* Floating Particles */}
+        <div className="particles-3d">
+          <div className="particle-3d particle-3d--1"></div>
+          <div className="particle-3d particle-3d--2"></div>
+          <div className="particle-3d particle-3d--3"></div>
+          <div className="particle-3d particle-3d--4"></div>
+          <div className="particle-3d particle-3d--5"></div>
         </div>
 
         {/* Loading Text */}
         <div className="loader-text">
-          <span className="brand-name">360Ghar</span>
-          <p className="loader-message">
+          <h1 className="brand-name-3d">
+            <span className="brand-number">360</span>
+            <span className="brand-ghar">Ghar</span>
+          </h1>
+          <p className="loader-message-3d">
             Finding your dream home
-            <span className="loading-dots">
+            <span className="loading-dots-3d">
               <span></span>
               <span></span>
               <span></span>
             </span>
           </p>
-          <div className="loader-progress">
-            <div className="loader-progress-bar"></div>
+          <div className="loader-progress-3d">
+            <div className="loader-progress-bar-3d"></div>
           </div>
         </div>
       </div>
