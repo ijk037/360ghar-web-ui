@@ -14,6 +14,12 @@ export const useLocationStore = create(
 
       // Initialize location on first load
       initializeLocation: () => {
+        // During prerender, use Gurgaon fallback immediately — no geolocation API call
+        if (typeof window !== 'undefined' && window.__PRERENDER_INJECTED?.isPrerendering) {
+          set({ location: GURGAON_FALLBACK, locationTimestamp: Date.now(), isLocating: false });
+          return;
+        }
+
         const state = get();
         const isRecent = state.locationTimestamp && (Date.now() - state.locationTimestamp < LOCATION_MAX_AGE_MS);
         if (state.location.lat && state.location.lng && isRecent) {

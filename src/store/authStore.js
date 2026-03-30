@@ -119,6 +119,12 @@ const useAuthStore = create((set, get) => ({
   error: null,
 
   initializeAuth: async () => {
+    // During prerender, skip all Supabase network calls — no session exists
+    if (typeof window !== 'undefined' && window.__PRERENDER_INJECTED?.isPrerendering) {
+      set({ isInitializing: false });
+      return;
+    }
+
     if (initializationInProgress) return;
     initializationInProgress = true;
     try {
