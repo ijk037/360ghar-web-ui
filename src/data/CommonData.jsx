@@ -319,6 +319,10 @@ export const footerUsefulLinks = [
         link: '/vastu-checker'
     },
     {
+        text: 'Auction Sources',
+        link: '/auction-sources'
+    },
+    {
         text: 'EMI Calculator',
         link: '/emi-calculator'
     },

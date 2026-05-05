@@ -137,6 +137,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://360ghar.com/auction-sources</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://360ghar.com/verify-ownership</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>

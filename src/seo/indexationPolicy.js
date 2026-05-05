@@ -34,6 +34,7 @@ export const indexableStaticRoutes = [
   '/stamp-duty-calculator',
   '/rera-projects',
   '/bank-auctions',
+  '/auction-sources',
   '/verify-ownership',
   '/zone-checker',
   '/regulatory-updates',

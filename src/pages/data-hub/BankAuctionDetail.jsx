@@ -95,6 +95,7 @@ const BankAuctionDetail = () => {
           generateBreadcrumbStructuredData([
             { name: 'Home', url: 'https://360ghar.com/' },
             { name: 'Bank Auctions', url: 'https://360ghar.com/bank-auctions' },
+            { name: auction.city || 'Delhi NCR', url: `https://360ghar.com/bank-auctions?city=${encodeURIComponent(auction.city || '')}` },
             { name: auction.property_description || auction.property_type || 'Auction', url: `https://360ghar.com/bank-auctions/${id}` },
           ]),
           {
@@ -276,6 +277,17 @@ const BankAuctionDetail = () => {
                         <i className="fas fa-bell me-2"></i>
                         Set Alert for Similar Properties
                       </button>
+                      {auction.source_url && (
+                        <a
+                          href={auction.source_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn btn-outline-primary"
+                        >
+                          <i className="fas fa-external-link-alt me-2"></i>
+                          View on Source Website
+                        </a>
+                      )}
                       <Link to="/bank-auctions" className="btn btn-outline-secondary">
                         Browse All Auctions
                       </Link>

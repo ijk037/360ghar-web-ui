@@ -40,23 +40,23 @@ const Footer = () => {
                                 <div className="mt-4">
                                     <h6 className="footer-item__title mb-3">Quick Actions</h6>
                                     <div className="footer-quick-actions d-flex flex-column gap-2">
-                                        <Link to="/properties" className="btn btn-outline-light btn-sm text-start">
+                                        <Link to="/properties" className="btn btn-outline-lightInDark btn-sm text-start">
                                             <i className="fas fa-search me-2"></i>
                                             Search Properties
                                         </Link>
-                                        <Link to="/post-property" className="btn btn-outline-light btn-sm text-start">
+                                        <Link to="/post-property" className="btn btn-outline-lightInDark btn-sm text-start">
                                             <i className="fas fa-home me-2"></i>
                                             List Your Property
                                         </Link>
-                                        <Link to="/project" className="btn btn-outline-light btn-sm text-start">
+                                        <Link to="/project" className="btn btn-outline-lightInDark btn-sm text-start">
                                             <i className="fas fa-building me-2"></i>
                                             View Projects
                                         </Link>
-                                        <Link to="/account" className="btn btn-outline-light btn-sm text-start">
+                                        <Link to="/account" className="btn btn-outline-lightInDark btn-sm text-start">
                                             <i className="fas fa-user-circle me-2"></i>
                                             My Account
                                         </Link>
-                                        <Link to="/contact" className="btn btn-outline-light btn-sm text-start">
+                                        <Link to="/contact" className="btn btn-outline-lightInDark btn-sm text-start">
                                             <i className="fas fa-envelope me-2"></i>
                                             Contact Experts
                                         </Link>
@@ -68,40 +68,36 @@ const Footer = () => {
 
                     {/* Trust Badges */}
                     <div className="footer-trust-badges mt-5 pt-5 border-top border-secondary">
-                        <div className="row align-items-center">
-                            <div className="col-lg-8">
-                                <div className="trust-badges d-flex flex-wrap gap-3">
-                                    <div className="trust-badge d-flex align-items-center gap-2">
-                                        <i className="fas fa-cube text-gradient"></i>
-                                        <span className="text-white small">360° Virtual Tours</span>
-                                    </div>
-                                    <div className="trust-badge d-flex align-items-center gap-2">
-                                        <i className="fas fa-certificate text-gradient"></i>
-                                        <span className="text-white small">Verified Properties</span>
-                                    </div>
-                                    <div className="trust-badge d-flex align-items-center gap-2">
-                                        <i className="fas fa-lock text-gradient"></i>
-                                        <span className="text-white small">Secure Booking</span>
-                                    </div>
-                                    <div className="trust-badge d-flex align-items-center gap-2">
-                                        <i className="fas fa-users text-gradient"></i>
-                                        <span className="text-white small">Expert Support</span>
-                                    </div>
-                                    <div className="trust-badge d-flex align-items-center gap-2">
-                                        <i className="fas fa-rupee-sign text-gradient"></i>
-                                        <span className="text-white small">Best Price Guarantee</span>
-                                    </div>
+                        <div className="footer-trust-badges__inner">
+                            <div className="trust-badges d-flex flex-wrap align-items-center gap-3 justify-content-center justify-content-lg-start">
+                                <div className="trust-badge d-flex align-items-center gap-2">
+                                    <i className="fas fa-cube text-gradient flex-shrink-0"></i>
+                                    <span className="text-white small">360° Virtual Tours</span>
+                                </div>
+                                <div className="trust-badge d-flex align-items-center gap-2">
+                                    <i className="fas fa-certificate text-gradient flex-shrink-0"></i>
+                                    <span className="text-white small">Verified Properties</span>
+                                </div>
+                                <div className="trust-badge d-flex align-items-center gap-2">
+                                    <i className="fas fa-lock text-gradient flex-shrink-0"></i>
+                                    <span className="text-white small">Secure Booking</span>
+                                </div>
+                                <div className="trust-badge d-flex align-items-center gap-2">
+                                    <i className="fas fa-users text-gradient flex-shrink-0"></i>
+                                    <span className="text-white small">Expert Support</span>
+                                </div>
+                                <div className="trust-badge d-flex align-items-center gap-2">
+                                    <i className="fas fa-rupee-sign text-gradient flex-shrink-0"></i>
+                                    <span className="text-white small">Best Price Guarantee</span>
                                 </div>
                             </div>
-                            <div className="col-lg-4 text-lg-end mt-3 mt-lg-0">
-                                <div className="footer-contact-quick">
-                                    <h6 className="text-white mb-2">Need Help?</h6>
-                                    <p className="text-white small mb-2">Email our property experts</p>
-                                    <a href="mailto:info@360ghar.com" className="btn btn-main btn-sm">
-                                        <i className="fas fa-envelope me-2"></i>
-                                        info@360ghar.com
-                                    </a>
-                                </div>
+                            <div className="footer-contact-quick text-center text-lg-end mt-4 mt-lg-0">
+                                <h6 className="text-white mb-2">Need Help?</h6>
+                                <p className="text-white small mb-2">Email our property experts</p>
+                                <a href="mailto:info@360ghar.com" className="btn btn-main btn-sm">
+                                    <i className="fas fa-envelope me-2"></i>
+                                    info@360ghar.com
+                                </a>
                             </div>
                         </div>
                     </div>

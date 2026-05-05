@@ -8,7 +8,7 @@ import PageLoader from './common/PageLoader';
 import ScrollToTop from './common/layout/ScrollToTop';
 import SEO from './common/SEO';
 import UIScrollLockEffect from './common/UIScrollLockEffect';
-import { realEstateStructuredData } from './seo/structuredData';
+import { realEstateStructuredData, generateSpeakableStructuredData } from './seo/structuredData';
 
 const Home = lazy(() => import('./pages/Home'));
 const PropertySidebar = lazy(() => import('./pages/properties/PropertySidebar'));
@@ -88,6 +88,7 @@ const StampDutyCalculator = lazy(() => import('./pages/data-hub/StampDutyCalcula
 const ReraProjectDirectory = lazy(() => import('./pages/data-hub/ReraProjectDirectory'));
 const BankAuctions = lazy(() => import('./pages/data-hub/BankAuctions'));
 const BankAuctionDetail = lazy(() => import('./pages/data-hub/BankAuctionDetail'));
+const AuctionSources = lazy(() => import('./pages/data-hub/AuctionSources'));
 const VerifyOwnership = lazy(() => import('./pages/data-hub/VerifyOwnership'));
 const ZoneChecker = lazy(() => import('./pages/data-hub/ZoneChecker'));
 const ZoneCheckerDetail = lazy(() => import('./pages/data-hub/ZoneCheckerDetail'));
@@ -158,6 +159,7 @@ const dataHubRoutes = [
   { path: '/rera-projects', element: <ReraProjectDirectory /> },
   { path: '/bank-auctions', element: <BankAuctions /> },
   { path: '/bank-auctions/:id', element: <BankAuctionDetail /> },
+  { path: '/auction-sources', element: <AuctionSources /> },
   { path: '/verify-ownership', element: <VerifyOwnership /> },
   { path: '/zone-checker', element: <ZoneChecker /> },
   { path: '/zone-checker/:slug', element: <ZoneCheckerDetail /> },
@@ -232,9 +234,20 @@ function App() {
     initializeAuth();
   }, [initializeLocation, initializeAuth]);
 
-  // Global schemas applied to every page
+  // Global schemas applied to every page for maximum AI discoverability
   const globalSchemas = [
     realEstateStructuredData.organization,
+    realEstateStructuredData.website,
+    realEstateStructuredData.localBusiness,
+    realEstateStructuredData.knowledgePanel,
+    realEstateStructuredData.mobileApplication,
+    realEstateStructuredData.person,
+    realEstateStructuredData.podcast,
+    realEstateStructuredData.course,
+    realEstateStructuredData.qaPage,
+    generateSpeakableStructuredData({
+      cssSelectors: ['.speakable-summary', '.speakable-highlights', 'h1', 'h2'],
+    }),
   ];
 
   return (

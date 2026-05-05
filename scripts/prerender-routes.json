@@ -2,7 +2,7 @@
   {
     "route": "/",
     "waitForSelector": "main",
-    "waitForTitle": "360Ghar – India's VR-First Way to Find a Home | Buy, Sell & Rent Property in Gurugram"
+    "waitForTitle": "360Ghar – VR Home Tours & Property in Gurugram"
   },
   {
     "route": "/properties",
@@ -114,6 +114,10 @@
   },
   {
     "route": "/bank-auctions",
+    "waitForSelector": "main"
+  },
+  {
+    "route": "/auction-sources",
     "waitForSelector": "main"
   },
   {
