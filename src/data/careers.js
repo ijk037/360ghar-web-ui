@@ -50,4 +50,21 @@ export const careerOpenings = [
     type: 'internship',
     duration: '2-6 months (extendable based on performance)',
   },
+  {
+    slug: 'software-developer-intern',
+    icon: 'fas fa-laptop-code',
+    title: 'Software Developer Intern',
+    description:
+      'Kickstart your engineering career at 360Ghar by working on real-world features used by thousands of property seekers across India. You will contribute to our React frontend and Node.js/Python backend, write tested and reviewable code, and ship features that directly improve the user experience. Ideal for students or recent graduates eager to grow rapidly in a startup environment.',
+    requirements: [
+      'Foundational knowledge of JavaScript/TypeScript and at least one backend language (Python or Node.js)',
+      'Familiarity with React or a similar frontend framework',
+      'Basic understanding of relational databases and REST API design',
+      'Willingness to learn Git workflows, code reviews, and CI/CD pipelines',
+      'Curiosity, ownership mindset, and ability to work in a fast-paced team',
+    ],
+    location: 'Gurugram, Haryana',
+    type: 'internship',
+    duration: '2-6 months',
+  },
 ];

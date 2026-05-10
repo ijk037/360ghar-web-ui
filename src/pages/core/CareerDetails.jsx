@@ -12,6 +12,8 @@ import { siteMetadata } from '../../seo/siteMetadata';
 import { careerOpenings } from '../../data/careers';
 
 const CAREERS_EMAIL = 'info@360ghar.com';
+const TODAY = new Date().toISOString().split('T')[0];
+const VALID_THROUGH = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
 
 const CAREER_DETAILS_LAYOUT = {
   content: {
@@ -32,6 +34,12 @@ const CAREER_DETAILS_LAYOUT = {
       color: '#7c3aed',
       description:
         'As a Software Developer Intern at 360Ghar, you will build and maintain web applications, APIs, and internal tools that power the 360Ghar platform. You will work with React, Node.js, PostgreSQL, and Python. You will also integrate AI-powered features like smart search, recommendation engines, and content automation. This is a role for someone who wants to see their code directly impact thousands of users.',
+    },
+    'Software Developer Intern': {
+      icon: 'fas fa-laptop-code',
+      color: '#2563eb',
+      description:
+        'As a Software Developer Intern at 360Ghar, you will dive into production code from day one — shipping React components, building API endpoints with Node.js or Python, and writing automated tests. You will pair with senior engineers on code reviews, participate in sprint planning, and own small features end-to-end. Whether it is improving the property search experience, optimising map rendering, or building internal dashboards, your work will reach real users. This internship is designed for students and recent graduates who want to accelerate their growth through hands-on mentorship and a culture of shipping.',
     },
   },
 };
@@ -129,8 +137,10 @@ const CareerDetails = () => {
         addressCountry: 'IN',
       },
     },
-    employmentType: 'INTERNESHIP',
+    employmentType: 'INTERNSHIP',
     jobDuration: opening.duration,
+    datePosted: TODAY,
+    validThrough: VALID_THROUGH,
     directApply: true,
   };
 

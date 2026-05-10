@@ -1459,3 +1459,60 @@ export const generateArticleStructuredData = ({
   articleSection,
   keywords: keywords.join(', '),
 });
+
+/**
+ * Career page FAQ structured data for Google rich results.
+ */
+export const careerFaqStructuredData = {
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'How do I apply for an internship at 360Ghar?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'To apply for an internship at 360Ghar, email your resume and a brief note about yourself to info@360ghar.com with the subject line mentioning the role you are interested in. Our team will review your application and get back to you.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What internships are available at 360Ghar?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '360Ghar currently offers internships for Content Creator Intern, Real Estate Agent, Software Developer, and Software Developer Intern roles. All positions are based in Gurugram, Haryana and run for 2-6 months with the possibility of extension based on performance.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Are 360Ghar internships paid?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '360Ghar internships offer hands-on mentorship, real product ownership, and direct guidance from the founding team. High-performing interns may receive extended opportunities or full-time offers. Contact info@360ghar.com for specific compensation details.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What is the duration of internships at 360Ghar?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Internships at 360Ghar typically last 2-6 months. Some roles may be extended based on performance and mutual fit. The real estate agent and software developer roles specifically mention extendable durations.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Where are 360Ghar internships located?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'All 360Ghar internship positions are based in Gurugram (Gurgaon), Haryana, India. Interns work on-site from our Gurugram office for maximum collaboration and mentorship.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Can interns get full-time offers at 360Ghar?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, high-performing interns at 360Ghar may receive extended opportunities or full-time offers. We value ownership and growth — interns who demonstrate impact and alignment with our mission are strongly considered for full-time roles.',
+      },
+    },
+  ],
+};

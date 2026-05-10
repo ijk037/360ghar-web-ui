@@ -1,5 +1,6 @@
 import { I18nLink } from '../../i18n/I18nLink';
 import { useTranslation } from 'react-i18next';
+import { useMemo } from 'react';
 import Header from '../../common/layout/Header';
 import Footer from '../../common/layout/Footer';
 import MobileMenu from '../../common/layout/MobileMenu';
@@ -7,6 +8,7 @@ import OffCanvas from '../../common/layout/OffCanvas';
 import Cta from '../../components/ui/Cta';
 import SEO from '../../common/SEO';
 import { siteMetadata } from '../../seo/siteMetadata';
+import { careerFaqStructuredData } from '../../seo/structuredData';
 import { careerOpenings } from '../../data/careers';
 
 const CAREER_VALUES = [
@@ -15,43 +17,61 @@ const CAREER_VALUES = [
   { icon: 'fas fa-graduation-cap', text: 'Learn fast — mentors, reviews, and ownership' },
 ];
 
+const TODAY = new Date().toISOString().split('T')[0];
+const VALID_THROUGH = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
 const Careers = () => {
   const { t } = useTranslation();
   const [tSeo] = useTranslation('seo');
+
+  const structuredData = useMemo(() => [
+    {
+      '@type': 'CollectionPage',
+      name: 'Internships at 360Ghar',
+      description: 'Explore internship opportunities at 360Ghar across content, real estate, and technology.',
+      hasPart: careerOpenings.map((opening) => ({
+        '@type': 'JobPosting',
+        name: opening.title,
+        description: opening.description.slice(0, 200),
+        datePosted: TODAY,
+        validThrough: VALID_THROUGH,
+        hiringOrganization: {
+          '@type': 'Organization',
+          name: '360Ghar',
+          url: siteMetadata.siteUrl,
+        },
+        jobLocation: {
+          '@type': 'Place',
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: 'Gurugram',
+            addressRegion: 'Haryana',
+            addressCountry: 'IN',
+          },
+        },
+        employmentType: 'INTERNSHIP',
+      })),
+      breadcrumb: {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: siteMetadata.siteUrl },
+          { '@type': 'ListItem', position: 2, name: 'Careers', item: `${siteMetadata.siteUrl}/careers` },
+        ],
+      },
+    },
+    careerFaqStructuredData,
+  ], []);
+
   return (
     <>
       <SEO
         title={tSeo('careers.title')}
         description={tSeo('careers.description')}
-        keywords="360Ghar careers, internships in Gurugram, content creator internship, real estate agent internship, software developer internship, 360Ghar hiring"
+        keywords="360Ghar careers, internships in Gurugram, content creator internship, real estate agent internship, software developer internship, software developer intern, 360Ghar hiring, tech internships Gurugram, prop-tech internships India, real estate startup jobs"
         canonical="/careers"
         image={siteMetadata.defaultOgImage}
         type="website"
-        structuredData={{
-          '@type': 'CollectionPage',
-          name: 'Internships at 360Ghar',
-          description: 'Explore internship opportunities at 360Ghar across content, real estate, and technology.',
-          hasPart: careerOpenings.map((opening) => ({
-            '@type': 'JobPosting',
-            name: opening.title,
-            description: opening.description.slice(0, 200),
-            hiringOrganization: {
-              '@type': 'Organization',
-              name: '360Ghar',
-              url: siteMetadata.siteUrl,
-            },
-            jobLocation: {
-              '@type': 'Place',
-              address: {
-                '@type': 'PostalAddress',
-                addressLocality: 'Gurugram',
-                addressRegion: 'Haryana',
-                addressCountry: 'IN',
-              },
-            },
-            employmentType: 'INTERNESHIP',
-          })),
-        }}
+        structuredData={structuredData}
       />
 
       <OffCanvas />
