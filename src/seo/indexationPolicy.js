@@ -69,6 +69,7 @@ export const indexableStaticRoutes = [
   '/glossary',
   '/links',
   '/check-fake-listing',
+  '/rent-receipt',
   '/near/cyber-city',
   '/near/udyog-vihar',
   '/near/golf-course-road-corporate',

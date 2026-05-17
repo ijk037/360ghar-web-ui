@@ -994,6 +994,22 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://360ghar.com/check-fake-listing" />
   </url>
   <url>
+    <loc>https://360ghar.com/rent-receipt</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://360ghar.com/rent-receipt" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://360ghar.com/hi/rent-receipt" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://360ghar.com/rent-receipt" />
+  </url>
+  <url>
+    <loc>https://360ghar.com/hi/rent-receipt</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://360ghar.com/rent-receipt" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://360ghar.com/hi/rent-receipt" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://360ghar.com/rent-receipt" />
+  </url>
+  <url>
     <loc>https://360ghar.com/near/cyber-city</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>

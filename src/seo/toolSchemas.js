@@ -125,6 +125,13 @@ export const toolSchemas = {
         category: 'DesignApplication',
         route: '/ai-design-studio'
     },
+    rentReceipt: {
+        name: 'Rent Receipt Generator',
+        description: "Generate rent receipts for HRA tax exemption claims instantly. Free online rent receipt maker with landlord PAN, revenue stamp, and PDF download. Create monthly or full-year receipts for Income Tax submission.",
+        keywords: 'rent receipt generator, HRA receipt, rent receipt for tax exemption, rent receipt download, generate rent receipt online, monthly rent receipt, HRA claim receipt, landlord PAN rent receipt, revenue stamp rent receipt, rent receipt PDF, kiraya rasid, किराया रसीद, rent receipt India, rent receipt format, HRA exemption receipt, rent receipt maker free',
+        category: 'FinanceApplication',
+        route: '/rent-receipt'
+    },
     fakeListingChecker: {
         name: 'Fake Listing Checker',
         description: 'Check if a property listing from 99acres, MagicBricks, or other portals is fake. Paste the URL to get instant verification against 360Ghar\'s physically verified database.',

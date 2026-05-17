@@ -17,6 +17,7 @@ const TOOL_CATEGORIES = [
       { key: 'loanEligibility', icon: 'fas fa-university', route: '/loan-eligibility-calculator' },
       { key: 'capitalGains', icon: 'fas fa-receipt', route: '/capital-gains-tax-calculator' },
       { key: 'stampDuty', icon: 'fas fa-stamp', route: '/stamp-duty-calculator' },
+      { key: 'rentReceipt', icon: 'fas fa-file-invoice', route: '/rent-receipt' },
     ],
   },
   {

@@ -257,6 +257,10 @@
     "waitForSelector": "main"
   },
   {
+    "route": "/rent-receipt",
+    "waitForSelector": "main"
+  },
+  {
     "route": "/near/cyber-city",
     "waitForSelector": "main"
   },
@@ -756,6 +760,10 @@
   },
   {
     "route": "/hi/check-fake-listing",
+    "waitForSelector": "html[lang=\"hi\"] main"
+  },
+  {
+    "route": "/hi/rent-receipt",
     "waitForSelector": "html[lang=\"hi\"] main"
   },
   {

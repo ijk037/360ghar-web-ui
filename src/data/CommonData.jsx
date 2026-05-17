@@ -229,6 +229,10 @@ export const navMenus = [
                 path: "/capital-gains-tax-calculator",
             },
             {
+                textKey: "common:nav.rentReceipt",
+                path: "/rent-receipt",
+            },
+            {
                 textKey: "common:nav.policies",
                 path: "/policies",
             },

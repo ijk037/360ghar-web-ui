@@ -176,6 +176,26 @@
             background: hsl(var(--white));
         }
     }
+    &-outline-secondary {
+        background-color: transparent !important;
+        border: 1px solid #6c757d !important;
+        color: #6c757d !important;
+        &:hover, &:focus, &:focus-visible {
+            background-color: #6c757d !important;
+            border-color: #6c757d !important;
+            color: hsl(var(--white)) !important;
+        }
+    }
+    &-outline-danger {
+        background-color: transparent !important;
+        border: 1px solid var(--danger-color) !important;
+        color: var(--danger-color) !important;
+        &:hover, &:focus, &:focus-visible {
+            background-color: var(--danger-color) !important;
+            border-color: var(--danger-color) !important;
+            color: hsl(var(--white)) !important;
+        }
+    }
     &-outline-light {
         background-color: transparent !important;
         border: 1px solid var(--border-color) !important;

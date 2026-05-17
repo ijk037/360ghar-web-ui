@@ -63,6 +63,7 @@ const NriPropertyGuide = lazy(() => import('./pages/core/NriPropertyGuide'));
 const ListPropertyFree = lazy(() => import('./pages/core/ListPropertyFree'));
 const Glossary = lazy(() => import('./pages/core/Glossary'));
 const FakeListingChecker = lazy(() => import('./pages/tools/FakeListingChecker'));
+const RentReceipt = lazy(() => import('./pages/tools/RentReceipt'));
 const ToolsIndex = lazy(() => import('./pages/tools/ToolsIndex'));
 const Links = lazy(() => import('./pages/core/Links'));
 const ChatBot = lazy(() => import('./components/chatbot/ChatBot'));
@@ -161,6 +162,7 @@ const toolRoutes = [
   { path: '/vastu-checker', element: <VastuChecker /> },
   { path: '/ai-design-studio', element: <AIDesignStudio /> },
   { path: '/check-fake-listing', element: <FakeListingChecker /> },
+  { path: '/rent-receipt', element: <RentReceipt /> },
 ];
 
 const dataHubRoutes = [
