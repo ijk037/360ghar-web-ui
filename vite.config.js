@@ -11,12 +11,12 @@ import { readFileSync, writeFileSync } from "node:fs";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Custom plugin to defer the main entry CSS chunk so it does not block first paint.
-// The critical above-the-fold styles are already inlined in index.html.
+// (Bootstrap/Font Awesome are already deferred via media="print" in index.html. CSS that
+// Vite injects into prerendered pages is re-deferred post-capture in the prerender script —
+// see scripts/prerender-pages.mjs `reDeferCss`.)
 const deferEntryCssPlugin = () => ({
   name: "defer-entry-css",
   transformIndexHtml(html) {
-    // Convert the main entry CSS chunk (<link rel="stylesheet" href="/assets/index-*.css">)
-    // to a non-blocking preload pattern.
     return html.replace(
       /<link rel="stylesheet"([^>]*)href="(\/assets\/index-[a-zA-Z0-9_-]+\.css)"([^>]*)>/,
       (match, before, href, after) => {
@@ -46,19 +46,11 @@ const asyncRegisterSW = () => ({
   },
 });
 
-// Custom plugin to optimize modulepreload hints
-const optimizeModulepreload = () => ({
-  name: "optimize-modulepreload",
-  transformIndexHtml(html) {
-    // Remove preload hints for heavy, rarely-used chunks to improve initial load
-    // IMPORTANT: Keep this list in sync with manualChunks configuration below
-    // These chunks are lazy-loaded only when needed (markdown rendering, analytics)
-    return html
-      .replace(/<link rel="modulepreload"[^>]*vendor-markdown[^>]*>/g, "")
-      .replace(/<link rel="modulepreload"[^>]*vendor-analytics[^>]*>/g, "")
-      .replace(/<link rel="modulepreload"[^>]*vendor-supabase[^>]*>/g, "");
-  },
-});
+// NOTE: modulepreload hints are disabled via `build.modulePreload = false` below.
+// Vite otherwise injects (at build time AND at runtime via the preload helper) one
+// modulepreload per transitive dep of every dynamically-imported chunk, which on a
+// prerendered page forces the browser to eagerly fetch+compile ~15-40 JS chunks before
+// it can paint. Chunks still load on demand via native dynamic import when rendered.
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -74,9 +66,6 @@ export default defineConfig(({ mode }) => {
 
     // Make PWA SW registration non-blocking
     asyncRegisterSW(),
-
-    // Optimize modulepreload hints (remove heavy rarely-used chunks)
-    optimizeModulepreload(),
 
     // Image optimization
     ViteImageOptimizer({
@@ -130,7 +119,7 @@ export default defineConfig(({ mode }) => {
             type: "image/png",
           },
           {
-            src: "/assets/images/logo/logo.png",
+            src: "/assets/images/logo/favicon-512.png",
             sizes: "512x512",
             type: "image/png",
           },
@@ -198,6 +187,11 @@ export default defineConfig(({ mode }) => {
 
     // Disable source maps for production
     sourcemap: false,
+
+    // Disable modulepreload hints (static + runtime). On a prerendered page these force the
+    // browser to eagerly fetch+compile many JS chunks before first paint. Chunks still load
+    // on demand via native dynamic import. See note above the config for full rationale.
+    modulePreload: false,
 
     // Increase chunk size warning limit
     chunkSizeWarningLimit: 500,

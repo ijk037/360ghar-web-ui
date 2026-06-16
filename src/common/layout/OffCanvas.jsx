@@ -9,8 +9,13 @@ import { useUIStore } from '../../store';
 const OffCanvas = () => {
 
     const { offCanvas, handleOffCanvasClose } = useUIStore();
-    const { t } = useTranslation('common'); 
-    
+    const { t } = useTranslation('common');
+
+    // Mount the search box only while the panel is open. The panel sits in the DOM on every
+    // page, so mounting SearchBox eagerly would download ~230KB of Google Maps/Places JS on
+    // every cold load even though the panel is closed (and display:none on mobile). The Maps
+    // API is cached on window.google after the first open, so reopening does not reload it.
+
     return (
         <>
             <div className={`side-overlay ${offCanvas ? 'show' : '' }`} onClick={handleOffCanvasClose}></div>
@@ -24,7 +29,7 @@ const OffCanvas = () => {
                     </button>
                 </div>
 
-                <SearchBox/>
+                {offCanvas && <SearchBox/>}
 
                 <ul className="address-list mt-5">
                     {offCanvasInfos.map((offCanvasInfo, index) => {

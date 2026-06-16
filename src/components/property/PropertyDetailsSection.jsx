@@ -354,13 +354,17 @@ const PropertyDetailsSection = ({ property }) => {
     if (galleryImages.length > 0) {
       for (let i = 1; i <= 2; i++) {
         if (i < galleryImages.length && galleryImages[i]?.image_url) {
+          const url = galleryImages[i].image_url;
+          // Detect MIME type from URL extension
+          const ext = url?.split('?')[0]?.split('#')[0]?.split('.')?.pop()?.toLowerCase();
+          const mime = ext === 'webp' ? 'image/webp' : ext === 'png' ? 'image/png' : 'image/jpeg';
           links.push(
             <link
               key={`preload-next-${i}`}
               rel="preload"
               as="image"
-              href={galleryImages[i].image_url}
-              type="image/jpeg"
+              href={url}
+              type={mime}
             />
           );
         }

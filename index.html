@@ -48,10 +48,11 @@
     }
   </script>
 
-  <!-- WebP favicon (115 KB) — much smaller than the 489 KB PNG. All modern browsers support this. -->
+  <!-- Favicons — properly sized (were a 2048px image: 489 KB PNG + 118 KB WebP) -->
   <link rel="icon" type="image/webp" href="%BASE_URL%assets/images/logo/favicon.webp">
-  <!-- PNG fallback for Safari, social crawlers, and bookmarks that don't support WebP favicons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="%BASE_URL%assets/images/logo/favicon-32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="%BASE_URL%assets/images/logo/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="%BASE_URL%assets/images/logo/apple-touch-icon.png">
   <link rel="alternate" type="application/rss+xml" title="360Ghar All Feeds" href="/rss.xml">
   <link rel="alternate" type="application/rss+xml" title="360Ghar Blog" href="/rss/blog.xml">
   <link rel="alternate" type="application/rss+xml" title="360Ghar Properties" href="/rss/properties.xml">
@@ -104,7 +105,7 @@
   </style>
 
   <!-- Preload LCP hero image (responsive) -->
-  <link rel="preload" as="image" href="%BASE_URL%assets/images/thumbs/banner-three.webp" imagesrcset="%BASE_URL%assets/images/thumbs/banner-three-320w.webp 320w, %BASE_URL%assets/images/thumbs/banner-three-640w.webp 640w, %BASE_URL%assets/images/thumbs/banner-three-768w.webp 768w, %BASE_URL%assets/images/thumbs/banner-three-1024w.webp 1024w" imagesizes="(max-width: 768px) 100vw, 50vw">
+  <link rel="preload" as="image" fetchpriority="high" href="%BASE_URL%assets/images/thumbs/banner-three.webp" imagesrcset="%BASE_URL%assets/images/thumbs/banner-three-320w.webp 320w, %BASE_URL%assets/images/thumbs/banner-three-640w.webp 640w, %BASE_URL%assets/images/thumbs/banner-three-768w.webp 768w, %BASE_URL%assets/images/thumbs/banner-three-1024w.webp 1024w" imagesizes="(max-width: 768px) 100vw, 50vw">
 
   <!-- Preload critical assets -->
   <link rel="preload" href="%BASE_URL%assets/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>

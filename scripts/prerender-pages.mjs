@@ -69,8 +69,75 @@ function outputPathForRoute(route) {
   return path.join(DIST_DIR, route.replace(/^\/+/, '') + '.html');
 }
 
+// Make every stylesheet non-blocking in the prerendered capture.
+//
+// During prerender the headless browser loads each CSS file, which fires the async-load
+// `onload` handlers authored in index.html (media="print" -> "all", rel="preload" -> "stylesheet"),
+// so `page.content()` serializes them as render-blocking. Puppeteer also serializes
+// `<noscript>` fallback links as real `<link>` tags, producing duplicate blocking copies.
+// On top of that, Vite injects per-route component CSS (vendor-ui, Home, …) as plain
+// blocking `<link rel="stylesheet">`. All of this would ship render-blocking CSS.
+//
+// We collapse every CSS href to a single non-blocking preload, drop the redundant
+// `<noscript>` fallbacks (the prerendered page requires JS anyway), and let the preload
+// swap itself to a stylesheet once loaded. Critical above-the-fold styles are inlined in
+// index.html, so deferring the rest does not cause a visible flash of unstyled content.
+// CSS files whose layout is required for a stable first paint on the prerendered page.
+// Keep these render-blocking so the prerendered content renders in its final layout
+// immediately (avoiding layout shift). Everything else (icons, below-the-fold sections)
+// loads non-blocking. Tunable: keep this list minimal — only true layout CSS.
+const CRITICAL_CSS = /\/(?:index-[a-zA-Z0-9_-]+|bootstrap\.min)\.css$/;
+
+export function reDeferCss(html) {
+  // 1. Collect unique CSS hrefs referenced by a stylesheet or a style preload.
+  const hrefs = new Set();
+  for (const match of html.matchAll(/<link\b[^>]*?>/gi)) {
+    const tag = match[0];
+    const isCss =
+      /rel="stylesheet"/i.test(tag) ||
+      (/rel="preload"/i.test(tag) && /as="style"/i.test(tag));
+    if (!isCss) continue;
+    const href = tag.match(/href="([^"]+\.css)"/i);
+    if (href) hrefs.add(href[1]);
+  }
+  if (hrefs.size === 0) return html;
+
+  // 2. Drop <noscript> blocks that contain a stylesheet link (they serialize as duplicates).
+  let next = html.replace(/<noscript>[\s\S]*?<\/noscript>/gi, (block) =>
+    /<link\b[^>]*?rel="stylesheet"/i.test(block) ? '' : block,
+  );
+
+  // 3. Remove every stylesheet / style-preload link tag pointing at a collected href.
+  for (const href of hrefs) {
+    const esc = href.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    next = next.replace(new RegExp(`<link\\b[^>]*?href="${esc}"[^>]*?>`, 'gi'), '');
+  }
+
+  // 4. Re-inject: critical layout CSS as a blocking stylesheet; the rest as a non-blocking
+  //    preload that swaps to a stylesheet once loaded. One link per href, before </head>.
+  const links = [...hrefs]
+    .map((h) =>
+      CRITICAL_CSS.test(h)
+        ? `<link rel="stylesheet" href="${h}">`
+        : `<link rel="preload" as="style" href="${h}" crossorigin onload="this.onload=null;this.rel='stylesheet'">`,
+    )
+    .join('\n  ');
+  return next.replace('</head>', `  ${links}\n</head>`);
+}
+
+// Remove Google Maps <script> tags that get baked into the prerendered HTML.
+// The @googlemaps/js-api-loader singleton fires its idle callback during the prerender wait,
+// injecting the Maps API scripts into the DOM. These are only needed on the /map-location
+// page, not on every prerendered page (~230 KB of unnecessary JS per page load).
+function stripBakedMaps(html) {
+  // Remove the initial loader script and all transitive Maps API scripts.
+  return html
+    .replace(/<script[^>]*id="google-maps-js"[^>]*><\/script>/g, '')
+    .replace(/<script[^>]*src="https:\/\/maps\.googleapis\.com[^"]*"><\/script>/g, '');
+}
+
 function ensurePrerenderAnnotations(html) {
-  let nextHtml = html;
+  let nextHtml = stripBakedMaps(reDeferCss(html));
 
   if (!nextHtml.includes('data-prerendered="true"')) {
     nextHtml = nextHtml.replace('<html', '<html data-prerendered="true"');
@@ -79,7 +146,7 @@ function ensurePrerenderAnnotations(html) {
   if (!nextHtml.includes('name="viewport"')) {
     nextHtml = nextHtml.replace(
       '<head>',
-      '<head><meta name="viewport" content="width=device-width, initial-scale=1.0">'
+      '<head><meta name="viewport" content="width=device-width, initial-scale=1.0">',
     );
   }
 
