@@ -9,7 +9,7 @@ import SEO from '../../common/SEO';
 import { siteMetadata } from '../../seo/siteMetadata';
 import { generateToolSchema, toolSchemas } from '../../seo/toolSchemas';
 import { generateBreadcrumbStructuredData, generateFaqStructuredData, generateHowToStructuredData } from '../../seo/structuredData';
-import { ToolFaq, ToolRelatedLinks } from '../../components/tools/ToolContentSections';
+import { ToolFaq, ToolRelatedLinks, ToolInfoCard, ToolComparisonTable } from '../../components/tools/ToolContentSections';
 import { I18nLink } from '../../i18n/I18nLink';
 
 const EMI_CALCULATOR_FAQS = [
@@ -32,6 +32,22 @@ const EMI_CALCULATOR_FAQS = [
   {
     question: 'Should I choose a shorter or longer loan tenure?',
     answer: 'Shorter tenure (15-20 years) = higher EMI but much less total interest paid. Longer tenure (25-30 years) = lower EMI but significantly more total interest. For a ₹50 lakh loan at 8.5%: 20-year EMI is ₹43,691 (total interest ₹54.9L), while 30-year EMI is ₹38,459 (total interest ₹88.5L). Choose based on your monthly budget and financial goals.',
+  },
+  {
+    question: 'What is the ideal EMI to income ratio?',
+    answer: 'Financial experts recommend keeping total EMIs below 40% of your monthly income. For a ₹50,000 salary, your EMI should not exceed ₹20,000. Banks use FOIR (Fixed Obligation to Income Ratio) to assess your repayment capacity. A lower FOIR not only improves loan approval chances but also ensures you have enough buffer for emergencies and daily expenses.',
+  },
+  {
+    question: 'Can I pay more than my EMI amount?',
+    answer: 'Yes, you can make partial prepayments on your home loan. Most banks allow prepayment without any penalty on floating rate loans. Even small prepayments can significantly reduce your total interest burden and loan tenure. For example, paying just one extra EMI per year on a ₹50 lakh loan at 8.5% over 20 years can save you approximately ₹6-8 lakh in total interest and reduce tenure by 2-3 years.',
+  },
+  {
+    question: 'What happens if I miss an EMI payment?',
+    answer: 'Missing an EMI payment attracts a late payment fee (typically 1-2% of the EMI amount) and negatively impacts your CIBIL score. Consecutive misses can lead to the loan being classified as NPA (Non-Performing Asset). Always inform your bank in advance if you anticipate difficulty in paying — most lenders offer a grace period or restructuring options. Even a single missed payment can drop your credit score by 50-70 points.',
+  },
+  {
+    question: 'How does loan tenure affect total interest paid?',
+    answer: 'A longer tenure reduces your monthly EMI but significantly increases the total interest paid. For example, on a ₹50 lakh loan at 8.5%: a 20-year tenure results in approximately ₹55.5 lakh total interest, while a 30-year tenure results in approximately ₹91.5 lakh — a difference of ₹36 lakh. The key takeaway is that every additional year of tenure adds several lakhs in interest cost, so choose the shortest tenure your budget can comfortably support.',
   },
 ];
 
@@ -396,6 +412,56 @@ const EmiCalculator = () => {
                     <div className="container">
                         <div className="row justify-content-center">
                             <div className="col-lg-8">
+
+                                {/* Educational Content Sections */}
+                                <ToolInfoCard title="Understanding Home Loan EMI">
+                                    <p className="text-muted mb-3">
+                                        EMI (Equated Monthly Instalment) is the fixed amount you pay your bank every month until your home loan is fully repaid. Each EMI consists of two components — <strong>principal</strong> (the loan amount you borrowed) and <strong>interest</strong> (the cost of borrowing). In the early years of your loan, a larger share of your EMI goes toward interest. For example, in year 1 of a 20-year loan at 8.5%, nearly 75% of your EMI covers interest. As the loan matures, the principal component grows while the interest portion shrinks. This shifting balance is described by your <strong>amortization schedule</strong> — a month-by-month breakup that shows exactly how much of each payment reduces your outstanding principal versus what the bank earns as interest. Reviewing this schedule helps you identify the best time to make prepayments for maximum savings.
+                                    </p>
+                                </ToolInfoCard>
+
+                                <ToolInfoCard title="Tips to Reduce Your Home Loan EMI">
+                                    <ul className="text-muted mb-0">
+                                        <li className="mb-2"><strong>Make a larger down payment</strong> — Putting down 20-25% instead of the minimum 10-15% reduces your principal, which directly lowers your EMI and total interest.</li>
+                                        <li className="mb-2"><strong>Compare interest rates across banks</strong> — Even a 0.5% difference on a ₹50 lakh loan over 20 years can save you more than ₹3.5 lakh. Always get quotes from at least 3-4 lenders.</li>
+                                        <li className="mb-2"><strong>Opt for a shorter tenure if affordable</strong> — A 20-year tenure instead of 30 years on a ₹50 lakh loan at 8.5% saves you over ₹36 lakh in interest.</li>
+                                        <li className="mb-2"><strong>Make periodic prepayments</strong> — Use annual bonuses, salary increments, or windfall gains to make lump-sum prepayments. Even one extra EMI per year can save lakhs and reduce tenure by 2-3 years.</li>
+                                        <li className="mb-0"><strong>Consider a balance transfer</strong> — If another lender offers a rate that is 0.5% or more lower, transferring your outstanding balance can significantly reduce your interest burden. Factor in processing fees and legal charges before switching.</li>
+                                    </ul>
+                                </ToolInfoCard>
+
+                                <ToolInfoCard title="Fixed vs Floating Interest Rate">
+                                    <p className="text-muted mb-3">
+                                        <strong>Fixed rate</strong> loans have a constant interest rate throughout the tenure, giving you predictable EMIs. However, fixed rates are typically 0.5–1% higher than floating rates and most banks reserve the right to reset them after a few years. <strong>Floating rate</strong> loans are linked to the RBI repo rate or an external benchmark, meaning your EMI changes when the benchmark moves. While this introduces uncertainty, floating rates have historically been cheaper over the long term — especially in a declining rate environment. If you expect rates to fall or stay stable, a floating rate loan is generally the better choice. If you prefer budgeting certainty and rates are at historic lows, locking in a fixed rate can be worthwhile.
+                                    </p>
+                                    <div className="row g-3">
+                                        <div className="col-md-6">
+                                            <div className="p-3 bg-white rounded-2 border">
+                                                <h6 className="text-main mb-1"><i className="fas fa-lock me-1"></i> Fixed Rate</h6>
+                                                <small className="text-muted">Stable EMI, higher rate (typically 0.5–1% more). Best when interest rates are at historic lows.</small>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="p-3 bg-white rounded-2 border">
+                                                <h6 className="text-main mb-1"><i className="fas fa-chart-line me-1"></i> Floating Rate</h6>
+                                                <small className="text-muted">Variable EMI, linked to repo rate. Generally cheaper over the long term. Most popular choice in India.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ToolInfoCard>
+
+                                {/* Bank Comparison Table */}
+                                <ToolComparisonTable
+                                    title="Home Loan Interest Rates: SBI vs HDFC vs ICICI vs LIC Housing (2026)"
+                                    headers={['Bank', 'Interest Rate (From)', 'Max Tenure', 'Max LTV Ratio', 'Processing Fee']}
+                                    rows={[
+                                        ['SBI', '8.50% p.a.', '30 years', 'Up to 90%', '0.35% (min ₹2,000, max ₹10,000)'],
+                                        ['HDFC Bank', '8.70% p.a.', '30 years', 'Up to 90%', '0.50% (min ₹3,000)'],
+                                        ['ICICI Bank', '8.75% p.a.', '30 years', 'Up to 90%', '0.50% (min ₹3,000, max ₹5,000)'],
+                                        ['LIC Housing Finance', '8.65% p.a.', '30 years', 'Up to 85%', '0.25% (min ₹2,500, max ₹15,000)'],
+                                    ]}
+                                />
+
                                 <ToolFaq faqs={EMI_CALCULATOR_FAQS} heading="Home Loan EMI — Frequently Asked Questions" />
                                 <ToolRelatedLinks
                                     heading="Related Calculators & Tools"

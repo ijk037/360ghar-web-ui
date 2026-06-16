@@ -35,7 +35,7 @@ export const generateToolSchema = (toolNameOrConfig, description, keywords, cate
         applicationSuite: '360Ghar Real Estate Tools',
         inLanguage: ['en-IN', 'hi-IN'],
         downloadUrl,
-        featureList: cfg.keywords.split(', '),
+        featureList: cfg.featureList || cfg.keywords.split(', '),
         aggregateRating: {
             '@type': 'AggregateRating',
             ratingValue: cfg.ratingValue || '4.8',
@@ -138,5 +138,29 @@ export const toolSchemas = {
         keywords: 'fake property listing check, verify property listing, 99acres fake listing, MagicBricks fraud, property listing verification India, fake real estate listing detector',
         category: 'UtilitiesApplication',
         route: '/check-fake-listing'
+    },
+    bankAuctions: {
+        name: 'Bank Auction Properties',
+        description: 'Find bank auction properties at discounted prices across India. Browse foreclosed properties from SBI, HDFC, ICICI, PNB and other banks.',
+        keywords: 'bank auction property, foreclosed property, SBI auction, HDFC auction, bank auction 2026, distressed property, NPA property sale',
+        category: 'RealEstateTool',
+        route: '/bank-auctions',
+        featureList: 'Bank auction listings, Property search, Multi-bank auctions, Discounted properties'
+    },
+    circleRates: {
+        name: 'Circle Rate Directory',
+        description: 'Find circle rates (ready reckoner rates) for properties across Haryana. Compare stamp duty and registration charges by locality.',
+        keywords: 'circle rate, ready reckoner rate, collector rate, Haryana circle rate, stamp duty, property valuation, circle rate gurugram, circle rate faridabad',
+        category: 'RealEstateTool',
+        route: '/circle-rates',
+        featureList: 'Circle rate lookup, Locality-wise rates, Stamp duty calculation, Property valuation reference'
+    },
+    reraProjects: {
+        name: 'RERA Project Directory',
+        description: 'Browse RERA registered real estate projects in Haryana. Verify project details, builder information, and compliance status.',
+        keywords: 'RERA registered projects, RERA Haryana, HRERA, real estate regulatory authority, RERA verification, builder RERA number',
+        category: 'RealEstateTool',
+        route: '/rera-projects',
+        featureList: 'RERA project lookup, Builder verification, Project compliance check, Registration status'
     }
 };

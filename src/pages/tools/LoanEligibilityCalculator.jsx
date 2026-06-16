@@ -7,6 +7,7 @@
 
  import SEO from '../../common/SEO';
  import Cta from '../../components/ui/Cta';
+ import { ToolFaq, ToolRelatedLinks, ToolInfoCard } from '../../components/tools/ToolContentSections';
  import { siteMetadata } from '../../seo/siteMetadata';
  import { generateToolSchema, toolSchemas } from '../../seo/toolSchemas';
 import { generateBreadcrumbStructuredData, generateFaqStructuredData, generateHowToStructuredData } from '../../seo/structuredData';
@@ -19,6 +20,26 @@ import { generateBreadcrumbStructuredData, generateFaqStructuredData, generateHo
          { question: t('loanEligibility.faqs.q2.question'), answer: t('loanEligibility.faqs.q2.answer') },
          { question: t('loanEligibility.faqs.q3.question'), answer: t('loanEligibility.faqs.q3.answer') },
          { question: t('loanEligibility.faqs.q4.question'), answer: t('loanEligibility.faqs.q4.answer') },
+         {
+             question: 'What is FOIR and how does it affect loan eligibility?',
+             answer: 'FOIR (Fixed Obligation to Income Ratio) is the percentage of your income already committed to existing EMIs and obligations. Most banks cap FOIR at 50-60%. If you earn ₹1 lakh and have ₹30,000 in existing EMIs, your remaining eligibility is based on ₹70,000 income.'
+         },
+         {
+             question: 'Can I include rental income in my loan eligibility?',
+             answer: 'Yes, most banks include 50-70% of your rental income when calculating loan eligibility. You\'ll need to provide rental agreements and bank statements showing consistent rent receipts. Self-employed applicants can also include business income with proper documentation.'
+         },
+         {
+             question: 'Does my CIBIL score affect home loan eligibility?',
+             answer: 'Yes, CIBIL score is a critical factor. A score above 750 is considered good and qualifies you for the best interest rates. Scores below 700 may result in higher rates or rejection. Check your CIBIL score for free before applying and take steps to improve it if needed.'
+         },
+         {
+             question: 'How much home loan can I get on a ₹50,000 salary?',
+             answer: 'On a ₹50,000 monthly salary, most banks offer a home loan of ₹25-35 lakh, assuming no existing EMIs, a 20-year tenure, and 8.5% interest rate. The exact amount depends on your age, employer, credit score, and existing obligations.'
+         },
+         {
+             question: 'What is the minimum salary for a home loan in India?',
+             answer: 'There\'s no universal minimum salary requirement, but most banks require a minimum net monthly income of ₹15,000-₹25,000 for salaried applicants. For self-employed, minimum ITR income of ₹2-3 lakh per annum is typically required.'
+         },
      ];
 
      const LOAN_ELIGIBILITY_HOW_TO_STEPS = [
@@ -206,17 +227,75 @@ import { generateBreadcrumbStructuredData, generateFaqStructuredData, generateHo
                                          </div>
                                      </div>
                                  </div>
-                             </div>
-                         </div>
-                     </div>
-                 </section>
- 
-                 <Cta ctaClass="" />
 
-                 <Footer />
-             </main>
-         </>
-     );
- };
- 
- export default LoanEligibilityCalculator;
+                                <ToolInfoCard title="How Home Loan Eligibility is Calculated">
+                                    <p className="mb-2">Banks consider several factors when determining your home loan eligibility:</p>
+                                    <ul className="mb-3">
+                                        <li><strong>Monthly income</strong> &mdash; Your net take-home salary or income</li>
+                                        <li><strong>Existing obligations</strong> &mdash; Current EMIs, credit card dues, and other loan payments</li>
+                                        <li><strong>Age</strong> &mdash; Younger applicants may qualify for longer tenures</li>
+                                        <li><strong>Credit score</strong> &mdash; A CIBIL score above 750 improves eligibility</li>
+                                        <li><strong>Employment type</strong> &mdash; Salaried vs. self-employed have different criteria</li>
+                                        <li><strong>Property value</strong> &mdash; Loan-to-value (LTV) ratio limits apply</li>
+                                    </ul>
+                                    <p className="mb-2"><strong>Formula used by banks:</strong></p>
+                                    <p className="mb-1"><code>Eligible EMI = Net Income x FOIR% - Existing EMIs</code></p>
+                                    <p className="mb-0"><code>Loan Amount = Eligible EMI x [((1+r)^n - 1) / (r x (1+r)^n)]</code></p>
+                                    <p className="small text-muted mt-2 mb-0">Where r = monthly interest rate, n = total number of monthly installments, FOIR = Fixed Obligation to Income Ratio (typically 50-65%).</p>
+                                </ToolInfoCard>
+
+                                <ToolInfoCard title="Tips to Increase Your Home Loan Eligibility">
+                                    <ul className="mb-0">
+                                        <li><strong>Add a co-applicant</strong> (spouse/parent) to combine incomes and boost eligibility</li>
+                                        <li><strong>Clear existing loans</strong> and credit card dues before applying to lower your FOIR</li>
+                                        <li><strong>Choose a longer tenure</strong> &mdash; this reduces your EMI and increases the eligible loan amount</li>
+                                        <li><strong>Include all income sources</strong> such as rental income, bonuses, and incentives in your application</li>
+                                        <li><strong>Maintain a CIBIL score above 750</strong> to qualify for the best rates and higher eligibility</li>
+                                        <li><strong>Apply during festive season offers</strong> when banks often provide lower interest rates and relaxed criteria</li>
+                                    </ul>
+                                </ToolInfoCard>
+
+                                <ToolInfoCard title="Documents Required for Home Loan Application">
+                                    <div className="row g-3">
+                                        <div className="col-md-6">
+                                            <h6 className="text-main">Identity Proof</h6>
+                                            <p className="small mb-2">Aadhaar Card, PAN Card, Passport, Voter ID, or Driving License</p>
+                                            <h6 className="text-main">Address Proof</h6>
+                                            <p className="small mb-2">Aadhaar Card, Utility Bills, Passport, or Bank Statement with address</p>
+                                            <h6 className="text-main">Employment Proof</h6>
+                                            <p className="small mb-0">Offer Letter, Company ID Card, or Employment Certificate</p>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <h6 className="text-main">Income Proof</h6>
+                                            <p className="small mb-2">Last 3-6 months salary slips, ITR (last 2-3 years), and Bank Statements (last 6 months)</p>
+                                            <h6 className="text-main">Property Documents</h6>
+                                            <p className="small mb-0">Sale Agreement, NOC from builder, Approved Building Plan, and Property Tax Receipts</p>
+                                        </div>
+                                    </div>
+                                </ToolInfoCard>
+
+                                <ToolFaq faqs={LOAN_ELIGIBILITY_FAQS} heading="Frequently Asked Questions" />
+
+                                <ToolRelatedLinks
+                                    heading="Related Calculators & Tools"
+                                    links={[
+                                        { to: '/emi-calculator', label: 'EMI Calculator', icon: 'fas fa-calculator' },
+                                        { to: '/stamp-duty-calculator', label: 'Stamp Duty Calculator', icon: 'fas fa-file-invoice-dollar' },
+                                        { to: '/capital-gains-tax-calculator', label: 'Capital Gains Calculator', icon: 'fas fa-chart-line' },
+                                        { to: '/area-calculator', label: 'Carpet Area Calculator', icon: 'fas fa-ruler-combined' },
+                                    ]}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <Cta ctaClass="" />
+
+                <Footer />
+            </main>
+        </>
+    );
+};
+
+export default LoanEligibilityCalculator;

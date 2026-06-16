@@ -10,7 +10,7 @@ import Cta from '../../components/ui/Cta';
 import { siteMetadata } from '../../seo/siteMetadata';
 import { generateToolSchema, toolSchemas } from '../../seo/toolSchemas';
 import { generateBreadcrumbStructuredData, generateFaqStructuredData, generateHowToStructuredData } from '../../seo/structuredData';
-import { ToolFaq, ToolRelatedLinks } from '../../components/tools/ToolContentSections';
+import { ToolFaq, ToolRelatedLinks, ToolComparisonTable } from '../../components/tools/ToolContentSections';
 
 const ciiData = {
     '2001-2002': 100,
@@ -273,15 +273,69 @@ const CapitalGainsCalculator = () => {
                                 </div>
 
                                 <div className="mt-5">
-                                    <h5>{t('capitalGains.exemptionsTitle')}</h5>
-                                    <p className="text-muted small">
-                                        {t('capitalGains.exemptionsDesc')}
-                                        <ul className="mt-2">
-                                            <li>{t('capitalGains.exemption1')}</li>
-                                            <li>{t('capitalGains.exemption2')}</li>
-                                            <li>{t('capitalGains.exemption3')}</li>
-                                        </ul>
-                                        {t('capitalGains.exemptionBonds')}
+                                    <h2 className="h5">{t('capitalGains.exemptionsTitle')}</h2>
+                                    <p className="text-muted small">{t('capitalGains.exemptionsDesc')}</p>
+                                    <ul className="text-muted small mt-2">
+                                        <li>{t('capitalGains.exemption1')}</li>
+                                        <li>{t('capitalGains.exemption2')}</li>
+                                        <li>{t('capitalGains.exemption3')}</li>
+                                    </ul>
+                                    <p className="text-muted small">{t('capitalGains.exemptionBonds')}</p>
+                                </div>
+
+                                {/* Section 54 vs 54EC vs 54F Comparison */}
+                                <ToolComparisonTable
+                                    title="Capital Gains Exemption Comparison: Section 54 vs 54EC vs 54F"
+                                    headers={['Section', 'Eligible Asset Sold', 'Where to Invest', 'Max Exemption', 'Lock-in Period', 'Time Limit to Invest']}
+                                    rows={[
+                                        [
+                                            'Section 54',
+                                            'Residential house property',
+                                            'Another residential house property',
+                                            'No limit (full capital gains exempt)',
+                                            '3 years — cannot sell new property',
+                                            '1 year before or 2 years after sale; 3 years if constructing',
+                                        ],
+                                        [
+                                            'Section 54EC',
+                                            'Any land or building (long-term)',
+                                            'NHAI, REC, PFC, or IRFC bonds',
+                                            '₹50 lakh (per financial year)',
+                                            '5 years — bonds cannot be sold/pledged',
+                                            'Within 6 months from the date of sale',
+                                        ],
+                                        [
+                                            'Section 54F',
+                                            'Any long-term capital asset (not a residential house)',
+                                            'Residential house property',
+                                            'No limit (proportional — based on reinvested amount vs net sale proceeds)',
+                                            '3 years — cannot sell new property',
+                                            '1 year before or 2 years after sale; 3 years if constructing',
+                                        ],
+                                    ]}
+                                />
+
+                                {/* How Indexation Works */}
+                                <div className="mt-5 p-4 bg-light rounded-3 border">
+                                    <h2 className="h5 mb-3">How Indexation Works</h2>
+                                    <p className="text-muted">
+                                        <strong>Indexation</strong> is a method to adjust the purchase price of an asset for inflation over the holding period. The government publishes a <strong>Cost Inflation Index (CII)</strong> each financial year. By inflating the original cost to current-year terms, indexation reduces the taxable capital gain and, consequently, your tax liability.
+                                    </p>
+                                    <p className="text-muted mb-2"><strong>Formula:</strong></p>
+                                    <div className="p-3 bg-white rounded-2 border mb-3">
+                                        <code className="fs-6">Indexed Cost of Acquisition = Purchase Price &times; (CII of Sale Year &divide; CII of Purchase Year)</code>
+                                    </div>
+                                    <p className="text-muted mb-2"><strong>Example with real numbers:</strong></p>
+                                    <ul className="text-muted">
+                                        <li>Purchase price in FY 2010-11: ₹30,00,000 &nbsp;|&nbsp; CII = 167</li>
+                                        <li>Sale price in FY 2024-25: ₹1,20,00,000 &nbsp;|&nbsp; CII = 363</li>
+                                        <li>Indexed cost = ₹30,00,000 &times; (363 &divide; 167) = <strong>₹65,20,958</strong></li>
+                                        <li>Capital gain without indexation = ₹90,00,000</li>
+                                        <li>Capital gain with indexation = ₹54,79,042 — a <strong>reduction of ₹35,20,958</strong></li>
+                                        <li>Tax saved at 20% = approximately <strong>₹7,04,192</strong></li>
+                                    </ul>
+                                    <p className="text-muted mb-0">
+                                        As this example shows, indexation can reduce your taxable gain by nearly 40% over a 14-year holding period. The longer you hold the property and the higher inflation rises, the greater the indexation benefit. This is why long-term capital gains on property are taxed at a flat 20% with indexation — a significantly lower effective rate than income tax slabs for most taxpayers.
                                     </p>
                                 </div>
 

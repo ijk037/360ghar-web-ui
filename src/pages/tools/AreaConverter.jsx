@@ -11,6 +11,8 @@
  import { generateToolSchema, toolSchemas } from '../../seo/toolSchemas';
 import { generateBreadcrumbStructuredData, generateFaqStructuredData, generateHowToStructuredData } from '../../seo/structuredData';
 
+import { ToolFaq, ToolRelatedLinks, ToolComparisonTable } from '../../components/tools/ToolContentSections';
+
 import './AreaConverter.scss';
 
  const AreaConverter = () => {
@@ -39,7 +41,6 @@ import './AreaConverter.scss';
      const [fromUnit, setFromUnit] = useState('sq_ft');
      const [toUnit, setToUnit] = useState('sq_yard');
      const [result, setResult] = useState(0);
-     const [faqOpenIndex, setFaqOpenIndex] = useState(0);
 
      // Conversion rates to Square Feet (Base Unit)
      const conversionRates = useMemo(() => ({
@@ -234,34 +235,48 @@ import './AreaConverter.scss';
                                      <p>{t('areaConverter.sqFtToGajDesc')}</p>
                                  </div>
 
-                                 <div className="area-conv-faq-section">
-                                     <h2 className="mb-4">{t('areaConverter.faqTitle')}</h2>
-                                     <div className="area-conv-faq-list">
-                                         {AREA_CONVERTER_FAQS.map((faq, index) => (
-                                             <div className="area-conv-faq-item" key={index}>
-                                                 <button
-                                                     className="area-conv-faq-item__question"
-                                                     aria-expanded={faqOpenIndex === index}
-                                                     aria-controls={`area-conv-faq-answer-${index}`}
-                                                     onClick={() => setFaqOpenIndex(faqOpenIndex === index ? -1 : index)}
-                                                 >
-                                                     <span>{faq.question}</span>
-                                                     <span className="area-conv-faq-item__icon">
-                                                         <i className={`fas ${faqOpenIndex === index ? 'fa-minus' : 'fa-plus'}`} />
-                                                     </span>
-                                                 </button>
-                                                 <div
-                                                     id={`area-conv-faq-answer-${index}`}
-                                                     className={`area-conv-faq-item__answer ${faqOpenIndex === index ? 'open' : ''}`}
-                                                     role="region"
-                                                     aria-label={faq.question}
-                                                 >
-                                                     <p>{faq.answer}</p>
-                                                 </div>
-                                             </div>
-                                         ))}
-                                     </div>
+                                 {/* Why Convert Area Units? - Educational Section */}
+                                 <div className="area-conv-content-section">
+                                     <h2>Why Convert Area Units?</h2>
+                                     <p>
+                                         India uses multiple measurement systems for land and property — the standard metric system (square meters, hectares), imperial units (square feet, acres), and a wide range of regional units such as <strong>Bigha, Guntha, Ground, Cent, Kanal, and Marla</strong>. A property listed as &ldquo;2 Bigha&rdquo; in Rajasthan means something very different from &ldquo;2 Bigha&rdquo; in Punjab, making unit conversion essential when comparing properties across states.
+                                     </p>
+                                     <p>
+                                         The <strong>Real Estate (Regulation and Development) Act (RERA)</strong> mandates the use of <strong>square feet</strong> for all official property documentation, sale agreements, and registered brochures. However, traditional units are still widely used in local dealings, village records, and agricultural land transactions. Understanding how to convert between these units helps buyers, sellers, and investors make informed decisions and avoid costly misunderstandings.
+                                     </p>
+                                     <p>
+                                         Different states have their own traditional units — for example, <strong>Ground</strong> is common in Tamil Nadu, <strong>Cent</strong> in Kerala and Andhra Pradesh, and <strong>Marla/Kanal</strong> in Punjab and Jammu &amp; Kashmir. Whether you are comparing a residential plot in Gurugram (measured in square yards) with farmland in Maharashtra (measured in Guntha), or verifying property dimensions in a sale deed, this area converter helps you accurately translate between any two units instantly.
+                                     </p>
                                  </div>
+
+                                 {/* Common Indian Land Measurement Units Table */}
+                                 <ToolComparisonTable
+                                     title="Common Indian Land Measurement Units"
+                                     headers={['Unit', 'Region', 'Sq Ft Equivalent', 'Sq M Equivalent']}
+                                     rows={[
+                                         ['1 Bigha', 'Rajasthan / UP', '27,000', '2,508'],
+                                         ['1 Bigha', 'Punjab / Himachal Pradesh', '9,072', '843'],
+                                         ['1 Guntha', 'Maharashtra / Karnataka', '1,089', '101'],
+                                         ['1 Ground', 'Tamil Nadu', '2,400', '223'],
+                                         ['1 Cent', 'Kerala / Andhra Pradesh', '435.6', '40.5'],
+                                         ['1 Kanal', 'Punjab / J&K', '5,445', '506'],
+                                         ['1 Marla', 'Punjab / J&K', '272.25', '25.3'],
+                                         ['1 Acre', 'Pan-India', '43,560', '4,047'],
+                                         ['1 Hectare', 'Pan-India (Metric)', '1,07,639', '10,000'],
+                                     ]}
+                                 />
+
+                                 <ToolFaq faqs={AREA_CONVERTER_FAQS} heading={t('areaConverter.faqTitle')} />
+
+                                 <ToolRelatedLinks
+                                     heading="Related Calculators & Tools"
+                                     links={[
+                                         { to: '/area-calculator', label: 'Carpet Area Calculator', icon: 'fas fa-ruler-combined' },
+                                         { to: '/emi-calculator', label: 'EMI Calculator', icon: 'fas fa-calculator' },
+                                         { to: '/stamp-duty-calculator', label: 'Stamp Duty Calculator', icon: 'fas fa-file-invoice-dollar' },
+                                         { to: '/loan-eligibility-calculator', label: 'Loan Eligibility', icon: 'fas fa-clipboard-check' },
+                                     ]}
+                                 />
                              </div>
                          </div>
                      </div>

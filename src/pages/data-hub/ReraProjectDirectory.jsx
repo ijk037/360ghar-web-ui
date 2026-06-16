@@ -6,7 +6,9 @@ import Footer from '../../common/layout/Footer';
 import MobileMenu from '../../common/layout/MobileMenu';
 import OffCanvas from '../../common/layout/OffCanvas';
 import SEO from '../../common/SEO';
-import { generateBreadcrumbStructuredData, generateFaqStructuredData } from '../../seo/structuredData';
+import { generateBreadcrumbStructuredData, generateFaqStructuredData, generateHowToStructuredData } from '../../seo/structuredData';
+import { generateToolSchema, toolSchemas } from '../../seo/toolSchemas';
+import { ToolFaq, ToolRelatedLinks } from '../../components/tools/ToolContentSections';
 import Pagination from '../../common/ui/Pagination';
 import { dataHubService } from '../../services/dataHubService';
 
@@ -35,6 +37,29 @@ const FAQS = [
     question: 'How do I file a RERA complaint in Haryana?',
     answer: 'File a complaint on the HRERA website (hrera.org.in) by registering as a complainant, filling out the complaint form, paying the fee (Rs. 1,000 for individuals), and uploading supporting documents (allotment letter, payment receipts, communication with the developer). HRERA benches in Panchkula and Gurugram hear cases. The authority aims to dispose of complaints within 60 days of the hearing.',
   },
+  {
+    question: 'What is the difference between RERA and HRERA?',
+    answer: 'RERA (Real Estate Regulatory Authority) is the central Act passed by Parliament in 2016. HRERA is the Haryana state implementation of RERA, with offices in Panchkula and Gurugram. HRERA enforces RERA provisions specifically for Haryana, including project registration, agent registration, and complaint resolution.',
+  },
+  {
+    question: 'Can a RERA registered project still be delayed?',
+    answer: 'Yes, RERA registration does not guarantee on-time delivery. However, RERA gives buyers strong protections: developers must pay interest for every month of delay, buyers can claim full refunds, and HRERA can impose penalties up to 10% of the project cost. The quarterly progress reporting requirement also increases transparency.',
+  },
+  {
+    question: 'What is the RERA registration fee for developers in Haryana?',
+    answer: 'In Haryana, the RERA registration fee for residential projects is Rs. 10 per square metre for projects up to 1,000 sq m, and Rs. 15 per square metre for larger projects. For commercial projects, the fee is Rs. 20 per square metre. The registration is valid for 5 years or until the project completion certificate is issued, whichever is earlier.',
+  },
+  {
+    question: 'What happens when a RERA registration expires?',
+    answer: 'When a RERA registration expires, the developer cannot legally sell or market units in that project. Buyers should verify that the registration is active before making any payment. If a project\'s registration has expired, the developer must apply for renewal with HRERA, providing updated project details and compliance documents. Buying from an expired-registration project offers no RERA protections.',
+  },
+];
+
+const HOW_TO_STEPS = [
+  { name: 'Search for a Project', text: 'Use the search bar to find a specific project by name, developer, or RERA registration number. You can also filter by property type (residential, commercial, mixed) and registration status.' },
+  { name: 'Verify RERA Registration', text: 'Use the Quick RERA Verify tool to instantly check if a registration number is valid. Cross-verify the number format (e.g., HRERA-PKL-GGM-XXXX-XXX) and check the project status on the official HRERA portal.' },
+  { name: 'Review Project Details', text: 'Check the project card for key information: developer name, total units, possession date, and registration status. Registered projects are marked with a green badge for easy identification.' },
+  { name: 'File a Complaint if Needed', text: 'If you encounter issues with a RERA-registered project, file a complaint on hrera.org.in. Pay the Rs. 1,000 fee, upload supporting documents, and HRERA aims to resolve disputes within 60 days.' },
 ];
 
 const statusBadgeStyle = (status) => {
@@ -57,7 +82,6 @@ const ReraProjectDirectory = () => {
   const [filters, setFilters] = useState({ search: '', status: '', property_type: '' });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [openFaqIndex, setOpenFaqIndex] = useState(0);
 
   // RERA Verify widget state
   const [verifyInput, setVerifyInput] = useState('');
@@ -109,6 +133,7 @@ const ReraProjectDirectory = () => {
         keywords="RERA projects Gurugram, HRERA registered projects, builder RERA number, Haryana RERA, verified developers Gurgaon"
         canonical="/rera-projects"
         structuredData={[
+          generateToolSchema(toolSchemas.reraProjects),
           generateBreadcrumbStructuredData([
             { name: 'Home', url: 'https://360ghar.com/' },
             { name: 'RERA Projects', url: 'https://360ghar.com/rera-projects' },
@@ -121,6 +146,11 @@ const ReraProjectDirectory = () => {
             numberOfItems: total,
           },
           generateFaqStructuredData(FAQS),
+          generateHowToStructuredData({
+            name: 'How to Verify RERA Projects in Haryana',
+            description: 'Step-by-step guide to finding and verifying RERA registered projects in Haryana.',
+            steps: HOW_TO_STEPS,
+          }),
         ]}
       />
       <OffCanvas />
@@ -306,23 +336,76 @@ const ReraProjectDirectory = () => {
           </div>
         </section>
 
+        {/* Educational Content */}
+        <section className="pb-60">
+          <div className="container">
+            <div className="row g-4">
+              <div className="col-lg-4">
+                <div className="p-4 bg-light rounded-3 border h-100">
+                  <h2 className="h5 mb-3">Understanding RERA in India</h2>
+                  <p className="fs-14 color-text-3 mb-2">
+                    RERA (Real Estate Regulatory Authority) was enacted in 2016 to protect homebuyers and bring transparency to the real estate sector. It is mandatory for all projects exceeding 500 square metres or involving 8 or more apartments.
+                  </p>
+                  <ul className="fs-14 color-text-3 mb-0" style={{ paddingLeft: 18 }}>
+                    <li className="mb-1">Developers must deposit 70% of collected funds in an escrow account dedicated to construction costs.</li>
+                    <li className="mb-1">Quarterly progress updates on construction are mandatory and must be filed with the authority.</li>
+                    <li className="mb-1">Developers provide a 5-year warranty on structural defects from the date of possession.</li>
+                    <li>Registration can be revoked if the developer violates any RERA provisions.</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="col-lg-4">
+                <div className="p-4 bg-light rounded-3 border h-100">
+                  <h2 className="h5 mb-3">How to Verify a RERA Registration Number</h2>
+                  <p className="fs-14 color-text-3 mb-2">
+                    Every RERA-registered project has a unique registration number following the format: HRERA-[CITY]-[DISTRICT]-[NUMBER]-[SEQUENCE].
+                  </p>
+                  <ol className="fs-14 color-text-3 mb-0" style={{ paddingLeft: 18 }}>
+                    <li className="mb-1"><strong>Check the number format</strong> &mdash; ensure it matches the official HRERA pattern (e.g., HRERA-PKL-GGM-1234-567).</li>
+                    <li className="mb-1"><strong>Search on hrera.org.in</strong> &mdash; enter the registration number in the official HRERA project search.</li>
+                    <li className="mb-1"><strong>Verify developer details</strong> &mdash; confirm the developer name, address, and project details match what you have been told.</li>
+                    <li><strong>Check project status</strong> &mdash; look for registered, expired, or lapsed status. Only registered projects are legally allowed to market and sell.</li>
+                  </ol>
+                </div>
+              </div>
+              <div className="col-lg-4">
+                <div className="p-4 bg-light rounded-3 border h-100">
+                  <h2 className="h5 mb-3">Buyer Rights Under RERA</h2>
+                  <p className="fs-14 color-text-3 mb-2">
+                    RERA grants homebuyers several important legal protections when dealing with registered projects.
+                  </p>
+                  <ul className="fs-14 color-text-3 mb-0" style={{ paddingLeft: 18 }}>
+                    <li className="mb-1"><strong>Right to information</strong> &mdash; access to sanctioned plans, approvals, and quarterly construction progress reports.</li>
+                    <li className="mb-1"><strong>Right to possession on time</strong> &mdash; compensation for every month of delay beyond the agreed date.</li>
+                    <li className="mb-1"><strong>Right to refund with interest</strong> &mdash; claim a full refund if the developer fails to deliver.</li>
+                    <li className="mb-1"><strong>Right to file complaints</strong> &mdash; disputes resolved by HRERA within 60 days of hearing.</li>
+                    <li><strong>Right to 5-year warranty</strong> &mdash; structural defect warranty from the developer from the date of possession.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* FAQ Section */}
         <section className="pb-60">
           <div className="container">
-            <h2 className="fs-24 fw-600 mb-20">Frequently Asked Questions</h2>
-            <div className="accordion">
-              {FAQS.map((faq, idx) => {
-                const isOpen = openFaqIndex === idx;
-                return (
-                  <div className="accordion-item border-0 border-bottom" key={faq.question}>
-                    <h3 className="accordion-header" id={`dhFaqHeading${idx}`}>
-                      <button className={`accordion-button ${isOpen ? '' : 'collapsed'}`} type="button" aria-expanded={isOpen} onClick={() => setOpenFaqIndex(cur => cur === idx ? -1 : idx)}>{faq.question}</button>
-                    </h3>
-                    <div className={`accordion-collapse collapse ${isOpen ? 'show' : ''}`}><div className="accordion-body text-muted">{faq.answer}</div></div>
-                  </div>
-                );
-              })}
-            </div>
+            <ToolFaq faqs={FAQS} heading="RERA Project FAQs" />
+          </div>
+        </section>
+
+        {/* Related Tools */}
+        <section className="pb-60">
+          <div className="container">
+            <ToolRelatedLinks
+              heading="Related Tools"
+              links={[
+                { to: '/stamp-duty-calculator', label: 'Stamp Duty Calculator', icon: 'fas fa-file-invoice-dollar' },
+                { to: '/emi-calculator', label: 'EMI Calculator', icon: 'fas fa-calculator' },
+                { to: '/loan-eligibility-calculator', label: 'Loan Eligibility', icon: 'fas fa-clipboard-check' },
+                { to: '/bank-auctions', label: 'Bank Auctions', icon: 'fas fa-gavel' },
+              ]}
+            />
           </div>
         </section>
 

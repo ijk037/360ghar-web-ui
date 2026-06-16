@@ -6,7 +6,9 @@ import Footer from '../../common/layout/Footer';
 import MobileMenu from '../../common/layout/MobileMenu';
 import OffCanvas from '../../common/layout/OffCanvas';
 import SEO from '../../common/SEO';
-import { generateBreadcrumbStructuredData, generateFaqStructuredData } from '../../seo/structuredData';
+import { generateToolSchema, toolSchemas } from '../../seo/toolSchemas';
+import { generateBreadcrumbStructuredData, generateFaqStructuredData, generateHowToStructuredData } from '../../seo/structuredData';
+import { ToolFaq, ToolRelatedLinks } from '../../components/tools/ToolContentSections';
 import Pagination from '../../common/ui/Pagination';
 import AuctionCard from '../../components/data-hub/AuctionCard';
 import AuctionAlertModal from '../../components/data-hub/AuctionAlertModal';
@@ -51,6 +53,25 @@ const FAQS = [
   },
 ];
 
+const HOW_TO_STEPS = [
+  {
+    name: 'Browse Available Auctions',
+    text: 'Search through current bank auction properties across India. Filter by location, property type, price range, and auctioning bank to find properties that match your criteria.',
+  },
+  {
+    name: 'Review Property Details',
+    text: 'Check the property description, reserve price, auction date, and bank contact details. Note the EMD (Earnest Money Deposit) amount and any inspection dates available.',
+  },
+  {
+    name: 'Register for the Auction',
+    text: 'Contact the auctioning bank or visit their e-auction portal to register. You\'ll need to submit KYC documents and pay the EMD (typically 10% of reserve price) before the auction date.',
+  },
+  {
+    name: 'Participate and Bid',
+    text: 'Attend the auction (online or physical) on the scheduled date. Place your bids starting from the reserve price. The highest bidder wins and must complete payment within the stipulated timeline (usually 30-90 days).',
+  },
+];
+
 const PROPERTY_TYPES = ['residential', 'commercial', 'plot', 'industrial'];
 const PAGE_LIMIT = 12;
 
@@ -83,7 +104,6 @@ const BankAuctions = () => {
   });
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [loading, setLoading] = useState(true);
-  const [openFaqIndex, setOpenFaqIndex] = useState(0);
   const [error, setError] = useState(null);
 
   const [alertModal, setAlertModal] = useState({ isOpen: false, initialData: {} });
@@ -160,6 +180,7 @@ const BankAuctions = () => {
         keywords="bank auctions Delhi NCR, SARFAESI auctions, HSVP e-auction Gurgaon, DDA auction Delhi, court ordered property auction, foreclosure properties, bank auction flats, property auction Haryana"
         canonical="/bank-auctions"
         structuredData={[
+          generateToolSchema(toolSchemas.bankAuctions),
           generateBreadcrumbStructuredData([
             { name: 'Home', url: 'https://360ghar.com/' },
             { name: 'Bank Auctions', url: 'https://360ghar.com/bank-auctions' },
@@ -172,6 +193,11 @@ const BankAuctions = () => {
             numberOfItems: total,
           },
           generateFaqStructuredData(FAQS),
+          generateHowToStructuredData({
+            name: 'How to Buy Property at Bank Auction in India',
+            description: 'Step-by-step guide to finding and purchasing bank auction properties including SARFAESI, DRT, and government e-auctions.',
+            steps: HOW_TO_STEPS,
+          }),
         ]}
       />
       <OffCanvas />
@@ -367,21 +393,165 @@ const BankAuctions = () => {
         </section>
 
         {/* FAQ Section */}
+        <ToolFaq faqs={FAQS} heading="Bank Auction FAQs" />
+
+        {/* Educational Content Sections */}
         <section className="pb-60">
           <div className="container">
-            <h2 className="fs-24 fw-600 mb-20">Frequently Asked Questions</h2>
-            <div className="accordion">
-              {FAQS.map((faq, idx) => {
-                const isOpen = openFaqIndex === idx;
-                return (
-                  <div className="accordion-item border-0 border-bottom" key={faq.question}>
-                    <h3 className="accordion-header" id={`dhFaqHeading${idx}`}>
-                      <button className={`accordion-button ${isOpen ? '' : 'collapsed'}`} type="button" aria-expanded={isOpen} onClick={() => setOpenFaqIndex(cur => cur === idx ? -1 : idx)}>{faq.question}</button>
-                    </h3>
-                    <div className={`accordion-collapse collapse ${isOpen ? 'show' : ''}`}><div className="accordion-body text-muted">{faq.answer}</div></div>
+            <div className="row justify-content-center">
+              <div className="col-lg-10">
+
+                {/* Section 1: What Are Bank Auction Properties? */}
+                <div className="mb-5">
+                  <h2 className="fs-24 fw-600 mb-3">What Are Bank Auction Properties?</h2>
+                  <p>
+                    Bank auction properties are real estate assets seized by banks and financial institutions when borrowers default on their loans. Under the SARFAESI Act (Securitisation and Reconstruction of Financial Assets and Enforcement of Security Interest Act, 2002), banks can recover outstanding dues by auctioning the secured property without court intervention, provided the loan amount exceeds the threshold set by the RBI.
+                  </p>
+                  <p>
+                    These properties are sold through various channels including SARFAESI auctions, DRT (Debt Recovery Tribunal) proceedings, and IBC (Insolvency and Bankruptcy Code) liquidation. They can be residential, commercial, or industrial in nature and are typically priced 20-40% below prevailing market rates, making them attractive opportunities for buyers looking for below-market deals.
+                  </p>
+                  <p>
+                    Major banks like SBI, HDFC, ICICI, PNB, Bank of Baroda, and Canara Bank regularly list their NPA (Non-Performing Asset) properties on platforms like IBAPI (Indian Banks Auction Properties Information) and their individual e-auction portals. Government authorities like HSVP (Haryana Shehri Vikas Pradhikaran) and DDA (Delhi Development Authority) also conduct periodic e-auctions for residential, commercial, and institutional plots.
+                  </p>
+                </div>
+
+                {/* Section 2: Benefits and Risks */}
+                <div className="mb-5">
+                  <h2 className="fs-24 fw-600 mb-3">Benefits and Risks of Buying at Auction</h2>
+                  <div className="row g-4">
+                    <div className="col-md-6">
+                      <div className="p-4 rounded-3 h-100" style={{ background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
+                        <h3 className="fs-18 fw-600 mb-3" style={{ color: '#15803d' }}>
+                          <i className="fas fa-check-circle me-2"></i>Benefits
+                        </h3>
+                        <ul className="mb-0" style={{ paddingLeft: '1.2em' }}>
+                          <li className="mb-2">Significantly below-market prices — reserve prices can be 10-30% lower than market rates</li>
+                          <li className="mb-2">Clear title verification by the bank before listing, reducing ownership risk</li>
+                          <li className="mb-2">No middlemen or brokerage fees — direct transaction with the bank</li>
+                          <li className="mb-2">Financing options available — most banks offer home loans for auctioned properties</li>
+                          <li>Transparent process with defined timelines and legal framework under SARFAESI Act</li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="p-4 rounded-3 h-100" style={{ background: '#fef2f2', border: '1px solid #fecaca' }}>
+                        <h3 className="fs-18 fw-600 mb-3" style={{ color: '#dc2626' }}>
+                          <i className="fas fa-exclamation-triangle me-2"></i>Risks
+                        </h3>
+                        <ul className="mb-0" style={{ paddingLeft: '1.2em' }}>
+                          <li className="mb-2">Existing occupants may refuse to vacate, requiring lengthy legal proceedings</li>
+                          <li className="mb-2">Hidden encumbrances, pending litigations, or legal disputes from previous owners</li>
+                          <li className="mb-2">Limited or no inspection time — property sold on "as is where is" basis</li>
+                          <li className="mb-2">Outstanding dues like property tax, maintenance, or utility bills may transfer to buyer</li>
+                          <li>Strict payment timelines (usually 15-90 days) with forfeiture of EMD on default</li>
+                        </ul>
+                      </div>
+                    </div>
                   </div>
-                );
-              })}
+
+                  <div className="mt-4 p-4 rounded-3" style={{ background: '#eff6ff', border: '1px solid #bfdbfe' }}>
+                    <h3 className="fs-16 fw-600 mb-2" style={{ color: '#1d4ed8' }}>
+                      <i className="fas fa-clipboard-list me-2"></i>Due Diligence Checklist Before Bidding
+                    </h3>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <ul className="mb-0" style={{ paddingLeft: '1.2em', fontSize: 14 }}>
+                          <li>Verify title documents and encumbrance certificate</li>
+                          <li>Check for pending legal disputes or court orders</li>
+                          <li>Inspect the property physically (if allowed)</li>
+                          <li>Confirm possession status — occupied or vacant</li>
+                        </ul>
+                      </div>
+                      <div className="col-md-6">
+                        <ul className="mb-0" style={{ paddingLeft: '1.2em', fontSize: 14 }}>
+                          <li>Verify outstanding property tax and utility bills</li>
+                          <li>Check society NOC and maintenance dues</li>
+                          <li>Confirm the bank's reserve price vs market rate</li>
+                          <li>Understand the EMD forfeiture and refund terms</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Section 3: How to Participate */}
+                <div className="mb-5">
+                  <h2 className="fs-24 fw-600 mb-3">How to Participate in Bank Auctions in India</h2>
+                  <p>
+                    Participating in bank auctions requires preparation and understanding of the process. Here is a step-by-step guide for both online and offline auctions:
+                  </p>
+
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6 col-lg-3">
+                      <div className="p-3 rounded-3 text-center h-100" style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}>
+                        <div className="mb-2" style={{ width: 40, height: 40, borderRadius: '50%', background: '#2563eb', color: '#fff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>1</div>
+                        <h4 className="fs-14 fw-600 mb-1">Find Auctions</h4>
+                        <p className="fs-13 mb-0 text-muted">Check IBAPI, bank websites, or our portal for upcoming auctions in your area.</p>
+                      </div>
+                    </div>
+                    <div className="col-md-6 col-lg-3">
+                      <div className="p-3 rounded-3 text-center h-100" style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}>
+                        <div className="mb-2" style={{ width: 40, height: 40, borderRadius: '50%', background: '#2563eb', color: '#fff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>2</div>
+                        <h4 className="fs-14 fw-600 mb-1">Register & Pay EMD</h4>
+                        <p className="fs-13 mb-0 text-muted">Submit KYC documents and pay the Earnest Money Deposit (typically 10% of reserve price).</p>
+                      </div>
+                    </div>
+                    <div className="col-md-6 col-lg-3">
+                      <div className="p-3 rounded-3 text-center h-100" style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}>
+                        <div className="mb-2" style={{ width: 40, height: 40, borderRadius: '50%', background: '#2563eb', color: '#fff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>3</div>
+                        <h4 className="fs-14 fw-600 mb-1">Attend Auction</h4>
+                        <p className="fs-13 mb-0 text-muted">Participate in the auction online or at the designated venue on the scheduled date.</p>
+                      </div>
+                    </div>
+                    <div className="col-md-6 col-lg-3">
+                      <div className="p-3 rounded-3 text-center h-100" style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}>
+                        <div className="mb-2" style={{ width: 40, height: 40, borderRadius: '50%', background: '#2563eb', color: '#fff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>4</div>
+                        <h4 className="fs-14 fw-600 mb-1">Complete Payment</h4>
+                        <p className="fs-13 mb-0 text-muted">Pay the balance amount within 15-90 days and complete the transfer process.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <h3 className="fs-18 fw-600 mb-2">Required Documents</h3>
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <ul style={{ paddingLeft: '1.2em', fontSize: 14 }}>
+                        <li>PAN Card (mandatory for EMD payment and property registration)</li>
+                        <li>Aadhaar Card or other government-issued photo ID</li>
+                        <li>Address proof (utility bill, bank statement, or passport)</li>
+                      </ul>
+                    </div>
+                    <div className="col-md-6">
+                      <ul style={{ paddingLeft: '1.2em', fontSize: 14 }}>
+                        <li>Income proof / ITR for loan processing (if applicable)</li>
+                        <li>Recent passport-size photographs</li>
+                        <li>EMD payment receipt / bank challan</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <h3 className="fs-18 fw-600 mb-2">EMD Payment Process</h3>
+                  <p className="mb-3">
+                    The Earnest Money Deposit (EMD) is typically 5-10% of the reserve price and must be deposited via demand draft, pay order, or online transfer to the bank's designated account before the auction deadline. The EMD is refundable if you do not win the auction, but is forfeited if you win and fail to complete the payment within the stipulated timeline.
+                  </p>
+
+                  <h3 className="fs-18 fw-600 mb-2">Post-Auction Payment Timeline</h3>
+                  <p className="mb-0">
+                    After winning a bank auction, you are typically required to pay 25% of the bid amount immediately (including the EMD already paid). The remaining 75% must be paid within 15-90 days depending on the bank's terms. Failure to pay within the deadline results in EMD forfeiture and cancellation of the allotment. Some banks allow loan financing for the balance amount — check with the auctioning bank for specific terms.
+                  </p>
+                </div>
+
+                {/* ToolRelatedLinks */}
+                <ToolRelatedLinks
+                  heading="Related Tools"
+                  links={[
+                    { to: '/emi-calculator', label: 'EMI Calculator', icon: 'fas fa-calculator' },
+                    { to: '/stamp-duty-calculator', label: 'Stamp Duty Calculator', icon: 'fas fa-file-invoice-dollar' },
+                    { to: '/loan-eligibility-calculator', label: 'Loan Eligibility', icon: 'fas fa-clipboard-check' },
+                    { to: '/area-calculator', label: 'Carpet Area Calculator', icon: 'fas fa-ruler-combined' },
+                  ]}
+                />
+              </div>
             </div>
           </div>
         </section>
