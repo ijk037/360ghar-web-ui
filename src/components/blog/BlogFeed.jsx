@@ -27,7 +27,7 @@ const BlogFeed = () => {
             try {
                 setLoading(true);
                 setError(null);
-                const data = await blogService.getPosts({ page: 1, limit: 6 });
+                const data = await blogService.getPosts({ limit: 6 });
                 const items = Array.isArray(data?.items) ? data.items : (Array.isArray(data) ? data : []);
                 if (mounted) setPosts(items);
             } catch (err) {
