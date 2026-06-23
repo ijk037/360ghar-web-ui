@@ -772,17 +772,43 @@ const LoginFlow = ({
         if (!password) return;
         setBusy(true);
         try {
-            const success = await login(buildSupabaseIdentifier(), password);
-            if (success) {
+            // Safety net: the login flow can chain several backend round-trips
+            // (profile + auth-stage) plus 401 → refresh → retry cycles. If the
+            // backend/Supabase is slow or unreachable, guard against an
+            // indefinite spinner by racing the login with a timeout. The
+            // underlying login() continues in the background and may still
+            // settle the auth store; the route guard redirects an authenticated
+            // user appropriately, so there is no dead-end.
+            const LOGIN_TIMEOUT_MS = 25000;
+            const timeoutPromise = new Promise((resolve) =>
+                setTimeout(() => resolve('__timeout__'), LOGIN_TIMEOUT_MS)
+            );
+            const result = await Promise.race([
+                login(buildSupabaseIdentifier(), password),
+                timeoutPromise,
+            ]);
+
+            if (result === '__timeout__') {
+                toast.error(t('forms:generic.loginTimeout'), { theme: 'colored' });
+                return;
+            }
+
+            if (result) {
                 toast.success(t('forms:generic.loginSuccess'), { theme: 'colored' });
-                // Navigate based on the backend gate evaluation.
+                // Navigate based on the backend gate evaluation. Read fresh state
+                // (NOT the `error` captured at render time, which is stale after
+                // the await).
                 const stage = useAuthStore.getState().authStage;
                 navigate(getRedirectPathForStage(stage));
             } else {
-                toast.error(error || t('forms:generic.loginFailed'), { theme: 'colored' });
+                // Read the fresh error from the store — the `error` destructured
+                // at the top of the component is a stale closure value here.
+                const freshError = useAuthStore.getState().error;
+                toast.error(freshError || t('forms:generic.loginFailed'), { theme: 'colored' });
             }
         } catch (err) {
-            toast.error(err?.message || error || t('forms:generic.loginFailed'), { theme: 'colored' });
+            const freshError = useAuthStore.getState().error;
+            toast.error(err?.message || freshError || t('forms:generic.loginFailed'), { theme: 'colored' });
         } finally {
             setBusy(false);
         }

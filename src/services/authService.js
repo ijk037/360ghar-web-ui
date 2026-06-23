@@ -1,6 +1,7 @@
 import api, { publicApi } from './api';
 import { ensureSupabaseClient } from './supabaseClient';
 import { setLastAuthMethod, AUTH_METHODS } from './lastAuthMethod';
+import { SKIP_AUTH_RETRY } from './http';
 
 // Normalize an identifier and detect whether it is an email or a phone number.
 const isEmailIdentifier = (identifier) => (identifier || '').includes('@');
@@ -42,9 +43,18 @@ export const authService = {
     // authenticated user to profile completion, instead of throwing and being
     // treated as a failed login (which previously also seeded an infinite
     // refresh↔fetch loop). Any other failure is a genuine error.
+    //
+    // SKIP_AUTH_RETRY + a shorter timeout: the access token is brand new, so a
+    // 401 is "no profile row", not "token expired". Bypassing the 401 → refresh
+    // → retry cycle (which would refresh, retry, and 401 again) avoids doubling
+    // the latency and, across the several concurrent post-login fetches, the
+    // long apparent hang users saw on the login spinner.
     let profile = null;
     try {
-      const response = await api.get('/users/profile/');
+      const response = await api.get('/users/profile/', {
+        [SKIP_AUTH_RETRY]: true,
+        timeout: 10000,
+      });
       profile = response.data;
     } catch (err) {
       const status = err?.response?.status;
@@ -66,10 +76,22 @@ export const authService = {
   // exchanges for a session. No client-side Google client id needed here.
   // Override the callback origin via VITE_AUTH_REDIRECT_URL for Docker /
   // reverse-proxy setups that need a specific callback URL.
+  //
+  // The redirect URL MUST be allowlisted in the Supabase dashboard
+  // (Authentication → URL Configuration → Redirect URLs), and the Supabase
+  // project's Google callback (`https://<project-ref>.supabase.co/auth/v1/callback`)
+  // MUST be an Authorized redirect URI in the Google Cloud Console OAuth client.
+  // A "redirect_uri_mismatch" almost always means one of those is missing.
   signInWithGoogle: async (next) => {
     const client = await ensureSupabaseClient();
     const base = import.meta.env.VITE_AUTH_REDIRECT_URL ?? window.location.origin;
+    // Canonicalize to the non-www origin so a visitor on https://www.360ghar.com
+    // (which Netlify 301-redirects to non-www) still produces the allowlisted
+    // callback URL instead of a www variant that Supabase rejects.
     const callbackUrl = new URL('/auth/callback', base);
+    if (callbackUrl.hostname.startsWith('www.')) {
+      callbackUrl.hostname = callbackUrl.hostname.slice(4);
+    }
     if (next && typeof next === 'string' && next.startsWith('/') && !next.startsWith('//')) {
       callbackUrl.searchParams.set('next', next);
     }
@@ -80,7 +102,13 @@ export const authService = {
       },
     });
     if (error) {
-      throw new Error(error.message || 'Google sign-in failed');
+      // Surface the real Supabase/Google reason. A mismatch is usually a
+      // dashboard allowlist issue, so hint at that for the user.
+      const msg = error.message || 'Google sign-in failed';
+      const hint = /redirect|uri|mismatch/i.test(msg)
+        ? ' (Ensure the callback URL is allowlisted in Supabase and the Supabase Google callback is in Google Cloud Console.)'
+        : '';
+      throw new Error(msg + hint);
     }
     return data;
   },
@@ -211,9 +239,10 @@ export const authService = {
     return data;
   },
 
-  // Get current user profile
-  getCurrentUser: async () => {
-    const response = await api.get('/users/profile/');
+  // Get current user profile. Accepts optional axios request config (e.g. to
+  // pass SKIP_AUTH_RETRY for the fresh-sign-in path via syncUserProfile).
+  getCurrentUser: async (requestConfig) => {
+    const response = await api.get('/users/profile/', requestConfig);
     return response.data;
   },
 

@@ -6,6 +6,18 @@ import { getSupabaseAccessToken, onSupabaseAuthStateChange } from '../services/s
 import { fetchAuthStage } from '../utils/authStage';
 import * as posthogService from '../services/posthogService';
 import { isPrerendering } from '../utils/prerender';
+import { SKIP_AUTH_RETRY } from '../services/http';
+
+// Request config passed to the profile + auth-stage fetches right after a
+// fresh sign-in. The access token is brand new, so a 401 means "no backend
+// profile row yet" — not "token expired". Skipping the 401 → refresh → retry
+// cycle (which would refresh, retry, and 401 again) avoids doubling the
+// latency and, across the several concurrent post-login fetches, the long
+// apparent hang users saw on the login spinner.
+const FRESH_SIGNIN_REQUEST_CONFIG = {
+  [SKIP_AUTH_RETRY]: true,
+  timeout: 10000,
+};
 
 // AUDIT FIX (1.imp6): Cache TTL for the locally-cached user profile. The cache
 // is only used to render the UI instantly on init; a fresh profile is always
@@ -66,7 +78,7 @@ function clearAuthState(set) {
   });
 }
 
-async function syncUserProfile(token, set) {
+async function syncUserProfile(token, set, requestConfig) {
   if (profileSyncPromise && profileSyncToken === token) {
     return profileSyncPromise;
   }
@@ -74,11 +86,11 @@ async function syncUserProfile(token, set) {
   profileSyncToken = token;
   profileSyncPromise = (async () => {
     try {
-      const userProfile = await authService.getCurrentUser();
+      const userProfile = await authService.getCurrentUser(requestConfig);
       writeStoredUser(userProfile);
 
       // Fetch auth gate state from the backend (single source of truth).
-      const authStage = await fetchAuthStage(api);
+      const authStage = await fetchAuthStage(api, requestConfig);
 
       set({
         user: userProfile,
@@ -167,7 +179,9 @@ async function handleAuthStateChange(event, session, set, _get) {
     isAuthenticated: true,
   });
 
-  await syncUserProfile(session.access_token, set);
+  // SIGNED_IN delivers a brand-new token, so the profile/auth-stage fetches can
+  // skip the 401 → refresh → retry cycle (see FRESH_SIGNIN_REQUEST_CONFIG).
+  await syncUserProfile(session.access_token, set, FRESH_SIGNIN_REQUEST_CONFIG);
 }
 
 async function ensureAuthSubscription(set, get) {
@@ -252,12 +266,20 @@ const useAuthStore = create((set, get) => ({
           }
         }
 
-        // Fetch auth gate state from the backend (single source of truth).
-        let authStage = await fetchAuthStage(api);
+        // syncUserProfile is deduped with the SIGNED_IN event's call (same
+        // token), so this awaits the single in-flight profile + auth-stage sync
+        // instead of issuing a separate serial fetchAuthStage request. The
+        // fresh-sign-in request config skips the 401 → refresh → retry cycle
+        // (the token is brand new; a 401 means "no profile row", not "expired").
+        await syncUserProfile(data.access_token, set, FRESH_SIGNIN_REQUEST_CONFIG);
+
         // No backend profile yet → force profile completion regardless of what
         // the gate endpoint returned (it may itself 401 for an unprovisioned
-        // user and default to 'active').
-        if (!userProfile) authStage = 'profile_completion';
+        // user and default to 'active'). syncUserProfile already set
+        // authStage, but override it here using the authoritative data.user.
+        if (!userProfile) {
+          set({ authStage: 'profile_completion' });
+        }
 
         set({
           token: data.access_token,
@@ -265,7 +287,6 @@ const useAuthStore = create((set, get) => ({
           isAuthenticated: true,
           isLoading: false,
           isInitializing: false,
-          authStage,
         });
 
         return true;
@@ -310,7 +331,9 @@ const useAuthStore = create((set, get) => ({
       }
 
       set({ token, isAuthenticated: true });
-      const profile = await syncUserProfile(token, set);
+      // The OAuth code exchange just produced a fresh token, so the profile /
+      // auth-stage fetches can skip the 401 → refresh → retry cycle.
+      const profile = await syncUserProfile(token, set, FRESH_SIGNIN_REQUEST_CONFIG);
       return Boolean(profile);
     } catch (error) {
       set({

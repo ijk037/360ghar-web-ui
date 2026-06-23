@@ -27,9 +27,14 @@ export const getRedirectPathForStage = (stage) => {
 
 /// Fetch the current auth-gate stage from the backend, defaulting to 'active'
 /// on failure so a backend hiccup never locks a user out of the app.
-export const fetchAuthStage = async (apiClient) => {
+///
+/// Accepts an optional axios request-config (e.g. to pass SKIP_AUTH_RETRY and a
+/// shorter timeout for the fresh-sign-in path, where a 401 means "no profile
+/// row" rather than "token expired" and the refresh+retry cycle only adds
+/// latency).
+export const fetchAuthStage = async (apiClient, requestConfig) => {
   try {
-    const { data } = await apiClient.get('/users/me/auth-state?app=ghar360');
+    const { data } = await apiClient.get('/users/me/auth-state?app=ghar360', requestConfig);
     return data?.stage || 'active';
   } catch {
     return 'active';

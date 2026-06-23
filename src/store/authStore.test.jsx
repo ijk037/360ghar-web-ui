@@ -21,6 +21,12 @@ vi.mock('../services/supabaseClient', () => ({
   onSupabaseAuthStateChange,
 }));
 
+vi.mock('../services/http', () => ({
+  SKIP_AUTH_RETRY: Symbol.for('http.skipAuthRetry'),
+  // api.js calls createAxiosInstance at import time; return a no-op instance.
+  createAxiosInstance: () => ({ get: vi.fn(), post: vi.fn(), put: vi.fn(), delete: vi.fn() }),
+}));
+
 vi.mock('../utils/authStage', () => ({
   fetchAuthStage,
 }));
@@ -149,8 +155,11 @@ describe('authStore login', () => {
 
   it('succeeds and routes to profile_completion when the backend profile is missing', async () => {
     // authService.login authenticated at Supabase but the profile fetch missed
-    // (401/404) → it returns user: null instead of throwing.
+    // (401/404) → it returns user: null instead of throwing. syncUserProfile's
+    // own getCurrentUser also 401s (no profile row), which sets
+    // profile_completion; the login() override reinforces it from data.user.
     login.mockResolvedValue({ access_token: 'token-9', user: null });
+    getCurrentUser.mockRejectedValue({ response: { status: 401 } });
     getSupabaseAccessToken.mockResolvedValue('token-9');
     onSupabaseAuthStateChange.mockImplementation(async () => ({
       unsubscribe: vi.fn(),

@@ -110,6 +110,7 @@
     "loginSuccess": "Login successful!",
     "registerSuccess": "Registration successful!",
     "loginFailed": "Login failed. Please try again.",
+    "loginTimeout": "Login is taking longer than expected. Please check your connection and try again.",
     "registerFailed": "Registration failed. Please try again.",
     "saving": "Saving..."
   },

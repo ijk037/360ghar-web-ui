@@ -256,7 +256,15 @@ export const createAxiosInstance = ({ withAuth = false, enableRetry = true } = {
 
       // Handle 401 Unauthorized errors
       if (error.response && error.response.status === 401) {
-        if (withAuth && config && !config[Symbol.for('http.authRetry')]) {
+        // `skipAuthRetry` opts out of the refresh+retry cycle. Use it for calls
+        // made immediately after a fresh sign-in (signInWithPassword / OAuth code
+        // exchange), where the access token is brand new and a 401 means "no
+        // backend profile row yet" — NOT "token expired". Refreshing+retrying
+        // there only doubles the latency (refresh succeeds, retry 401s again)
+        // and, across the several concurrent post-login fetches, makes login
+        // appear to hang for a long time.
+        const skipAuthRetry = config && config[Symbol.for('http.skipAuthRetry')];
+        if (withAuth && config && !config[Symbol.for('http.authRetry')] && !skipAuthRetry) {
           const retryConfig = {
             ...config,
             [Symbol.for('http.authRetry')]: true,
@@ -287,6 +295,12 @@ export const createAxiosInstance = ({ withAuth = false, enableRetry = true } = {
 
   return instance;
 };
+
+// Request-config flag that opts a single call out of the 401 → refresh → retry
+// cycle. Intended for fetches made right after a fresh sign-in, where a 401
+// means "no backend profile yet" rather than "token expired". See the 401
+// interceptor above for the gating logic.
+export const SKIP_AUTH_RETRY = Symbol.for('http.skipAuthRetry');
 
 // Test-only export: resets the memoized bulk-bundle fetch promise so unit
 // tests can exercise the bulk adapter deterministically across cases.
