@@ -97,6 +97,24 @@ async function syncUserProfile(token, set) {
       }
       return userProfile;
     } catch (err) {
+      // A 401/404 on the FIRST profile fetch means the user is authenticated at
+      // Supabase but has no backend profile row yet (fresh phone-auth signup,
+      // or a row that hasn't been provisioned). Keep the session and route the
+      // authenticated user to profile completion (ProfileCompletionRouteGuard
+      // sends authStage === 'profile_completion' to /profile-completion, where
+      // the row is created) instead of erroring out or logging out.
+      const status = err?.response?.status;
+      if (status === 401 || status === 404) {
+        set({
+          token,
+          isAuthenticated: true,
+          isInitializing: false,
+          authStage: 'profile_completion',
+          error: null,
+        });
+        return null;
+      }
+
       // CRITICAL FIX (audit 1.1): Do NOT call logout()/clearAuthState() on a
       // transient profile-fetch failure. A TOKEN_REFRESHED event racing with
       // sync, or a temporary backend hiccup, would otherwise log the user out
@@ -120,7 +138,7 @@ async function syncUserProfile(token, set) {
   return profileSyncPromise;
 }
 
-async function handleAuthStateChange(event, session, set, get) {
+async function handleAuthStateChange(event, session, set, _get) {
   if (event === 'SIGNED_OUT' || !session) {
     posthogService.resetUser();
     clearAuthState(set);
@@ -131,14 +149,23 @@ async function handleAuthStateChange(event, session, set, get) {
     return;
   }
 
+  // A token rotation is not a profile change — only persist the new token.
+  // Profile changes arrive as USER_UPDATED; the initial load is handled by
+  // INITIAL_SESSION/SIGNED_IN (and initializeAuth's explicit sync).
+  //
+  // Previously this re-ran syncUserProfile whenever `user` was null. For a
+  // user whose /users/profile/ 401s, that turned every token refresh into
+  // another failed fetch into another refresh (the Supabase SDK calls
+  // /auth/v1/user on each refresh) — an infinite loop. Never refetch here.
+  if (event === 'TOKEN_REFRESHED') {
+    set({ token: session.access_token, isAuthenticated: true });
+    return;
+  }
+
   set({
     token: session.access_token,
     isAuthenticated: true,
   });
-
-  if (event === 'TOKEN_REFRESHED' && get().user) {
-    return;
-  }
 
   await syncUserProfile(session.access_token, set);
 }
@@ -207,7 +234,12 @@ const useAuthStore = create((set, get) => ({
       const data = await authService.login(emailOrPhone, password);
 
       if (data.access_token) {
-        const userProfile = data.user || (await authService.getCurrentUser());
+        // data.user is null when Supabase auth succeeded but no backend
+        // profile row exists yet (authService.login swallows the 401/404). Do
+        // NOT fall back to getCurrentUser() — that would re-issue the same
+        // failing request. Route the authenticated user to profile completion
+        // so they can create their row.
+        const userProfile = data.user || null;
         if (userProfile) {
           writeStoredUser(userProfile);
           // Identify user in PostHog
@@ -221,7 +253,11 @@ const useAuthStore = create((set, get) => ({
         }
 
         // Fetch auth gate state from the backend (single source of truth).
-        const authStage = await fetchAuthStage(api);
+        let authStage = await fetchAuthStage(api);
+        // No backend profile yet → force profile completion regardless of what
+        // the gate endpoint returned (it may itself 401 for an unprovisioned
+        // user and default to 'active').
+        if (!userProfile) authStage = 'profile_completion';
 
         set({
           token: data.access_token,

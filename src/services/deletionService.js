@@ -6,7 +6,7 @@ import { api, publicApi } from './api';
  * Two flows are exposed:
  *
  *   1. Logged-in user clicks "Delete my account" — we POST `/auth/delete-account`
- *      (authenticated, returns 204) and let the auth store tear down the local
+ *      (authenticated, returns MessageResponse) and let the auth store tear down the local
  *      session. Replaces the older `/account/delete-request/` flow for users
  *      who can prove their identity via the Supabase session.
  *
@@ -15,7 +15,7 @@ import { api, publicApi } from './api';
  *      reason for the data-protection team to action.
  *
  * Contract:
- *   POST   /auth/delete-account              -> 204 No Content (auth)
+ *   POST   /auth/delete-account              -> 200 OK + MessageResponse (auth)
  *   POST   /account/delete-request/          -> create request (auth, best-effort)
  *          body: { email, deletion_type, reason, message }
  *          resp: { id, status, created_at }
@@ -31,7 +31,7 @@ import { api, publicApi } from './api';
 export const deletionService = {
   /**
    * Immediate account deletion for an authenticated user.
-   * Backend returns 204 No Content on success.
+   * Backend returns 200 OK with JSON MessageResponse on success.
    * @returns {Promise<void>}
    */
   deleteAccountImmediate: async () => {

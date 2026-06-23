@@ -43,7 +43,7 @@ const CONFIG = {
   minSizeBytes: 50 * 1024, // 50 KB
   webpQuality: 80,
   avifQuality: 50,
-  responsiveSizes: [320, 640, 768, 1024],
+  responsiveSizes: [320, 480, 640, 768, 1024],
   // Large hero / section / banner art that benefits from responsive variants.
   // Anything here also gets the standard .webp + .avif twins. Paths are relative
   // to `public/assets/images`. Add new hero images here as they land.

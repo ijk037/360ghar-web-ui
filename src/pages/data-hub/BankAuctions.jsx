@@ -134,10 +134,10 @@ const BankAuctions = () => {
 
   useEffect(() => {
     dataHubService.getAuctionBanks()
-      .then((data) => setBanks(Array.isArray(data) ? data : []))
+      .then((data) => setBanks(Array.isArray(data) ? data : (Array.isArray(data?.items) ? data.items : [])))
       .catch(() => {});
     dataHubService.getAuctionCities()
-      .then((data) => setCities(Array.isArray(data) ? data : []))
+      .then((data) => setCities(Array.isArray(data) ? data : (Array.isArray(data?.items) ? data.items : [])))
       .catch(() => {});
   }, []);
 

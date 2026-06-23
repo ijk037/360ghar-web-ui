@@ -1,6 +1,6 @@
 [build]
   publish = "dist"
-  command = "npx puppeteer browsers install chrome && npm run build"
+  command = "npm run build"
 
 [build.environment]
   PUPPETEER_CACHE_DIR = "./node_modules/.cache/puppeteer"

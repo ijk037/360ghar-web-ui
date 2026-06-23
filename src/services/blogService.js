@@ -40,7 +40,10 @@ export const blogService = {
 
   // Admin: create a new blog post (requires auth)
   createPost: async (data) => {
-    const response = await api.post('/blog/posts', data);
+    const response = await api.post('/blog/posts', {
+      status: 'draft',
+      ...data,
+    });
     return response.data;
   },
 

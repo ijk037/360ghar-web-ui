@@ -94,10 +94,10 @@
   <link rel="preconnect" href="https://www.google-analytics.com">
   <link rel="dns-prefetch" href="https://www.google-analytics.com">
 
-  <!-- Self-hosted brand fonts — preload only LCP-critical fonts (body + H1 heading).
-       Other weights (600/700) load lazily via @font-face below, not on the critical path. -->
-  <link rel="preload" href="%BASE_URL%assets/fonts/josefin-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="%BASE_URL%assets/fonts/cinzel-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- Self-hosted brand fonts — NOT preloaded. The LCP element is the hero
+       image, not text; preloading fonts would steal its bandwidth on slow
+       mobile. font-display: swap (below) renders text in the system font
+       immediately and swaps in the brand font once it loads lazily. -->
   <style>
     @font-face { font-family: 'Cinzel'; font-style: normal; font-weight: 400; font-display: swap; src: url('%BASE_URL%assets/fonts/cinzel-latin.woff2') format('woff2'); }
     @font-face { font-family: 'Cinzel'; font-style: normal; font-weight: 700; font-display: swap; src: url('%BASE_URL%assets/fonts/cinzel-latin-700.woff2') format('woff2'); }
@@ -106,8 +106,10 @@
     @font-face { font-family: 'Josefin Sans'; font-style: normal; font-weight: 700; font-display: swap; src: url('%BASE_URL%assets/fonts/josefin-sans-latin-variable.woff2') format('woff2'); }
   </style>
 
-  <!-- Preload LCP hero image (responsive) -->
-  <link rel="preload" as="image" fetchpriority="high" href="%BASE_URL%assets/images/thumbs/banner-three.webp" imagesrcset="%BASE_URL%assets/images/thumbs/banner-three-320w.webp 320w, %BASE_URL%assets/images/thumbs/banner-three-640w.webp 640w, %BASE_URL%assets/images/thumbs/banner-three-768w.webp 768w, %BASE_URL%assets/images/thumbs/banner-three-1024w.webp 1024w" imagesizes="(max-width: 768px) 100vw, 50vw">
+  <!-- Preload LCP hero image (responsive, AVIF — ~36% smaller than WebP).
+       srcset must match the <picture> in BannerThree.jsx so the browser
+       preloads the exact variant it will render, avoiding a double fetch. -->
+  <link rel="preload" as="image" fetchpriority="high" href="%BASE_URL%assets/images/thumbs/banner-three.avif" imagesrcset="%BASE_URL%assets/images/thumbs/banner-three-320w.avif 320w, %BASE_URL%assets/images/thumbs/banner-three-480w.avif 480w, %BASE_URL%assets/images/thumbs/banner-three-640w.avif 640w, %BASE_URL%assets/images/thumbs/banner-three-768w.avif 768w, %BASE_URL%assets/images/thumbs/banner-three-1024w.avif 1024w" imagesizes="(max-width: 768px) 100vw, 50vw">
 
   <!-- Font Awesome woff2 (126 KB) NOT preloaded — it competes with the LCP hero image
        for bandwidth. Icons render via CSS after first paint; the font loads lazily. -->

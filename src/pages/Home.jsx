@@ -9,7 +9,7 @@ import AboutThree from '../components/layout/AboutThree';
 import SEO from '../common/SEO';
 import LazySection from '../common/LazySection';
 import SectionLoader from '../common/SectionLoader';
-import { realEstateStructuredData, generateBreadcrumbStructuredData } from '../seo/structuredData';
+import { generateBreadcrumbStructuredData } from '../seo/structuredData';
 import { siteMetadata } from '../seo/siteMetadata';
 
 // Below-fold components — lazy-loaded only when approaching viewport
@@ -118,9 +118,11 @@ const FAQ_DATA = {
 const Home = () => {
     const { t } = useTranslation('home');
     const [tSeo] = useTranslation('seo');
+    // Page-specific structured data only. App.jsx already injects the global
+    // Organization / WebSite / LocalBusiness / KnowledgePanel / etc. schemas on
+    // every page, so re-adding `website` and `localBusiness` here would ship
+    // ~15KB of duplicate inline JSON-LD in the prerendered <head>.
     const homeStructuredData = [
-        realEstateStructuredData.website,
-        realEstateStructuredData.localBusiness,
         FAQ_DATA,
         generateBreadcrumbStructuredData([
             { name: 'Home', url: 'https://360ghar.com/' }

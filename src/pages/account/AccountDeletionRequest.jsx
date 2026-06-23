@@ -155,7 +155,7 @@ const AccountDeletionRequest = () => {
 
     // ---- Logged-in branch: simple confirmation screen ----------------------
     // Identified users bypass the multi-step request form and use the
-    // /auth/delete-account endpoint (returns 204). After the call we sign
+    // /auth/delete-account endpoint (returns MessageResponse). After the call we sign
     // them out via `logout({ deleteAccount: true })` and redirect home.
     if (isAuthenticated) {
         return (

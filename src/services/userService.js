@@ -35,7 +35,9 @@ export const userService = {
   },
   getAllUsers: async (params = {}) => {
     const response = await api.get('/users', { params });
-    return response.data;
+    const data = response.data;
+    // Backend returns CursorPage envelope {items, next_cursor, has_more, limit}
+    return Array.isArray(data) ? data : (data?.items ?? data);
   },
   createUser: async (userData) => {
     const response = await api.post('/users', userData);

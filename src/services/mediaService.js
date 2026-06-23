@@ -14,7 +14,9 @@ export const mediaService = {
   // List media files (supports query params like property_id, media_type, etc.)
   listMedia: async (params = {}) => {
     const response = await api.get('/upload/media', { params });
-    return response.data;
+    const data = response.data;
+    // Backend returns CursorPage envelope {items, next_cursor, has_more, limit}
+    return Array.isArray(data) ? data : (data?.items ?? data);
   },
 
   // Get a single media file by ID

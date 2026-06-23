@@ -2,13 +2,16 @@ import { act } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const getCurrentUser = vi.fn();
+const login = vi.fn();
 const logout = vi.fn();
 const getSupabaseAccessToken = vi.fn();
 const onSupabaseAuthStateChange = vi.fn();
+const fetchAuthStage = vi.fn();
 
 vi.mock('../services/authService', () => ({
   authService: {
     getCurrentUser,
+    login,
     logout,
   },
 }));
@@ -16,6 +19,10 @@ vi.mock('../services/authService', () => ({
 vi.mock('../services/supabaseClient', () => ({
   getSupabaseAccessToken,
   onSupabaseAuthStateChange,
+}));
+
+vi.mock('../utils/authStage', () => ({
+  fetchAuthStage,
 }));
 
 async function loadAuthStore() {
@@ -27,6 +34,7 @@ describe('authStore initializeAuth', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.resetModules();
+    fetchAuthStage.mockResolvedValue('active');
   });
 
   it('dedupes the immediate initial-session profile sync', async () => {
@@ -72,5 +80,95 @@ describe('authStore initializeAuth', () => {
 
     expect(onSupabaseAuthStateChange).toHaveBeenCalledTimes(2);
     expect(getSupabaseAccessToken).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not refetch the profile on TOKEN_REFRESHED even when the profile is missing (loop fix)', async () => {
+    // Profile fetch fails → `user` stays null. Under the OLD code, every
+    // TOKEN_REFRESHED re-ran syncUserProfile because the guard only skipped
+    // when `user` was already loaded — an infinite refresh↔fetch loop.
+    const session = { access_token: 'token-1' };
+    getCurrentUser.mockRejectedValue({ response: { status: 401 } });
+    getSupabaseAccessToken.mockResolvedValue(session.access_token);
+
+    let stateCallback;
+    onSupabaseAuthStateChange.mockImplementation(async (callback) => {
+      stateCallback = callback;
+      return { unsubscribe: vi.fn() };
+    });
+
+    const useAuthStore = await loadAuthStore();
+    await act(async () => {
+      await useAuthStore.getState().initializeAuth();
+    });
+
+    // One fetch from the explicit init sync (it failed, so user is null).
+    expect(getCurrentUser).toHaveBeenCalledTimes(1);
+
+    await act(async () => {
+      // These must NOT trigger another profile fetch.
+      await stateCallback('TOKEN_REFRESHED', { access_token: 'token-2' });
+      await stateCallback('TOKEN_REFRESHED', { access_token: 'token-3' });
+      // SIGNED_IN still legitimately refetches (a real sign-in).
+      await stateCallback('SIGNED_IN', { access_token: 'token-4' });
+    });
+
+    // init sync (1) + SIGNED_IN (1) = 2. The two TOKEN_REFRESHED events add none.
+    expect(getCurrentUser).toHaveBeenCalledTimes(2);
+    expect(useAuthStore.getState().token).toBe('token-4');
+  });
+
+  it('routes a missing backend profile to profile_completion without logging out', async () => {
+    const session = { access_token: 'token-1' };
+    getCurrentUser.mockRejectedValue({ response: { status: 404 } });
+    getSupabaseAccessToken.mockResolvedValue(session.access_token);
+    onSupabaseAuthStateChange.mockImplementation(async () => ({
+      unsubscribe: vi.fn(),
+    }));
+
+    const useAuthStore = await loadAuthStore();
+    await act(async () => {
+      await useAuthStore.getState().initializeAuth();
+    });
+
+    expect(logout).not.toHaveBeenCalled();
+    expect(useAuthStore.getState()).toMatchObject({
+      isAuthenticated: true,
+      authStage: 'profile_completion',
+      isInitializing: false,
+      user: null,
+    });
+  });
+});
+
+describe('authStore login', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.resetModules();
+    fetchAuthStage.mockResolvedValue('active');
+  });
+
+  it('succeeds and routes to profile_completion when the backend profile is missing', async () => {
+    // authService.login authenticated at Supabase but the profile fetch missed
+    // (401/404) → it returns user: null instead of throwing.
+    login.mockResolvedValue({ access_token: 'token-9', user: null });
+    getSupabaseAccessToken.mockResolvedValue('token-9');
+    onSupabaseAuthStateChange.mockImplementation(async () => ({
+      unsubscribe: vi.fn(),
+    }));
+
+    const useAuthStore = await loadAuthStore();
+    let result;
+    await act(async () => {
+      result = await useAuthStore.getState().login('9999999999', 'password');
+    });
+
+    expect(result).toBe(true);
+    expect(logout).not.toHaveBeenCalled();
+    expect(useAuthStore.getState()).toMatchObject({
+      isAuthenticated: true,
+      authStage: 'profile_completion',
+      isLoading: false,
+      isInitializing: false,
+    });
   });
 });

@@ -4,8 +4,18 @@ import { I18nLink } from '../../i18n/I18nLink';
 
 import LazyImage from '../../common/ui/LazyImage';
 
-// Hero banner responsive srcset for LCP optimization
-const HERO_SRCSET = `/assets/images/thumbs/banner-three-320w.webp 320w,
+// Hero banner responsive srcsets for LCP optimization.
+// AVIF is the primary format (~36% smaller than WebP); WebP is the fallback
+// for the rare browser without AVIF support. The 480w variant targets typical
+// mobile viewports (source is 629px, so 640/768/1024w were identical before).
+const HERO_AVIF_SRCSET = `/assets/images/thumbs/banner-three-320w.avif 320w,
+/assets/images/thumbs/banner-three-480w.avif 480w,
+/assets/images/thumbs/banner-three-640w.avif 640w,
+/assets/images/thumbs/banner-three-768w.avif 768w,
+/assets/images/thumbs/banner-three-1024w.avif 1024w`;
+
+const HERO_WEBP_SRCSET = `/assets/images/thumbs/banner-three-320w.webp 320w,
+/assets/images/thumbs/banner-three-480w.webp 480w,
 /assets/images/thumbs/banner-three-640w.webp 640w,
 /assets/images/thumbs/banner-three-768w.webp 768w,
 /assets/images/thumbs/banner-three-1024w.webp 1024w`;
@@ -45,7 +55,10 @@ const BannerThree = () => {
                                 <div className="banner-thumb">
                                     <LazyImage
                                         src={bannerThreeContent.thumb}
-                                        srcSet={HERO_SRCSET}
+                                        avifSrc="/assets/images/thumbs/banner-three.avif"
+                                        avifSrcSet={HERO_AVIF_SRCSET}
+                                        webpSrc="/assets/images/thumbs/banner-three.webp"
+                                        webpSrcSet={HERO_WEBP_SRCSET}
                                         sizes="(max-width: 768px) 100vw, 50vw"
                                         alt="360Ghar - AI-Enabled Real Estate Platform"
                                         width={629}

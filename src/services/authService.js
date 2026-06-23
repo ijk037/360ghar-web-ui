@@ -35,13 +35,28 @@ export const authService = {
       : AUTH_METHODS.PHONE_PASSWORD;
     authService.afterAuthSuccess(method, identifier);
 
-    const response = await api.get('/users/profile/');
+    // Fetch the backend profile. Supabase auth just succeeded, so a 401/404
+    // here means the user is authenticated but has no backend profile row yet
+    // (common for fresh phone-auth signups before the profile is provisioned).
+    // Return user: null so the auth store keeps the session and routes the
+    // authenticated user to profile completion, instead of throwing and being
+    // treated as a failed login (which previously also seeded an infinite
+    // refresh↔fetch loop). Any other failure is a genuine error.
+    let profile = null;
+    try {
+      const response = await api.get('/users/profile/');
+      profile = response.data;
+    } catch (err) {
+      const status = err?.response?.status;
+      if (status !== 401 && status !== 404) throw err;
+    }
+
     return {
       access_token: data.session.access_token,
       refresh_token: data.session.refresh_token,
       expires_in: data.session.expires_in,
       token_type: data.session.token_type,
-      user: response.data,
+      user: profile,
     };
   },
 

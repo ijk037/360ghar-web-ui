@@ -148,7 +148,9 @@ async function getConversationMessages(conversationId, limit = 100) {
   const response = await api.get(
     `${getApiBaseUrl()}/agent/conversations/${conversationId}/messages?limit=${limit}`
   );
-  return response.data;
+  const data = response.data;
+  // Backend may return CursorPage envelope {items, next_cursor, has_more, limit}
+  return Array.isArray(data) ? data : (data?.items ?? data);
 }
 
 /**

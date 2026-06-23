@@ -14,7 +14,8 @@ export const useDataHubStore = create((set, get) => ({
     set({ isLoadingAlerts: true });
     try {
       const alerts = await dataHubService.getMyAuctionAlerts();
-      set({ auctionAlerts: Array.isArray(alerts) ? alerts : [] });
+      const alertItems = Array.isArray(alerts) ? alerts : (Array.isArray(alerts?.items) ? alerts.items : []);
+      set({ auctionAlerts: alertItems });
     } catch {
       set({ auctionAlerts: [] });
     } finally {
@@ -48,7 +49,8 @@ export const useDataHubStore = create((set, get) => ({
     set({ isLoadingSectors: true });
     try {
       const sectors = await dataHubService.getCircleRateSectors();
-      set({ circleRateSectors: Array.isArray(sectors) ? sectors : [] });
+      const sectorItems = Array.isArray(sectors) ? sectors : (Array.isArray(sectors?.items) ? sectors.items : []);
+      set({ circleRateSectors: sectorItems });
     } catch {
       set({ circleRateSectors: [] });
     } finally {

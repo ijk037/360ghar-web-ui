@@ -2,7 +2,7 @@ import { shouldShortCircuitDataFetch } from '../utils/prerender';
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || '';
 const SUPABASE_PUBLISHABLE_KEY =
-  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || '';
 const IS_TEST_MODE = import.meta.env.MODE === 'test' || import.meta.env.VITEST === 'true';
 
 // CRITICAL FIX (audit 5.1): previously this module threw at import time when

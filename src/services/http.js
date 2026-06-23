@@ -13,6 +13,21 @@ const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000; // 1 second
 const RETRY_STATUS_CODES = [408, 429, 502, 503, 504];
 
+// Dedupe concurrent Supabase session refreshes. When multiple authenticated
+// requests 401 at once (e.g. /users/profile/ and /users/me/auth-state racing
+// right after login), each would otherwise trigger its own refreshSupabaseSession()
+// call. Refreshing rotates the JWT and fires TOKEN_REFRESHED, so N concurrent
+// refreshes can fan out into a refresh storm. This guarantees at most one
+// in-flight refresh; callers share its result.
+let refreshingSessionPromise = null;
+const refreshSessionOnce = () => {
+  if (refreshingSessionPromise) return refreshingSessionPromise;
+  refreshingSessionPromise = refreshSupabaseSession().finally(() => {
+    refreshingSessionPromise = null;
+  });
+  return refreshingSessionPromise;
+};
+
 // Determine if a given host (or URL) is localhost
 export const isLocalhost = (hostOrUrl) => {
   if (!hostOrUrl) return false;
@@ -246,7 +261,7 @@ export const createAxiosInstance = ({ withAuth = false, enableRetry = true } = {
             ...config,
             [Symbol.for('http.authRetry')]: true,
           };
-          const refreshedSession = await refreshSupabaseSession();
+          const refreshedSession = await refreshSessionOnce();
           if (refreshedSession?.access_token) {
             retryConfig.headers = retryConfig.headers || {};
             retryConfig.headers.Authorization = `Bearer ${refreshedSession.access_token}`;

@@ -168,6 +168,26 @@ function stripBakedMaps(html) {
     .replace(/<script[^>]*src="https:\/\/maps\.googleapis\.com[^"]*"><\/script>/g, '');
 }
 
+// Remove the gtag.js <script> tag that gets baked into the prerendered HTML.
+//
+// index.html defers gtag via `requestIdleCallback(loadGtag)`. During Puppeteer
+// capture the idle callback fires, injecting `<script async
+// src="https://www.googletagmanager.com/gtag/js?id=...">` into the DOM. The
+// request itself is aborted by request interception (BLOCKED_HOST_PATTERNS),
+// but `page.content()` still serializes the injected tag into the captured
+// HTML. On a real client this baked tag fires an EAGER 3rd-party fetch that
+// competes with the LCP hero image for bandwidth on slow mobile connections.
+//
+// The inline `loadGtag`/`requestIdleCallback` stub remains in index.html, so
+// gtag.js is re-injected after the browser is idle on real page loads — just
+// not on the render-critical path. Stripping the baked tag is therefore safe.
+function stripBakedGtag(html) {
+  return html.replace(
+    /<script\b[^>]*src="https:\/\/www\.googletagmanager\.com\/gtag\/js[^"]*"[^>]*><\/script>/gi,
+    '',
+  );
+}
+
 // Restore fetchpriority="high" on the LCP hero image preload.
 // Puppeteer's page.content() may drop this newer attribute during serialization,
 // causing the hero image to lose bandwidth priority to competing preloads.
@@ -179,7 +199,7 @@ function restoreHeroFetchPriority(html) {
 }
 
 function ensurePrerenderAnnotations(html) {
-  let nextHtml = stripBakedMaps(reDeferCss(restoreHeroFetchPriority(html)));
+  let nextHtml = stripBakedGtag(stripBakedMaps(reDeferCss(restoreHeroFetchPriority(html))));
 
   if (!nextHtml.includes('data-prerendered="true"')) {
     nextHtml = nextHtml.replace('<html', '<html data-prerendered="true"');

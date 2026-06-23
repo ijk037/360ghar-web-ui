@@ -16,7 +16,7 @@ machine-specific values go in `.env.local` (never committed).
 | `VITE_API_SERVER` | Yes | `http://localhost:3600` (dev) | Backend origin. Used by the Vite dev/preview proxy and the PWA runtime cache pattern. |
 | `VITE_API_BASE_URL` | Yes | `/api` (dev) | Axios `baseURL`. In dev `/api` is proxied to `${VITE_API_SERVER}/api/v1`. In prod `netlify.toml` sets this to `https://api.360ghar.com/api/v1`. |
 | `VITE_SUPABASE_URL` | Yes | — | Supabase project URL. Drives auth, session, and token refresh. |
-| `VITE_SUPABASE_PUBLISHABLE_KEY` | Yes | — | Supabase anon/publishable key. Falls back to legacy `VITE_SUPABASE_ANON_KEY` name. |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | Yes | — | Supabase publishable key. |
 | `VITE_GOOGLE_PLACES_API_KEY` | Yes | — | Google Places autocomplete key (client-side). Should be HTTP-referrer restricted. |
 | `VITE_PUBLIC_POSTHOG_KEY` | No | — | PostHog project key for analytics and session replay. |
 | `VITE_PUBLIC_POSTHOG_HOST` | No | `https://us.i.posthog.com` | PostHog ingestion host. |
